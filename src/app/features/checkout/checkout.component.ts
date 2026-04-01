@@ -9,7 +9,7 @@ import { MatAnchor, MatButtonModule } from '@angular/material/button';
 import { ShippingStepComponent } from 'src/app/features/checkout/shipping-step/shipping-step.component';
 import { PaymentStepComponent } from 'src/app/features/checkout/payment-step/payment-step.component';
 import { CustomerStepComponent } from 'src/app/features/checkout/customer-step/customer-step.component';
-import { CommonModule, NgComponentOutlet } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
