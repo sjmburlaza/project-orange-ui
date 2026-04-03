@@ -3,7 +3,7 @@ import {
   inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection,
+  provideZoneChangeDetection, isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
@@ -19,6 +19,9 @@ import { environment } from 'src/environments/environment';
 import { CheckoutConfigService } from 'src/app/features/checkout/checkout-config.service';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { translateLoaderFactory } from 'src/app/core/i18n/translate-loader';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,30 +30,33 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     provideTranslateService({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: translateLoaderFactory,
-        deps: [HttpClient],
-      },
+        loader: {
+            provide: TranslateLoader,
+            useFactory: translateLoaderFactory,
+            deps: [HttpClient],
+        },
     }),
     ...(environment.useMockAuth
-      ? [
-          {
-            provide: HTTP_INTERCEPTORS,
-            useClass: MockAuthInterceptor,
-            multi: true,
-          },
+        ? [
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: MockAuthInterceptor,
+                multi: true,
+            },
         ]
-      : []),
+        : []),
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true,
     },
     CheckoutConfigService,
     provideAppInitializer(() => {
-      const configService = inject(CheckoutConfigService);
-      return configService.loadCheckoutConfig();
+        const configService = inject(CheckoutConfigService);
+        return configService.loadCheckoutConfig();
     }),
-  ],
+    provideStore(),
+    provideEffects(),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+],
 };
