@@ -17,7 +17,6 @@ import {
 import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { environment } from 'src/environments/environment';
-import { CheckoutConfigService } from 'src/app/features/checkout/checkout-config.service';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { translateLoaderFactory } from 'src/app/core/i18n/translate-loader';
 import { provideStore } from '@ngrx/store';
@@ -25,6 +24,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { productFeature } from 'src/app/features/products/store/products.reducer';
 import { ProductEffects } from 'src/app/features/products/store/products.effects';
+import { CheckoutConfigService } from 'src/app/features/checkout/services/checkout-config.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

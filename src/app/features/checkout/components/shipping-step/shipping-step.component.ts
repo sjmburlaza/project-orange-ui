@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CheckoutStepConfig } from 'src/app/features/checkout/checkout-config.service';
+import { CheckoutStepConfig } from 'src/app/features/checkout/services/checkout-config.service';
 
 @Component({
   selector: 'app-shipping-step',

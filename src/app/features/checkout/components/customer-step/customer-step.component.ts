@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   CheckoutConfigService,
   CheckoutStepConfig,
-} from 'src/app/features/checkout/checkout-config.service';
+} from 'src/app/features/checkout/services/checkout-config.service';
 import { DynamicFormComponent } from 'src/app/shared/form/dynamic-form/dynamic-form.component';
 
 @Component({
@@ -18,6 +18,7 @@ export class CustomerStepComponent {
 
   @Input() step!: CheckoutStepConfig;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit(value: any) {
     console.log(value);
   }
