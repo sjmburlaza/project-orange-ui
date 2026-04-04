@@ -1,15 +1,16 @@
 import { Component, inject, OnInit, Type } from '@angular/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { MatAnchor, MatButtonModule } from '@angular/material/button';
+import { PaymentStepComponent } from 'src/app/features/checkout/components/payment-step/payment-step.component';
+import { CustomerStepComponent } from 'src/app/features/checkout/components/customer-step/customer-step.component';
+import { CommonModule } from '@angular/common';
+import { ShippingStepComponent } from 'src/app/features/checkout/components/shipping-step/shipping-step.component';
 import {
   CheckoutConfigService,
   CheckoutStepConfig,
-} from 'src/app/features/checkout/checkout-config.service';
-import { MatAnchor, MatButtonModule } from '@angular/material/button';
-import { ShippingStepComponent } from 'src/app/features/checkout/shipping-step/shipping-step.component';
-import { PaymentStepComponent } from 'src/app/features/checkout/payment-step/payment-step.component';
-import { CustomerStepComponent } from 'src/app/features/checkout/customer-step/customer-step.component';
-import { CommonModule, NgComponentOutlet } from '@angular/common';
+} from 'src/app/features/checkout/services/checkout-config.service';
 
 @Component({
   selector: 'app-checkout',
@@ -25,6 +26,7 @@ export class CheckoutComponent implements OnInit {
   steps: CheckoutStepConfig[] = [];
   currentIndex = 0;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stepComponentMap: Record<string, Type<any>> = {
     customer: CustomerStepComponent,
     shipping: ShippingStepComponent,

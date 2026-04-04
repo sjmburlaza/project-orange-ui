@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { DynamicField } from 'src/app/shared/form/dynamic-field.model';
@@ -17,14 +17,12 @@ export interface CheckoutForm {
 
 @Injectable({ providedIn: 'root' })
 export class CheckoutConfigService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private apiUrl = '/api';
 
   steps: CheckoutStepConfig[] = [];
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   async loadCheckoutConfig() {
     const response: any = await firstValueFrom(

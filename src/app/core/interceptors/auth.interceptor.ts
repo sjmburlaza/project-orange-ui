@@ -5,17 +5,15 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { AuthStore } from 'src/app/core/auth/auth.store';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(
-    private authStore: AuthStore,
-    private authService: AuthService,
-  ) {}
+  private authStore = inject(AuthStore);
+  private authService = inject(AuthService);
 
   intercept(
     req: HttpRequest<any>,

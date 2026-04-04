@@ -1,5 +1,12 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ArrayFieldComponent } from 'src/app/shared/form/array-field/array-field.component';
@@ -25,7 +32,7 @@ import { SelectSearchFieldComponent } from 'src/app/shared/form/select-search-fi
   templateUrl: './dynamic-field.component.html',
   styleUrl: './dynamic-field.component.scss',
 })
-export class DynamicFieldComponent {
+export class DynamicFieldComponent implements OnInit {
   visibility = inject(FieldVisibilityService);
 
   @Input() field!: DynamicField;

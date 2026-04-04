@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -26,14 +26,12 @@ import { AuthStore } from 'src/app/core/auth/auth.store';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private authStore = inject(AuthStore);
+  private router = inject(Router);
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private authStore: AuthStore,
-    private router: Router,
-  ) {}
+  loginForm!: FormGroup;
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
