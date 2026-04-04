@@ -4,15 +4,15 @@ export const PRODUCTS_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./product-list/product-list.component').then(
-        (m) => m.ProductListComponent
+      import('./pages/product-list/product-list.component').then(
+        (m) => m.ProductListComponent,
       ),
   },
   {
-    path: 'details',
+    path: 'detail',
     loadComponent: () =>
-      import('./product-details/product-details.component').then(
-        (m) => m.ProductDetailsComponent
+      import('./pages/product-detail/product-detail.component').then(
+        (m) => m.ProductDetailComponent,
       ),
   },
 ];

@@ -3,7 +3,8 @@ import {
   inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection, isDevMode,
+  provideZoneChangeDetection,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
@@ -22,6 +23,8 @@ import { translateLoaderFactory } from 'src/app/core/i18n/translate-loader';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { productFeature } from 'src/app/features/products/store/products.reducer';
+import { ProductEffects } from 'src/app/features/products/store/products.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,33 +33,35 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
     provideTranslateService({
-        loader: {
-            provide: TranslateLoader,
-            useFactory: translateLoaderFactory,
-            deps: [HttpClient],
-        },
+      loader: {
+        provide: TranslateLoader,
+        useFactory: translateLoaderFactory,
+        deps: [HttpClient],
+      },
     }),
     ...(environment.useMockAuth
-        ? [
-            {
-                provide: HTTP_INTERCEPTORS,
-                useClass: MockAuthInterceptor,
-                multi: true,
-            },
+      ? [
+          {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MockAuthInterceptor,
+            multi: true,
+          },
         ]
-        : []),
+      : []),
     {
-        provide: HTTP_INTERCEPTORS,
-        useClass: AuthInterceptor,
-        multi: true,
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
     },
     CheckoutConfigService,
     provideAppInitializer(() => {
-        const configService = inject(CheckoutConfigService);
-        return configService.loadCheckoutConfig();
+      const configService = inject(CheckoutConfigService);
+      return configService.loadCheckoutConfig();
     }),
-    provideStore(),
-    provideEffects(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
-],
+    provideStore({
+      [productFeature.name]: productFeature.reducer,
+    }),
+    provideEffects([ProductEffects]),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+  ],
 };
