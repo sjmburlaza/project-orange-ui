@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductFacade } from 'src/app/features/products/store/product.facade';
+import { ProductFacade } from 'src/app/features/products/store/products.facade';
 
 @Component({
   selector: 'app-product-detail',

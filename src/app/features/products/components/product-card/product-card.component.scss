@@ -1,0 +1,14 @@
+@use 'tokens/tokens' as *;
+
+.product {
+  height: token(spacing, 44);
+  border: 1px solid grey;
+
+  &__image {
+    height: token(spacing, 36);
+  }
+
+  &__name {
+    font-size: token(font-size, lg);
+  }
+}
