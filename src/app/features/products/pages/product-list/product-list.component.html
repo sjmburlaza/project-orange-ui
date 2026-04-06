@@ -1,11 +1,10 @@
-<p>product-list works!</p>
 @if (products$ | async; as products) {
-  @for (product of products; track product.id) {
-    {{ product.name }}
-    {{ product.price }}
-  }
-}
-
-@if (error$ | async; as error) {
-  <p>{{ error }}</p>
+  <div class="products">
+    @for (product of products; track product.id) {
+      <app-product-card
+        [product]="product"
+        [currency]="siteService.config().currency"
+      ></app-product-card>
+    }
+  </div>
 }
