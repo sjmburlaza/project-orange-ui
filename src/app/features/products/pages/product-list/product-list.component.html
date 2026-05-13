@@ -4,6 +4,7 @@
       <app-product-card
         [product]="product"
         [currency]="siteService.config().currency"
+        (addToCart)="addToCart($event)"
       ></app-product-card>
     }
   </div>

@@ -25,6 +25,11 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { productFeature } from 'src/app/features/products/store/products.reducer';
 import { ProductEffects } from 'src/app/features/products/store/products.effects';
 import { CheckoutConfigService } from 'src/app/features/checkout/services/checkout-config.service';
+import {
+  cartFeatureKey,
+  cartReducer,
+} from './features/cart/store/cart.reducer';
+import { CartEffects } from './features/cart/store/cart.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -60,8 +65,9 @@ export const appConfig: ApplicationConfig = {
     }),
     provideStore({
       [productFeature.name]: productFeature.reducer,
+      [cartFeatureKey]: cartReducer,
     }),
-    provideEffects([ProductEffects]),
+    provideEffects([ProductEffects, CartEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };

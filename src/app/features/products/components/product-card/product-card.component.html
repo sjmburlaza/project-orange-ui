@@ -5,4 +5,8 @@
   <div class="product__name">{{ product.name }}</div>
   <div class="product__description">{{ product.description }}</div>
   <div class="product__price">{{ product.price | currency: currency }}</div>
+  <div class="product__actions">
+    <button matButton="filled" (click)="onAddToCart(product.id)">Buy</button>
+    <button matButton="outlined">Learn more</button>
+  </div>
 </div>
