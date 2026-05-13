@@ -1,0 +1,40 @@
+.layout {
+  display: grid;
+  gap: 1rem;
+
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 150px 150px;
+
+  grid-template-areas:
+    "image details price"
+    "image details actions";
+}
+
+.image {
+  grid-area: image;
+  background-color: antiquewhite;
+}
+
+.details {
+  grid-area: details;
+  background-color: aqua;
+}
+
+.price {
+  grid-area: price;
+  background-color: burlywood;
+}
+
+.actions {
+  grid-area: actions;
+  background-color: aquamarine;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "details price"
+      "image actions";
+  }
+}
