@@ -1,14 +1,24 @@
-@use 'tokens/tokens' as *;
+@use "tokens/tokens" as *;
 
 .product {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   height: token(spacing, 44);
   border: 1px solid grey;
+  padding: 36px 24px;
 
   &__image {
-    height: token(spacing, 36);
+    height: token(spacing, 30);
   }
 
   &__name {
     font-size: token(font-size, lg);
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 }

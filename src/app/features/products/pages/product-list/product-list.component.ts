@@ -1,6 +1,8 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { Product } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
+import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 
@@ -12,6 +14,7 @@ import { ProductFacade } from 'src/app/features/products/store/products.facade';
 })
 export class ProductListComponent implements OnInit {
   private readonly productFacade = inject(ProductFacade);
+  private readonly cartFacade = inject(CartFacade);
   readonly siteService = inject(SiteService);
 
   readonly products$ = this.productFacade.products$;
@@ -20,5 +23,16 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.productFacade.loadProducts();
+  }
+
+  addToCart(product: Product): void {
+    this.cartFacade.addToCart({
+      productId: product.id,
+      productName: product.name,
+      price: product.price,
+      quantity: 1,
+      imageUrl: product.imageUrl,
+      addons: [],
+    });
   }
 }

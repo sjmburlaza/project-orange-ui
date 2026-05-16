@@ -1,0 +1,24 @@
+<div class="container">
+  @if (cartLoading$ | async) {
+    <p>Loading cart...</p>
+  }
+
+  @let items = items$ | async;
+
+  @if (items?.length === 0) {
+    <p>Your cart is empty</p>
+  } @else {
+    <div class="cart-items">
+      @for (item of items; track item.productId) {
+        <app-cart-item [item]="item"></app-cart-item>
+        @if (item.addons.length) {
+          <div class="addons">
+            @for (addon of item.addons; track addon.id) {
+              <app-addon [addon]="addon"></app-addon>
+            }
+          </div>
+        }
+      }
+    </div>
+  }
+</div>

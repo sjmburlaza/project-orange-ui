@@ -10,6 +10,10 @@
   display: grid;
   grid-template-columns: 1fr 390px;
   gap: 64px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .main-content {
