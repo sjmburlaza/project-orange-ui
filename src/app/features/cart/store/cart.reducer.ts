@@ -1,58 +1,65 @@
-import { createReducer, on } from '@ngrx/store';
-import { CartItem } from 'src/app/core/models/cart.model';
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { Cart } from 'src/app/core/models/cart.model';
 import { CartActions } from './cart.actions';
 
-export const cartFeatureKey = 'cart';
-
 export interface CartState {
-  items: CartItem[];
+  cart: Cart | null;
   loading: boolean;
   error: string | null;
 }
 
 export const initialCartState: CartState = {
-  items: [],
+  cart: null,
   loading: false,
   error: null,
 };
 
-export const cartReducer = createReducer(
-  initialCartState,
+export const cartFeature = createFeature({
+  name: 'cart',
 
-  on(
-    CartActions.loadCart,
-    CartActions.addToCart,
-    CartActions.removeFromCart,
-    CartActions.clearCart,
-    (state) => ({
-      ...state,
-      loading: true,
-      error: null,
-    }),
-  ),
+  reducer: createReducer(
+    initialCartState,
 
-  on(
-    CartActions.loadCartSuccess,
-    CartActions.addToCartSuccess,
-    CartActions.removeFromCartSuccess,
-    CartActions.clearCartSuccess,
-    (state, { items }) => ({
-      ...state,
-      items,
-      loading: false,
-      error: null,
-    }),
-  ),
+    on(
+      CartActions.loadCart,
+      CartActions.addToCart,
+      CartActions.updateQuantity,
+      CartActions.removeItem,
+      CartActions.applyVoucher,
+      (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+      }),
+    ),
 
-  on(
-    CartActions.loadCartFailure,
-    CartActions.addToCartFailure,
-    CartActions.removeFromCartFailure,
-    CartActions.clearCartFailure,
-    (state, { error }) => ({
-      ...state,
-      loading: false,
-      error,
-    }),
+    on(
+      CartActions.loadCartSuccess,
+      CartActions.addToCartSuccess,
+      CartActions.updateQuantitySuccess,
+      CartActions.removeItemSuccess,
+      CartActions.applyVoucherSuccess,
+      (state, { cart }) => ({
+        ...state,
+        cart,
+        loading: false,
+        error: null,
+      }),
+    ),
+
+    on(
+      CartActions.loadCartFailure,
+      CartActions.addToCartFailure,
+      CartActions.updateQuantityFailure,
+      CartActions.removeItemFailure,
+      CartActions.applyVoucherFailure,
+      (state, { error }) => ({
+        ...state,
+        loading: false,
+        error,
+      }),
+    ),
+
+    on(CartActions.clearCart, () => initialCartState),
   ),
-);
+});

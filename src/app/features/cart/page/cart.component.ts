@@ -13,12 +13,8 @@ import { AddonComponent } from '../components/addon/addon.component';
 export class CartComponent implements OnInit {
   private readonly cartFacade = inject(CartFacade);
 
-  readonly cartItems$ = this.cartFacade.cartItems$;
-  readonly cartCount$ = this.cartFacade.cartCount$;
-  readonly cartSubtotal$ = this.cartFacade.cartSubtotal$;
-  readonly cartLoading$ = this.cartFacade.cartLoading$;
-  readonly cartError$ = this.cartFacade.cartError$;
-  readonly cartIsEmpty$ = this.cartFacade.cartIsEmpty$;
+  readonly items$ = this.cartFacade.items$;
+  readonly cartLoading$ = this.cartFacade.loading$;
 
   ngOnInit(): void {
     this.cartFacade.loadCart();

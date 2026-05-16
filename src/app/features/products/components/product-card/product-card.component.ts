@@ -12,9 +12,9 @@ import { Product } from 'src/app/core/models/product.model';
 export class ProductCardComponent {
   @Input() product!: Product;
   @Input() currency!: string;
-  @Output() addToCart = new EventEmitter<number>();
+  @Output() addToCart = new EventEmitter<Product>();
 
-  onAddToCart(value: number): void {
+  onAddToCart(value: Product): void {
     if (value) {
       this.addToCart.emit(value);
     }

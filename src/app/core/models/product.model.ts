@@ -5,6 +5,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  stockStatus: 'inStock' | 'lowStock' | 'outOfStock';
   stockQuantity: number;
   imageUrl: string;
   categoryId: number;

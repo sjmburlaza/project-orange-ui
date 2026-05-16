@@ -1,32 +1,34 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { cartFeatureKey, CartState } from './cart.reducer';
+import { createSelector } from '@ngrx/store';
+import { cartFeature } from './cart.reducer';
 
-export const selectCartState = createFeatureSelector<CartState>(cartFeatureKey);
+export const { selectCartState, selectCart, selectLoading, selectError } =
+  cartFeature;
 
 export const selectCartItems = createSelector(
-  selectCartState,
-  (state) => state.items,
+  selectCart,
+  (cart) => cart?.entries ?? [],
 );
 
-export const selectCartLoading = createSelector(
-  selectCartState,
-  (state) => state.loading,
+export const selectAppliedVouchers = createSelector(
+  selectCart,
+  (cart) => cart?.appliedVouchers ?? [],
 );
 
-export const selectCartError = createSelector(
-  selectCartState,
-  (state) => state.error,
+export const selectCartSummary = createSelector(
+  selectCart,
+  (cart) => cart?.cartSummary ?? [],
 );
 
-export const selectCartCount = createSelector(selectCartItems, (items) =>
+export const selectCartCode = createSelector(
+  selectCart,
+  (cart) => cart?.code ?? null,
+);
+
+export const selectCartItemCount = createSelector(selectCartItems, (items) =>
   items.reduce((total, item) => total + item.quantity, 0),
 );
 
-export const selectCartIsEmpty = createSelector(
-  selectCartItems,
-  (items) => items.length === 0,
-);
-
-export const selectCartSubtotal = createSelector(selectCartItems, (items) =>
-  items.reduce((total, item) => total + item.price * item.quantity, 0),
+export const selectCartTotal = createSelector(
+  selectCartSummary,
+  (summary) => summary.find((item) => item.name === 'Total')?.amount ?? 0,
 );
