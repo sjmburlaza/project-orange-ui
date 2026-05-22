@@ -10,6 +10,11 @@ import {
   selectLoadingProductDetail,
   selectProductsError,
   selectProductDetailError,
+  selectCategories,
+  selectCategoriesError,
+  selectCategoryOptions,
+  selectLoadingCategories,
+  selectSelectedCategoryId,
 } from 'src/app/features/products/store/products.selector';
 
 @Injectable({
@@ -34,8 +39,22 @@ export class ProductFacade {
   readonly productsError$ = this.store.select(selectProductsError);
   readonly productDetailError$ = this.store.select(selectProductDetailError);
 
-  loadProducts(): void {
-    this.store.dispatch(ProductActions.loadProducts());
+  readonly categories$ = this.store.select(selectCategories);
+  readonly categoryOptions$ = this.store.select(selectCategoryOptions);
+  readonly selectedCategoryId$ = this.store.select(selectSelectedCategoryId);
+  readonly loadingCategories$ = this.store.select(selectLoadingCategories);
+  readonly categoriesError$ = this.store.select(selectCategoriesError);
+
+  loadProducts(categoryId: number | null = null): void {
+    this.store.dispatch(ProductActions.loadProducts({ categoryId }));
+  }
+
+  loadCategories(): void {
+    this.store.dispatch(ProductActions.loadCategories());
+  }
+
+  selectCategory(categoryId: number | null): void {
+    this.store.dispatch(ProductActions.selectCategory({ categoryId }));
   }
 
   loadProductDetail(id: number): void {
