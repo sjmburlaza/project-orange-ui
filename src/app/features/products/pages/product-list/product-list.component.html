@@ -1,4 +1,8 @@
 @if (products$ | async; as products) {
+  <app-product-list-toolbar
+    [categoryOptions]="categoryOptions$ | async"
+    (selectedCategoryChange)="onCategoryChange($event)"
+  ></app-product-list-toolbar>
   <div class="products">
     @for (product of products; track product.id) {
       <app-product-card
@@ -8,4 +12,6 @@
       ></app-product-card>
     }
   </div>
+} @else {
+  <p>No products to show.</p>
 }

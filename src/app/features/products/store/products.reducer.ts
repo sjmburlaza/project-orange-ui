@@ -1,4 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
+import { Category } from 'src/app/core/models/category.model';
 import { Product, ProductDetail } from 'src/app/core/models/product.model';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
 
@@ -9,11 +10,16 @@ export interface ProductState {
   productDetails: Record<number, ProductDetail>;
   selectedProductId: number | null;
 
+  categories: Category[];
+  selectedCategoryId: number | null;
+
   loadingProducts: boolean;
   loadingProductDetail: boolean;
+  loadingCategories: boolean;
 
   productsError: string | null;
   productDetailError: string | null;
+  categoriesError: string | null;
 }
 
 export const initialState: ProductState = {
@@ -21,11 +27,16 @@ export const initialState: ProductState = {
   productDetails: {},
   selectedProductId: null,
 
+  categories: [],
+  selectedCategoryId: null,
+
   loadingProducts: false,
   loadingProductDetail: false,
+  loadingCategories: false,
 
   productsError: null,
   productDetailError: null,
+  categoriesError: null,
 };
 
 const reducer = createReducer(
@@ -49,6 +60,32 @@ const reducer = createReducer(
     ...state,
     loadingProducts: false,
     productsError: error,
+  })),
+
+  // LOAD CATEGORIES
+  on(ProductActions.loadCategories, (state) => ({
+    ...state,
+    loadingCategories: true,
+    categoriesError: null,
+  })),
+
+  on(ProductActions.loadCategoriesSuccess, (state, { categories }) => ({
+    ...state,
+    categories,
+    loadingCategories: false,
+    categoriesError: null,
+  })),
+
+  on(ProductActions.loadCategoriesFailure, (state, { error }) => ({
+    ...state,
+    loadingCategories: false,
+    categoriesError: error,
+  })),
+
+  // SELECT CATEGORY
+  on(ProductActions.selectCategory, (state, { categoryId }) => ({
+    ...state,
+    selectedCategoryId: categoryId,
   })),
 
   // LOAD PRODUCT DETAIL

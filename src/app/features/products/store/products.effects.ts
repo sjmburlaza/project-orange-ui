@@ -3,17 +3,19 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { switchMap, map, catchError, of } from 'rxjs';
 import { ProductApiService } from 'src/app/features/products/services/product-api.service';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
+import { CategoryApiService } from '../services/category-api.service';
 
 @Injectable()
 export class ProductEffects {
   private readonly actions$ = inject(Actions);
   private readonly productApiService = inject(ProductApiService);
+  private readonly categoryApiService = inject(CategoryApiService);
 
   loadProducts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProductActions.loadProducts),
-      switchMap(() =>
-        this.productApiService.getProducts().pipe(
+      switchMap(({ categoryId }) =>
+        this.productApiService.getProducts(categoryId).pipe(
           map((products) => ProductActions.loadProductsSuccess({ products })),
           catchError((error) =>
             of(
@@ -24,6 +26,29 @@ export class ProductEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  loadCategories$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.loadCategories),
+      switchMap(() =>
+        this.categoryApiService.getCategories().pipe(
+          map((categories) =>
+            ProductActions.loadCategoriesSuccess({ categories }),
+          ),
+          catchError((error) =>
+            of(ProductActions.loadCategoriesFailure({ error: error.message })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  selectCategory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.selectCategory),
+      map(({ categoryId }) => ProductActions.loadProducts({ categoryId })),
     ),
   );
 

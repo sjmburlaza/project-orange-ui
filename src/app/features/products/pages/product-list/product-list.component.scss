@@ -1,6 +1,8 @@
+@use "tokens/tokens" as *;
+
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: token(spacing, 6);
+  padding: token(spacing, 6);
 }
