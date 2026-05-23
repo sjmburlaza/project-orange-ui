@@ -15,3 +15,12 @@ export interface Product {
 export interface ProductDetail extends Product {
   category?: Category;
 }
+
+export type ProductSort = 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
+
+export interface ProductFilters {
+  categoryId: number | null;
+  sortBy: ProductSort | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+}

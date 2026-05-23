@@ -1,24 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
 
-export interface FilterOption<T = string> {
+export interface SelectOption<T = string> {
   label: string;
   value: T;
 }
 
 @Component({
-  selector: 'app-filter-dropdown',
+  selector: 'app-select-dropdown',
   imports: [CommonModule, MatFormFieldModule, MatSelectModule, MatOptionModule],
-  templateUrl: './filter-dropdown.component.html',
-  styleUrl: './filter-dropdown.component.scss',
+  templateUrl: './select-dropdown.component.html',
+  styleUrl: './select-dropdown.component.scss',
 })
-export class FilterDropdownComponent<T = string> {
+export class SelectDropdownComponent<T = string> {
   @Input() label = '';
   @Input() placeholder = 'Select option';
-  @Input() options: FilterOption<T>[] = [];
+  @Input() options: SelectOption<T>[] = [];
   @Input() selectedValue: T | null = null;
 
   @Output() selectedValueChange = new EventEmitter<T | null>();

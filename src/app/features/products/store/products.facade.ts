@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+
 import { ProductActions } from 'src/app/features/products/store/products.actions';
+import { ProductSort } from 'src/app/core/models/product.model';
+
 import {
   selectProducts,
   selectProductListWithStockStatus,
@@ -15,6 +18,9 @@ import {
   selectCategoryOptions,
   selectLoadingCategories,
   selectSelectedCategoryId,
+  selectSelectedSort,
+  selectSortOptions,
+  selectProductFilters,
 } from 'src/app/features/products/store/products.selector';
 
 @Injectable({
@@ -45,8 +51,13 @@ export class ProductFacade {
   readonly loadingCategories$ = this.store.select(selectLoadingCategories);
   readonly categoriesError$ = this.store.select(selectCategoriesError);
 
-  loadProducts(categoryId: number | null = null): void {
-    this.store.dispatch(ProductActions.loadProducts({ categoryId }));
+  readonly selectedSort$ = this.store.select(selectSelectedSort);
+  readonly sortOptions$ = this.store.select(selectSortOptions);
+
+  readonly filters$ = this.store.select(selectProductFilters);
+
+  loadProducts(): void {
+    this.store.dispatch(ProductActions.loadProducts({ filters: {} }));
   }
 
   loadCategories(): void {
@@ -55,6 +66,23 @@ export class ProductFacade {
 
   selectCategory(categoryId: number | null): void {
     this.store.dispatch(ProductActions.selectCategory({ categoryId }));
+  }
+
+  selectSort(sortBy: ProductSort | null): void {
+    this.store.dispatch(ProductActions.selectSort({ sortBy }));
+  }
+
+  setPriceFilter(minPrice: number | null, maxPrice: number | null): void {
+    this.store.dispatch(
+      ProductActions.setPriceFilter({
+        minPrice,
+        maxPrice,
+      }),
+    );
+  }
+
+  clearProductFilters(): void {
+    this.store.dispatch(ProductActions.clearProductFilters());
   }
 
   loadProductDetail(id: number): void {

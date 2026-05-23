@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { Product } from 'src/app/core/models/product.model';
+import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
@@ -19,11 +19,14 @@ export class ProductListComponent implements OnInit {
   readonly siteService = inject(SiteService);
 
   readonly products$ = this.productFacade.products$;
+  readonly loading$ = this.productFacade.loadingProducts$;
+  readonly error$ = this.productFacade.productsError$;
+
   readonly categoryOptions$ = this.productFacade.categoryOptions$;
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
 
-  readonly loading$ = this.productFacade.loadingProducts$;
-  readonly error$ = this.productFacade.productsError$;
+  readonly sortOptions$ = this.productFacade.sortOptions$;
+  readonly selectedSort$ = this.productFacade.selectedSort$;
 
   ngOnInit(): void {
     this.productFacade.loadCategories();
@@ -32,6 +35,21 @@ export class ProductListComponent implements OnInit {
 
   onCategoryChange(categoryId: number | null): void {
     this.productFacade.selectCategory(categoryId);
+  }
+
+  onSortChange(sortBy: ProductSort | null): void {
+    this.productFacade.selectSort(sortBy);
+  }
+
+  onApplyPriceFilter(minPrice: string, maxPrice: string): void {
+    this.productFacade.setPriceFilter(
+      minPrice ? Number(minPrice) : null,
+      maxPrice ? Number(maxPrice) : null,
+    );
+  }
+
+  onClearFilters(): void {
+    this.productFacade.clearProductFilters();
   }
 
   addToCart(product: Product): void {
