@@ -7,10 +7,12 @@ import {
   Cart,
   UpdateQuantityRequest,
 } from 'src/app/core/models/cart.model';
+import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartApiService {
   private readonly http = inject(HttpClient);
+  private readonly browserStorage = inject(BrowserStorageService);
   private readonly baseUrl = '/api/carts';
   private readonly cartCodeKey = 'cartCode';
 
@@ -64,15 +66,15 @@ export class CartApiService {
   }
 
   saveCartCode(cartCode: string): void {
-    localStorage.setItem(this.cartCodeKey, cartCode);
+    this.browserStorage.setItem(this.cartCodeKey, cartCode);
   }
 
   clearCartCode(): void {
-    localStorage.removeItem(this.cartCodeKey);
+    this.browserStorage.removeItem(this.cartCodeKey);
   }
 
   private getCartCode(): string | null {
-    return localStorage.getItem(this.cartCodeKey);
+    return this.browserStorage.getItem(this.cartCodeKey);
   }
 
   private requireCartCode(): string {

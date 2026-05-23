@@ -24,13 +24,17 @@ export class CheckoutConfigService {
 
   steps: CheckoutStepConfig[] = [];
 
-  async loadCheckoutConfig() {
-    const response: any = await firstValueFrom(
-      this.http.get<CheckoutForm>(`${this.apiUrl}/checkoutForm`),
-    );
-    console.log('response', response);
-
-    this.steps = response.steps;
+  loadCheckoutConfig() {
+    this.http.get<CheckoutForm>(`${this.apiUrl}/checkoutForm`).subscribe({
+      next: (response) => {
+        console.log('response', response);
+        this.steps = response.steps;
+      },
+      error: (err) => {
+        console.error(err);
+        this.steps = [];
+      },
+    });
   }
 
   getStep(id: string) {

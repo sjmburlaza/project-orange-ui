@@ -46,11 +46,11 @@ export const routes: Routes = [
               import('./features/cart/cart.routes').then((m) => m.CART_ROUTES),
           },
           {
-            path: 'checkout/:step',
+            path: 'checkout',
             // canActivate: [AuthGuard],
-            loadComponent: () =>
-              import('./features/checkout/pages/checkout.component').then(
-                (m) => m.CheckoutComponent,
+            loadChildren: () =>
+              import('./features/checkout/checkout.routes').then(
+                (m) => m.CHECKOUT_ROUTES,
               ),
           },
         ],

@@ -1,7 +1,5 @@
 import {
   ApplicationConfig,
-  inject,
-  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
   isDevMode,
@@ -12,6 +10,7 @@ import {
   HTTP_INTERCEPTORS,
   HttpClient,
   provideHttpClient,
+  withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
@@ -24,16 +23,19 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { productFeature } from 'src/app/features/products/store/products.reducer';
 import { ProductEffects } from 'src/app/features/products/store/products.effects';
-import { CheckoutConfigService } from 'src/app/features/checkout/services/checkout-config.service';
 import { cartFeature } from './features/cart/store/cart.reducer';
 import { CartEffects } from './features/cart/store/cart.effects';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
@@ -55,16 +57,12 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true,
     },
-    CheckoutConfigService,
-    provideAppInitializer(() => {
-      const configService = inject(CheckoutConfigService);
-      return configService.loadCheckoutConfig();
-    }),
     provideStore({
       [productFeature.name]: productFeature.reducer,
       [cartFeature.name]: cartFeature.reducer,
     }),
     provideEffects([ProductEffects, CartEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideClientHydration(withEventReplay()),
   ],
 };
