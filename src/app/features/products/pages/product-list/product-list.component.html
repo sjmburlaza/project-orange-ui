@@ -4,8 +4,11 @@
     [sortOptions]="sortOptions$ | async"
     [selectedCategory]="selectedCategoryId$ | async"
     [selectedSort]="selectedSort$ | async"
+    [priceRange]="priceRange$ | async"
     (categoryChange)="onCategoryChange($event)"
     (sortChange)="onSortChange($event)"
+    (priceRangeChange)="onApplyPriceFilter($event)"
+    (clearFilters)="onClearFilters()"
   ></app-product-list-toolbar>
   <div class="products">
     @for (product of products; track product.id) {

@@ -11,10 +11,20 @@
     </div>
   }
 
-  <div class="filter-price">
-    Filter Price:
-    <app-filter-slider></app-filter-slider>
-  </div>
+  @if (priceRange) {
+    <div class="filter-price">
+      <app-range-slider
+        label="Filter Price"
+        prefix="₱"
+        [min]="priceMin"
+        [max]="priceMax"
+        [step]="5000"
+        [value]="priceRange"
+        (valueChange)="onPriceRangeChange($event)"
+      />
+    </div>
+  }
+
   @if (sortOptions) {
     <div class="filter-sort">
       Sort by:
@@ -26,4 +36,8 @@
       />
     </div>
   }
+
+  <div class="filter-clear">
+    <button (click)="clearFilters.emit()">Clear filters</button>
+  </div>
 </div>

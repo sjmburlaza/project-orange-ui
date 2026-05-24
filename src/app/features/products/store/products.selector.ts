@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { ProductFilters, ProductSort } from 'src/app/core/models/product.model';
 import { productFeature } from 'src/app/features/products/store/products.reducer';
+import { RangeValue } from 'src/app/shared/components/range-slider/range-slider.component';
 import { SelectOption } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 
 export const {
@@ -93,3 +94,12 @@ const SORT_OPTIONS: SelectOption<ProductSort>[] = [
 ];
 
 export const selectSortOptions = createSelector(() => SORT_OPTIONS);
+
+export const selectPriceRange = createSelector(
+  selectMinPrice,
+  selectMaxPrice,
+  (minPrice, maxPrice): RangeValue => ({
+    min: minPrice ?? 0,
+    max: maxPrice ?? 100000,
+  }),
+);

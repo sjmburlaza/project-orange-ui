@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductSort } from 'src/app/core/models/product.model';
+import {
+  RangeSliderComponent,
+  RangeValue,
+} from 'src/app/shared/components/range-slider/range-slider.component';
 
-import { FilterSliderComponent } from 'src/app/shared/components/filter-slider/filter-slider.component';
 import {
   SelectDropdownComponent,
   SelectOption,
@@ -9,7 +12,7 @@ import {
 
 @Component({
   selector: 'app-product-list-toolbar',
-  imports: [FilterSliderComponent, SelectDropdownComponent],
+  imports: [RangeSliderComponent, SelectDropdownComponent],
   templateUrl: './product-list-toolbar.component.html',
   styleUrl: './product-list-toolbar.component.scss',
 })
@@ -22,6 +25,20 @@ export class ProductListToolbarComponent {
 
   @Output() categoryChange = new EventEmitter<number | null>();
   @Output() sortChange = new EventEmitter<ProductSort | null>();
+  @Output() priceRangeChange = new EventEmitter<RangeValue>();
+  @Output() clearFilters = new EventEmitter();
+
+  readonly priceMin = 0;
+  readonly priceMax = 100000;
+
+  @Input() priceRange: RangeValue | null = {
+    min: this.priceMin,
+    max: this.priceMax,
+  };
+
+  onPriceRangeChange(value: RangeValue): void {
+    this.priceRangeChange.emit(value);
+  }
 
   onCategoryChange(value: number | null): void {
     this.categoryChange.emit(value);
