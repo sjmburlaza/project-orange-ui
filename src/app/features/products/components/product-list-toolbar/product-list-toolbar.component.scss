@@ -1,3 +1,11 @@
+@use "tokens/tokens" as *;
+
 .filter-container {
   display: flex;
+  gap: token(spacing, 6);
+
+  .filter-clear {
+    display: flex;
+    align-items: center;
+  }
 }

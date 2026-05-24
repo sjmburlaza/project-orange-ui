@@ -21,6 +21,7 @@ import {
   selectSelectedSort,
   selectSortOptions,
   selectProductFilters,
+  selectPriceRange,
 } from 'src/app/features/products/store/products.selector';
 
 @Injectable({
@@ -53,6 +54,8 @@ export class ProductFacade {
 
   readonly selectedSort$ = this.store.select(selectSelectedSort);
   readonly sortOptions$ = this.store.select(selectSortOptions);
+
+  readonly priceRange$ = this.store.select(selectPriceRange);
 
   readonly filters$ = this.store.select(selectProductFilters);
 
