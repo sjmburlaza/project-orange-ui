@@ -1,6 +1,10 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { Category } from 'src/app/core/models/category.model';
-import { Product, ProductDetail } from 'src/app/core/models/product.model';
+import {
+  Product,
+  ProductDetail,
+  ProductSort,
+} from 'src/app/core/models/product.model';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
 
 export const productFeatureKey = 'products';
@@ -11,7 +15,11 @@ export interface ProductState {
   selectedProductId: number | null;
 
   categories: Category[];
+
   selectedCategoryId: number | null;
+  selectedSort: ProductSort | null;
+  minPrice: number | null;
+  maxPrice: number | null;
 
   loadingProducts: boolean;
   loadingProductDetail: boolean;
@@ -28,7 +36,11 @@ export const initialState: ProductState = {
   selectedProductId: null,
 
   categories: [],
+
   selectedCategoryId: null,
+  selectedSort: null,
+  minPrice: null,
+  maxPrice: null,
 
   loadingProducts: false,
   loadingProductDetail: false,
@@ -86,6 +98,25 @@ const reducer = createReducer(
   on(ProductActions.selectCategory, (state, { categoryId }) => ({
     ...state,
     selectedCategoryId: categoryId,
+  })),
+
+  on(ProductActions.selectSort, (state, { sortBy }) => ({
+    ...state,
+    selectedSort: sortBy,
+  })),
+
+  on(ProductActions.setPriceFilter, (state, { minPrice, maxPrice }) => ({
+    ...state,
+    minPrice,
+    maxPrice,
+  })),
+
+  on(ProductActions.clearProductFilters, (state) => ({
+    ...state,
+    selectedCategoryId: null,
+    selectedSort: null,
+    minPrice: null,
+    maxPrice: null,
   })),
 
   // LOAD PRODUCT DETAIL

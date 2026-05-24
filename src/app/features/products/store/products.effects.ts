@@ -1,21 +1,25 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { switchMap, map, catchError, of } from 'rxjs';
+import { switchMap, map, catchError, of, withLatestFrom } from 'rxjs';
 import { ProductApiService } from 'src/app/features/products/services/product-api.service';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
 import { CategoryApiService } from '../services/category-api.service';
+import { Store } from '@ngrx/store';
+import { selectProductFilters } from './products.selector';
 
 @Injectable()
 export class ProductEffects {
   private readonly actions$ = inject(Actions);
+  private readonly store = inject(Store);
+
   private readonly productApiService = inject(ProductApiService);
   private readonly categoryApiService = inject(CategoryApiService);
 
   loadProducts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProductActions.loadProducts),
-      switchMap(({ categoryId }) =>
-        this.productApiService.getProducts(categoryId).pipe(
+      switchMap(({ filters }) =>
+        this.productApiService.getProducts(filters).pipe(
           map((products) => ProductActions.loadProductsSuccess({ products })),
           catchError((error) =>
             of(
@@ -45,10 +49,16 @@ export class ProductEffects {
     ),
   );
 
-  selectCategory$ = createEffect(() =>
+  filterProducts$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ProductActions.selectCategory),
-      map(({ categoryId }) => ProductActions.loadProducts({ categoryId })),
+      ofType(
+        ProductActions.selectCategory,
+        ProductActions.selectSort,
+        ProductActions.setPriceFilter,
+        ProductActions.clearProductFilters,
+      ),
+      withLatestFrom(this.store.select(selectProductFilters)),
+      map(([, filters]) => ProductActions.loadProducts({ filters })),
     ),
   );
 

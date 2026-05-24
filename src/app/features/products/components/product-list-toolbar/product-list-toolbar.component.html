@@ -2,7 +2,7 @@
   @if (categoryOptions) {
     <div class="filter-category">
       <p>Category:</p>
-      <app-filter-dropdown
+      <app-select-dropdown
         [placeholder]="'All Categories'"
         [options]="categoryOptions"
         [selectedValue]="selectedCategory"
@@ -15,8 +15,15 @@
     Filter Price:
     <app-filter-slider></app-filter-slider>
   </div>
-  <div class="filter-sort">
-    Sort by:
-    <app-filter-dropdown></app-filter-dropdown>
-  </div>
+  @if (sortOptions) {
+    <div class="filter-sort">
+      Sort by:
+      <app-select-dropdown
+        [placeholder]="'Default'"
+        [options]="sortOptions"
+        [selectedValue]="selectedSort"
+        (selectedValueChange)="onSortChange($event)"
+      />
+    </div>
+  }
 </div>

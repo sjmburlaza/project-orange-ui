@@ -1,7 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product, ProductDetail } from 'src/app/core/models/product.model';
+import {
+  Product,
+  ProductDetail,
+  ProductFilters,
+} from 'src/app/core/models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +14,23 @@ export class ProductApiService {
   private http = inject(HttpClient);
   private baseUrl = '/api/products';
 
-  getProducts(categoryId?: number | null): Observable<Product[]> {
+  getProducts(filters?: Partial<ProductFilters>): Observable<Product[]> {
     let params = new HttpParams();
 
-    if (categoryId) {
-      params = params.set('categoryId', categoryId);
+    if (filters?.categoryId) {
+      params = params.set('categoryId', filters.categoryId);
+    }
+
+    if (filters?.sortBy) {
+      params = params.set('sortBy', filters.sortBy);
+    }
+
+    if (filters?.minPrice != null) {
+      params = params.set('minPrice', filters.minPrice);
+    }
+
+    if (filters?.maxPrice != null) {
+      params = params.set('maxPrice', filters.maxPrice);
     }
 
     return this.http.get<Product[]>(this.baseUrl, { params });

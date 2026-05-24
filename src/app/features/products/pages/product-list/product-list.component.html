@@ -1,7 +1,11 @@
 @if (products$ | async; as products) {
   <app-product-list-toolbar
     [categoryOptions]="categoryOptions$ | async"
-    (selectedCategoryChange)="onCategoryChange($event)"
+    [sortOptions]="sortOptions$ | async"
+    [selectedCategory]="selectedCategoryId$ | async"
+    [selectedSort]="selectedSort$ | async"
+    (categoryChange)="onCategoryChange($event)"
+    (sortChange)="onSortChange($event)"
   ></app-product-list-toolbar>
   <div class="products">
     @for (product of products; track product.id) {
