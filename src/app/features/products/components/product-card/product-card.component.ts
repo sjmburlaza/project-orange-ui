@@ -1,5 +1,11 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Product } from 'src/app/core/models/product.model';
 
@@ -8,6 +14,7 @@ import { Product } from 'src/app/core/models/product.model';
   imports: [CurrencyPipe, MatButtonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
   @Input() product!: Product;

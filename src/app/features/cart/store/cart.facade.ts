@@ -11,10 +11,12 @@ import {
   selectLoading,
   selectError,
 } from './cart.selector';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Injectable({ providedIn: 'root' })
 export class CartFacade {
   private readonly store = inject(Store);
+  private readonly actions$ = inject(Actions);
 
   readonly cart$ = this.store.select(selectCart);
   readonly items$ = this.store.select(selectCartItems);
@@ -23,6 +25,10 @@ export class CartFacade {
   readonly total$ = this.store.select(selectCartTotal);
   readonly loading$ = this.store.select(selectLoading);
   readonly error$ = this.store.select(selectError);
+
+  readonly addToCartSuccess$ = this.actions$.pipe(
+    ofType(CartActions.addToCartSuccess),
+  );
 
   loadCart(): void {
     this.store.dispatch(CartActions.loadCart());

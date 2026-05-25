@@ -4,12 +4,16 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: token(spacing, 44);
   border: 1px solid grey;
+  border-radius: 16px;
   padding: 36px 24px;
+  max-width: 400px;
 
   &__image {
     height: token(spacing, 30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__name {
@@ -17,8 +21,14 @@
   }
 
   &__actions {
+    margin-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+
+  i {
+    font-size: 180px;
+    color: teal;
   }
 }
