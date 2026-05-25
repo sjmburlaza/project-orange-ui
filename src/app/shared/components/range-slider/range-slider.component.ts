@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 
@@ -12,6 +18,7 @@ export interface RangeValue {
   imports: [FormsModule, MatSliderModule],
   templateUrl: './range-slider.component.html',
   styleUrl: './range-slider.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RangeSliderComponent {
   @Input() label = 'Range';

@@ -1,1 +1,16 @@
-<p>header works!</p>
+<div class="header-container">
+  <h1>ORANGE</h1>
+  <div class="cta">
+    <div class="cta__search">
+      <i class="bi bi-search"></i>
+    </div>
+    <div class="cta__cart">
+      <button [matBadge]="itemCount$ | async">
+        <i class="bi bi-cart2"></i>
+      </button>
+    </div>
+    <div class="cta__account">
+      <i class="bi bi-person-circle"></i>
+    </div>
+  </div>
+</div>

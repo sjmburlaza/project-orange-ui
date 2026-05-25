@@ -3,9 +3,49 @@
 .filter-container {
   display: flex;
   gap: token(spacing, 6);
+  padding: token(spacing, 6);
+
+  .filter {
+    width: token(spacing, 27);
+    display: flex;
+    flex-direction: column;
+    gap: token(spacing, 2);
+  }
 
   .filter-clear {
-    display: flex;
-    align-items: center;
+    margin-left: auto;
+    margin-top: token(spacing, 8);
+  }
+}
+
+@include respond-down(md) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .filter,
+  .filter-clear {
+    width: 100%;
+  }
+
+  .filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-category,
+  .filter-price,
+  .filter-sort {
+    min-width: unset;
+  }
+
+  .filter-clear {
+    margin-left: 0;
+
+    button {
+      width: 100%;
+    }
   }
 }

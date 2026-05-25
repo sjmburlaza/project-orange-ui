@@ -1,6 +1,17 @@
 <div class="filter-container">
+  @if (sortOptions) {
+    <div class="filter filter-sort">
+      Sort by:
+      <app-select-dropdown
+        [placeholder]="'Default'"
+        [options]="sortOptions"
+        [selectedValue]="selectedSort"
+        (selectedValueChange)="onSortChange($event)"
+      />
+    </div>
+  }
   @if (categoryOptions) {
-    <div class="filter-category">
+    <div class="filter filter-category">
       <p>Category:</p>
       <app-select-dropdown
         [placeholder]="'All Categories'"
@@ -10,7 +21,6 @@
       />
     </div>
   }
-
   @if (priceRange) {
     <div class="filter-price">
       <app-range-slider
@@ -24,20 +34,9 @@
       />
     </div>
   }
-
-  @if (sortOptions) {
-    <div class="filter-sort">
-      Sort by:
-      <app-select-dropdown
-        [placeholder]="'Default'"
-        [options]="sortOptions"
-        [selectedValue]="selectedSort"
-        (selectedValueChange)="onSortChange($event)"
-      />
-    </div>
-  }
-
   <div class="filter-clear">
-    <button (click)="clearFilters.emit()">Clear filters</button>
+    <button matButton="outlined" (click)="clearFilters.emit()">
+      Clear filters
+    </button>
   </div>
 </div>
