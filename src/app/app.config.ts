@@ -29,6 +29,7 @@ import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -64,5 +65,6 @@ export const appConfig: ApplicationConfig = {
     provideEffects([ProductEffects, CartEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideClientHydration(withEventReplay()),
+    provideAnimations(),
   ],
 };

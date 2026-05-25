@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { ProductSort } from 'src/app/core/models/product.model';
 import {
   RangeSliderComponent,
@@ -16,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [RangeSliderComponent, SelectDropdownComponent, MatButtonModule],
   templateUrl: './product-list-toolbar.component.html',
   styleUrl: './product-list-toolbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListToolbarComponent {
   @Input() categoryOptions!: SelectOption<number>[] | null;

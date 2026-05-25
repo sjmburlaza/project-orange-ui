@@ -1,0 +1,23 @@
+.dialog-container {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  h2 {
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  button {
+    width: 50%;
+  }
+}

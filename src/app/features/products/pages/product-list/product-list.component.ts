@@ -9,6 +9,9 @@ import { ProductListToolbarComponent } from 'src/app/features/products/component
 import { RangeValue } from 'src/app/shared/components/range-slider/range-slider.component';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-product-list',
@@ -20,6 +23,8 @@ export class ProductListComponent implements OnInit {
   private readonly productFacade = inject(ProductFacade);
   private readonly cartFacade = inject(CartFacade);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly dialog = inject(MatDialog);
+  private readonly router = inject(Router);
   readonly siteService = inject(SiteService);
 
   readonly products$ = this.productFacade.products$;
@@ -49,6 +54,25 @@ export class ProductListComponent implements OnInit {
       )
       .subscribe((val) => {
         this.productFacade.setPriceFilter(val.min, val.max);
+      });
+
+    this.cartFacade.addToCartSuccess$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          width: '420px',
+          data: {
+            title: 'Added to Cart',
+            message: 'Item has been added to your cart.',
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((res) => {
+          if (res === 'cart') {
+            const site = this.siteService.currentSite();
+            this.router.navigate([`/${site}/cart`]);
+          }
+        });
       });
   }
 
