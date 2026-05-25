@@ -9,10 +9,11 @@ import {
   SelectDropdownComponent,
   SelectOption,
 } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-product-list-toolbar',
-  imports: [RangeSliderComponent, SelectDropdownComponent],
+  imports: [RangeSliderComponent, SelectDropdownComponent, MatButtonModule],
   templateUrl: './product-list-toolbar.component.html',
   styleUrl: './product-list-toolbar.component.scss',
 })
