@@ -10,8 +10,16 @@ export interface CartItem {
   productName: string;
   price: number;
   quantity: number;
+  stockQuantity: number;
   imageUrl: string;
+  categoryName?: string;
+  itemSpecs: ItemSpec[];
   addons: Addon[];
+}
+
+export interface ItemSpec {
+  name: string;
+  value: string;
 }
 
 export interface Addon {
@@ -36,10 +44,7 @@ export interface CartSummaryAttribute {
 
 export interface AddToCartRequest {
   productId: number;
-  productName: string;
-  price: number;
   quantity: number;
-  imageUrl: string;
   addons: Addon[];
 }
 

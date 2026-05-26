@@ -1,7 +1,7 @@
-<div class="container">
-  @if (cartLoading$ | async) {
+<div class="cart-container">
+  <!-- @if (cartLoading$ | async) {
     <p>Loading cart...</p>
-  }
+  } -->
 
   @let items = items$ | async;
 
@@ -9,14 +9,21 @@
     <p>Your cart is empty</p>
   } @else {
     <div class="cart-items">
-      @for (item of items; track item.productId) {
-        <app-cart-item [item]="item"></app-cart-item>
+      @for (item of items; track item.productId; let last = $last) {
+        <app-cart-item
+          [item]="item"
+          [currency]="siteService.config().currency"
+          (quantityChange)="onQuantityChange($event)"
+        ></app-cart-item>
         @if (item.addons.length) {
           <div class="addons">
             @for (addon of item.addons; track addon.id) {
               <app-addon [addon]="addon"></app-addon>
             }
           </div>
+        }
+        @if (!last) {
+          <div class="divider"></div>
         }
       }
     </div>

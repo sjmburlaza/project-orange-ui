@@ -1,18 +1,22 @@
+@use "tokens/tokens" as *;
+
 .layout {
   display: grid;
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .content {
+  width: 100%;
+  max-width: 1200px;
   display: grid;
-  grid-template-columns: 1fr 390px;
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1fr) 390px;
   gap: 64px;
+  padding: 40px 16px;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  @include respond-down(md) {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

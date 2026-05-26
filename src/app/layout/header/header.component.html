@@ -1,11 +1,13 @@
 <div class="header-container">
-  <h1>ORANGE</h1>
+  <button (click)="goToProducts()">
+    <h1>ORANGE</h1>
+  </button>
   <div class="cta">
     <div class="cta__search">
       <i class="bi bi-search"></i>
     </div>
     <div class="cta__cart">
-      <button [matBadge]="itemCount$ | async">
+      <button [matBadge]="itemCount$ | async" (click)="goToCart()">
         <i class="bi bi-cart2"></i>
       </button>
     </div>
