@@ -10,4 +10,10 @@
     flex-direction: column;
     gap: 24px;
   }
+
+  .divider {
+    height: 1px;
+    background: rgb(211, 211, 211);
+    margin: 8px 0;
+  }
 }

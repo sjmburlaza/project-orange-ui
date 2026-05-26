@@ -7,11 +7,26 @@
     }
   </div>
   <div class="item details">
-    <h3>{{ item.productName }}</h3>
-    <h4>subtext here</h4>
+    <h3 class="details__header">{{ item.productName }}</h3>
+    <div class="details__subtexts">
+      @for (spec of item.itemSpecs; track spec.name) {
+        <p>{{ spec.value }} {{ spec.name }}</p>
+      }
+      <p>{{ "cart.inStock" | translate }}</p>
+    </div>
   </div>
   <div class="item price">
-    <p>{{ item.price }}</p>
+    <p>{{ item.price | currency: currency }}</p>
   </div>
-  <div class="item actions"></div>
+  <div class="item actions">
+    <button class="actions__remove">
+      <p>{{ "cart.remove" | translate }}</p>
+    </button>
+    <app-quantity-selector
+      [value]="item.quantity"
+      [min]="1"
+      [max]="item.stockQuantity"
+      (valueChange)="onQuantityChange(item.productId, $event)"
+    />
+  </div>
 </div>

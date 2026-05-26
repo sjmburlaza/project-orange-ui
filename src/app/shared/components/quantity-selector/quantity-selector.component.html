@@ -1,1 +1,27 @@
-<p>quantity-selector works!</p>
+<div class="quantity-selector">
+  <button
+    type="button"
+    class="quantity-btn"
+    [disabled]="disabled || value <= min"
+    (click)="decrease()"
+  >
+    −
+  </button>
+  <input
+    class="quantity-input"
+    type="number"
+    [value]="value"
+    [min]="min"
+    [max]="max"
+    [disabled]="disabled"
+    (change)="onInputChange($event)"
+  />
+  <button
+    type="button"
+    class="quantity-btn"
+    [disabled]="disabled || value >= max"
+    (click)="increase()"
+  >
+    +
+  </button>
+</div>
