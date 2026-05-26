@@ -13,15 +13,16 @@
 
   .cta {
     display: flex;
-    gap: 16px;
-
-    button {
-      border-width: 0;
-      background: none;
-    }
+    gap: 20px;
   }
 }
 
 i {
   font-size: 24px;
+  cursor: pointer;
+}
+
+button {
+  border-width: 0;
+  background: none;
 }

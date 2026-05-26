@@ -95,10 +95,7 @@ export class ProductListComponent implements OnInit {
   addToCart(product: Product): void {
     this.cartFacade.addToCart({
       productId: product.id,
-      productName: product.name,
-      price: product.price,
       quantity: 1,
-      imageUrl: product.imageUrl,
       addons: [],
     });
   }

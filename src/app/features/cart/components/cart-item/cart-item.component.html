@@ -1,6 +1,10 @@
 <div class="layout">
   <div class="item image">
-    <img [src]="item.imageUrl" [alt]="item.productName" />
+    @if (item.imageUrl) {
+      <img [src]="item.imageUrl" [alt]="item.productName" />
+    } @else {
+      <i [class]="item.categoryName | categoryIcon"></i>
+    }
   </div>
   <div class="item details">
     <h3>{{ item.productName }}</h3>

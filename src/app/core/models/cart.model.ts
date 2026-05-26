@@ -11,6 +11,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   imageUrl: string;
+  categoryName?: string;
   addons: Addon[];
 }
 
@@ -36,10 +37,7 @@ export interface CartSummaryAttribute {
 
 export interface AddToCartRequest {
   productId: number;
-  productName: string;
-  price: number;
   quantity: number;
-  imageUrl: string;
   addons: Addon[];
 }
 
