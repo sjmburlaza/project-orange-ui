@@ -13,6 +13,13 @@
     </div>
     <div class="cta__account">
       <i class="bi bi-person-circle"></i>
+      <div class="account-dropdown">
+        @for (item of accountMenuItems; track item.label) {
+          <button (click)="item.action()">
+            {{ item.label }}
+          </button>
+        }
+      </div>
     </div>
   </div>
 </div>

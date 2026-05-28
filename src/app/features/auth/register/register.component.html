@@ -1,1 +1,80 @@
-<p>register works!</p>
+<form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Full Name</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="fullName"
+      placeholder="Enter your full name"
+    />
+
+    @if (fullName.touched && fullName.hasError("required")) {
+      <mat-error>Full name is required.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+    />
+
+    @if (email.touched && email.hasError("required")) {
+      <mat-error>Email is required.</mat-error>
+    }
+    @if (email.touched && email.hasError("email")) {
+      <mat-error>Please enter a valid email.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [type]="hidePassword ? 'password' : 'text'"
+      formControlName="password"
+      placeholder="Enter your password"
+    />
+
+    @if (password.value) {
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hidePassword = !hidePassword"
+      >
+        <mat-icon>
+          {{ hidePassword ? "visibility_off" : "visibility" }}
+        </mat-icon>
+      </button>
+    }
+
+    @if (password.touched && password.hasError("required")) {
+      <mat-error>Password is required.</mat-error>
+    }
+    @if (password.touched && password.hasError("minlength")) {
+      <mat-error> Password must be at least 8 characters. </mat-error>
+    }
+  </mat-form-field>
+
+  <div class="password-rules">
+    @for (rule of passwordRules; track rule.label) {
+      <div class="rule" [class.valid]="rule.valid()">
+        <span class="icon">
+          {{ rule.valid() ? "✓" : "✕" }}
+        </span>
+
+        <span>
+          {{ rule.label }}
+        </span>
+      </div>
+    }
+  </div>
+
+  <button class="register-btn" mat-flat-button color="primary" type="submit">
+    Register
+  </button>
+</form>
