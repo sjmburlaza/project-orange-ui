@@ -1,0 +1,21 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: gray;
+}
+
+.header {
+  padding: 24px;
+  width: 1200px;
+  margin: auto;
+}
+
+.content {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(223, 223, 223);
+}

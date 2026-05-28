@@ -26,3 +26,62 @@ button {
   border-width: 0;
   background: none;
 }
+
+.cta__account {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover .account-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 160px;
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: white;
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.08);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+
+  z-index: 1000;
+
+  button {
+    width: 100%;
+    padding: 8px 14px;
+    border-radius: 10px;
+
+    text-align: left;
+    font-size: 14px;
+
+    transition: background 0.2s ease;
+
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+}
