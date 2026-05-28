@@ -1,0 +1,26 @@
+<form
+  class="voucher-form"
+  [formGroup]="voucherForm"
+  (ngSubmit)="applyVoucher()"
+>
+  <p>{{ "cart.voucher.label" | translate }}</p>
+  <div class="voucher-input-group">
+    <input
+      id="voucherCode"
+      type="text"
+      formControlName="voucherCode"
+      [placeholder]="'cart.voucher.placeholder' | translate"
+      autocomplete="off"
+    />
+
+    <button type="submit">
+      {{ "cart.voucher.apply" | translate }}
+    </button>
+  </div>
+  @if (submitted && voucherCode.hasError("required")) {
+    <small>{{ "cart.voucher.error.required" | translate }}</small>
+  }
+  @if (submitted && voucherCode.hasError("minlength")) {
+    <small>{{ "cart.voucher.error.minLength" | translate }}</small>
+  }
+</form>

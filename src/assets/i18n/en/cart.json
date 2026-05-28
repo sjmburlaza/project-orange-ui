@@ -1,6 +1,16 @@
 {
   "cart": {
     "inStock": "In Stock",
-    "remove": "Remove"
+    "remove": "Remove",
+    "total": "Your Total",
+    "voucher": {
+      "label": "Vouchers",
+      "placeholder": "Enter Voucher Code",
+      "apply": "Apply",
+      "error": {
+        "required": "Voucher code is required.",
+        "minLength": "Voucher code must be at least 3 characters."
+      }
+    }
   }
 }

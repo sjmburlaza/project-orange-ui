@@ -1,1 +1,8 @@
-<p>sidebar works!</p>
+<div class="sidebar-container">
+  <app-voucher />
+  <div class="divider"></div>
+  <app-order-summary />
+  @if (isCartRoute()) {
+    <app-cta />
+  }
+</div>
