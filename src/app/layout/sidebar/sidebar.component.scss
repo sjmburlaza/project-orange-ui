@@ -1,0 +1,13 @@
+.sidebar-container {
+  border: 1px solid grey;
+  padding: 24px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+
+  .divider {
+    height: 1px;
+    background: rgb(211, 211, 211);
+  }
+}

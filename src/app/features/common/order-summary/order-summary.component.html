@@ -1,0 +1,20 @@
+<div class="summary-container">
+  <h3>Summary</h3>
+  <div class="items">
+    @for (item of summary$ | async; track item.name) {
+      @if (item.name !== "Total") {
+        <div class="item">
+          <div class="item__name">{{ item.name }}</div>
+          <div class="item__value">{{ item.amount | currency: currency }}</div>
+        </div>
+      }
+    }
+  </div>
+  <div class="divider"></div>
+  <div class="total">
+    <div class="total__name">{{ "cart.total" | translate }}</div>
+    <div class="total__value">
+      {{ total$ | async | currency: currency }}
+    </div>
+  </div>
+</div>

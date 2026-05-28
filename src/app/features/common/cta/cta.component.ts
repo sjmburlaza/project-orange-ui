@@ -1,0 +1,20 @@
+import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { SiteService } from 'src/app/core/services/site.services';
+
+@Component({
+  selector: 'app-cta',
+  imports: [MatButtonModule],
+  templateUrl: './cta.component.html',
+  styleUrl: './cta.component.scss',
+})
+export class CtaComponent {
+  private readonly router = inject(Router);
+  readonly siteService = inject(SiteService);
+  readonly site = this.siteService.currentSite();
+
+  onCheckout(): void {
+    this.router.navigate([`/${this.site}/checkout`]);
+  }
+}
