@@ -21,7 +21,15 @@ export class CartComponent implements OnInit {
     this.cartFacade.loadCart();
   }
 
+  removeItem(productId: number): void {
+    this.cartFacade.removeItem(productId);
+  }
+
   onQuantityChange(data: { productId: number; quantity: number }): void {
-    this.cartFacade.updateQuantity(data.productId, data.quantity);
+    if (data.quantity === 0) {
+      this.cartFacade.removeItem(data.productId);
+    } else {
+      this.cartFacade.updateQuantity(data.productId, data.quantity);
+    }
   }
 }

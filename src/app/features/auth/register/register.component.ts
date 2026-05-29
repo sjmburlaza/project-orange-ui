@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from 'src/app/core/auth/auth.service';
-import { emailValidator } from 'src/app/shared/validators/email.validators';
+import { emailValidator } from 'src/app/shared/validators/email.validator';
 
 @Component({
   selector: 'app-register',
