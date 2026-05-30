@@ -12,11 +12,7 @@ import { DynamicField } from 'src/app/core/models/checkout.model';
 
 @Component({
   selector: 'app-array-field',
-  imports: [
-    ReactiveFormsModule,
-    // MatAnchor,
-    forwardRef(() => DynamicFieldComponent),
-  ],
+  imports: [ReactiveFormsModule, forwardRef(() => DynamicFieldComponent)],
   templateUrl: './array-field.component.html',
   styleUrl: './array-field.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

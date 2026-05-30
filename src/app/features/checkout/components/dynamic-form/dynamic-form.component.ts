@@ -1,27 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
   inject,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   AbstractControl,
-  AsyncValidatorFn,
   FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  ValidatorFn,
-  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { map, of } from 'rxjs';
 import { DynamicField } from 'src/app/core/models/checkout.model';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
+import { ValidatorMapperService } from '../../services/validator-mapper.service';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -34,26 +32,67 @@ import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component'
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss',
 })
-export class DynamicFormComponent implements OnInit {
-  http = inject(HttpClient);
+export class DynamicFormComponent implements OnInit, OnChanges {
+  private readonly validatorService = inject(ValidatorMapperService);
 
   @Input({ required: true }) fields!: DynamicField[];
-  @Output() submitted = new EventEmitter<any>();
+  @Input() initialValue: Record<string, any> | null = null;
+
+  @Output() submitForm = new EventEmitter<any>();
 
   form!: FormGroup;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.buildForm(this.fields);
+    this.patchInitialValue();
   }
 
-  submit() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialValue'] && this.form) {
+      this.patchInitialValue();
+    }
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      this.submitForm.emit(this.form.getRawValue());
+    } else {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  getValue(): any {
+    return this.form.getRawValue();
+  }
+
+  validateAndGetValue(): any | null {
+    this.form.markAllAsTouched();
+
+    if (this.form.invalid) {
+      return null;
+    }
+
+    return this.form.getRawValue();
+  }
+
+  isValid(): boolean {
+    return this.form.valid;
+  }
+
+  markAllAsTouched(): void {
+    this.form.markAllAsTouched();
+  }
 
   buildForm(fields: DynamicField[]): FormGroup {
     const group: Record<string, AbstractControl> = {};
 
     fields?.forEach((f) => {
-      const validators = this.mapValidators(f.validators || []);
-      const asyncValidators = this.mapAsyncValidators(f.asyncValidators || []);
+      const validators = this.validatorService.mapValidators(
+        f.validators || [],
+      );
+      const asyncValidators = this.validatorService.mapAsyncValidators(
+        f.asyncValidators || [],
+      );
 
       switch (f.type) {
         case 'group':
@@ -86,33 +125,9 @@ export class DynamicFormComponent implements OnInit {
     return `col-${mobile} col-md-${tablet} col-lg-${desktop}`;
   }
 
-  private mapValidators(rules: string[] = []): ValidatorFn[] {
-    return rules.map((rule) => {
-      if (rule === 'required') return Validators.required;
-      if (rule === 'email') return Validators.email;
-      if (rule.startsWith('minLength')) {
-        const len = +rule.split(':')[1];
-        return Validators.minLength(len);
-      }
-      return Validators.nullValidator;
-    });
-  }
-
-  private mapAsyncValidators(rules: string[] = []): AsyncValidatorFn[] {
-    return rules.map((rule) => {
-      if (rule === 'uniqueEmail') {
-        return this.uniqueEmailValidator();
-      }
-
-      return () => of(null);
-    });
-  }
-
-  private uniqueEmailValidator(): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return this.http
-        .get<boolean>(`/api/check-email?email=${control.value}`)
-        .pipe(map((exists) => (exists ? { emailTaken: true } : null)));
-    };
+  private patchInitialValue(): void {
+    if (this.initialValue) {
+      this.form.patchValue(this.initialValue);
+    }
   }
 }

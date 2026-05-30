@@ -1,1 +1,38 @@
-<p>shipping-step works!</p>
+<section class="shipping-options">
+  <h3>Choose your shipping method</h3>
+
+  <div class="shipping-list">
+    @for (option of field?.options ?? []; track option.value) {
+      <button
+        type="button"
+        class="shipping-card"
+        [class.selected]="shippingMethod.value === option.value"
+        (click)="selectShipping(option.value)"
+      >
+        <div>
+          <strong>{{ option.label }}</strong>
+
+          @if (option.value === "free") {
+            <p>Estimated delivery: 7 business days</p>
+          }
+
+          @if (option.value === "standard") {
+            <p>Estimated delivery: 3–5 business days</p>
+          }
+
+          @if (option.value === "express") {
+            <p>Estimated delivery: 1–2 business days</p>
+          }
+        </div>
+
+        <strong>
+          {{ option.price === 0 ? "Free" : "₱" + option.price }}
+        </strong>
+      </button>
+    }
+  </div>
+
+  @if (shippingMethod.touched && shippingMethod.hasError("required")) {
+    <small class="error">Please select a shipping method.</small>
+  }
+</section>

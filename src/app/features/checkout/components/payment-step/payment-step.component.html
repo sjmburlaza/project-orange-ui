@@ -1,1 +1,24 @@
-<p>payment-step works!</p>
+<section class="payment-methods">
+  <h3>Choose payment method</h3>
+
+  <div class="payment-grid">
+    @for (option of field?.options ?? []; track option.value) {
+      <button
+        type="button"
+        class="payment-card"
+        [class.selected]="paymentMethod.value === option.value"
+        (click)="selectPayment(option.value)"
+      >
+        @if (option.icon) {
+          <mat-icon>{{ option.icon }}</mat-icon>
+        }
+
+        <span>{{ option.label }}</span>
+      </button>
+    }
+  </div>
+
+  @if (paymentMethod.touched && paymentMethod.hasError("required")) {
+    <small class="error">Please select a payment method.</small>
+  }
+</section>

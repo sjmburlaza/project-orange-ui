@@ -1,0 +1,39 @@
+.shipping-options {
+  display: grid;
+  gap: 16px;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.shipping-list {
+  display: grid;
+  gap: 12px;
+}
+
+.shipping-card {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  background: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+
+  p {
+    margin: 6px 0 0;
+    color: #666;
+  }
+
+  &.selected {
+    border-color: #111;
+    box-shadow: 0 0 0 2px #111 inset;
+  }
+}
+
+.error {
+  color: #ba1a1a;
+}

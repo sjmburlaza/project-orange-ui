@@ -1,21 +1,50 @@
-<mat-stepper orientation="vertical" [selectedIndex]="currentIndex">
-  @for (step of steps; track step.id) {
-    <mat-step [label]="step.label">
-      @if (currentStepId === step.id) {
-        <ng-container
-          *ngComponentOutlet="stepComponentMap[step.id]; inputs: { step }"
-        ></ng-container>
-      }
-      <div class="step-actions">
-        @if (currentIndex > 0) {
-          <button mat-button (click)="previous()">Back</button>
+@if (steps().length) {
+  <mat-stepper orientation="vertical" [selectedIndex]="currentIndex()">
+    @for (step of steps(); track step.id; let i = $index) {
+      <mat-step [label]="step.label">
+        @if (currentIndex() === i) {
+          @switch (step.id) {
+            @case ("shipping") {
+              <app-shipping-step
+                #activeStep
+                [fields]="step.fields ?? []"
+                [initialValue]="checkoutData()[step.id]"
+                (valueChanged)="onStepValueChanged(step.id, $event)"
+              />
+            }
+
+            @case ("payment") {
+              <app-payment-step
+                #activeStep
+                [fields]="step.fields ?? []"
+                [initialValue]="checkoutData()[step.id]"
+                (valueChanged)="onStepValueChanged(step.id, $event)"
+              />
+            }
+
+            @default {
+              <app-dynamic-form
+                #activeStep
+                [fields]="step.fields ?? []"
+                [initialValue]="checkoutData()[step.id]"
+                (valueChanged)="onStepValueChanged(step.id, $event)"
+              />
+            }
+          }
+
+          <div class="step-actions">
+            @if (i > 0) {
+              <button matButton="outlined" type="button" (click)="previous()">
+                Back
+              </button>
+            }
+
+            <button matButton="filled" type="button" (click)="next()">
+              {{ i === steps().length - 1 ? "Place Order" : "Next" }}
+            </button>
+          </div>
         }
-        @if (currentIndex < steps.length - 1) {
-          <button mat-raised-button color="primary" (click)="next()">
-            Next
-          </button>
-        }
-      </div>
-    </mat-step>
-  }
-</mat-stepper>
+      </mat-step>
+    }
+  </mat-stepper>
+}

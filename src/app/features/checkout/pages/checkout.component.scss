@@ -1,0 +1,20 @@
+:host ::ng-deep {
+  .mat-vertical-stepper-header {
+    padding-top: 0;
+  }
+
+  .mat-step-text-label {
+    font-size: 24px;
+  }
+}
+
+.step-actions {
+  display: flex;
+  justify-content: end;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+button {
+  min-width: 150px;
+}

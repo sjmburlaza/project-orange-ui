@@ -1,89 +1,122 @@
-import { Component, inject, OnInit, Type } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatStepperModule } from '@angular/material/stepper';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatAnchor, MatButtonModule } from '@angular/material/button';
-import { PaymentStepComponent } from 'src/app/features/checkout/components/payment-step/payment-step.component';
-import { CustomerStepComponent } from 'src/app/features/checkout/components/customer-step/customer-step.component';
 import { CommonModule } from '@angular/common';
-import { ShippingStepComponent } from 'src/app/features/checkout/components/shipping-step/shipping-step.component';
 import { CheckoutApiService } from '../services/checkout-api.service';
 import { CheckoutStep } from 'src/app/core/models/checkout.model';
+import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.component';
+import { ShippingStepComponent } from '../components/shipping-step/shipping-step.component';
+import { PaymentStepComponent } from '../components/payment-step/payment-step.component';
+import { CheckoutStorageService } from '../services/checkout-storage.service';
+
+type CheckoutStepComponent =
+  | DynamicFormComponent
+  | ShippingStepComponent
+  | PaymentStepComponent;
 
 @Component({
   selector: 'app-checkout',
-  imports: [MatStepperModule, MatAnchor, CommonModule, MatButtonModule],
+  imports: [
+    MatStepperModule,
+    MatAnchor,
+    CommonModule,
+    MatButtonModule,
+    DynamicFormComponent,
+    ShippingStepComponent,
+    PaymentStepComponent,
+  ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })
 export class CheckoutComponent implements OnInit {
   private readonly checkoutApiService = inject(CheckoutApiService);
+  private readonly checkoutStorage = inject(CheckoutStorageService);
 
-  router = inject(Router);
-  route = inject(ActivatedRoute);
+  @ViewChild('activeStep')
+  activeStep?: CheckoutStepComponent;
 
-  steps: CheckoutStep[] = [];
-  currentIndex = 0;
+  readonly steps = signal<CheckoutStep[]>([]);
+  readonly currentIndex = signal(0);
+  readonly checkoutData = this.checkoutStorage.checkoutData;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  stepComponentMap: Record<string, Type<any>> = {
-    customer: CustomerStepComponent,
-    shipping: ShippingStepComponent,
-    payment: PaymentStepComponent,
-  };
+  readonly currentStep = computed(() => {
+    return this.steps()[this.currentIndex()];
+  });
 
-  ngOnInit() {
-    this.checkoutApiService.getCheckoutForm().subscribe((config) => {
-      this.steps = config.steps;
-      console.log(this.steps);
-    });
+  ngOnInit(): void {
+    this.checkoutData.set(this.checkoutStorage.getAll());
 
-    // Initialize current step from URL param
-    const stepId = this.route.snapshot.paramMap.get('step');
-    const index = this.steps.findIndex((s) => s.id === stepId);
-    this.currentIndex = index >= 0 ? index : 0;
-
-    // If no param, navigate to first step
-    if (!stepId && this.steps.length > 0) {
-      this.navigateToStep(this.currentIndex);
-    }
-
-    // Listen to route param changes (deep-linking)
-    this.route.paramMap.subscribe((params) => {
-      const stepId = params.get('step');
-      const index = this.steps.findIndex((s) => s.id === stepId);
-      if (index >= 0) this.currentIndex = index;
+    this.checkoutApiService.getCheckoutForm().subscribe({
+      next: (config) => {
+        this.steps.set(config.steps);
+      },
+      error: (error) => {
+        console.error('Failed to load checkout form config:', error);
+      },
     });
   }
 
-  get currentStepId() {
-    return this.steps[this.currentIndex]?.id;
-  }
+  previous(): void {
+    this.saveCurrentStep(false);
 
-  get currentStep() {
-    return this.steps[this.currentIndex];
-  }
-
-  next() {
-    if (this.currentIndex < this.steps.length - 1) {
-      this.currentIndex++;
-      this.navigateToStep(this.currentIndex);
+    if (this.currentIndex() > 0) {
+      this.currentIndex.update((index) => index - 1);
     }
   }
 
-  previous() {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
-      this.navigateToStep(this.currentIndex);
+  next(): void {
+    const value = this.saveCurrentStep(true);
+
+    if (!value) return;
+
+    const isLastStep = this.currentIndex() === this.steps().length - 1;
+
+    if (isLastStep) {
+      this.placeOrder();
+      return;
     }
+
+    this.currentIndex.update((index) => index + 1);
   }
 
-  navigateToStep(index: number) {
-    const step = this.steps[index];
-    if (step) {
-      this.router.navigate(['../', step.id], {
-        relativeTo: this.route,
-      });
+  onStepValueChanged(stepId: string, value: any): void {
+    this.saveStepData(stepId, value);
+  }
+
+  private saveCurrentStep(validate: boolean): unknown | null {
+    const step = this.steps()[this.currentIndex()];
+    const component = this.activeStep;
+
+    if (!step || !component) return null;
+
+    if (validate) {
+      const value = component.validateAndGetValue();
+
+      if (!value) return null;
+
+      this.saveStepData(step.id, value);
+      return value;
     }
+
+    const value = component.getValue();
+    this.saveStepData(step.id, value);
+
+    return value;
+  }
+
+  private placeOrder(): void {
+    console.log('Final checkout payload:', this.checkoutData());
+  }
+
+  private saveStepData(stepId: string, value: Record<string, any>): void {
+    this.checkoutStorage.saveStep(stepId, value);
   }
 }
