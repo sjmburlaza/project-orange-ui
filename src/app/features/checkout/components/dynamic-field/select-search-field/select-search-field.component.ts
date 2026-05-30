@@ -54,11 +54,11 @@ export class SelectSearchFieldComponent implements OnInit {
     }
   }
 
-  load(parentValue?: any) {
-    const params: any = {};
+  load(parentValue?: string | number): void {
+    const params: Record<string, string | number> = {};
 
     if (parentValue) {
-      params.parent = parentValue;
+      params['parent'] = parentValue;
     }
 
     this.optionsService
@@ -68,9 +68,21 @@ export class SelectSearchFieldComponent implements OnInit {
       });
   }
 
-  search(term: string) {
+  search(term: string): void {
+    const params: Record<string, string | number> = {
+      search: term,
+    };
+
+    if (this.field.dependsOn) {
+      const parentValue = this.form.get(this.field.dependsOn)?.value;
+
+      if (parentValue) {
+        params['parent'] = parentValue;
+      }
+    }
+
     this.optionsService
-      .getOptions(this.field.optionsApi!, { search: term })
+      .getOptions(this.field.optionsApi!, params)
       .subscribe((res) => {
         this.options = res;
       });

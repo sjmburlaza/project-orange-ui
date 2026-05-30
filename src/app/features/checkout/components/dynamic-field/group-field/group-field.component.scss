@@ -1,7 +1,8 @@
-@use 'tokens/tokens' as *;
+@use "tokens/tokens" as *;
 
 h3 {
   font-size: token(font-size, lg);
+  padding: 24px 0;
 }
 
 .form-grid {
@@ -9,7 +10,6 @@ h3 {
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
 }
-
 
 @include respond-up(lg) {
   .col-lg-12 {

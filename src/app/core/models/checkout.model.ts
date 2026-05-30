@@ -40,6 +40,8 @@ export interface DynamicField {
 export interface Option {
   label: string;
   value: string;
+  price?: number;
+  icon?: string;
 }
 
 export type FieldType =

@@ -1,0 +1,23 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .col-lg-12 {
+    grid-column: span 12;
+  }
+
+  .col-lg-6 {
+    grid-column: span 6;
+  }
+
+  .col-lg-4 {
+    grid-column: span 4;
+  }
+}
+
+app-dynamic-field {
+  padding-top: 8px;
+}

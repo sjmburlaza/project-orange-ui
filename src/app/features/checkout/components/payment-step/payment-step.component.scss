@@ -1,0 +1,41 @@
+.payment-methods {
+  display: grid;
+  gap: 16px;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.payment-card {
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  background: #fff;
+  min-height: 120px;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  &.selected {
+    border-color: #111;
+    box-shadow: 0 0 0 2px #111 inset;
+  }
+}
+
+.error {
+  color: #ba1a1a;
+}
