@@ -7,10 +7,8 @@ import { PaymentStepComponent } from 'src/app/features/checkout/components/payme
 import { CustomerStepComponent } from 'src/app/features/checkout/components/customer-step/customer-step.component';
 import { CommonModule } from '@angular/common';
 import { ShippingStepComponent } from 'src/app/features/checkout/components/shipping-step/shipping-step.component';
-import {
-  CheckoutConfigService,
-  CheckoutStepConfig,
-} from 'src/app/features/checkout/services/checkout-config.service';
+import { CheckoutApiService } from '../services/checkout-api.service';
+import { CheckoutStep } from 'src/app/core/models/checkout.model';
 
 @Component({
   selector: 'app-checkout',
@@ -19,11 +17,12 @@ import {
   styleUrl: './checkout.component.scss',
 })
 export class CheckoutComponent implements OnInit {
-  checkoutConfig = inject(CheckoutConfigService);
+  private readonly checkoutApiService = inject(CheckoutApiService);
+
   router = inject(Router);
   route = inject(ActivatedRoute);
 
-  steps: CheckoutStepConfig[] = [];
+  steps: CheckoutStep[] = [];
   currentIndex = 0;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +33,10 @@ export class CheckoutComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.steps = this.checkoutConfig.steps;
+    this.checkoutApiService.getCheckoutForm().subscribe((config) => {
+      this.steps = config.steps;
+      console.log(this.steps);
+    });
 
     // Initialize current step from URL param
     const stepId = this.route.snapshot.paramMap.get('step');

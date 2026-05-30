@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
-import { HomeComponent } from 'src/app/features/home/home.component';
+// import { HomeComponent } from 'src/app/features/home/home.component';
 import { MainLayoutComponent } from 'src/app/layout/main-layout/main-layout.component';
 import { AuthLayoutComponent } from 'src/app/layout/auth-layout/auth-layout.component';
 import { CheckoutLayoutComponent } from 'src/app/layout/checkout-layout/checkout-layout.component';
@@ -16,8 +16,11 @@ export const routes: Routes = [
         component: MainLayoutComponent,
         children: [
           {
+            // path: '',
+            // component: HomeComponent,
             path: '',
-            component: HomeComponent,
+            pathMatch: 'full',
+            redirectTo: 'products',
           },
           {
             path: 'admin',
@@ -47,7 +50,7 @@ export const routes: Routes = [
           },
           {
             path: 'checkout',
-            canActivate: [AuthGuard],
+            // canActivate: [AuthGuard],
             loadChildren: () =>
               import('./features/checkout/checkout.routes').then(
                 (m) => m.CHECKOUT_ROUTES,

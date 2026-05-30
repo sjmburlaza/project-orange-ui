@@ -19,12 +19,12 @@
     <p>{{ item.price | currency: currency }}</p>
   </div>
   <div class="item actions">
-    <button class="actions__remove">
+    <button class="actions__remove" (click)="onRemoveItem(item.productId)">
       <p>{{ "cart.remove" | translate }}</p>
     </button>
     <app-quantity-selector
       [value]="item.quantity"
-      [min]="1"
+      [min]="0"
       [max]="item.stockQuantity"
       (valueChange)="onQuantityChange(item.productId, $event)"
     />

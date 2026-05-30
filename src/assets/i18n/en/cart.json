@@ -1,5 +1,6 @@
 {
   "cart": {
+    "empty": "Your cart is empty",
     "inStock": "In Stock",
     "remove": "Remove",
     "total": "Your Total",

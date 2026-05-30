@@ -3,16 +3,13 @@
     <p>Loading cart...</p>
   } -->
 
-  @let items = items$ | async;
-
-  @if (!items?.length) {
-    <p>Your cart is empty</p>
-  } @else {
+  @if (items$ | async; as items) {
     <div class="cart-items">
       @for (item of items; track item.productId; let last = $last) {
         <app-cart-item
           [item]="item"
           [currency]="siteService.config().currency"
+          (removeItem)="removeItem($event)"
           (quantityChange)="onQuantityChange($event)"
         ></app-cart-item>
         @if (item.addons.length) {

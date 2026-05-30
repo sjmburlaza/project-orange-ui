@@ -19,12 +19,22 @@ import { CategoryIconPipe } from 'src/app/shared/pipes/category-icon-pipe';
 export class CartItemComponent {
   @Input({ required: true }) item!: CartItem;
   @Input({ required: true }) currency!: string;
+
+  @Output() removeItem = new EventEmitter<number>();
   @Output() quantityChange = new EventEmitter<{
     productId: number;
     quantity: number;
   }>();
 
   onQuantityChange(productId: number, quantity: number): void {
-    this.quantityChange.emit({ productId, quantity });
+    if (productId != null && quantity != null) {
+      this.quantityChange.emit({ productId, quantity });
+    }
+  }
+
+  onRemoveItem(productId: number) {
+    if (productId != null) {
+      this.removeItem.emit(productId);
+    }
   }
 }

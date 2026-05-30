@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { CheckoutStepConfig } from 'src/app/features/checkout/services/checkout-config.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-shipping-step',
@@ -7,6 +6,4 @@ import { CheckoutStepConfig } from 'src/app/features/checkout/services/checkout-
   templateUrl: './shipping-step.component.html',
   styleUrl: './shipping-step.component.scss',
 })
-export class ShippingStepComponent {
-  @Input() step!: CheckoutStepConfig;
-}
+export class ShippingStepComponent {}

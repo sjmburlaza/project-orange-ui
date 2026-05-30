@@ -1,25 +1,19 @@
-export type FieldType =
-  | 'text'
-  | 'email'
-  | 'number'
-  | 'password'
-  | 'select'
-  | 'select-search'
-  | 'checkbox'
-  | 'textarea'
-  | 'array'
-  | 'group';
+export interface CheckoutFormConfig {
+  version: string;
+  steps: CheckoutStep[];
+}
 
-export interface Option {
+export interface CheckoutStep {
+  id: string;
   label: string;
-  value: any;
+  fields?: DynamicField[];
 }
 
 export interface DynamicField {
   type: FieldType;
   name: string;
   label?: string;
-  value?: any;
+  value?: string;
   placeholder?: string;
 
   options?: Option[];
@@ -28,7 +22,7 @@ export interface DynamicField {
 
   visibleIf?: {
     field: string;
-    value: any;
+    value: unknown;
   };
 
   validators?: string[];
@@ -42,3 +36,20 @@ export interface DynamicField {
     desktop?: number;
   };
 }
+
+export interface Option {
+  label: string;
+  value: string;
+}
+
+export type FieldType =
+  | 'text'
+  | 'email'
+  | 'number'
+  | 'password'
+  | 'select'
+  | 'select-search'
+  | 'checkbox'
+  | 'textarea'
+  | 'array'
+  | 'group';

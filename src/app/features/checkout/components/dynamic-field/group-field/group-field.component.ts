@@ -6,8 +6,8 @@ import {
   Input,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DynamicField } from 'src/app/shared/form/dynamic-field.model';
-import { DynamicFieldComponent } from 'src/app/shared/form/dynamic-field/dynamic-field.component';
+import { DynamicFieldComponent } from '../dynamic-field.component';
+import { DynamicField } from 'src/app/core/models/checkout.model';
 
 @Component({
   selector: 'app-group-field',

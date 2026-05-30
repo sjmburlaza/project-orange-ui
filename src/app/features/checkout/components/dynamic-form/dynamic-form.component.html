@@ -4,10 +4,7 @@
       [field]="field"
       [form]="form"
       [ngClass]="getGridClass(field)"
-      (addArray)="addArrayItem(field)"
-      (removeArray)="removeArrayItem($event.name, $event.index)"
-    >
-    </app-dynamic-field>
+    />
   }
   <button mat-raised-button color="primary" type="submit">Submit</button>
 </form>
