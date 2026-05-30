@@ -1,0 +1,23 @@
+@switch (field.type) {
+  @case ("text") {
+    <app-input-field [field]="field" [form]="form" />
+  }
+  @case ("email") {
+    <app-input-field [field]="field" [form]="form" />
+  }
+  @case ("select") {
+    <app-select-field [field]="field" [form]="form" />
+  }
+  @case ("select-search") {
+    <app-select-search-field [field]="field" [form]="form" />
+  }
+  @case ("checkbox") {
+    <app-checkbox-field [field]="field" [form]="form" />
+  }
+  @case ("array") {
+    <app-array-field [field]="field" [form]="form" />
+  }
+  @case ("group") {
+    <app-group-field [field]="field" [form]="form" />
+  }
+}

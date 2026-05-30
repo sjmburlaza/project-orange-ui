@@ -9,8 +9,8 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { DynamicField } from 'src/app/core/models/checkout.model';
 import { OptionsService } from 'src/app/core/services/options.service';
-import { DynamicField } from 'src/app/shared/form/dynamic-field.model';
 
 @Component({
   selector: 'app-select-search-field',
