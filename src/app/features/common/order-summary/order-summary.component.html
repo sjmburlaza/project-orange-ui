@@ -5,7 +5,13 @@
       @if (item.name !== "Total") {
         <div class="item">
           <div class="item__name">{{ item.name }}</div>
-          <div class="item__value">{{ item.amount | currency: currency }}</div>
+          @if (item.displayValue) {
+            <div class="item__value">{{ item.displayValue }}</div>
+          } @else {
+            <div class="item__value">
+              {{ item.amount | currency: currency }}
+            </div>
+          }
         </div>
       }
     }

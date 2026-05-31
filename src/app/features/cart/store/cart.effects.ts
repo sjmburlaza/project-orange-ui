@@ -102,6 +102,29 @@ export class CartEffects {
     ),
   );
 
+  updateShipping$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.updateShipping),
+      switchMap(({ postalCode, shippingMethodCode }) =>
+        this.cartApi
+          .updateShipping({
+            postalCode,
+            shippingMethodCode,
+          })
+          .pipe(
+            map((cart) => CartActions.updateShippingSuccess({ cart })),
+            catchError((error) =>
+              of(
+                CartActions.updateShippingFailure({
+                  error: this.getErrorMessage(error),
+                }),
+              ),
+            ),
+          ),
+      ),
+    ),
+  );
+
   clearCart$ = createEffect(
     () =>
       this.actions$.pipe(

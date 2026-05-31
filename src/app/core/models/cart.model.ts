@@ -40,6 +40,7 @@ export interface Voucher {
 export interface CartSummaryAttribute {
   name: string;
   amount: number;
+  displayValue?: number | string;
 }
 
 export interface AddToCartRequest {

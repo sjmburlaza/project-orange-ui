@@ -16,6 +16,7 @@ import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.co
 import { ShippingStepComponent } from '../components/shipping-step/shipping-step.component';
 import { PaymentStepComponent } from '../components/payment-step/payment-step.component';
 import { CheckoutStorageService } from '../services/checkout-storage.service';
+import { CartFacade } from '../../cart/store/cart.facade';
 
 type CheckoutStepComponent =
   | DynamicFormComponent
@@ -39,6 +40,7 @@ type CheckoutStepComponent =
 export class CheckoutComponent implements OnInit {
   private readonly checkoutApiService = inject(CheckoutApiService);
   private readonly checkoutStorage = inject(CheckoutStorageService);
+  private readonly cartFacade = inject(CartFacade);
 
   @ViewChild('activeStep')
   activeStep?: CheckoutStepComponent;
@@ -89,6 +91,27 @@ export class CheckoutComponent implements OnInit {
 
   onStepValueChanged(stepId: string, value: any): void {
     this.saveStepData(stepId, value);
+
+    if (stepId === 'shipping') {
+      this.updateCartShipping(value.shippingMethod);
+    }
+  }
+
+  private updateCartShipping(shippingMethodCode: string): void {
+    const postalCode = this.getPostalCode();
+
+    if (!postalCode || !shippingMethodCode) return;
+
+    this.cartFacade.updateShipping(postalCode, shippingMethodCode);
+  }
+
+  getPostalCode(): string {
+    const data = this.checkoutStorage.getAll();
+    const customer = data['customer'];
+    const deliveryAddress = customer['deliveryAddress'];
+    const shippingAddress = customer['shippingAddress'];
+
+    return deliveryAddress?.postalCode ?? shippingAddress?.postalCode ?? '';
   }
 
   private saveCurrentStep(validate: boolean): unknown | null {

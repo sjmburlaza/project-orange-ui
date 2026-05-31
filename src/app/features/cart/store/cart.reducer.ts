@@ -26,6 +26,7 @@ export const cartFeature = createFeature({
       CartActions.updateQuantity,
       CartActions.removeItem,
       CartActions.applyVoucher,
+      CartActions.updateShipping,
       (state) => ({
         ...state,
         loading: true,
@@ -39,6 +40,7 @@ export const cartFeature = createFeature({
       CartActions.updateQuantitySuccess,
       CartActions.removeItemSuccess,
       CartActions.applyVoucherSuccess,
+      CartActions.updateShippingSuccess,
       (state, { cart }) => ({
         ...state,
         cart,
@@ -53,6 +55,7 @@ export const cartFeature = createFeature({
       CartActions.updateQuantityFailure,
       CartActions.removeItemFailure,
       CartActions.applyVoucherFailure,
+      CartActions.updateShippingFailure,
       (state, { error }) => ({
         ...state,
         loading: false,
