@@ -9,6 +9,7 @@
                 #activeStep
                 [fields]="step.fields ?? []"
                 [initialValue]="checkoutData()[step.id]"
+                [postalCode]="getPostalCode()"
                 (valueChanged)="onStepValueChanged(step.id, $event)"
               />
             }

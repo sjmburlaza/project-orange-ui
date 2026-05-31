@@ -1,32 +1,31 @@
 <section class="shipping-options">
   <h3>Choose your shipping method</h3>
 
+  @if (isLoading) {
+    <p>Loading shipping options...</p>
+  }
+
+  @if (!isLoading && !shippingOptions.length) {
+    <p>No shipping options available.</p>
+  }
+
   <div class="shipping-list">
-    @for (option of field?.options ?? []; track option.value) {
+    @for (option of shippingOptions; track option.code) {
       <button
         type="button"
         class="shipping-card"
-        [class.selected]="shippingMethod.value === option.value"
-        (click)="selectShipping(option.value)"
+        [class.selected]="shippingMethod.value === option.code"
+        (click)="selectShipping(option)"
       >
         <div>
           <strong>{{ option.label }}</strong>
-
-          @if (option.value === "free") {
-            <p>Estimated delivery: 7 business days</p>
-          }
-
-          @if (option.value === "standard") {
-            <p>Estimated delivery: 3–5 business days</p>
-          }
-
-          @if (option.value === "express") {
-            <p>Estimated delivery: 1–2 business days</p>
-          }
+          <p>Estimated delivery: {{ option.estimatedDelivery }}</p>
         </div>
 
         <strong>
-          {{ option.price === 0 ? "Free" : "₱" + option.price }}
+          {{
+            option.price === 0 ? "Free" : (option.price | currency: currency)
+          }}
         </strong>
       </button>
     }

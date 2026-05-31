@@ -55,6 +55,15 @@ export class CartFacade {
     this.store.dispatch(CartActions.applyVoucher({ code }));
   }
 
+  updateShipping(postalCode: string, shippingMethodCode: string): void {
+    this.store.dispatch(
+      CartActions.updateShipping({
+        postalCode,
+        shippingMethodCode,
+      }),
+    );
+  }
+
   clearCart(): void {
     this.store.dispatch(CartActions.clearCart());
   }

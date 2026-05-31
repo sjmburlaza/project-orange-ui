@@ -24,6 +24,13 @@ export const CartActions = createActionGroup({
     'Apply Voucher Success': props<{ cart: Cart }>(),
     'Apply Voucher Failure': props<{ error: string }>(),
 
+    'Update Shipping': props<{
+      postalCode: string;
+      shippingMethodCode: string;
+    }>(),
+    'Update Shipping Success': props<{ cart: Cart }>(),
+    'Update Shipping Failure': props<{ error: string }>(),
+
     'Clear Cart': emptyProps(),
   },
 });

@@ -8,6 +8,7 @@ import {
   UpdateQuantityRequest,
 } from 'src/app/core/models/cart.model';
 import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
+import { UpdateCartShippingRequest } from '../../checkout/services/shipping-pricing.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartApiService {
@@ -63,6 +64,12 @@ export class CartApiService {
       `${this.baseUrl}/${cartCode}/vouchers`,
       request,
     );
+  }
+
+  updateShipping(request: UpdateCartShippingRequest): Observable<Cart> {
+    const cartCode = this.requireCartCode();
+
+    return this.http.put<Cart>(`${this.baseUrl}/${cartCode}/shipping`, request);
   }
 
   saveCartCode(cartCode: string): void {
