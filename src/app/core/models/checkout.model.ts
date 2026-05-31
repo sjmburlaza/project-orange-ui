@@ -20,9 +20,11 @@ export interface DynamicField {
   optionsApi?: string;
   dependsOn?: string;
 
+  defaultValue?: DynamicFormValue;
+
   visibleIf?: {
     field: string;
-    value: unknown;
+    value: DynamicFormValue;
   };
 
   validators?: string[];
@@ -55,3 +57,16 @@ export type FieldType =
   | 'textarea'
   | 'array'
   | 'group';
+
+export type DynamicFormPrimitive = string | number | boolean | null;
+
+export type DynamicFormValue =
+  | DynamicFormPrimitive
+  | DynamicFormObject
+  | DynamicFormArray;
+
+export interface DynamicFormObject {
+  [key: string]: DynamicFormValue;
+}
+
+export type DynamicFormArray = DynamicFormValue[];
