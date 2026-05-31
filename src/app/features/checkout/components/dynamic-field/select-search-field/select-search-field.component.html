@@ -1,19 +1,29 @@
 <mat-form-field appearance="outline" [formGroup]="form">
   <mat-label>{{ field.label }}</mat-label>
-  <mat-select [formControlName]="field.name">
-    <mat-option>
-      <input
-        matInput
-        placeholder="Search..."
-        (input)="search($event.target.value)"
-        (click)="onSearchClick($event)"
-        (keydown)="onSearchKeydown($event)"
-      />
+  <mat-select [formControlName]="field.name" [compareWith]="compareOptions">
+    <mat-option class="search-option">
+      <div class="search-box">
+        <mat-icon class="search-icon">search</mat-icon>
+
+        <input
+          matInput
+          placeholder="Search..."
+          #searchInput
+          (input)="search(searchInput.value)"
+          (click)="onSearchClick($event)"
+          (keydown)="onSearchKeydown($event)"
+        />
+      </div>
     </mat-option>
+
     @for (option of options; track option.value) {
       <mat-option [value]="option.value">
         {{ option.label }}
       </mat-option>
+    }
+
+    @if (!options.length) {
+      <mat-option disabled class="empty-option"> No results found </mat-option>
     }
   </mat-select>
 </mat-form-field>

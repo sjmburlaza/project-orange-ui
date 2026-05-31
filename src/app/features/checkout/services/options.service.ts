@@ -1,11 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Option } from 'src/app/core/models/checkout.model';
 
-export interface SelectOption {
-  label: string;
-  value: string | number;
-}
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +12,7 @@ export class OptionsService {
   getOptions(
     endpoint: string,
     params?: Record<string, string | number | boolean | null | undefined>,
-  ): Observable<SelectOption[]> {
+  ): Observable<Option[]> {
     let httpParams = new HttpParams();
 
     Object.entries(params ?? {}).forEach(([key, value]) => {
@@ -24,7 +21,7 @@ export class OptionsService {
       }
     });
 
-    return this.http.get<SelectOption[]>(endpoint, {
+    return this.http.get<Option[]>(endpoint, {
       params: httpParams,
     });
   }
