@@ -1,0 +1,36 @@
+.search-option {
+  height: auto;
+  padding: 0;
+  cursor: default;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  width: 100%;
+}
+
+.search-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+}
+
+.search-box input::placeholder {
+  opacity: 0.7;
+}
+
+.empty-option {
+  opacity: 0.7;
+  font-style: italic;
+}

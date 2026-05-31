@@ -5,6 +5,7 @@
     [type]="field.type"
     [formControlName]="field.name"
     [placeholder]="field.placeholder ?? ''"
+    [attr.maxlength]="getMaxLength(field)"
   />
 
   @if (form.get(field.name)?.invalid) {

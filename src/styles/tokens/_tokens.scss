@@ -2,16 +2,17 @@
 @use "typography";
 @use "radius";
 @use "breakpoints";
+@use "colors";
 
 $tokens: (
   spacing: spacing.$spacing,
   font-size: typography.$font-size,
   radius: radius.$radius,
   breakpoints: breakpoints.$breakpoints,
+  color: colors.$semantic-colors,
 );
 
 @function token($category, $key) {
-
   $category-map: map-get($tokens, $category);
 
   @if $category-map == null {
@@ -28,21 +29,17 @@ $tokens: (
 }
 
 @mixin respond-up($breakpoint) {
-
   $bp: token(breakpoints, $breakpoint);
 
   @media (min-width: $bp) {
     @content;
   }
-
 }
 
 @mixin respond-down($breakpoint) {
-
   $bp: token(breakpoints, $breakpoint);
 
   @media (max-width: calc(#{$bp} - 1px)) {
     @content;
   }
-
 }

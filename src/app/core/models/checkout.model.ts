@@ -20,13 +20,15 @@ export interface DynamicField {
   optionsApi?: string;
   dependsOn?: string;
 
+  defaultValue?: DynamicFormValue;
+
   visibleIf?: {
     field: string;
-    value: unknown;
+    value: DynamicFormValue;
   };
 
-  validators?: string[];
-  asyncValidators?: string[];
+  validators?: FieldValidator[];
+  asyncValidators?: FieldValidator[];
   updateOn?: 'change' | 'blur' | 'submit';
   fields?: DynamicField[];
 
@@ -35,6 +37,11 @@ export interface DynamicField {
     tablet?: number;
     desktop?: number;
   };
+}
+
+export interface FieldValidator {
+  name: string;
+  value?: string | number | boolean;
 }
 
 export interface Option {
@@ -55,3 +62,16 @@ export type FieldType =
   | 'textarea'
   | 'array'
   | 'group';
+
+export type DynamicFormPrimitive = string | number | boolean | null;
+
+export type DynamicFormValue =
+  | DynamicFormPrimitive
+  | DynamicFormObject
+  | DynamicFormArray;
+
+export interface DynamicFormObject {
+  [key: string]: DynamicFormValue;
+}
+
+export type DynamicFormArray = DynamicFormValue[];

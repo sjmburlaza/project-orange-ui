@@ -14,4 +14,10 @@ import { DynamicField } from 'src/app/core/models/checkout.model';
 export class InputFieldComponent {
   @Input() field!: DynamicField;
   @Input() form!: FormGroup;
+
+  getMaxLength(field: DynamicField): number | null {
+    const validator = field.validators?.find((v) => v.name === 'maxLength');
+
+    return validator?.value ? Number(validator.value) : null;
+  }
 }

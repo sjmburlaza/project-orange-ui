@@ -24,4 +24,14 @@ import { SelectSearchFieldComponent } from './select-search-field/select-search-
 export class DynamicFieldComponent {
   @Input({ required: true }) field!: DynamicField;
   @Input({ required: true }) form!: FormGroup;
+
+  isFieldVisible(field: DynamicField): boolean {
+    if (!field.visibleIf) {
+      return true;
+    }
+
+    const dependentControl = this.form.get(field.visibleIf.field);
+
+    return dependentControl?.value === field.visibleIf.value;
+  }
 }
