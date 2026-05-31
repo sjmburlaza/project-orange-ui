@@ -27,8 +27,8 @@ export interface DynamicField {
     value: DynamicFormValue;
   };
 
-  validators?: string[];
-  asyncValidators?: string[];
+  validators?: FieldValidator[];
+  asyncValidators?: FieldValidator[];
   updateOn?: 'change' | 'blur' | 'submit';
   fields?: DynamicField[];
 
@@ -37,6 +37,11 @@ export interface DynamicField {
     tablet?: number;
     desktop?: number;
   };
+}
+
+export interface FieldValidator {
+  name: string;
+  value?: string | number | boolean;
 }
 
 export interface Option {

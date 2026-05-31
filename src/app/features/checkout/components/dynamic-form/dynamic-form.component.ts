@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
+  AsyncValidatorFn,
   FormArray,
   FormControl,
   FormGroup,
@@ -24,6 +25,7 @@ import {
 } from 'src/app/core/models/checkout.model';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { ValidatorMapperService } from '../../services/validator-mapper.service';
+import { AsyncValidatorMapperService } from '../../services/async-validator-mapper.service';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -38,6 +40,7 @@ import { ValidatorMapperService } from '../../services/validator-mapper.service'
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   private readonly validatorService = inject(ValidatorMapperService);
+  private readonly asyncValidatorService = inject(AsyncValidatorMapperService);
 
   @Input({ required: true }) fields!: DynamicField[];
   @Input() initialValue: DynamicFormObject | null = null;
@@ -97,13 +100,15 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     const group: Record<string, AbstractControl> = {};
 
     fields?.forEach((f) => {
-      const validators = this.validatorService.mapValidators(
+      const validators = this.validatorService.getValidators(
         f.validators || [],
       );
 
-      const asyncValidators = this.validatorService.mapAsyncValidators(
-        f.asyncValidators || [],
-      );
+      const asyncValidators = (f.asyncValidators || [])
+        .map((v) => this.asyncValidatorService.getValidator(v.name))
+        .filter(
+          (validator): validator is AsyncValidatorFn => validator !== null,
+        );
 
       switch (f.type) {
         case 'group':
@@ -124,8 +129,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         default:
           group[f.name] = new FormControl<DynamicFormValue>(
             f.defaultValue ?? null,
-            validators,
-            asyncValidators,
+            {
+              validators,
+              asyncValidators,
+            },
           );
       }
     });
