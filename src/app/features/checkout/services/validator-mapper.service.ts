@@ -1,13 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { FieldValidator } from 'src/app/core/models/checkout.model';
 
 @Injectable({ providedIn: 'root' })
 export class ValidatorMapperService {
-  private readonly http = inject(HttpClient);
-  private readonly baseUrl = '/api/checkout';
-
   getValidators(validators: FieldValidator[]): ValidatorFn[] {
     return validators.map((validator) => {
       switch (validator.name) {

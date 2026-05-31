@@ -132,6 +132,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             {
               validators,
               asyncValidators,
+              updateOn: 'blur',
             },
           );
       }
