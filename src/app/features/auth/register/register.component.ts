@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { emailValidator } from 'src/app/shared/validators/email.validator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +26,7 @@ import { emailValidator } from 'src/app/shared/validators/email.validator';
 export class RegisterComponent {
   readonly fb = inject(FormBuilder);
   readonly authService = inject(AuthService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly registerForm = this.fb.nonNullable.group({
     fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -81,17 +84,24 @@ export class RegisterComponent {
 
     this.isLoading = true;
 
-    this.authService.register(this.registerForm.getRawValue()).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        console.log('Registered:', response);
-      },
-      error: (error) => {
-        this.isLoading = false;
+    this.authService
+      .register(this.registerForm.getRawValue())
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.isLoading = false;
+        }),
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('Registered:', response);
+        },
+        error: (error) => {
+          console.error('Register failed:', error);
 
-        this.errorCode =
-          error.error?.code || 'Something went wrong. Please try again.';
-      },
-    });
+          this.errorCode =
+            error.error?.code ?? 'Something went wrong. Please try again.';
+        },
+      });
   }
 }

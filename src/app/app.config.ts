@@ -13,9 +13,7 @@ import {
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
-import { environment } from 'src/environments/environment';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { translateLoaderFactory } from 'src/app/core/i18n/translate-loader';
 import { provideStore } from '@ngrx/store';
@@ -44,15 +42,6 @@ export const appConfig: ApplicationConfig = {
         deps: [HttpClient],
       },
     }),
-    ...(environment.useMockAuth
-      ? [
-          {
-            provide: HTTP_INTERCEPTORS,
-            useClass: MockAuthInterceptor,
-            multi: true,
-          },
-        ]
-      : []),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
