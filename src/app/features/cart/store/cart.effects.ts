@@ -8,6 +8,9 @@ import { CartUiMessage } from 'src/app/core/models/cart-message.model';
 
 interface ApiErrorResponse {
   code?: string;
+  errorDetails?: {
+    minimumSubtotal?: number | string;
+  };
   minimumSubtotal?: number | string;
 }
 
@@ -187,7 +190,6 @@ export class CartEffects {
     error: unknown,
     fallbackKey: string,
   ): CartUiMessage {
-    console.log('error', error);
     if (!(error instanceof HttpErrorResponse)) {
       return { key: fallbackKey };
     }
@@ -196,7 +198,9 @@ export class CartEffects {
     const code = apiError?.code;
 
     if (code === 'VOUCHER_MINIMUM_SUBTOTAL_NOT_MET') {
-      const amount = Number(apiError?.minimumSubtotal);
+      const minimumSubtotal =
+        apiError?.errorDetails?.minimumSubtotal ?? apiError?.minimumSubtotal;
+      const amount = Number(minimumSubtotal);
 
       return {
         key: 'cart.voucher.error.minimumSubtotalNotMet',
