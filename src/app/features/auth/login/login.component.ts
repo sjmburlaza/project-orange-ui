@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormsModule,
@@ -30,6 +31,7 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly siteService = inject(SiteService);
   private readonly site = this.siteService.currentSite();
 
@@ -54,9 +56,19 @@ export class LoginComponent {
 
     this.authService
       .login(this.loginForm.getRawValue())
-      .subscribe((response) => {
-        this.authStore.setSession(response);
-        this.router.navigate([`${this.site}/cart`]);
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.authStore.setSession(response);
+          this.router.navigate([`${this.site}/cart`]);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+
+          this.loginForm.setErrors({
+            loginFailed: true,
+          });
+        },
       });
   }
 }

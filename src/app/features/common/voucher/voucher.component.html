@@ -18,9 +18,38 @@
     </button>
   </div>
   @if (submitted && voucherCode.hasError("required")) {
-    <small>{{ "cart.voucher.error.required" | translate }}</small>
+    <small class="voucher-error">
+      {{ "cart.voucher.error.required" | translate }}
+    </small>
   }
   @if (submitted && voucherCode.hasError("minlength")) {
-    <small>{{ "cart.voucher.error.minLength" | translate }}</small>
+    <small class="voucher-error">
+      {{ "cart.voucher.error.minLength" | translate }}
+    </small>
+  }
+  @if (voucherError$ | async; as voucherError) {
+    <small class="voucher-error">
+      {{ voucherError.key | translate: voucherError.params }}
+    </small>
+  }
+
+  @if (appliedVouchers$ | async; as appliedVouchers) {
+    @if (appliedVouchers.length) {
+      <ul class="applied-vouchers">
+        @for (voucher of appliedVouchers; track voucher.code) {
+          <li class="applied-vouchers__item">
+            <div class="applied-vouchers__details">
+              <span class="applied-vouchers__code">{{ voucher.code }}</span>
+              @if (voucher.name) {
+                <span class="applied-vouchers__name">{{ voucher.name }}</span>
+              }
+            </div>
+            <button type="button" (click)="removeVoucher(voucher.code)">
+              {{ "cart.remove" | translate }}
+            </button>
+          </li>
+        }
+      </ul>
+    }
   }
 </form>

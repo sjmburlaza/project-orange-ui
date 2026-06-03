@@ -10,6 +10,8 @@ import {
   selectCartTotal,
   selectLoading,
   selectError,
+  selectAppliedVouchers,
+  selectVoucherError,
 } from './cart.selector';
 import { Actions, ofType } from '@ngrx/effects';
 
@@ -25,6 +27,8 @@ export class CartFacade {
   readonly total$ = this.store.select(selectCartTotal);
   readonly loading$ = this.store.select(selectLoading);
   readonly error$ = this.store.select(selectError);
+  readonly appliedVouchers$ = this.store.select(selectAppliedVouchers);
+  readonly voucherError$ = this.store.select(selectVoucherError);
 
   readonly addToCartSuccess$ = this.actions$.pipe(
     ofType(CartActions.addToCartSuccess),
@@ -53,6 +57,14 @@ export class CartFacade {
 
   applyVoucher(code: string): void {
     this.store.dispatch(CartActions.applyVoucher({ code }));
+  }
+
+  removeVoucher(code: string): void {
+    this.store.dispatch(CartActions.removeVoucher({ code }));
+  }
+
+  clearVoucherError(): void {
+    this.store.dispatch(CartActions.clearVoucherError());
   }
 
   updateShipping(postalCode: string, shippingMethodCode: string): void {

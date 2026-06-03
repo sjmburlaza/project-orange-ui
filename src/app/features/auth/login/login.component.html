@@ -1,4 +1,7 @@
 <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  @if (loginForm.hasError("loginFailed")) {
+    <p class="error">Invalid email or password.</p>
+  }
   <mat-form-field appearance="outline">
     <mat-label>Email</mat-label>
     <input
