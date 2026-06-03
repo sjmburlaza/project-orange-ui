@@ -66,6 +66,15 @@ export class CartApiService {
     );
   }
 
+  removeVoucher(code: string): Observable<Cart> {
+    const cartCode = this.requireCartCode();
+    const voucherCode = encodeURIComponent(code);
+
+    return this.http.delete<Cart>(
+      `${this.baseUrl}/${cartCode}/vouchers/${voucherCode}`,
+    );
+  }
+
   updateShipping(request: UpdateCartShippingRequest): Observable<Cart> {
     const cartCode = this.requireCartCode();
 

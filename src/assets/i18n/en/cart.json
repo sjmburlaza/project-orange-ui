@@ -10,7 +10,15 @@
       "apply": "Apply",
       "error": {
         "required": "Voucher code is required.",
-        "minLength": "Voucher code must be at least 3 characters."
+        "minLength": "Voucher code must be at least 3 characters.",
+        "cartNotFound": "Cart not found. Please refresh your cart and try again.",
+        "alreadyApplied": "Voucher is already applied.",
+        "invalidFormat": "Voucher code format is invalid.",
+        "limitReached": "Only one voucher can be applied to a cart.",
+        "minimumSubtotalNotMet": "Voucher requires a subtotal of at least {{ minimumSubtotal }}.",
+        "notApplicable": "This voucher cannot be applied.",
+        "applyFailed": "Unable to apply voucher. Please try again.",
+        "removeFailed": "Unable to remove voucher. Please try again."
       }
     }
   }

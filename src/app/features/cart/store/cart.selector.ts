@@ -1,8 +1,13 @@
 import { createSelector } from '@ngrx/store';
 import { cartFeature } from './cart.reducer';
 
-export const { selectCartState, selectCart, selectLoading, selectError } =
-  cartFeature;
+export const {
+  selectCartState,
+  selectCart,
+  selectLoading,
+  selectError,
+  selectVoucherError,
+} = cartFeature;
 
 export const selectCartItems = createSelector(
   selectCart,

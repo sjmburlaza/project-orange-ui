@@ -1,8 +1,23 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CartApiService } from '../services/cart-api.service';
 import { CartActions } from './cart.actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { CartUiMessage } from 'src/app/core/models/cart-message.model';
+
+interface ApiErrorResponse {
+  code?: string;
+  minimumSubtotal?: number | string;
+}
+
+const voucherErrorKeys: Record<string, string> = {
+  CART_NOT_FOUND: 'cart.voucher.error.cartNotFound',
+  VOUCHER_ALREADY_APPLIED: 'cart.voucher.error.alreadyApplied',
+  VOUCHER_CODE_INVALID_FORMAT: 'cart.voucher.error.invalidFormat',
+  VOUCHER_LIMIT_REACHED: 'cart.voucher.error.limitReached',
+  VOUCHER_NOT_APPLICABLE: 'cart.voucher.error.notApplicable',
+};
 
 @Injectable()
 export class CartEffects {
@@ -93,7 +108,31 @@ export class CartEffects {
           catchError((error) =>
             of(
               CartActions.applyVoucherFailure({
-                error: this.getErrorMessage(error),
+                error: this.getVoucherErrorMessage(
+                  error,
+                  'cart.voucher.error.applyFailed',
+                ),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeVoucher$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.removeVoucher),
+      switchMap(({ code }) =>
+        this.cartApi.removeVoucher(code).pipe(
+          map((cart) => CartActions.removeVoucherSuccess({ cart })),
+          catchError((error) =>
+            of(
+              CartActions.removeVoucherFailure({
+                error: this.getVoucherErrorMessage(
+                  error,
+                  'cart.voucher.error.removeFailed',
+                ),
               }),
             ),
           ),
@@ -142,5 +181,33 @@ export class CartEffects {
     }
 
     return 'Something went wrong.';
+  }
+
+  private getVoucherErrorMessage(
+    error: unknown,
+    fallbackKey: string,
+  ): CartUiMessage {
+    console.log('error', error);
+    if (!(error instanceof HttpErrorResponse)) {
+      return { key: fallbackKey };
+    }
+
+    const apiError = error.error as ApiErrorResponse | null;
+    const code = apiError?.code;
+
+    if (code === 'VOUCHER_MINIMUM_SUBTOTAL_NOT_MET') {
+      const amount = Number(apiError?.minimumSubtotal);
+
+      return {
+        key: 'cart.voucher.error.minimumSubtotalNotMet',
+        params: Number.isFinite(amount)
+          ? { minimumSubtotal: amount.toFixed(2) }
+          : undefined,
+      };
+    }
+
+    return {
+      key: code ? (voucherErrorKeys[code] ?? fallbackKey) : fallbackKey,
+    };
   }
 }
