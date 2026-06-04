@@ -23,6 +23,8 @@ import { productFeature } from 'src/app/features/products/store/products.reducer
 import { ProductEffects } from 'src/app/features/products/store/products.effects';
 import { cartFeature } from './features/cart/store/cart.reducer';
 import { CartEffects } from './features/cart/store/cart.effects';
+import { tradeInFeature } from './features/trade-in/store/trade-in.reducer';
+import { TradeInEffects } from './features/trade-in/store/trade-in.effects';
 import {
   provideClientHydration,
   withEventReplay,
@@ -50,8 +52,9 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       [productFeature.name]: productFeature.reducer,
       [cartFeature.name]: cartFeature.reducer,
+      [tradeInFeature.name]: tradeInFeature.reducer,
     }),
-    provideEffects([ProductEffects, CartEffects]),
+    provideEffects([ProductEffects, CartEffects, TradeInEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideClientHydration(withEventReplay()),
     provideAnimations(),

@@ -1,0 +1,269 @@
+@use "tokens/tokens" as *;
+
+.trade-in-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+  overflow: visible;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 8px;
+    color: token(color, text-secondary);
+    font-size: 16px;
+  }
+}
+
+.icon-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: token(color, surface-secondary);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.step-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.step-tab {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid token(color, border);
+  border-radius: 8px;
+  color: token(color, text-muted);
+
+  span {
+    font-size: 24px;
+  }
+
+  strong {
+    font-size: 18px;
+  }
+
+  &--active {
+    border-color: token(color, primary);
+    color: token(color, text-primary);
+  }
+
+  &--done {
+    border-color: token(color, success);
+    color: token(color, text-secondary);
+  }
+}
+
+.step-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  p {
+    color: token(color, text-secondary);
+  }
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
+
+  input,
+  select {
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid token(color, border-strong);
+    border-radius: 8px;
+    background: token(color, background);
+    color: token(color, text-primary);
+  }
+
+  input:disabled,
+  select:disabled {
+    background: token(color, disabled-bg);
+    color: token(color, disabled-text);
+  }
+}
+
+.estimate,
+.summary dl div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.estimate {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: token(color, surface-secondary);
+}
+
+.condition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.condition {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid token(color, border);
+  border-radius: 8px;
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  p {
+    margin-top: 6px;
+    color: token(color, text-secondary);
+  }
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(2, 64px);
+  gap: 6px;
+
+  button {
+    min-height: 36px;
+    border: 1px solid token(color, border-strong);
+    border-radius: 8px;
+    background: token(color, background);
+    cursor: pointer;
+  }
+
+  &__option--selected {
+    border-color: token(color, primary) !important;
+  }
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid token(color, border);
+  border-radius: 8px;
+
+  h3,
+  p,
+  dl,
+  dt,
+  dd {
+    margin: 0;
+  }
+
+  p {
+    color: token(color, text-secondary);
+  }
+
+  dl {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  dt {
+    color: token(color, text-muted);
+  }
+
+  dd {
+    font-weight: 700;
+  }
+}
+
+.disclaimer,
+.state {
+  margin: 0;
+  color: token(color, text-secondary);
+}
+
+.state--error {
+  color: token(color, error);
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  button {
+    min-width: 96px;
+    padding: 10px 16px;
+    border: 1px solid token(color, primary);
+    border-radius: 8px;
+    background: token(color, primary);
+    color: token(color, text-inverse);
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &.secondary {
+      background: transparent;
+      color: token(color, primary);
+    }
+  }
+}
+
+@media (max-width: 620px) {
+  .step-tabs,
+  .condition {
+    grid-template-columns: 1fr;
+  }
+
+  .segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

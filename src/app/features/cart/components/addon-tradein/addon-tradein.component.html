@@ -1,1 +1,241 @@
-<p>addon-tradein works!</p>
+<div class="trade-in-dialog">
+  <header class="dialog-header">
+    <div>
+      <h2>{{ data.addon.title }}</h2>
+      <p>{{ data.addon.description }}</p>
+    </div>
+    <button type="button" class="icon-button" (click)="cancel()">x</button>
+  </header>
+
+  @if (config$ | async; as config) {
+    <nav class="step-tabs">
+      @for (step of config.stepsHeader; track step.label; let index = $index) {
+        <div
+          class="step-tab"
+          [class.step-tab--active]="activeStep === index + 1"
+          [class.step-tab--done]="activeStep > index + 1"
+        >
+          <span>{{ step.label }}</span>
+          <strong>{{ step.title }}</strong>
+        </div>
+      }
+    </nav>
+  }
+
+  @if (error$ | async; as error) {
+    <p class="state state--error">{{ error }}</p>
+  }
+
+  @if (session$ | async; as session) {
+    @switch (activeStep) {
+      @case (1) {
+        <section class="step-panel" [formGroup]="stepOneForm">
+          @if (config$ | async; as config) {
+            <div class="copy">
+              <h3>{{ config.stepOneDescription.title }}</h3>
+              <p>{{ config.stepOneDescription.note }}</p>
+            </div>
+          }
+
+          <label>
+            <span>Postal code</span>
+            <input
+              type="text"
+              autocomplete="postal-code"
+              formControlName="postalCode"
+            />
+          </label>
+
+          <label>
+            <span>Category</span>
+            <select formControlName="categoryCode">
+              <option value="">Select category</option>
+              @if (categories$ | async; as categories) {
+                @for (category of categories; track category.code) {
+                  <option [value]="category.code">{{ category.name }}</option>
+                }
+              }
+            </select>
+          </label>
+
+          <label>
+            <span>Brand</span>
+            <select formControlName="brandCode">
+              <option value="">Select brand</option>
+              @if (brands$ | async; as brands) {
+                @for (brand of brands; track brand.code) {
+                  <option [value]="brand.code">{{ brand.name }}</option>
+                }
+              }
+            </select>
+          </label>
+
+          <label>
+            <span>Device</span>
+            <select formControlName="deviceCode">
+              <option value="">Select device</option>
+              @if (devices$ | async; as devices) {
+                @for (device of devices; track device.code) {
+                  <option [value]="device.code">{{ device.name }}</option>
+                }
+              }
+            </select>
+          </label>
+
+          <label>
+            <span>Storage</span>
+            <select formControlName="storageCode">
+              <option value="">Select storage</option>
+              @if (storages$ | async; as storages) {
+                @for (storage of storages; track storage.code) {
+                  <option [value]="storage.code">{{ storage.name }}</option>
+                }
+              }
+            </select>
+          </label>
+
+          <div class="estimate">
+            <span>Estimate</span>
+            <strong>{{ estimateAmount | currency: currency }}</strong>
+          </div>
+
+          <footer>
+            <button type="button" class="secondary" (click)="cancel()">
+              Cancel
+            </button>
+            <button
+              type="button"
+              [disabled]="!canContinueStepOne() || (busy$ | async)"
+              (click)="continueFromStepOne()"
+            >
+              Continue
+            </button>
+          </footer>
+        </section>
+      }
+
+      @case (2) {
+        <section class="step-panel" [formGroup]="stepTwoForm">
+          <div class="copy">
+            <h3>{{ session.stepTwo?.text1 || "IMEI" }}</h3>
+            <p>{{ session.stepTwo?.text2 }}</p>
+          </div>
+
+          <label>
+            <span>{{ session.stepTwo?.imei?.label || "IMEI" }}</span>
+            <input
+              type="text"
+              [placeholder]="session.stepTwo?.imei?.placeholder || ''"
+              formControlName="imei"
+            />
+          </label>
+
+          <footer>
+            <button type="button" class="secondary" (click)="goBack()">
+              Back
+            </button>
+            <button
+              type="button"
+              [disabled]="stepTwoForm.invalid || (busy$ | async)"
+              (click)="continueFromStepTwo()"
+            >
+              Continue
+            </button>
+          </footer>
+        </section>
+      }
+
+      @case (3) {
+        <section class="step-panel" [formGroup]="conditionForm">
+          <div class="condition-list">
+            @for (field of session.stepThree ?? []; track field.code) {
+              <article class="condition">
+                <div>
+                  <h3>{{ field.question }}</h3>
+                  <p>{{ field.info }}</p>
+                </div>
+                <div class="segmented">
+                  <button
+                    type="button"
+                    [class.segmented__option--selected]="
+                      getConditionResponse(field.code) === 'Yes'
+                    "
+                    (click)="setConditionResponse(field.code, 'Yes')"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    [class.segmented__option--selected]="
+                      getConditionResponse(field.code) === 'No'
+                    "
+                    (click)="setConditionResponse(field.code, 'No')"
+                  >
+                    No
+                  </button>
+                </div>
+              </article>
+            }
+          </div>
+
+          <footer>
+            <button type="button" class="secondary" (click)="goBack()">
+              Back
+            </button>
+            <button
+              type="button"
+              [disabled]="
+                !canContinueStepThree(session.stepThree) || (busy$ | async)
+              "
+              (click)="continueFromStepThree(session.stepThree)"
+            >
+              Continue
+            </button>
+          </footer>
+        </section>
+      }
+
+      @case (4) {
+        <section class="step-panel">
+          <div class="summary">
+            <h3>{{ session.stepFour?.boxHeader || "Trade-in summary" }}</h3>
+            <p>{{ session.stepFour?.boxSubtext }}</p>
+            <dl>
+              <div>
+                <dt>Device</dt>
+                <dd>{{ session.summary?.device }}</dd>
+              </div>
+              <div>
+                <dt>Storage</dt>
+                <dd>{{ session.summary?.storage }}</dd>
+              </div>
+              <div>
+                <dt>Credit</dt>
+                <dd>{{ estimateAmount | currency: currency }}</dd>
+              </div>
+            </dl>
+          </div>
+
+          @if (session.stepFour?.disclaimer) {
+            <p class="disclaimer">{{ session.stepFour?.disclaimer }}</p>
+          }
+
+          <footer>
+            <button type="button" class="secondary" (click)="goBack()">
+              Back
+            </button>
+            <button
+              type="button"
+              [disabled]="(busy$ | async) || estimateAmount <= 0"
+              (click)="confirm()"
+            >
+              Add
+            </button>
+          </footer>
+        </section>
+      }
+    }
+  } @else {
+    <p class="state">Loading...</p>
+  }
+</div>

@@ -54,6 +54,10 @@ export class AddonComponent {
       case 'trade-in':
         dialogRef = this.dialog.open(AddonTradeinComponent, {
           data,
+          width: '720px',
+          maxWidth: 'calc(100vw - 32px)',
+          // maxHeight: 'none',
+          panelClass: 'trade-in-dialog-panel',
         });
         break;
       case 'mobile-plan':

@@ -58,3 +58,16 @@ body {
 .mat-mdc-form-field-error {
   margin-top: -4px;
 }
+
+.cdk-global-overlay-wrapper:has(.trade-in-dialog-panel) {
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.trade-in-dialog-panel {
+  .mat-mdc-dialog-surface {
+    max-height: none;
+    overflow: visible;
+  }
+}
