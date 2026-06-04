@@ -12,14 +12,14 @@
   </div>
   <div class="addon__actions">
     @if (addon.isAdded) {
-      <p>{{ addon.amount }}</p>
-      <button>
+      <p class="addon__amount">{{ addon.amount }}</p>
+      <button (click)="removeSelectedAddon()">
         <i [class]="'delete' | icon"></i>
       </button>
     } @else {
-      <button (click)="openAddon(addon.id)">
+      <button (click)="openAddonDialog(addon.id)">
         <i [class]="'add' | icon"></i>
-        Add
+        {{ "cart.addon.add" | translate }}
       </button>
     }
   </div>

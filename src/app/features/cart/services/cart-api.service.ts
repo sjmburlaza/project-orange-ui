@@ -5,6 +5,7 @@ import {
   AddToCartRequest,
   ApplyVoucherRequest,
   Cart,
+  UpdateCartItemAddonRequest,
   UpdateQuantityRequest,
 } from 'src/app/core/models/cart.model';
 import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
@@ -54,6 +55,29 @@ export class CartApiService {
 
     return this.http.delete<Cart>(
       `${this.baseUrl}/${cartCode}/items/${productId}`,
+    );
+  }
+
+  upsertItemAddon(
+    productId: number,
+    addonId: string,
+    request: UpdateCartItemAddonRequest,
+  ): Observable<Cart> {
+    const cartCode = this.requireCartCode();
+    const encodedAddonId = encodeURIComponent(addonId);
+
+    return this.http.put<Cart>(
+      `${this.baseUrl}/${cartCode}/items/${productId}/addons/${encodedAddonId}`,
+      request,
+    );
+  }
+
+  removeItemAddon(productId: number, addonId: string): Observable<Cart> {
+    const cartCode = this.requireCartCode();
+    const encodedAddonId = encodeURIComponent(addonId);
+
+    return this.http.delete<Cart>(
+      `${this.baseUrl}/${cartCode}/items/${productId}/addons/${encodedAddonId}`,
     );
   }
 

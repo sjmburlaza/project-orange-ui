@@ -1,0 +1,102 @@
+@use "tokens/tokens" as *;
+
+.addon-plan-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(520px, 90vw);
+  max-height: min(720px, 90vh);
+  padding: 30px;
+  overflow: auto;
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .state {
+    margin: 0;
+    color: token(color, text-muted);
+
+    &--error {
+      color: token(color, error);
+    }
+  }
+
+  .plan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .plan {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    width: 100%;
+    padding: 16px;
+    text-align: left;
+    border: 1px solid token(color, border);
+    border-radius: 8px;
+    background: token(color, surface-secondary);
+    cursor: pointer;
+
+    &--selected {
+      border-color: token(color, primary);
+    }
+
+    &__name,
+    &__amount {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    &__meta,
+    &__description {
+      grid-column: 1 / -1;
+      color: token(color, text-secondary);
+      font-size: 14px;
+    }
+  }
+
+  footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    button {
+      min-width: 88px;
+      padding: 10px 16px;
+      border: 1px solid token(color, primary);
+      border-radius: 8px;
+      background: token(color, primary);
+      color: token(color, text-inverse);
+      cursor: pointer;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      &.secondary {
+        background: transparent;
+        color: token(color, primary);
+      }
+    }
+  }
+}

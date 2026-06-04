@@ -1,6 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AddToCartRequest } from 'src/app/core/models/cart.model';
+import {
+  AddToCartRequest,
+  UpdateCartItemAddonRequest,
+} from 'src/app/core/models/cart.model';
 import { CartActions } from './cart.actions';
 import {
   selectCart,
@@ -53,6 +56,24 @@ export class CartFacade {
 
   removeItem(productId: number): void {
     this.store.dispatch(CartActions.removeItem({ productId }));
+  }
+
+  upsertItemAddon(
+    productId: number,
+    addonId: string,
+    request: UpdateCartItemAddonRequest,
+  ): void {
+    this.store.dispatch(
+      CartActions.upsertItemAddon({
+        productId,
+        addonId,
+        request,
+      }),
+    );
+  }
+
+  removeItemAddon(productId: number, addonId: string): void {
+    this.store.dispatch(CartActions.removeItemAddon({ productId, addonId }));
   }
 
   applyVoucher(code: string): void {

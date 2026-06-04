@@ -1,1 +1,44 @@
-<div class="insurance-container"></div>
+<div class="addon-plan-dialog">
+  <header>
+    <h2>{{ data.addon.title }}</h2>
+    <p>{{ data.addon.description }}</p>
+  </header>
+
+  @if (loading$ | async) {
+    <p class="state">Loading...</p>
+  }
+
+  @if (error$ | async; as error) {
+    <p class="state state--error">{{ error }}</p>
+  }
+
+  @if (plans$ | async; as plans) {
+    @if (plans.length) {
+      <div class="plan-list">
+        @for (plan of plans; track plan.code) {
+          <button
+            type="button"
+            class="plan"
+            [class.plan--selected]="selectedPlanCode === plan.code"
+            (click)="selectPlan(plan.code)"
+          >
+            <span class="plan__name">{{ plan.name }}</span>
+            <span class="plan__amount">{{ plan.amount }}</span>
+            <span class="plan__description">{{ plan.description }}</span>
+          </button>
+        }
+      </div>
+    } @else if ((loading$ | async) === false) {
+      <p class="state">{{ "cart.addon.noPlansAvailable" | translate }}</p>
+    }
+  }
+
+  <footer>
+    <button type="button" class="secondary" (click)="cancel()">
+      {{ "cart.addon.cancel" | translate }}
+    </button>
+    <button type="button" [disabled]="!selectedPlanCode" (click)="confirm()">
+      {{ "cart.addon.add" | translate }}
+    </button>
+  </footer>
+</div>

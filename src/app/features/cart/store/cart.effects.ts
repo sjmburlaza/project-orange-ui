@@ -102,6 +102,42 @@ export class CartEffects {
     ),
   );
 
+  upsertItemAddon$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.upsertItemAddon),
+      switchMap(({ productId, addonId, request }) =>
+        this.cartApi.upsertItemAddon(productId, addonId, request).pipe(
+          map((cart) => CartActions.upsertItemAddonSuccess({ cart })),
+          catchError((error) =>
+            of(
+              CartActions.upsertItemAddonFailure({
+                error: this.getErrorMessage(error),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeItemAddon$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.removeItemAddon),
+      switchMap(({ productId, addonId }) =>
+        this.cartApi.removeItemAddon(productId, addonId).pipe(
+          map((cart) => CartActions.removeItemAddonSuccess({ cart })),
+          catchError((error) =>
+            of(
+              CartActions.removeItemAddonFailure({
+                error: this.getErrorMessage(error),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   applyVoucher$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.applyVoucher),

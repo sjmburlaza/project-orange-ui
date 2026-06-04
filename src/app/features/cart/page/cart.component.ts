@@ -4,6 +4,7 @@ import { CartFacade } from '../store/cart.facade';
 import { AsyncPipe } from '@angular/common';
 import { AddonComponent } from '../components/addon/addon.component';
 import { SiteService } from 'src/app/core/services/site.services';
+import { UpdateCartItemAddonRequest } from 'src/app/core/models/cart.model';
 
 @Component({
   selector: 'app-cart',
@@ -31,5 +32,21 @@ export class CartComponent implements OnInit {
     } else {
       this.cartFacade.updateQuantity(data.productId, data.quantity);
     }
+  }
+
+  onAddonUpsert(data: {
+    productId: number;
+    addonId: string;
+    request: UpdateCartItemAddonRequest;
+  }): void {
+    this.cartFacade.upsertItemAddon(
+      data.productId,
+      data.addonId,
+      data.request,
+    );
+  }
+
+  onAddonRemove(data: { productId: number; addonId: string }): void {
+    this.cartFacade.removeItemAddon(data.productId, data.addonId);
   }
 }

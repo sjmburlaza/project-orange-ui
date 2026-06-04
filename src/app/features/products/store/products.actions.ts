@@ -1,6 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Category } from 'src/app/core/models/category.model';
 import {
+  InsurancePlan,
+  MobilePlan,
   Product,
   ProductDetail,
   ProductFilters,
@@ -30,6 +32,26 @@ export const ProductActions = createActionGroup({
     'Load Product Detail': props<{ id: number }>(),
     'Load Product Detail Success': props<{ product: ProductDetail }>(),
     'Load Product Detail Failure': props<{ error: string }>(),
+
+    'Load Product Insurance Plans': props<{ productId: number }>(),
+    'Load Product Insurance Plans Success': props<{
+      productId: number;
+      plans: InsurancePlan[];
+    }>(),
+    'Load Product Insurance Plans Failure': props<{
+      productId: number;
+      error: string;
+    }>(),
+
+    'Load Product Mobile Plans': props<{ productId: number }>(),
+    'Load Product Mobile Plans Success': props<{
+      productId: number;
+      plans: MobilePlan[];
+    }>(),
+    'Load Product Mobile Plans Failure': props<{
+      productId: number;
+      error: string;
+    }>(),
 
     'Select Product': props<{ id: number }>(),
     'Clear Selected Product': emptyProps(),

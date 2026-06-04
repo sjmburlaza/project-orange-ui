@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  InsurancePlan,
+  MobilePlan,
   Product,
   ProductDetail,
   ProductFilters,
@@ -38,5 +40,15 @@ export class ProductApiService {
 
   getProductById(id: number): Observable<ProductDetail> {
     return this.http.get<ProductDetail>(`${this.baseUrl}/${id}`);
+  }
+
+  getProductInsurancePlans(id: number): Observable<InsurancePlan[]> {
+    return this.http.get<InsurancePlan[]>(
+      `${this.baseUrl}/${id}/insurance-plans`,
+    );
+  }
+
+  getProductMobilePlans(id: number): Observable<MobilePlan[]> {
+    return this.http.get<MobilePlan[]>(`${this.baseUrl}/${id}/mobile-plans`);
   }
 }

@@ -7,6 +7,8 @@ import { SelectOption } from 'src/app/shared/components/select-dropdown/select-d
 export const {
   selectProducts,
   selectProductDetails,
+  selectInsurancePlans,
+  selectMobilePlans,
   selectSelectedProductId,
 
   selectCategories,
@@ -19,10 +21,14 @@ export const {
 
   selectLoadingProducts,
   selectLoadingProductDetail,
+  selectLoadingInsurancePlans,
+  selectLoadingMobilePlans,
   selectLoadingCategories,
 
   selectProductsError,
   selectProductDetailError,
+  selectInsurancePlansError,
+  selectMobilePlansError,
   selectCategoriesError,
 } = productFeature;
 
@@ -64,6 +70,42 @@ export const selectHasSelectedProductDetail = createSelector(
   selectSelectedProductDetail,
   (product) => product !== null,
 );
+
+export const selectInsurancePlansForProduct = (productId: number) =>
+  createSelector(
+    selectInsurancePlans,
+    (plansByProduct) => plansByProduct[productId] ?? [],
+  );
+
+export const selectMobilePlansForProduct = (productId: number) =>
+  createSelector(
+    selectMobilePlans,
+    (plansByProduct) => plansByProduct[productId] ?? [],
+  );
+
+export const selectLoadingInsurancePlansForProduct = (productId: number) =>
+  createSelector(
+    selectLoadingInsurancePlans,
+    (loadingByProduct) => loadingByProduct[productId] ?? false,
+  );
+
+export const selectLoadingMobilePlansForProduct = (productId: number) =>
+  createSelector(
+    selectLoadingMobilePlans,
+    (loadingByProduct) => loadingByProduct[productId] ?? false,
+  );
+
+export const selectInsurancePlansErrorForProduct = (productId: number) =>
+  createSelector(
+    selectInsurancePlansError,
+    (errorsByProduct) => errorsByProduct[productId] ?? null,
+  );
+
+export const selectMobilePlansErrorForProduct = (productId: number) =>
+  createSelector(
+    selectMobilePlansError,
+    (errorsByProduct) => errorsByProduct[productId] ?? null,
+  );
 
 export const selectProductListWithStockStatus = createSelector(
   selectProducts,

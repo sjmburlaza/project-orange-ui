@@ -1,6 +1,10 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { CartUiMessage } from 'src/app/core/models/cart-message.model';
-import { AddToCartRequest, Cart } from 'src/app/core/models/cart.model';
+import {
+  AddToCartRequest,
+  Cart,
+  UpdateCartItemAddonRequest,
+} from 'src/app/core/models/cart.model';
 
 export const CartActions = createActionGroup({
   source: 'Cart',
@@ -20,6 +24,18 @@ export const CartActions = createActionGroup({
     'Remove Item': props<{ productId: number }>(),
     'Remove Item Success': props<{ cart: Cart }>(),
     'Remove Item Failure': props<{ error: string }>(),
+
+    'Upsert Item Addon': props<{
+      productId: number;
+      addonId: string;
+      request: UpdateCartItemAddonRequest;
+    }>(),
+    'Upsert Item Addon Success': props<{ cart: Cart }>(),
+    'Upsert Item Addon Failure': props<{ error: string }>(),
+
+    'Remove Item Addon': props<{ productId: number; addonId: string }>(),
+    'Remove Item Addon Success': props<{ cart: Cart }>(),
+    'Remove Item Addon Failure': props<{ error: string }>(),
 
     'Apply Voucher': props<{ code: string }>(),
     'Apply Voucher Success': props<{ cart: Cart }>(),
