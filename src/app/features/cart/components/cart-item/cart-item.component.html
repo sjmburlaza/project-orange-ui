@@ -24,7 +24,7 @@
     </button>
     <app-quantity-selector
       [value]="item.quantity"
-      [min]="0"
+      [min]="1"
       [max]="item.stockQuantity"
       (valueChange)="onQuantityChange(item.productId, $event)"
     />

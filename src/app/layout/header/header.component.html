@@ -16,6 +16,7 @@
       <div class="account-dropdown">
         @for (item of accountMenuItems; track item.label) {
           <button (click)="item.action()">
+            <i [class]="item.icon"></i>
             {{ item.label }}
           </button>
         }

@@ -1,10 +1,22 @@
 :host ::ng-deep {
+  .mat-step-header {
+    pointer-events: none;
+  }
+
   .mat-vertical-stepper-header {
     padding-top: 0;
   }
 
   .mat-step-text-label {
     font-size: 24px;
+  }
+
+  .mat-step-header,
+  .mat-step-header:hover,
+  .mat-step-header:focus,
+  .mat-step-header.cdk-program-focused,
+  .mat-step-header.cdk-keyboard-focused {
+    background-color: transparent !important;
   }
 }
 

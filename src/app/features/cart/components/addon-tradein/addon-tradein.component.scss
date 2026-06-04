@@ -36,7 +36,7 @@
   height: 32px;
   border: none;
   border-radius: 50%;
-  background: token(color, surface-secondary);
+  background: token(color, card-background);
   cursor: pointer;
   font-size: 20px;
 }
@@ -135,7 +135,7 @@ label {
 .estimate {
   padding: 14px 16px;
   border-radius: 8px;
-  background: token(color, surface-secondary);
+  background: token(color, card-background);
 }
 
 .condition-list {
