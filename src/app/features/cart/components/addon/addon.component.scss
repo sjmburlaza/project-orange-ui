@@ -1,7 +1,48 @@
+@use "tokens/tokens" as *;
+
 .addon {
   display: grid;
-  grid-template-columns: 80px auto 80px;
+  grid-template-columns: 60px auto 90px;
   gap: 12px;
   padding: 24px;
-  background-color: cadetblue;
+  border-radius: 12px;
+  background-color: token(color, card-background);
+
+  &__image {
+    display: flex;
+    align-items: center;
+
+    i {
+      font-size: 48px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &__title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+  }
+
+  &__amount {
+    font-weight: bold;
+    font-size: 14px;
+  }
 }

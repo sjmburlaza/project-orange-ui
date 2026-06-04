@@ -29,6 +29,7 @@ export interface Addon {
   description: string;
   imageUrl: string;
   isAdded: boolean;
+  amount?: string;
 }
 
 export interface Voucher {
@@ -43,11 +44,19 @@ export interface CartSummaryAttribute {
   displayValue?: number | string;
 }
 
-export interface AddToCartRequest {
+export interface AddonSelectionRequest {
+  insurancePlanCode?: string | null;
+  mobilePlanCode?: string | null;
+  tradeInSessionId?: string | null;
+}
+
+export interface AddToCartRequest extends AddonSelectionRequest {
   productId: number;
   quantity: number;
   addons: Addon[];
 }
+
+export type UpdateCartItemAddonRequest = AddonSelectionRequest;
 
 export interface UpdateQuantityRequest {
   quantity: number;

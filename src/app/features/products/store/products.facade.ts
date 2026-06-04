@@ -1,8 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { ProductActions } from 'src/app/features/products/store/products.actions';
-import { ProductSort } from 'src/app/core/models/product.model';
+import {
+  InsurancePlan,
+  MobilePlan,
+  ProductSort,
+} from 'src/app/core/models/product.model';
 
 import {
   selectProducts,
@@ -22,6 +27,12 @@ import {
   selectSortOptions,
   selectProductFilters,
   selectPriceRange,
+  selectInsurancePlansForProduct,
+  selectMobilePlansForProduct,
+  selectLoadingInsurancePlansForProduct,
+  selectLoadingMobilePlansForProduct,
+  selectInsurancePlansErrorForProduct,
+  selectMobilePlansErrorForProduct,
 } from 'src/app/features/products/store/products.selector';
 
 @Injectable({
@@ -90,6 +101,38 @@ export class ProductFacade {
 
   loadProductDetail(id: number): void {
     this.store.dispatch(ProductActions.loadProductDetail({ id }));
+  }
+
+  loadProductInsurancePlans(productId: number): void {
+    this.store.dispatch(ProductActions.loadProductInsurancePlans({ productId }));
+  }
+
+  loadProductMobilePlans(productId: number): void {
+    this.store.dispatch(ProductActions.loadProductMobilePlans({ productId }));
+  }
+
+  insurancePlans$(productId: number): Observable<InsurancePlan[]> {
+    return this.store.select(selectInsurancePlansForProduct(productId));
+  }
+
+  mobilePlans$(productId: number): Observable<MobilePlan[]> {
+    return this.store.select(selectMobilePlansForProduct(productId));
+  }
+
+  loadingInsurancePlans$(productId: number): Observable<boolean> {
+    return this.store.select(selectLoadingInsurancePlansForProduct(productId));
+  }
+
+  loadingMobilePlans$(productId: number): Observable<boolean> {
+    return this.store.select(selectLoadingMobilePlansForProduct(productId));
+  }
+
+  insurancePlansError$(productId: number): Observable<string | null> {
+    return this.store.select(selectInsurancePlansErrorForProduct(productId));
+  }
+
+  mobilePlansError$(productId: number): Observable<string | null> {
+    return this.store.select(selectMobilePlansErrorForProduct(productId));
   }
 
   selectProduct(id: number): void {

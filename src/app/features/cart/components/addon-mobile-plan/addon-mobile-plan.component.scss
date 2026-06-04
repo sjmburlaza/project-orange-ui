@@ -60,17 +60,16 @@
       border-color: token(color, primary);
     }
 
-    &__name {
-      font-weight: 700;
-      font-size: 16px;
-    }
-
+    &__name,
     &__amount {
-      font-weight: 700;
       font-size: 16px;
+      font-weight: 700;
     }
 
+    &__meta,
     &__description {
+      grid-column: 1 / -1;
+      color: token(color, text-secondary);
       font-size: 14px;
     }
   }

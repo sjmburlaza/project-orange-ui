@@ -85,6 +85,60 @@ export class ProductEffects {
     ),
   );
 
+  loadProductInsurancePlans$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.loadProductInsurancePlans),
+      switchMap(({ productId }) =>
+        this.productApiService.getProductInsurancePlans(productId).pipe(
+          map((plans) =>
+            ProductActions.loadProductInsurancePlansSuccess({
+              productId,
+              plans,
+            }),
+          ),
+          catchError((error) =>
+            of(
+              ProductActions.loadProductInsurancePlansFailure({
+                productId,
+                error: this.getErrorMessage(
+                  error,
+                  'Failed to load insurance plans',
+                ),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  loadProductMobilePlans$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.loadProductMobilePlans),
+      switchMap(({ productId }) =>
+        this.productApiService.getProductMobilePlans(productId).pipe(
+          map((plans) =>
+            ProductActions.loadProductMobilePlansSuccess({
+              productId,
+              plans,
+            }),
+          ),
+          catchError((error) =>
+            of(
+              ProductActions.loadProductMobilePlansFailure({
+                productId,
+                error: this.getErrorMessage(
+                  error,
+                  'Failed to load mobile plans',
+                ),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   private getErrorMessage(error: unknown, fallback: string): string {
     if (
       typeof error === 'object' &&

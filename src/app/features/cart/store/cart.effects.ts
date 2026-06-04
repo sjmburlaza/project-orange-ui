@@ -8,6 +8,9 @@ import { CartUiMessage } from 'src/app/core/models/cart-message.model';
 
 interface ApiErrorResponse {
   code?: string;
+  errorDetails?: {
+    minimumSubtotal?: number | string;
+  };
   minimumSubtotal?: number | string;
 }
 
@@ -90,6 +93,42 @@ export class CartEffects {
           catchError((error) =>
             of(
               CartActions.removeItemFailure({
+                error: this.getErrorMessage(error),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  upsertItemAddon$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.upsertItemAddon),
+      switchMap(({ productId, addonId, request }) =>
+        this.cartApi.upsertItemAddon(productId, addonId, request).pipe(
+          map((cart) => CartActions.upsertItemAddonSuccess({ cart })),
+          catchError((error) =>
+            of(
+              CartActions.upsertItemAddonFailure({
+                error: this.getErrorMessage(error),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeItemAddon$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.removeItemAddon),
+      switchMap(({ productId, addonId }) =>
+        this.cartApi.removeItemAddon(productId, addonId).pipe(
+          map((cart) => CartActions.removeItemAddonSuccess({ cart })),
+          catchError((error) =>
+            of(
+              CartActions.removeItemAddonFailure({
                 error: this.getErrorMessage(error),
               }),
             ),
@@ -187,7 +226,6 @@ export class CartEffects {
     error: unknown,
     fallbackKey: string,
   ): CartUiMessage {
-    console.log('error', error);
     if (!(error instanceof HttpErrorResponse)) {
       return { key: fallbackKey };
     }
@@ -196,7 +234,9 @@ export class CartEffects {
     const code = apiError?.code;
 
     if (code === 'VOUCHER_MINIMUM_SUBTOTAL_NOT_MET') {
-      const amount = Number(apiError?.minimumSubtotal);
+      const minimumSubtotal =
+        apiError?.errorDetails?.minimumSubtotal ?? apiError?.minimumSubtotal;
+      const amount = Number(minimumSubtotal);
 
       return {
         key: 'cart.voucher.error.minimumSubtotalNotMet',

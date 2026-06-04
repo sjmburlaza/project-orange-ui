@@ -1,6 +1,8 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { Category } from 'src/app/core/models/category.model';
 import {
+  InsurancePlan,
+  MobilePlan,
   Product,
   ProductDetail,
   ProductSort,
@@ -12,6 +14,8 @@ export const productFeatureKey = 'products';
 export interface ProductState {
   products: Product[];
   productDetails: Record<number, ProductDetail>;
+  insurancePlans: Record<number, InsurancePlan[]>;
+  mobilePlans: Record<number, MobilePlan[]>;
   selectedProductId: number | null;
 
   categories: Category[];
@@ -23,16 +27,22 @@ export interface ProductState {
 
   loadingProducts: boolean;
   loadingProductDetail: boolean;
+  loadingInsurancePlans: Record<number, boolean>;
+  loadingMobilePlans: Record<number, boolean>;
   loadingCategories: boolean;
 
   productsError: string | null;
   productDetailError: string | null;
+  insurancePlansError: Record<number, string | null>;
+  mobilePlansError: Record<number, string | null>;
   categoriesError: string | null;
 }
 
 export const initialState: ProductState = {
   products: [],
   productDetails: {},
+  insurancePlans: {},
+  mobilePlans: {},
   selectedProductId: null,
 
   categories: [],
@@ -44,10 +54,14 @@ export const initialState: ProductState = {
 
   loadingProducts: false,
   loadingProductDetail: false,
+  loadingInsurancePlans: {},
+  loadingMobilePlans: {},
   loadingCategories: false,
 
   productsError: null,
   productDetailError: null,
+  insurancePlansError: {},
+  mobilePlansError: {},
   categoriesError: null,
 };
 
@@ -143,6 +157,100 @@ const reducer = createReducer(
     loadingProductDetail: false,
     productDetailError: error,
   })),
+
+  // LOAD PRODUCT INSURANCE PLANS
+  on(ProductActions.loadProductInsurancePlans, (state, { productId }) => ({
+    ...state,
+    loadingInsurancePlans: {
+      ...state.loadingInsurancePlans,
+      [productId]: true,
+    },
+    insurancePlansError: {
+      ...state.insurancePlansError,
+      [productId]: null,
+    },
+  })),
+
+  on(
+    ProductActions.loadProductInsurancePlansSuccess,
+    (state, { productId, plans }) => ({
+      ...state,
+      insurancePlans: {
+        ...state.insurancePlans,
+        [productId]: plans,
+      },
+      loadingInsurancePlans: {
+        ...state.loadingInsurancePlans,
+        [productId]: false,
+      },
+      insurancePlansError: {
+        ...state.insurancePlansError,
+        [productId]: null,
+      },
+    }),
+  ),
+
+  on(
+    ProductActions.loadProductInsurancePlansFailure,
+    (state, { productId, error }) => ({
+      ...state,
+      loadingInsurancePlans: {
+        ...state.loadingInsurancePlans,
+        [productId]: false,
+      },
+      insurancePlansError: {
+        ...state.insurancePlansError,
+        [productId]: error,
+      },
+    }),
+  ),
+
+  // LOAD PRODUCT MOBILE PLANS
+  on(ProductActions.loadProductMobilePlans, (state, { productId }) => ({
+    ...state,
+    loadingMobilePlans: {
+      ...state.loadingMobilePlans,
+      [productId]: true,
+    },
+    mobilePlansError: {
+      ...state.mobilePlansError,
+      [productId]: null,
+    },
+  })),
+
+  on(
+    ProductActions.loadProductMobilePlansSuccess,
+    (state, { productId, plans }) => ({
+      ...state,
+      mobilePlans: {
+        ...state.mobilePlans,
+        [productId]: plans,
+      },
+      loadingMobilePlans: {
+        ...state.loadingMobilePlans,
+        [productId]: false,
+      },
+      mobilePlansError: {
+        ...state.mobilePlansError,
+        [productId]: null,
+      },
+    }),
+  ),
+
+  on(
+    ProductActions.loadProductMobilePlansFailure,
+    (state, { productId, error }) => ({
+      ...state,
+      loadingMobilePlans: {
+        ...state.loadingMobilePlans,
+        [productId]: false,
+      },
+      mobilePlansError: {
+        ...state.mobilePlansError,
+        [productId]: error,
+      },
+    }),
+  ),
 
   // SELECT PRODUCT
   on(ProductActions.selectProduct, (state, { id }) => ({

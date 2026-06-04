@@ -20,6 +20,11 @@
         "applyFailed": "Unable to apply voucher. Please try again.",
         "removeFailed": "Unable to remove voucher. Please try again."
       }
+    },
+    "addon": {
+      "add": "Add",
+      "cancel": "Cancel",
+      "noPlansAvailable": "No plans available."
     }
   }
 }

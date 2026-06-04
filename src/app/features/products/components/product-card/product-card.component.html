@@ -3,7 +3,7 @@
     @if (product.imageUrl) {
       <img [src]="product.imageUrl" [alt]="product.name" />
     } @else {
-      <i [class]="product.categoryName | categoryIcon"></i>
+      <i [class]="product.categoryName | icon"></i>
     }
   </div>
   <div class="product__name">{{ product.name }}</div>

@@ -15,7 +15,12 @@
         @if (item.addons.length) {
           <div class="addons">
             @for (addon of item.addons; track addon.id) {
-              <app-addon [addon]="addon"></app-addon>
+              <app-addon
+                [addon]="addon"
+                [productId]="item.productId"
+                (upsertAddon)="onAddonUpsert($event)"
+                (removeAddon)="onAddonRemove($event)"
+              ></app-addon>
             }
           </div>
         }

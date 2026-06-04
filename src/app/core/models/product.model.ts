@@ -16,6 +16,21 @@ export interface ProductDetail extends Product {
   category?: Category;
 }
 
+export interface InsurancePlan {
+  name: string;
+  code: string;
+  description: string;
+  amount: string;
+}
+
+export interface MobilePlan {
+  name: string;
+  code: string;
+  amount: string;
+  dataAllowance: string;
+  description: string;
+}
+
 export type ProductSort = 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
 
 export interface ProductFilters {

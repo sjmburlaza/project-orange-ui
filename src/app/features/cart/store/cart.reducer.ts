@@ -28,6 +28,8 @@ export const cartFeature = createFeature({
       CartActions.addToCart,
       CartActions.updateQuantity,
       CartActions.removeItem,
+      CartActions.upsertItemAddon,
+      CartActions.removeItemAddon,
       CartActions.updateShipping,
       (state) => ({
         ...state,
@@ -41,6 +43,8 @@ export const cartFeature = createFeature({
       CartActions.addToCartSuccess,
       CartActions.updateQuantitySuccess,
       CartActions.removeItemSuccess,
+      CartActions.upsertItemAddonSuccess,
+      CartActions.removeItemAddonSuccess,
       CartActions.updateShippingSuccess,
       (state, { cart }) => ({
         ...state,
@@ -55,6 +59,8 @@ export const cartFeature = createFeature({
       CartActions.addToCartFailure,
       CartActions.updateQuantityFailure,
       CartActions.removeItemFailure,
+      CartActions.upsertItemAddonFailure,
+      CartActions.removeItemAddonFailure,
       CartActions.updateShippingFailure,
       (state, { error }) => ({
         ...state,
