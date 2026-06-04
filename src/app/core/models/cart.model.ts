@@ -29,6 +29,7 @@ export interface Addon {
   description: string;
   imageUrl: string;
   isAdded: boolean;
+  amount?: string;
 }
 
 export interface Voucher {

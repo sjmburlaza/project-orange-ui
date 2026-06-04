@@ -8,11 +8,11 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Product } from 'src/app/core/models/product.model';
-import { CategoryIconPipe } from 'src/app/shared/pipes/category-icon-pipe';
+import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CurrencyPipe, MatButtonModule, CategoryIconPipe],
+  imports: [CurrencyPipe, MatButtonModule, IconPipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,16 +3,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem } from 'src/app/core/models/cart.model';
 import { QuantitySelectorComponent } from 'src/app/shared/components/quantity-selector/quantity-selector.component';
-import { CategoryIconPipe } from 'src/app/shared/pipes/category-icon-pipe';
+import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 @Component({
   selector: 'app-cart-item',
-  imports: [
-    CategoryIconPipe,
-    QuantitySelectorComponent,
-    CurrencyPipe,
-    TranslatePipe,
-  ],
+  imports: [IconPipe, QuantitySelectorComponent, CurrencyPipe, TranslatePipe],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })

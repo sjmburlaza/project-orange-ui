@@ -1,8 +1,26 @@
 <div class="addon">
-  <div class="addon__image">{{ addon.imageUrl }}</div>
+  <div class="addon__image">
+    @if (addon.imageUrl) {
+      <img [src]="addon.imageUrl" [alt]="addon.name" />
+    } @else {
+      <i [class]="addon.id | icon"></i>
+    }
+  </div>
   <div class="addon__body">
     <div class="addon__body__title">{{ addon.title }}</div>
     <div class="addon__body__desc">{{ addon.description }}</div>
   </div>
-  <div class="addon__actions"></div>
+  <div class="addon__actions">
+    @if (addon.isAdded) {
+      <p>{{ addon.amount }}</p>
+      <button>
+        <i [class]="'delete' | icon"></i>
+      </button>
+    } @else {
+      <button (click)="openAddon(addon.id)">
+        <i [class]="'add' | icon"></i>
+        Add
+      </button>
+    }
+  </div>
 </div>

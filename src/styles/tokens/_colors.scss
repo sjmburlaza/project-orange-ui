@@ -49,6 +49,7 @@ $semantic-colors: (
   background: map-get($primitive-colors, neutral-0),
   surface: map-get($primitive-colors, neutral-50),
   surface-secondary: map-get($primitive-colors, neutral-100),
+  card-background: map-get($primitive-colors, neutral-200),
   // Text
   text-primary: map-get($primitive-colors, neutral-900),
   text-secondary: map-get($primitive-colors, neutral-600),

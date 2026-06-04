@@ -3,7 +3,7 @@
     @if (item.imageUrl) {
       <img [src]="item.imageUrl" [alt]="item.productName" />
     } @else {
-      <i [class]="item.categoryName | categoryIcon"></i>
+      <i [class]="item.categoryName | icon"></i>
     }
   </div>
   <div class="item details">
