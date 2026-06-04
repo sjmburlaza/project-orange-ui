@@ -53,7 +53,7 @@
     text-align: left;
     border: 1px solid token(color, border);
     border-radius: 8px;
-    background: token(color, surface-secondary);
+    background: token(color, card-background);
     cursor: pointer;
 
     &--selected {

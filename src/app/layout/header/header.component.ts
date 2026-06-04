@@ -23,18 +23,24 @@ export class HeaderComponent implements OnInit {
   readonly accountMenuItems = [
     {
       label: 'Orders',
+      icon: 'bi-box-seam',
       action: () => this.goToOrders(),
     },
     {
       label: 'Your Saves',
+      icon: 'bi-bookmark',
       action: () => this.goToSaves(),
     },
     {
       label: 'Account',
+      icon: 'bi-person',
       action: () => this.goToAccount(),
     },
     {
       label: this.authStore.isAuthenticated() ? 'Sign Out' : 'Sign In',
+      icon: this.authStore.isAuthenticated()
+        ? 'bi-box-arrow-right'
+        : 'bi-box-arrow-in-right',
       action: () =>
         this.authStore.isAuthenticated() ? this.logout() : this.goToLogin(),
     },
