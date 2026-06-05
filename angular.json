@@ -79,6 +79,14 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "e2e": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "server": false,
+              "ssr": false,
+              "outputMode": "static"
             }
           },
           "defaultConfiguration": "production"
@@ -94,6 +102,9 @@
             },
             "development": {
               "buildTarget": "project-orange-v2:build:development"
+            },
+            "e2e": {
+              "buildTarget": "project-orange-v2:build:e2e"
             }
           },
           "defaultConfiguration": "development"
@@ -102,22 +113,11 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "buildTarget": "project-orange-v2:build:development",
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              },
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
-            ]
+            "runner": "vitest"
           }
         },
         "lint": {
