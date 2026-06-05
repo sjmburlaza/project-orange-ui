@@ -38,7 +38,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To execute unit tests, use the following command:
 
 ```bash
 ng test
@@ -46,13 +46,19 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+End-to-end tests use [Playwright](https://playwright.dev/). The Playwright config starts the Angular dev server automatically and the initial smoke tests mock `/api` responses, so no separate backend is required.
 
 ```bash
-ng e2e
+npm run e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+To debug tests interactively, run:
+
+```bash
+npm run e2e:ui
+```
+
+If Playwright browsers are not installed yet, run `npx playwright install chromium`.
 
 ## Additional Resources
 

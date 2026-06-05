@@ -1,0 +1,415 @@
+import { expect, test, type Page, type Route } from '@playwright/test';
+import type {
+  AddToCartRequest,
+  ApplyVoucherRequest,
+  Cart,
+  UpdateQuantityRequest,
+} from '../src/app/core/models/cart.model';
+import type { ProductSort } from '../src/app/core/models/product.model';
+import {
+  categories,
+  checkoutForm,
+  createCart,
+  createCartItem,
+  products,
+  save10Voucher,
+  shippingOptions,
+} from './fixtures/catalog';
+
+test.describe('routing and catalog', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockOrangeApi(page);
+  });
+
+  test('redirects to the default Philippine catalog', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page).toHaveURL(/\/ph\/products$/);
+    await expect(page.getByRole('heading', { name: 'ORANGE' })).toBeVisible();
+    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+    await expect(productCard(page, 'MacBook Air M5')).toBeVisible();
+    await expect(productCard(page, 'Mechanical Keyboard')).toBeVisible();
+  });
+
+  test('redirects unsupported site codes back to the default site', async ({
+    page,
+  }) => {
+    await page.goto('/unknown/products');
+
+    await expect(page).toHaveURL(/\/ph\/products$/);
+    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+  });
+
+  test('filters products by category and clears the filter', async ({ page }) => {
+    await page.goto('/ph/products');
+
+    await page.locator('.filter-category mat-select').click();
+    await page.getByRole('option', { name: 'Accessories' }).click();
+
+    await expect(productNames(page)).toHaveText(['Mechanical Keyboard']);
+
+    await page.getByRole('button', { name: 'Clear filters' }).click();
+
+    await expect(productNames(page)).toHaveText([
+      'iPhone 15',
+      'MacBook Air M5',
+      'Mechanical Keyboard',
+    ]);
+  });
+
+  test('sorts products by price in both directions', async ({ page }) => {
+    await page.goto('/ph/products');
+
+    await page.locator('.filter-sort mat-select').click();
+    await page.getByRole('option', { name: 'Price: Low to High' }).click();
+
+    await expect(productNames(page)).toHaveText([
+      'Mechanical Keyboard',
+      'iPhone 15',
+      'MacBook Air M5',
+    ]);
+
+    await page.locator('.filter-sort mat-select').click();
+    await page.getByRole('option', { name: 'Price: High to Low' }).click();
+
+    await expect(productNames(page)).toHaveText([
+      'MacBook Air M5',
+      'iPhone 15',
+      'Mechanical Keyboard',
+    ]);
+  });
+
+  test('adds a product to cart and shows the confirmation dialog', async ({
+    page,
+  }) => {
+    await page.goto('/ph/products');
+
+    await productCard(page, 'iPhone 15')
+      .getByRole('button', { name: 'Buy' })
+      .click();
+
+    await expect(
+      page.getByRole('heading', { name: 'Added to Cart' }),
+    ).toBeVisible();
+    await expect(
+      page.getByText('Item has been added to your cart.'),
+    ).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Go to Cart' })).toBeVisible();
+  });
+});
+
+test.describe('cart journey', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockOrangeApi(page);
+  });
+
+  test('opens the cart, updates quantity, applies a voucher, and enters checkout', async ({
+    page,
+  }) => {
+    await addIphoneToCart(page);
+
+    await page.getByRole('button', { name: 'Go to Cart' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/cart$/);
+    await expect(page.getByRole('heading', { name: 'iPhone 15' })).toBeVisible();
+    await expect(page.getByText('In Stock')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Summary' })).toBeVisible();
+    await expect(page.getByText('Continue to checkout')).toBeVisible();
+
+    const cartItem = page.locator('app-cart-item').filter({ hasText: 'iPhone 15' });
+    await cartItem.locator('.quantity-btn').last().click();
+
+    await expect(cartItem.locator('.quantity-input')).toHaveValue('2');
+    await expect(page.locator('app-order-summary .total__value')).toContainText(
+      '119,998.00',
+    );
+
+    await page.getByPlaceholder('Enter Voucher Code').fill('SAVE10');
+    await page.getByRole('button', { name: 'Apply' }).click();
+
+    await expect(page.getByText('SAVE10')).toBeVisible();
+    await expect(page.getByText('Voucher Discount')).toBeVisible();
+
+    await page
+      .locator('.applied-vouchers__item')
+      .filter({ hasText: 'SAVE10' })
+      .getByRole('button', { name: 'Remove' })
+      .click();
+
+    await expect(page.getByText('SAVE10')).toHaveCount(0);
+    await expect(page.getByText('Voucher Discount')).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Continue to checkout' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/checkout$/);
+    await expect(page.getByText('Customer Details')).toBeVisible();
+  });
+
+  test('removes the only cart item and shows the empty cart state', async ({
+    page,
+  }) => {
+    await addIphoneToCart(page);
+
+    await page.getByRole('button', { name: 'Go to Cart' }).click();
+    await page
+      .locator('app-cart-item')
+      .filter({ hasText: 'iPhone 15' })
+      .getByRole('button', { name: 'Remove' })
+      .click();
+
+    await expect(page.getByText('Your cart is empty')).toBeVisible();
+  });
+});
+
+test.describe('auth journey', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockOrangeApi(page);
+  });
+
+  test('shows required validation errors on empty login submit', async ({
+    page,
+  }) => {
+    await page.goto('/ph/auth/login');
+
+    await page.getByRole('button', { name: 'Login' }).click();
+
+    await expect(page.getByText('Email is required.')).toBeVisible();
+    await expect(page.getByText('Password is required.')).toBeVisible();
+  });
+});
+
+test.describe('checkout journey', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockOrangeApi(page);
+  });
+
+  test('blocks progress until required customer details are valid', async ({
+    page,
+  }) => {
+    await startCheckout(page);
+
+    await page.getByRole('button', { name: 'Next' }).click();
+
+    await expect(page.getByText('Invalid Email')).toBeVisible();
+    await expect(page.getByText('Invalid First Name')).toBeVisible();
+    await expect(page.getByText('Invalid Last Name')).toBeVisible();
+    await expect(page.getByText('Invalid Postal Code')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Choose your shipping method' }),
+    ).toHaveCount(0);
+  });
+
+  test('completes customer, shipping, payment, and place-order steps', async ({
+    page,
+  }) => {
+    const consoleMessages: string[] = [];
+    page.on('console', (message) => {
+      consoleMessages.push(message.text());
+    });
+
+    await startCheckout(page);
+    await fillCustomerDetails(page);
+    await page.getByRole('button', { name: 'Next' }).click();
+
+    await expect(
+      page.getByRole('heading', { name: 'Choose your shipping method' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: /Standard Delivery/ }).click();
+    await page.getByRole('button', { name: 'Next' }).click();
+
+    await expect(
+      page.getByRole('heading', { name: 'Choose payment method' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: /Credit Card/ }).click();
+    await page.getByRole('button', { name: 'Place Order' }).click();
+
+    await expect
+      .poll(() =>
+        consoleMessages.some((message) =>
+          message.includes('Final checkout payload:'),
+        ),
+      )
+      .toBe(true);
+  });
+});
+
+function productCard(page: Page, name: string) {
+  return page.locator('app-product-card').filter({ hasText: name });
+}
+
+function productNames(page: Page) {
+  return page.locator('app-product-card .product__name');
+}
+
+async function addIphoneToCart(page: Page): Promise<void> {
+  await page.goto('/ph/products');
+
+  await productCard(page, 'iPhone 15')
+    .getByRole('button', { name: 'Buy' })
+    .click();
+
+  await expect(
+    page.getByRole('heading', { name: 'Added to Cart' }),
+  ).toBeVisible();
+}
+
+async function startCheckout(page: Page): Promise<void> {
+  await addIphoneToCart(page);
+  await page.getByRole('button', { name: 'Go to Cart' }).click();
+  await page.getByRole('button', { name: 'Continue to checkout' }).click();
+
+  await expect(page).toHaveURL(/\/ph\/checkout$/);
+  await expect(page.getByText('Customer Details')).toBeVisible();
+}
+
+async function fillCustomerDetails(page: Page): Promise<void> {
+  await page.getByLabel('Email').fill('ada@example.com');
+  await page.getByLabel('First Name').fill('Ada');
+  await page.getByLabel('Last Name').fill('Lovelace');
+  await page.getByLabel('Mobile Number').fill('09171234567');
+  await page.getByLabel('Street').fill('123 Orange Avenue');
+  await page.getByLabel('City').fill('Manila');
+  await page.getByLabel('Postal Code').fill('1000');
+}
+
+async function mockOrangeApi(page: Page): Promise<void> {
+  const state = {
+    cart: createCart(),
+  };
+
+  await page.route('**/api/categories', async (route) => {
+    await route.fulfill({ json: categories });
+  });
+
+  await page.route('**/api/products**', async (route) => {
+    const url = new URL(route.request().url());
+    const categoryId = url.searchParams.get('categoryId');
+    const sortBy = url.searchParams.get('sortBy') as ProductSort | null;
+    const minPrice = Number(url.searchParams.get('minPrice') ?? 0);
+    const maxPrice = Number(url.searchParams.get('maxPrice') ?? 100000);
+    const filteredProducts = categoryId
+      ? products.filter((product) => product.categoryId === Number(categoryId))
+      : [...products];
+    const visibleProducts = sortProducts(
+      filteredProducts.filter(
+        (product) => product.price >= minPrice && product.price <= maxPrice,
+      ),
+      sortBy,
+    );
+
+    await route.fulfill({ json: visibleProducts });
+  });
+
+  await page.route('**/api/carts/**', async (route) => {
+    await handleCartRoute(route, state);
+  });
+
+  await page.route('**/api/checkout/form', async (route) => {
+    await route.fulfill({ json: checkoutForm });
+  });
+
+  await page.route('**/api/shipping/options**', async (route) => {
+    await route.fulfill({ json: shippingOptions });
+  });
+}
+
+function sortProducts(productsToSort: typeof products, sortBy: ProductSort | null) {
+  const sortedProducts = [...productsToSort];
+
+  switch (sortBy) {
+    case 'price-asc':
+      return sortedProducts.sort((a, b) => a.price - b.price);
+    case 'price-desc':
+      return sortedProducts.sort((a, b) => b.price - a.price);
+    case 'name-asc':
+      return sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+    case 'name-desc':
+      return sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+    default:
+      return sortedProducts;
+  }
+}
+
+async function handleCartRoute(
+  route: Route,
+  state: { cart: Cart },
+): Promise<void> {
+  const request = route.request();
+  const url = new URL(request.url());
+  const segments = url.pathname.split('/').filter(Boolean);
+  const method = request.method();
+
+  if (method === 'GET' && segments.at(-1) === 'e2e-cart') {
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (method === 'POST' && url.pathname === '/api/carts/items') {
+    const body = request.postDataJSON() as AddToCartRequest;
+    const product = products.find((item) => item.id === body.productId);
+
+    if (!product) {
+      await route.fulfill({ status: 404, json: { message: 'Product not found' } });
+      return;
+    }
+
+    state.cart = createCart([createCartItem(product, body.quantity)]);
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (method === 'PUT' && segments.at(-2) === 'items') {
+    const productId = Number(segments.at(-1));
+    const body = request.postDataJSON() as UpdateQuantityRequest;
+
+    state.cart = updateCartItemQuantity(state.cart, productId, body.quantity);
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (method === 'DELETE' && segments.at(-2) === 'items') {
+    const productId = Number(segments.at(-1));
+
+    state.cart = createCart(
+      state.cart.entries.filter((entry) => entry.productId !== productId),
+      state.cart.appliedVouchers,
+    );
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (method === 'POST' && segments.at(-1) === 'vouchers') {
+    const body = request.postDataJSON() as ApplyVoucherRequest;
+    const vouchers = body.code === save10Voucher.code ? [save10Voucher] : [];
+
+    state.cart = createCart(state.cart.entries, vouchers);
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (method === 'DELETE' && segments.at(-2) === 'vouchers') {
+    state.cart = createCart(state.cart.entries);
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (method === 'PUT' && segments.at(-1) === 'shipping') {
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
+}
+
+function updateCartItemQuantity(
+  cart: Cart,
+  productId: number,
+  quantity: number,
+): Cart {
+  return createCart(
+    cart.entries.map((entry) =>
+      entry.productId === productId ? { ...entry, quantity } : entry,
+    ),
+    cart.appliedVouchers,
+  );
+}
