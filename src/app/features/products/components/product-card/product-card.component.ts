@@ -7,12 +7,13 @@ import {
   Output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Product } from 'src/app/core/models/product.model';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CurrencyPipe, MatButtonModule, IconPipe],
+  imports: [CurrencyPipe, MatButtonModule, IconPipe, TranslatePipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

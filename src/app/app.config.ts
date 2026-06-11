@@ -8,14 +8,13 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {
   HTTP_INTERCEPTORS,
-  HttpClient,
   provideHttpClient,
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
-import { translateLoaderFactory } from 'src/app/core/i18n/translate-loader';
+import { MultiTranslateLoader } from 'src/app/core/i18n/multi-translate-loader';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -40,8 +39,7 @@ export const appConfig: ApplicationConfig = {
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
-        useFactory: translateLoaderFactory,
-        deps: [HttpClient],
+        useClass: MultiTranslateLoader,
       },
     }),
     {

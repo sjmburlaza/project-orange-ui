@@ -1,0 +1,30 @@
+{
+  "cart": {
+    "empty": "您的购物车是空的",
+    "inStock": "有库存",
+    "remove": "移除",
+    "total": "您的总计",
+    "voucher": {
+      "label": "优惠券",
+      "placeholder": "输入优惠券代码",
+      "apply": "应用",
+      "error": {
+        "required": "请输入优惠券代码。",
+        "minLength": "优惠券代码至少需要 3 个字符。",
+        "cartNotFound": "未找到购物车。请刷新购物车后重试。",
+        "alreadyApplied": "优惠券已应用。",
+        "invalidFormat": "优惠券代码格式无效。",
+        "limitReached": "一个购物车只能使用一张优惠券。",
+        "minimumSubtotalNotMet": "优惠券要求小计至少为 {{ minimumSubtotal }}。",
+        "notApplicable": "此优惠券无法使用。",
+        "applyFailed": "无法应用优惠券。请重试。",
+        "removeFailed": "无法移除优惠券。请重试。"
+      }
+    },
+    "addon": {
+      "add": "添加",
+      "cancel": "取消",
+      "noPlansAvailable": "暂无可用方案。"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "cart": {
+    "empty": "カートは空です",
+    "inStock": "在庫あり",
+    "remove": "削除",
+    "total": "合計",
+    "voucher": {
+      "label": "クーポン",
+      "placeholder": "クーポンコードを入力",
+      "apply": "適用",
+      "error": {
+        "required": "クーポンコードは必須です。",
+        "minLength": "クーポンコードは3文字以上で入力してください。",
+        "cartNotFound": "カートが見つかりません。カートを更新してもう一度お試しください。",
+        "alreadyApplied": "クーポンはすでに適用されています。",
+        "invalidFormat": "クーポンコードの形式が無効です。",
+        "limitReached": "カートに適用できるクーポンは1つだけです。",
+        "minimumSubtotalNotMet": "このクーポンを使用するには、小計が {{ minimumSubtotal }} 以上である必要があります。",
+        "notApplicable": "このクーポンは適用できません。",
+        "applyFailed": "クーポンを適用できません。もう一度お試しください。",
+        "removeFailed": "クーポンを削除できません。もう一度お試しください。"
+      }
+    },
+    "addon": {
+      "add": "追加",
+      "cancel": "キャンセル",
+      "noPlansAvailable": "利用可能なプランがありません。"
+    }
+  }
+}

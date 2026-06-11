@@ -1,0 +1,23 @@
+{
+  "products": {
+    "empty": "没有可显示的产品。",
+    "filters": {
+      "sortBy": "排序方式：",
+      "defaultSort": "默认",
+      "category": "分类：",
+      "allCategories": "所有分类",
+      "filterPrice": "筛选价格",
+      "clearFilters": "清除筛选"
+    },
+    "actions": {
+      "buy": "购买",
+      "learnMore": "了解更多"
+    },
+    "cart": {
+      "addedTitle": "已添加到购物车",
+      "addedMessage": "商品已添加到您的购物车。",
+      "continueShopping": "继续购物",
+      "goToCart": "前往购物车"
+    }
+  }
+}

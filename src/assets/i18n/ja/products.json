@@ -1,0 +1,23 @@
+{
+  "products": {
+    "empty": "表示する商品がありません。",
+    "filters": {
+      "sortBy": "並び替え:",
+      "defaultSort": "デフォルト",
+      "category": "カテゴリー:",
+      "allCategories": "すべてのカテゴリー",
+      "filterPrice": "価格で絞り込み",
+      "clearFilters": "フィルターをクリア"
+    },
+    "actions": {
+      "buy": "購入",
+      "learnMore": "詳細を見る"
+    },
+    "cart": {
+      "addedTitle": "カートに追加しました",
+      "addedMessage": "商品がカートに追加されました。",
+      "continueShopping": "買い物を続ける",
+      "goToCart": "カートへ進む"
+    }
+  }
+}

@@ -17,7 +17,7 @@ export const siteGuard: CanActivateFn = (route) => {
 
   const config = SITES[site];
 
-  translate.use(config.lang);
+  translate.use(config.defaultLanguage);
   siteService.setCurrentSite(site);
 
   return true;

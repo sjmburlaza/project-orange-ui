@@ -1,0 +1,30 @@
+{
+  "cart": {
+    "empty": "Votre panier est vide",
+    "inStock": "En stock",
+    "remove": "Supprimer",
+    "total": "Votre total",
+    "voucher": {
+      "label": "Bons de réduction",
+      "placeholder": "Saisir le code du bon",
+      "apply": "Appliquer",
+      "error": {
+        "required": "Le code du bon est requis.",
+        "minLength": "Le code du bon doit contenir au moins 3 caractères.",
+        "cartNotFound": "Panier introuvable. Veuillez actualiser votre panier et réessayer.",
+        "alreadyApplied": "Le bon est déjà appliqué.",
+        "invalidFormat": "Le format du code du bon est invalide.",
+        "limitReached": "Un seul bon peut être appliqué à un panier.",
+        "minimumSubtotalNotMet": "Le bon nécessite un sous-total d'au moins {{ minimumSubtotal }}.",
+        "notApplicable": "Ce bon ne peut pas être appliqué.",
+        "applyFailed": "Impossible d'appliquer le bon. Veuillez réessayer.",
+        "removeFailed": "Impossible de supprimer le bon. Veuillez réessayer."
+      }
+    },
+    "addon": {
+      "add": "Ajouter",
+      "cancel": "Annuler",
+      "noPlansAvailable": "Aucun forfait disponible."
+    }
+  }
+}

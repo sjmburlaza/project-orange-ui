@@ -1,0 +1,23 @@
+{
+  "products": {
+    "empty": "Aucun produit à afficher.",
+    "filters": {
+      "sortBy": "Trier par :",
+      "defaultSort": "Par défaut",
+      "category": "Catégorie :",
+      "allCategories": "Toutes les catégories",
+      "filterPrice": "Filtrer par prix",
+      "clearFilters": "Effacer les filtres"
+    },
+    "actions": {
+      "buy": "Acheter",
+      "learnMore": "En savoir plus"
+    },
+    "cart": {
+      "addedTitle": "Ajouté au panier",
+      "addedMessage": "L'article a été ajouté à votre panier.",
+      "continueShopping": "Continuer vos achats",
+      "goToCart": "Aller au panier"
+    }
+  }
+}

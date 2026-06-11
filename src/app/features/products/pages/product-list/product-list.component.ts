@@ -12,10 +12,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product-list',
-  imports: [AsyncPipe, ProductCardComponent, ProductListToolbarComponent],
+  imports: [
+    AsyncPipe,
+    ProductCardComponent,
+    ProductListToolbarComponent,
+    TranslatePipe,
+  ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
@@ -62,8 +68,8 @@ export class ProductListComponent implements OnInit {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
           width: '420px',
           data: {
-            title: 'Added to Cart',
-            message: 'Item has been added to your cart.',
+            title: 'products.cart.addedTitle',
+            message: 'products.cart.addedMessage',
           },
         });
 
