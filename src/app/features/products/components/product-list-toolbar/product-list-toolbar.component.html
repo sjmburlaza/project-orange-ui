@@ -1,9 +1,9 @@
 <div class="filter-container">
   @if (sortOptions) {
     <div class="filter filter-sort">
-      Sort by:
+      {{ "products.filters.sortBy" | translate }}
       <app-select-dropdown
-        [placeholder]="'Default'"
+        [placeholder]="'products.filters.defaultSort' | translate"
         [options]="sortOptions"
         [selectedValue]="selectedSort"
         (selectedValueChange)="onSortChange($event)"
@@ -12,9 +12,9 @@
   }
   @if (categoryOptions) {
     <div class="filter filter-category">
-      <p>Category:</p>
+      <p>{{ "products.filters.category" | translate }}</p>
       <app-select-dropdown
-        [placeholder]="'All Categories'"
+        [placeholder]="'products.filters.allCategories' | translate"
         [options]="categoryOptions"
         [selectedValue]="selectedCategory"
         (selectedValueChange)="onCategoryChange($event)"
@@ -24,7 +24,7 @@
   @if (priceRange) {
     <div class="filter-price">
       <app-range-slider
-        label="Filter Price"
+        [label]="'products.filters.filterPrice' | translate"
         prefix="₱"
         [min]="priceMin"
         [max]="priceMax"
@@ -36,7 +36,7 @@
   }
   <div class="filter-clear">
     <button matButton="outlined" (click)="clearFilters.emit()">
-      Clear filters
+      {{ "products.filters.clearFilters" | translate }}
     </button>
   </div>
 </div>

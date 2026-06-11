@@ -3,13 +3,13 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
 
-  setLanguage(lang: string) {
+  setLanguage(lang: string): void {
     this.translate.use(lang);
   }
 
-  getCurrentLanguage() {
+  getCurrentLanguage(): string {
     return this.translate.getCurrentLang();
   }
 }

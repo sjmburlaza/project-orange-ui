@@ -16,10 +16,16 @@ import {
   SelectOption,
 } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product-list-toolbar',
-  imports: [RangeSliderComponent, SelectDropdownComponent, MatButtonModule],
+  imports: [
+    RangeSliderComponent,
+    SelectDropdownComponent,
+    MatButtonModule,
+    TranslatePipe,
+  ],
   templateUrl: './product-list-toolbar.component.html',
   styleUrl: './product-list-toolbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

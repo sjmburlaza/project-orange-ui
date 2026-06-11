@@ -1,10 +1,12 @@
 <div class="dialog-container">
-  <h2>{{ data.title }}</h2>
-  <p>{{ data.message }}</p>
+  <h2>{{ data.title | translate }}</h2>
+  <p>{{ data.message | translate }}</p>
   <div class="actions">
     <button matButton="outlined" (click)="continueShopping()">
-      Continue Shopping
+      {{ "products.cart.continueShopping" | translate }}
     </button>
-    <button matButton="filled" (click)="goToCart()">Go to Cart</button>
+    <button matButton="filled" (click)="goToCart()">
+      {{ "products.cart.goToCart" | translate }}
+    </button>
   </div>
 </div>
