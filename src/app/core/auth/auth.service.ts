@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  AuthResponse,
+  AuthSession,
   LoginDto,
   RegisterDto,
 } from 'src/app/core/auth/auth.models';
@@ -11,24 +11,38 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private http = inject(HttpClient);
-  private baseUrl = '/api/auth';
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = '/api/auth';
+  private readonly requestOptions = { withCredentials: true };
 
-  login(dto: LoginDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, dto);
+  login(dto: LoginDto): Observable<AuthSession> {
+    return this.http.post<AuthSession>(
+      `${this.baseUrl}/login`,
+      dto,
+      this.requestOptions,
+    );
   }
 
-  register(dto: RegisterDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, dto);
+  register(dto: RegisterDto): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/register`,
+      dto,
+      this.requestOptions,
+    );
   }
 
-  refresh(refreshToken: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/refresh`, {
-      refreshToken,
-    });
+  getSession(): Observable<AuthSession> {
+    return this.http.get<AuthSession>(
+      `${this.baseUrl}/session`,
+      this.requestOptions,
+    );
   }
 
   logout(): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/logout`, {});
+    return this.http.post<void>(
+      `${this.baseUrl}/logout`,
+      {},
+      this.requestOptions,
+    );
   }
 }

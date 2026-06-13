@@ -30,5 +30,10 @@
     }
   </mat-form-field>
 
-  <button mat-flat-button color="primary" type="submit">Login</button>
+  <div class="actions">
+    <button mat-flat-button color="primary" type="submit">Login</button>
+    <button matButton="outlined" (click)="goToRegister()">
+      Create new account
+    </button>
+  </div>
 </form>

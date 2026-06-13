@@ -60,7 +60,7 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
           this.authStore.setSession(response);
-          this.router.navigate([`${this.site}/cart`]);
+          this.router.navigate([`/${this.site}/cart`]);
         },
         error: (error) => {
           console.error('Login failed:', error);
@@ -70,5 +70,9 @@ export class LoginComponent {
           });
         },
       });
+  }
+
+  goToRegister(): void {
+    this.router.navigate([`/${this.site}/auth/register`]);
   }
 }

@@ -1,8 +1,17 @@
+import type { Permission, Role } from 'src/app/core/auth/auth.constants';
+
 export interface User {
   id: string;
   email: string;
-  roles: string[];
-  permissions: string[];
+  fullName: string;
+  roles: Role[];
+  permissions: Permission[];
+}
+
+export interface AuthSessionDetails {
+  id: string;
+  createdAtUtc: string;
+  expiresAtUtc: string;
 }
 
 export interface LoginDto {
@@ -16,9 +25,7 @@ export interface RegisterDto {
   password: string;
 }
 
-export interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+export interface AuthSession {
   user: User;
+  session: AuthSessionDetails;
 }

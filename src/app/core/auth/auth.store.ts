@@ -1,41 +1,64 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AuthResponse, User } from 'src/app/core/auth/auth.models';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import { AuthSession } from 'src/app/core/auth/auth.models';
+
+export type AuthSessionState = AuthSession | null | undefined;
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
-  private userSubject = new BehaviorSubject<User | null>(null);
-  user$ = this.userSubject.asObservable();
+  private readonly sessionSubject = new BehaviorSubject<AuthSessionState>(
+    undefined,
+  );
 
-  private accessToken: string | null = null;
-  private refreshToken: string | null = null;
+  readonly session$ = this.sessionSubject.asObservable();
 
-  setSession(response: AuthResponse): void {
-    this.accessToken = response.accessToken;
-    this.refreshToken = response.refreshToken;
-    this.userSubject.next(response.user);
+  readonly user$ = this.session$.pipe(
+    map((session) => session?.user ?? null),
+    distinctUntilChanged(),
+  );
+
+  readonly isAuthenticated$ = this.session$.pipe(
+    map((session) => !!session),
+    distinctUntilChanged(),
+  );
+
+  setSession(session: AuthSession): void {
+    this.sessionSubject.next(session);
   }
 
   clearSession(): void {
-    this.accessToken = null;
-    this.refreshToken = null;
-    this.userSubject.next(null);
+    this.sessionSubject.next(null);
   }
 
-  getAccessToken(): string | null {
-    return this.accessToken;
-  }
-
-  getRefreshToken(): string | null {
-    return this.refreshToken;
+  getSessionSnapshot(): AuthSessionState {
+    return this.sessionSubject.value;
   }
 
   isAuthenticated(): boolean {
-    return !!this.accessToken;
+    return !!this.sessionSubject.value;
   }
 
   hasRole(role: string): boolean {
-    const user = this.userSubject.value;
-    return user?.roles.includes(role) ?? false;
+    const user = this.sessionSubject.value?.user;
+    return (
+      (user?.roles as readonly string[] | undefined)?.includes(role) ?? false
+    );
+  }
+
+  hasAnyRole(roles: readonly string[]): boolean {
+    return roles.some((role) => this.hasRole(role));
+  }
+
+  hasPermission(permission: string): boolean {
+    const user = this.sessionSubject.value?.user;
+    return (
+      (user?.permissions as readonly string[] | undefined)?.includes(permission) ??
+      false
+    );
+  }
+
+  hasAllPermissions(permissions: readonly string[]): boolean {
+    return permissions.every((permission) => this.hasPermission(permission));
   }
 }
