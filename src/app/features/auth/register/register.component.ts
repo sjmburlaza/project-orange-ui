@@ -5,10 +5,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { emailValidator } from 'src/app/shared/validators/email.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
+import { SiteService } from 'src/app/core/services/site.services';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +28,10 @@ import { finalize } from 'rxjs';
 export class RegisterComponent {
   readonly fb = inject(FormBuilder);
   readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly siteService = inject(SiteService);
+  private readonly site = this.siteService.currentSite();
 
   readonly registerForm = this.fb.nonNullable.group({
     fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -93,8 +98,8 @@ export class RegisterComponent {
         }),
       )
       .subscribe({
-        next: (response) => {
-          console.log('Registered:', response);
+        next: () => {
+          this.goToLogin();
         },
         error: (error) => {
           console.error('Register failed:', error);
@@ -103,5 +108,9 @@ export class RegisterComponent {
             error.error?.code ?? 'Something went wrong. Please try again.';
         },
       });
+  }
+
+  goToLogin(): void {
+    this.router.navigate([`/${this.site}/auth/login`]);
   }
 }

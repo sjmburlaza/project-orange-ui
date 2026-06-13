@@ -74,7 +74,12 @@
     }
   </div>
 
-  <button class="register-btn" mat-flat-button color="primary" type="submit">
-    Register
-  </button>
+  <div class="actions">
+    <button class="register-btn" mat-flat-button color="primary" type="submit">
+      Register
+    </button>
+    <button matButton="outlined" (click)="goToLogin()">
+      I already have an account.
+    </button>
+  </div>
 </form>

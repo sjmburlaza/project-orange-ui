@@ -1,9 +1,13 @@
 import {
+  inject,
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
+  PLATFORM_ID,
+  provideAppInitializer,
   provideZoneChangeDetection,
   isDevMode,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {
@@ -11,8 +15,11 @@ import {
   provideHttpClient,
   withFetch,
   withInterceptorsFromDi,
+  withXsrfConfiguration,
 } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
+import { AuthService } from 'src/app/core/auth/auth.service';
+import { AuthStore } from 'src/app/core/auth/auth.store';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { MultiTranslateLoader } from 'src/app/core/i18n/multi-translate-loader';
 import { provideStore } from '@ngrx/store';
@@ -29,13 +36,41 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { catchError, firstValueFrom, of, tap } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    provideHttpClient(
+      withFetch(),
+      withXsrfConfiguration({
+        cookieName: 'XSRF-TOKEN',
+        headerName: 'X-XSRF-TOKEN',
+      }),
+      withInterceptorsFromDi(),
+    ),
+    provideAppInitializer(() => {
+      const platformId = inject(PLATFORM_ID);
+
+      if (!isPlatformBrowser(platformId)) {
+        return;
+      }
+
+      const authService = inject(AuthService);
+      const authStore = inject(AuthStore);
+
+      return firstValueFrom(
+        authService.getSession().pipe(
+          tap((session) => authStore.setSession(session)),
+          catchError(() => {
+            authStore.clearSession();
+            return of(null);
+          }),
+        ),
+      );
+    }),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,

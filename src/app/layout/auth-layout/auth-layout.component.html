@@ -1,9 +1,9 @@
 <div class="layout">
-  <div class="header">
-    <h1>Account</h1>
-  </div>
+  <header class="header">
+    <h1>{{ title$ | async }}</h1>
+  </header>
+
   <div class="content">
     <router-outlet></router-outlet>
   </div>
-  <!-- <app-footer></app-footer> -->
 </div>
