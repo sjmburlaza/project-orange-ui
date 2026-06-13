@@ -5,12 +5,37 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+import type { Request } from 'express';
 import { join } from 'node:path';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+app.get('/api/geo/country', (req, res) => {
+  res.json({ countryCode: readCountryCode(req) });
+});
+
+function readCountryCode(req: Request): string | null {
+  const countryCode =
+    readHeader(req, 'cf-ipcountry') ??
+    readHeader(req, 'x-vercel-ip-country') ??
+    readHeader(req, 'cloudfront-viewer-country') ??
+    readHeader(req, 'x-country-code');
+
+  return countryCode?.trim().toUpperCase() || null;
+}
+
+function readHeader(req: Request, headerName: string): string | null {
+  const header = req.headers[headerName];
+
+  if (Array.isArray(header)) {
+    return header[0] ?? null;
+  }
+
+  return header ?? null;
+}
 
 /**
  * Example Express Rest API endpoints can be defined here.

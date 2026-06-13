@@ -18,6 +18,7 @@ import {
   withXsrfConfiguration,
 } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
+import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { AuthStore } from 'src/app/core/auth/auth.store';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
@@ -37,6 +38,17 @@ import {
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { catchError, firstValueFrom, of, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+const mockInterceptors = environment.useMockAuth
+  ? [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: MockAuthInterceptor,
+        multi: true,
+      },
+    ]
+  : [];
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -77,6 +89,7 @@ export const appConfig: ApplicationConfig = {
         useClass: MultiTranslateLoader,
       },
     }),
+    ...mockInterceptors,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

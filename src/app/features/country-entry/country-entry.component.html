@@ -1,0 +1,58 @@
+<main class="country-entry" aria-labelledby="country-entry-title">
+  <section class="country-entry__panel">
+    <div class="country-entry__brand" aria-label="Orange">
+      <span class="country-entry__brand-mark">
+        <i class="bi bi-phone"></i>
+      </span>
+      <span>ORANGE</span>
+    </div>
+
+    @if (isResolving()) {
+      <div class="country-entry__loading" role="status">
+        <span class="country-entry__spinner" aria-hidden="true"></span>
+        <span>Finding your Orange site</span>
+      </div>
+    } @else {
+      <div class="country-entry__content">
+        <h1 id="country-entry-title">Choose your country</h1>
+
+        @if (suggestedOption(); as suggested) {
+          <p class="country-entry__message">
+            We found {{ suggested.countryName }} from your connection.
+          </p>
+
+          <button
+            class="country-entry__suggestion"
+            type="button"
+            (click)="chooseSite(suggested.code)"
+          >
+            <span>Continue to {{ suggested.countryName }}</span>
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </button>
+        } @else if (detectedCountryCode()) {
+          <p class="country-entry__message">
+            Orange is not available in {{ detectedCountryCode() }} yet.
+          </p>
+        } @else {
+          <p class="country-entry__message">
+            Select the country you want to shop from.
+          </p>
+        }
+
+        <div class="country-entry__options" aria-label="Available countries">
+          @for (option of siteOptions; track option.code) {
+            <button
+              class="country-entry__option"
+              [class.country-entry__option--suggested]="option.code === suggestedSite()"
+              type="button"
+              (click)="chooseSite(option.code)"
+            >
+              <span class="country-entry__flag" aria-hidden="true">{{ option.flag }}</span>
+              <span class="country-entry__country-name">{{ option.countryName }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </section>
+</main>

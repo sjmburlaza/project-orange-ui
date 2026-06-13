@@ -40,6 +40,15 @@ export class MockAuthInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
+    if (req.url.includes('/api/geo/country') && req.method === 'GET') {
+      return of(
+        new HttpResponse({
+          status: 200,
+          body: { code: 'ph' },
+        }),
+      ).pipe(delay(100));
+    }
+
     if (req.url.includes('/api/auth/login') && req.method === 'POST') {
       const body = req.body as Partial<LoginDto> | null;
 

@@ -7,8 +7,10 @@ import { MainLayoutComponent } from 'src/app/layout/main-layout/main-layout.comp
 import { AuthLayoutComponent } from 'src/app/layout/auth-layout/auth-layout.component';
 import { CheckoutLayoutComponent } from 'src/app/layout/checkout-layout/checkout-layout.component';
 import { siteGuard } from 'src/app/core/guards/site.guard';
+import { CountryEntryComponent } from 'src/app/features/country-entry/country-entry.component';
 
 export const routes: Routes = [
+  { path: '', pathMatch: 'full', component: CountryEntryComponent },
   {
     path: ':site',
     canActivate: [siteGuard],
@@ -81,6 +83,5 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: '', pathMatch: 'full', redirectTo: 'ph' },
-  { path: '**', redirectTo: 'ph' },
+  { path: '**', redirectTo: '' },
 ];
