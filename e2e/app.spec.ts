@@ -16,27 +16,119 @@ import {
   shippingOptions,
 } from './fixtures/catalog';
 
+const sitePreferenceKey = 'orange.sitePreference';
+
 test.describe('routing and catalog', () => {
   test.beforeEach(async ({ page }) => {
     await mockOrangeApi(page);
   });
 
-  test('redirects to the default Philippine catalog', async ({ page }) => {
+  test('suggests a supported detected country and enters the selected site', async ({
+    page,
+  }) => {
     await page.goto('/');
 
+    await expect(
+      page.getByRole('heading', { name: 'Choose your country' }),
+    ).toBeVisible();
+    await expect(
+      page.getByText('We found Philippines from your connection.'),
+    ).toBeVisible();
+
+    await page.getByRole('button', { name: /Continue to Philippines/ }).click();
+
     await expect(page).toHaveURL(/\/ph\/products$/);
+    await expect
+      .poll(() =>
+        page.evaluate((key) => localStorage.getItem(key), sitePreferenceKey),
+      )
+      .toBe('ph');
     await expect(page.getByRole('heading', { name: 'ORANGE' })).toBeVisible();
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
     await expect(productCard(page, 'MacBook Air M5')).toBeVisible();
     await expect(productCard(page, 'Mechanical Keyboard')).toBeVisible();
   });
 
-  test('redirects unsupported site codes back to the default site', async ({
+  test('uses a saved country preference when visiting the root URL', async ({
     page,
   }) => {
+    await page.addInitScript(
+      ({ key, site }: { key: string; site: string }) => {
+        localStorage.setItem(key, site);
+      },
+      { key: sitePreferenceKey, site: 'jp' },
+    );
+
+    await page.goto('/');
+
+    await expect(page).toHaveURL(/\/jp\/products$/);
+    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+  });
+
+  test('keeps valid country URLs authoritative over a saved preference', async ({
+    page,
+  }) => {
+    await page.addInitScript(
+      ({ key, site }: { key: string; site: string }) => {
+        localStorage.setItem(key, site);
+      },
+      { key: sitePreferenceKey, site: 'jp' },
+    );
+
+    await page.goto('/fr/products');
+
+    await expect(page).toHaveURL(/\/fr\/products$/);
+    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+  });
+
+  test('shows the selector for an unsupported detected country', async ({
+    page,
+  }) => {
+    await mockGeoCountry(page, 'KR');
+    await page.goto('/');
+
+    await expect(
+      page.getByRole('heading', { name: 'Choose your country' }),
+    ).toBeVisible();
+    await expect(
+      page.getByText('Orange is not available in KR yet.'),
+    ).toBeVisible();
+
+    await page.getByRole('button', { name: /Japan/ }).click();
+
+    await expect(page).toHaveURL(/\/jp\/products$/);
+    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+  });
+
+  test('shows the selector when country detection fails', async ({ page }) => {
+    await mockGeoError(page);
+    await page.goto('/');
+
+    await expect(
+      page.getByRole('heading', { name: 'Choose your country' }),
+    ).toBeVisible();
+    await expect(page.getByText(/We found/)).toHaveCount(0);
+
+    await page.getByRole('button', { name: /France/ }).click();
+
+    await expect(page).toHaveURL(/\/fr\/products$/);
+    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+  });
+
+  test('routes unsupported site codes through the country selector', async ({
+    page,
+  }) => {
+    await mockGeoCountry(page, 'KR');
     await page.goto('/unknown/products');
 
-    await expect(page).toHaveURL(/\/ph\/products$/);
+    await expect(page).toHaveURL(/\/$/);
+    await expect(
+      page.getByRole('heading', { name: 'Choose your country' }),
+    ).toBeVisible();
+
+    await page.getByRole('button', { name: /China/ }).click();
+
+    await expect(page).toHaveURL(/\/cn\/products$/);
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
   });
 
@@ -277,6 +369,8 @@ async function mockOrangeApi(page: Page): Promise<void> {
     cart: createCart(),
   };
 
+  await mockGeoCountry(page, 'PH');
+
   await page.route('**/api/categories', async (route) => {
     await route.fulfill({ json: categories });
   });
@@ -310,6 +404,21 @@ async function mockOrangeApi(page: Page): Promise<void> {
 
   await page.route('**/api/shipping/options**', async (route) => {
     await route.fulfill({ json: shippingOptions });
+  });
+}
+
+async function mockGeoCountry(
+  page: Page,
+  countryCode: string | null,
+): Promise<void> {
+  await page.route('**/api/geo/country', async (route) => {
+    await route.fulfill({ json: { countryCode } });
+  });
+}
+
+async function mockGeoError(page: Page): Promise<void> {
+  await page.route('**/api/geo/country', async (route) => {
+    await route.fulfill({ status: 500, json: { message: 'Not available' } });
   });
 }
 
