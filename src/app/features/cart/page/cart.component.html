@@ -18,6 +18,7 @@
               <app-addon
                 [addon]="addon"
                 [productId]="item.productId"
+                [currency]="siteService.currency()"
                 (upsertAddon)="onAddonUpsert($event)"
                 (removeAddon)="onAddonRemove($event)"
               ></app-addon>

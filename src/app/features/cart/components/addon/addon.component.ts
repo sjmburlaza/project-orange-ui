@@ -10,6 +10,8 @@ import { AddonTradeinComponent } from '../addon-tradein/addon-tradein.component'
 import { AddonMobilePlanComponent } from '../addon-mobile-plan/addon-mobile-plan.component';
 import { AddonDialogData } from './addon-dialog-data.model';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CurrencyPipe } from '@angular/common';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 interface UpsertAddonEvent {
   productId: number;
@@ -24,13 +26,14 @@ interface RemoveAddonEvent {
 
 @Component({
   selector: 'app-addon',
-  imports: [IconPipe, TranslatePipe],
+  imports: [IconPipe, TranslatePipe, CurrencyPipe],
   templateUrl: './addon.component.html',
   styleUrl: './addon.component.scss',
 })
 export class AddonComponent {
   @Input({ required: true }) addon!: Addon;
   @Input({ required: true }) productId!: number;
+  @Input({ required: true }) currency!: string;
   @Output() upsertAddon = new EventEmitter<UpsertAddonEvent>();
   @Output() removeAddon = new EventEmitter<RemoveAddonEvent>();
 
@@ -81,9 +84,26 @@ export class AddonComponent {
   }
 
   removeSelectedAddon(): void {
-    this.removeAddon.emit({
-      productId: this.productId,
-      addonId: this.addon.id,
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '520px',
+      maxWidth: '90vw',
+      data: {
+        title: 'cart.addon.removeDialog.title',
+        message: 'cart.addon.removeDialog.message',
+        cancel: 'cart.addon.removeDialog.cancel',
+        proceed: 'cart.addon.removeDialog.proceed',
+        name: this.addon.title,
+        titleName: this.addon.name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res === 'proceed') {
+        this.removeAddon.emit({
+          productId: this.productId,
+          addonId: this.addon.id,
+        });
+      }
     });
   }
 }

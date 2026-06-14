@@ -20,13 +20,15 @@ export interface InsurancePlan {
   name: string;
   code: string;
   description: string;
-  amount: string;
+  amount: number;
+  billingFrequency?: string;
 }
 
 export interface MobilePlan {
   name: string;
   code: string;
-  amount: string;
+  amount: number;
+  billingFrequency?: string;
   dataAllowance: string;
   description: string;
 }

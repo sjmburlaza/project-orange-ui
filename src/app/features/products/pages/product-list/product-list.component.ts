@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -66,15 +66,18 @@ export class ProductListComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-          width: '420px',
+          width: '520px',
+          maxWidth: '90vw',
           data: {
             title: 'products.cart.addedTitle',
             message: 'products.cart.addedMessage',
+            cancel: 'products.cart.continueShopping',
+            proceed: 'products.cart.goToCart',
           },
         });
 
         dialogRef.afterClosed().subscribe((res) => {
-          if (res === 'cart') {
+          if (res === 'proceed') {
             const site = this.siteService.currentSite();
             this.router.navigate([`/${site}/cart`]);
           }

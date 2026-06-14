@@ -29,7 +29,8 @@ export interface Addon {
   description: string;
   imageUrl: string;
   isAdded: boolean;
-  amount?: string;
+  amount?: number;
+  billingFrequency?: string;
 }
 
 export interface Voucher {
@@ -41,6 +42,7 @@ export interface Voucher {
 export interface CartSummaryAttribute {
   name: string;
   amount: number;
+  billingFrequency?: string;
   displayValue?: number | string;
 }
 

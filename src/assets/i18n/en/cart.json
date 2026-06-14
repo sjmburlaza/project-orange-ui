@@ -24,7 +24,21 @@
     "addon": {
       "add": "Add",
       "cancel": "Cancel",
-      "noPlansAvailable": "No plans available."
+      "noPlansAvailable": "No plans available.",
+      "removeDialog": {
+        "title": "Remove {{ titleName }}",
+        "message": "Are you sure you want to remove {{ name }}?",
+        "cancel": "Cancel",
+        "proceed": "Remove"
+      }
+    },
+    "item": {
+      "removeDialog": {
+        "title": "Remove Item",
+        "message": "Are you sure you want to remove {{ name }}?",
+        "cancel": "Cancel",
+        "proceed": "Remove"
+      }
     }
   }
 }

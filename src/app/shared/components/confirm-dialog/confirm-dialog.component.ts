@@ -7,6 +7,15 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 
+export interface ConfirmDialog {
+  title: string;
+  message: string;
+  cancel: string;
+  proceed: string;
+  name?: string | null;
+  titleName?: string | null;
+}
+
 @Component({
   selector: 'app-confirm-dialog',
   imports: [MatButtonModule, MatDialogModule, TranslatePipe],
@@ -15,13 +24,13 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ConfirmDialogComponent {
   private dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
-  data = inject(MAT_DIALOG_DATA) as { title: string; message: string };
+  data = inject(MAT_DIALOG_DATA) as ConfirmDialog;
 
-  continueShopping(): void {
-    this.dialogRef.close('continue');
+  cancel(): void {
+    this.dialogRef.close('cancel');
   }
 
-  goToCart(): void {
-    this.dialogRef.close('cart');
+  proceed(): void {
+    this.dialogRef.close('proceed');
   }
 }
