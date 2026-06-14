@@ -1,65 +1,291 @@
-# ProjectOrangeV2
+# Project Orange UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.3.
+Project Orange UI is an Angular storefront for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, add-on experiences, authentication, profile pages, and an admin area for dashboard, order, and product management.
 
-## Development server
+## Tech Stack
 
-To start a local development server, run:
+- Angular 20 with standalone components and lazy routes
+- Angular SSR/server output with client hydration
+- Angular Material, Angular CDK, SCSS, and Bootstrap Icons
+- NgRx Store, Effects, and Store DevTools for products, cart, and trade-in state
+- ngx-translate with split translation resources
+- Vitest through Angular's unit test builder
+- Playwright for end-to-end tests
 
-```bash
-ng serve
-```
+## Getting Started
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install dependencies:
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+Start the development server:
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+The app runs at `http://localhost:4200/`. The dev server uses `proxy.conf.json` to forward `/api` requests to `http://localhost:5175`.
 
-## Running unit tests
+To enter the storefront, choose a country from the root page or visit a site-scoped route directly:
 
-To execute unit tests, use the following command:
+```text
+http://localhost:4200/ph/products
+http://localhost:4200/fr/products
+http://localhost:4200/cn/products
+http://localhost:4200/jp/products
+```
+
+## Available Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm start` | Runs `ng serve` with `proxy.conf.json`. |
+| `npm run start:e2e` | Runs the Angular dev server with the e2e build configuration. |
+| `npm run build` | Builds the app for production into `dist/`. |
+| `npm run watch` | Builds in watch mode with the development configuration. |
+| `npm test` | Runs unit tests. |
+| `npm run test:watch` | Runs unit tests in watch mode. |
+| `npm run test:ci` | Runs unit tests once for CI. |
+| `npm run e2e` | Runs Playwright tests. |
+| `npm run e2e:ui` | Opens the Playwright UI runner. |
+| `npm run e2e:headed` | Runs Playwright tests in headed mode. |
+| `npm run lint` | Runs Angular ESLint over TypeScript and templates. |
+| `npm run build:ssr` | Builds the server-output application. |
+| `npm run serve:ssr:project-orange-v2` | Serves the built SSR bundle from `dist/project-orange-v2/server/server.mjs`. |
+
+## Application Flow
+
+The root route (`/`) loads the country entry screen. It uses `/api/sites` and `/api/geo/country` to list supported sites and suggest a country when possible. The selected site is saved in local storage under `orange.sitePreference`.
+
+Most app routes are scoped by site:
+
+| Route | Purpose |
+| --- | --- |
+| `/:site/products` | Product listing with category, sort, and price filters. |
+| `/:site/products/detail` | Product detail page. |
+| `/:site/cart` | Cart review, quantity updates, vouchers, shipping, and add-ons. |
+| `/:site/checkout` | Dynamic checkout form, shipping, payment, and order summary flow. |
+| `/:site/auth/login` | Sign in. |
+| `/:site/auth/register` | Account registration. |
+| `/:site/auth/forgot-password` | Password reset entry point. |
+| `/:site/profile/orders` | Customer order history. |
+| `/:site/profile/account-settings` | Customer account settings. |
+| `/:site/admin/dashboard` | Admin dashboard. Requires an authenticated admin session. |
+| `/:site/admin/manage-orders` | Admin order management. Requires an authenticated admin session. |
+| `/:site/admin/manage-products` | Admin product management. Requires an authenticated admin session. |
+
+Unsupported site codes are redirected back to the country selector.
+
+## API Behavior
+
+All API calls start with `/api`. During local development, `proxy.conf.json` forwards those requests to `http://localhost:5175`.
+
+`ApiSitePrefixInterceptor` automatically prefixes scoped API calls with the active site code. For example, a component that requests:
+
+```text
+/api/products
+```
+
+while the active route is `/ph/products` is sent as:
+
+```text
+/api/ph/products
+```
+
+The interceptor leaves these unscoped endpoints unchanged:
+
+```text
+/api/sites
+/api/sites/:site
+/api/geo/country
+```
+
+Primary API areas used by the UI:
+
+| Area | Endpoints |
+| --- | --- |
+| Sites | `GET /api/sites`, `GET /api/sites/:site` |
+| Country detection | `GET /api/geo/country` |
+| Auth | `POST /api/auth/login`, `POST /api/auth/register`, `GET /api/auth/session`, `POST /api/auth/logout` |
+| Catalog | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories` |
+| Product add-ons | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans` |
+| Cart | `GET /api/carts/:cartCode`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:productId`, `DELETE /api/carts/:cartCode/items/:productId` |
+| Cart add-ons | `PUT /api/carts/:cartCode/items/:productId/addons/:addonId`, `DELETE /api/carts/:cartCode/items/:productId/addons/:addonId` |
+| Vouchers | `POST /api/carts/:cartCode/vouchers`, `DELETE /api/carts/:cartCode/vouchers/:code` |
+| Checkout | `GET /api/checkout/form` |
+| Shipping | `GET /api/shipping/options?postalCode=...`, `PUT /api/carts/:cartCode/shipping` |
+| Trade-in | `GET /api/trade-ins/config`, `GET /api/trade-ins/categories`, `GET /api/trade-ins/brands`, `GET /api/trade-ins/devices`, `GET /api/trade-ins/storages` |
+| Trade-in sessions | `POST /api/trade-in-sessions`, `GET /api/trade-in-sessions/:id`, `PATCH /api/trade-in-sessions/:id/step-one`, `PATCH /api/trade-in-sessions/:id/step-two`, `PATCH /api/trade-in-sessions/:id/step-three`, `PATCH /api/trade-in-sessions/:id/confirm` |
+
+Auth requests use credentials and XSRF support. `AuthInterceptor` adds `withCredentials` to API requests and redirects unauthenticated users to the site login page when protected requests return `401`.
+
+## Mock Auth
+
+Mock auth is available through `MockAuthInterceptor`, but it is disabled by default. To enable it for local work, set `useMockAuth` to `true` in the active environment file:
+
+```ts
+export const environment = {
+  production: false,
+  useMockAuth: true,
+};
+```
+
+The mock interceptor handles:
+
+- `GET /api/geo/country`
+- `POST /api/auth/login`
+- `POST /api/auth/register`
+- `GET /api/auth/session`
+- `POST /api/auth/logout`
+
+The default mock user is an admin user with broad product, inventory, order, and user permissions.
+
+## State Management
+
+Global feature state is registered in `src/app/app.config.ts`:
+
+- `productFeature` and `ProductEffects` for catalog loading and filters
+- `cartFeature` and `CartEffects` for cart, vouchers, shipping, and add-ons
+- `tradeInFeature` and `TradeInEffects` for trade-in configuration and sessions
+
+Feature facades sit beside their stores and are the preferred integration point for components.
+
+## Localization and Sites
+
+Translations live in `src/assets/i18n/<language>/`. The current resources are:
+
+```text
+common.json
+home.json
+products.json
+cart.json
+```
+
+`MultiTranslateLoader` loads and merges those resources for the active language. Current language folders are:
+
+```text
+en
+fr
+zh
+ja
+```
+
+Site configuration is loaded from the backend through `SiteService`. Each site includes:
+
+- `code`
+- `countryName`
+- `locale`
+- `currency`
+- `defaultLanguage`
+- `supportedLanguages`
+- `features`
+
+Feature flags currently affect add-ons such as insurance, trade-in, and vouchers.
+
+## Project Structure
+
+```text
+src/app/core
+  auth/             Session models, auth service, auth store, roles, permissions
+  guards/           Auth, role, and site route guards
+  i18n/             Site types and multi-file translation loader
+  interceptors/     API site prefixing, auth, and mock auth
+  models/           Shared API/domain models
+  services/         Site, storage, country detection, and postal code services
+
+src/app/features
+  admin/            Admin dashboard, order management, product management
+  auth/             Login, register, forgot password
+  cart/             Cart page, cart store, cart API, cart item add-ons
+  checkout/         Dynamic checkout form, shipping, payment
+  common/           Reusable commerce UI such as order summary, voucher, CTA
+  country-entry/    Country selector and detected-country entry flow
+  home/             Home feature
+  products/         Product list, product detail, filters, product store
+  profile/          Orders and account settings
+  trade-in/         Trade-in store and API
+
+src/app/layout
+  auth-layout/      Layout for auth pages
+  checkout-layout/  Layout for cart and checkout
+  main-layout/      Storefront shell
+  header/ footer/ sidebar/
+
+src/app/shared
+  components/       Shared controls such as buttons, dropdowns, sliders, spinners
+  pipes/            Shared pipes
+  validators/       Shared validators
+```
+
+## Testing
+
+Run unit tests:
 
 ```bash
-ng test
+npm run test:ci
 ```
 
-## Running end-to-end tests
-
-End-to-end tests use [Playwright](https://playwright.dev/). The Playwright config starts the Angular dev server automatically and the initial smoke tests mock `/api` responses, so no separate backend is required.
+Run Playwright e2e tests:
 
 ```bash
 npm run e2e
 ```
 
-To debug tests interactively, run:
+The Playwright configuration starts the app automatically with:
 
 ```bash
-npm run e2e:ui
+npm run start:e2e -- --host 127.0.0.1 --port 4200
 ```
 
-If Playwright browsers are not installed yet, run `npx playwright install chromium`.
+The e2e suite mocks the Orange API in `e2e/app.spec.ts` and uses fixture data from `e2e/fixtures/catalog.ts`, so a backend is not required for e2e tests.
 
-## Additional Resources
+If Playwright browsers are missing, install Chromium:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npx playwright install chromium
+```
+
+## Common Development Tasks
+
+### Add a New Translation Key
+
+1. Add the key to each language resource under `src/assets/i18n/<language>/`.
+2. Keep keys in the resource that matches the feature area, such as `products.json` or `cart.json`.
+3. Use ngx-translate in the component template or TypeScript code.
+
+### Add a New Site
+
+1. Add the site in the backend response for `/api/sites`.
+2. Make sure the site has a matching language folder in `src/assets/i18n/` for its default language.
+3. Confirm the site `features` map enables the expected add-ons and checkout behavior.
+4. Visit `/<site-code>/products` locally and verify API calls are prefixed correctly.
+
+### Add a New API Call
+
+1. Add or update the feature service in `src/app/features/**/services/`.
+2. Use `/api/...` as the base path. The site prefix interceptor will add the active site when needed.
+3. Add model types under `src/app/core/models/` if the payload is shared.
+4. Add focused unit tests for service or store behavior, and extend e2e mocks when the flow is user-facing.
+
+### Add a New Feature Route
+
+1. Add the lazy route to the feature route file or `src/app/app.routes.ts`.
+2. Choose the correct layout: main, checkout, auth, or standalone.
+3. Add guards and role metadata when the route is protected.
+4. Add route coverage to Playwright if the flow is part of the customer or admin journey.
+
+## Build and Serve SSR Output
+
+Build the app:
+
+```bash
+npm run build:ssr
+```
+
+Serve the built bundle:
+
+```bash
+npm run serve:ssr:project-orange-v2
+```
