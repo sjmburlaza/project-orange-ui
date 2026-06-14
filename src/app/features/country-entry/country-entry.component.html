@@ -43,20 +43,21 @@
           @for (option of siteOptions(); track option.code) {
             <button
               class="country-entry__option"
-              [class.country-entry__option--suggested]="option.code === suggestedSite()"
+              [class.country-entry__option--suggested]="
+                option.code === suggestedSite()
+              "
               type="button"
               (click)="chooseSite(option.code)"
             >
-              <span
-                class="country-entry__flag"
-                [attr.data-site]="option.flagCode"
-                aria-hidden="true"
-              >
-                @if (!option.flagCode) {
-                  {{ option.code.toUpperCase() }}
-                }
+              <span class="country-entry__country-flag">
+                <img
+                  [src]="'assets/flags/' + option.code + '.svg'"
+                  [alt]="option.countryName"
+                />
               </span>
-              <span class="country-entry__country-name">{{ option.countryName }}</span>
+              <span class="country-entry__country-name">{{
+                option.countryName
+              }}</span>
             </button>
           }
         </div>
