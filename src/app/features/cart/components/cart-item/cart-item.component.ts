@@ -1,7 +1,9 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem } from 'src/app/core/models/cart.model';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { QuantitySelectorComponent } from 'src/app/shared/components/quantity-selector/quantity-selector.component';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
@@ -12,6 +14,8 @@ import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
   styleUrl: './cart-item.component.scss',
 })
 export class CartItemComponent {
+  private readonly dialog = inject(MatDialog);
+
   @Input({ required: true }) item!: CartItem;
   @Input({ required: true }) currency!: string;
 
@@ -28,8 +32,24 @@ export class CartItemComponent {
   }
 
   onRemoveItem(productId: number) {
-    if (productId != null) {
-      this.removeItem.emit(productId);
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '520px',
+      maxWidth: '90vw',
+      data: {
+        title: 'cart.item.removeDialog.title',
+        message: 'cart.item.removeDialog.message',
+        cancel: 'cart.item.removeDialog.cancel',
+        proceed: 'cart.item.removeDialog.proceed',
+        name: this.item.productName,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res === 'proceed') {
+        if (productId != null) {
+          this.removeItem.emit(productId);
+        }
+      }
+    });
   }
 }

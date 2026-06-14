@@ -56,8 +56,10 @@
     background: token(color, card-background);
     cursor: pointer;
 
+    &:hover,
     &--selected {
       border-color: token(color, primary);
+      background: rgba(255, 165, 0, 0.08);
     }
 
     &__name {

@@ -1,0 +1,12 @@
+<div class="dialog-container">
+  <h2>{{ data.title | translate: { titleName: data.titleName } }}</h2>
+  <p>{{ data.message | translate: { name: data.name } }}</p>
+  <div class="actions">
+    <button matButton="outlined" (click)="cancel()">
+      {{ data.cancel | translate }}
+    </button>
+    <button matButton="filled" (click)="proceed()">
+      {{ data.proceed | translate }}
+    </button>
+  </div>
+</div>

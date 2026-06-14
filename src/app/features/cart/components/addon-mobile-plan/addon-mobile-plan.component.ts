@@ -1,19 +1,22 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { AddonDialogData } from '../addon/addon-dialog-data.model';
 import { TranslatePipe } from '@ngx-translate/core';
+import { SiteService } from 'src/app/core/services/site.services';
 
 @Component({
   selector: 'app-addon-mobile-plan',
-  imports: [AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, TranslatePipe, CurrencyPipe],
   templateUrl: './addon-mobile-plan.component.html',
   styleUrl: './addon-mobile-plan.component.scss',
 })
 export class AddonMobilePlanComponent implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<AddonMobilePlanComponent>);
   private readonly productFacade = inject(ProductFacade);
+  readonly siteService = inject(SiteService);
+  readonly currency = this.siteService.currency;
 
   readonly data = inject<AddonDialogData>(MAT_DIALOG_DATA);
   readonly plans$ = this.productFacade.mobilePlans$(this.data.productId);

@@ -12,7 +12,12 @@
   </div>
   <div class="addon__actions">
     @if (addon.isAdded) {
-      <p class="addon__amount">{{ addon.amount }}</p>
+      <p class="addon__amount">
+        {{ addon.amount | currency: currency }}
+        @if (addon.billingFrequency) {
+          / {{ addon.billingFrequency }}
+        }
+      </p>
       <button (click)="removeSelectedAddon()">
         <i [class]="'delete' | icon"></i>
       </button>
