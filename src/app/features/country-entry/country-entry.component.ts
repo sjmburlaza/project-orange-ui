@@ -31,8 +31,9 @@ export class CountryEntryComponent implements OnInit {
   readonly siteOptions = this.siteService.siteOptions;
   readonly suggestedOption = computed(
     () =>
-      this.siteOptions().find((option) => option.code === this.suggestedSite()) ??
-      null,
+      this.siteOptions().find(
+        (option) => option.code === this.suggestedSite(),
+      ) ?? null,
   );
 
   ngOnInit(): void {
