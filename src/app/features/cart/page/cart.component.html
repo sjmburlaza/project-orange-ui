@@ -8,13 +8,13 @@
       @for (item of items; track item.productId; let last = $last) {
         <app-cart-item
           [item]="item"
-          [currency]="siteService.config().currency"
+          [currency]="siteService.currency()"
           (removeItem)="removeItem($event)"
           (quantityChange)="onQuantityChange($event)"
         ></app-cart-item>
-        @if (item.addons.length) {
+        @if (enabledAddons(item.addons).length) {
           <div class="addons">
-            @for (addon of item.addons; track addon.id) {
+            @for (addon of enabledAddons(item.addons); track addon.id) {
               <app-addon
                 [addon]="addon"
                 [productId]="item.productId"

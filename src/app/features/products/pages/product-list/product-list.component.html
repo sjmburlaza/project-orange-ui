@@ -14,7 +14,7 @@
     @for (product of products; track product.id) {
       <app-product-card
         [product]="product"
-        [currency]="siteService.config().currency"
+        [currency]="siteService.currency()"
         (addToCart)="addToCart($event)"
       ></app-product-card>
     }

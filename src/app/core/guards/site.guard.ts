@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { isSiteCode, SITES } from 'src/app/core/i18n/sites';
+import { catchError, map, of } from 'rxjs';
+import { normalizeSiteCode, SiteConfig } from 'src/app/core/i18n/sites';
 import { SiteService } from 'src/app/core/services/site.services';
 
 export const siteGuard: CanActivateFn = (route) => {
@@ -9,16 +10,38 @@ export const siteGuard: CanActivateFn = (route) => {
   const translate = inject(TranslateService);
   const siteService = inject(SiteService);
 
-  const site = route.paramMap.get('site');
+  const site = normalizeSiteCode(route.paramMap.get('site'));
+  const countrySelector = router.createUrlTree(['/']);
 
-  if (!isSiteCode(site)) {
-    return router.createUrlTree(['/']);
+  if (!site) {
+    return countrySelector;
   }
 
-  const config = SITES[site];
+  const loadedConfig = siteService.getSiteConfig(site);
 
-  translate.use(config.defaultLanguage);
-  siteService.setCurrentSite(site);
+  if (loadedConfig) {
+    activateSite(loadedConfig, translate, siteService);
+    return true;
+  }
 
-  return true;
+  return siteService.loadSite(site).pipe(
+    map((config) => {
+      if (!config) {
+        return countrySelector;
+      }
+
+      activateSite(config, translate, siteService);
+      return true;
+    }),
+    catchError(() => of(countrySelector)),
+  );
 };
+
+function activateSite(
+  config: SiteConfig,
+  translate: TranslateService,
+  siteService: SiteService,
+): void {
+  translate.use(config.defaultLanguage);
+  siteService.setCurrentSite(config.code);
+}

@@ -33,7 +33,7 @@ export class AddonTradeinComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
   private readonly siteService = inject(SiteService);
-  readonly currency = this.siteService.config().currency;
+  readonly currency = this.siteService.currency;
 
   readonly data = inject<AddonDialogData>(MAT_DIALOG_DATA);
 

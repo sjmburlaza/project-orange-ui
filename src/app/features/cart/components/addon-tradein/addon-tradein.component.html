@@ -96,7 +96,7 @@
 
           <div class="estimate">
             <span>Estimate</span>
-            <strong>{{ estimateAmount | currency: currency }}</strong>
+            <strong>{{ estimateAmount | currency: currency() }}</strong>
           </div>
 
           <footer>
@@ -211,7 +211,7 @@
               </div>
               <div>
                 <dt>Credit</dt>
-                <dd>{{ estimateAmount | currency: currency }}</dd>
+                <dd>{{ estimateAmount | currency: currency() }}</dd>
               </div>
             </dl>
           </div>

@@ -15,5 +15,5 @@ export class OrderSummaryComponent {
   readonly siteService = inject(SiteService);
   readonly summary$ = this.cartFacade.summary$;
   readonly total$ = this.cartFacade.total$;
-  readonly currency = this.siteService.config().currency;
+  readonly currency = this.siteService.currency;
 }

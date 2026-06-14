@@ -1,6 +1,8 @@
 <div class="sidebar-container">
-  <app-voucher />
-  <div class="divider"></div>
+  @if (siteService.isFeatureEnabled("vouchers")) {
+    <app-voucher />
+    <div class="divider"></div>
+  }
   <app-order-summary />
   @if (isCartRoute()) {
     <app-cta />

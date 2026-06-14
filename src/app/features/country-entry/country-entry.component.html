@@ -40,14 +40,22 @@
         }
 
         <div class="country-entry__options" aria-label="Available countries">
-          @for (option of siteOptions; track option.code) {
+          @for (option of siteOptions(); track option.code) {
             <button
               class="country-entry__option"
               [class.country-entry__option--suggested]="option.code === suggestedSite()"
               type="button"
               (click)="chooseSite(option.code)"
             >
-              <span class="country-entry__flag" aria-hidden="true">{{ option.flag }}</span>
+              <span
+                class="country-entry__flag"
+                [attr.data-site]="option.flagCode"
+                aria-hidden="true"
+              >
+                @if (!option.flagCode) {
+                  {{ option.code.toUpperCase() }}
+                }
+              </span>
               <span class="country-entry__country-name">{{ option.countryName }}</span>
             </button>
           }

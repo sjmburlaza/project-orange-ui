@@ -9,7 +9,7 @@
             <div class="item__value">{{ item.displayValue }}</div>
           } @else {
             <div class="item__value">
-              {{ item.amount | currency: currency }}
+              {{ item.amount | currency: currency() }}
             </div>
           }
         </div>
@@ -20,7 +20,7 @@
   <div class="total">
     <div class="total__name">{{ "cart.total" | translate }}</div>
     <div class="total__value">
-      {{ total$ | async | currency: currency }}
+      {{ total$ | async | currency: currency() }}
     </div>
   </div>
 </div>

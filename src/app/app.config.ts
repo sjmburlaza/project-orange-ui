@@ -7,7 +7,7 @@ import {
   provideZoneChangeDetection,
   isDevMode,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {
@@ -17,6 +17,7 @@ import {
   withInterceptorsFromDi,
   withXsrfConfiguration,
 } from '@angular/common/http';
+import { ApiSitePrefixInterceptor } from 'src/app/core/interceptors/api-site-prefix.interceptor';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -37,8 +38,10 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { catchError, firstValueFrom, of, tap } from 'rxjs';
+import { catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { SiteService } from 'src/app/core/services/site.services';
+import { normalizeSiteCode, SiteConfig } from 'src/app/core/i18n/sites';
 
 const mockInterceptors = environment.useMockAuth
   ? [
@@ -72,14 +75,21 @@ export const appConfig: ApplicationConfig = {
 
       const authService = inject(AuthService);
       const authStore = inject(AuthStore);
+      const siteService = inject(SiteService);
+      const document = inject(DOCUMENT);
+      const initialSite = getSiteFromPath(document.location.pathname);
 
       return firstValueFrom(
-        authService.getSession().pipe(
-          tap((session) => authStore.setSession(session)),
-          catchError(() => {
-            authStore.clearSession();
-            return of(null);
-          }),
+        loadInitialSite(siteService, initialSite).pipe(
+          switchMap(() =>
+            authService.getSession().pipe(
+              tap((session) => authStore.setSession(session)),
+              catchError(() => {
+                authStore.clearSession();
+                return of(null);
+              }),
+            ),
+          ),
         ),
       );
     }),
@@ -89,6 +99,11 @@ export const appConfig: ApplicationConfig = {
         useClass: MultiTranslateLoader,
       },
     }),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiSitePrefixInterceptor,
+      multi: true,
+    },
     ...mockInterceptors,
     {
       provide: HTTP_INTERCEPTORS,
@@ -106,3 +121,22 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
   ],
 };
+
+function getSiteFromPath(pathname: string): string | null {
+  const [site] = pathname.split('/').filter(Boolean);
+  return normalizeSiteCode(site);
+}
+
+function loadInitialSite(
+  siteService: SiteService,
+  site: string | null,
+) {
+  if (!site) {
+    return siteService.loadSites().pipe(catchError(() => of([])));
+  }
+
+  return siteService.loadSite(site).pipe(
+    map((config): SiteConfig[] => (config ? [config] : [])),
+    catchError(() => of([])),
+  );
+}

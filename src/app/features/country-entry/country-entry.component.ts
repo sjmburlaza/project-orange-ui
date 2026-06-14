@@ -8,8 +8,8 @@ import {
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
-import { SiteCode, siteFromCountryCode } from 'src/app/core/i18n/sites';
+import { catchError, map, Observable, of, take } from 'rxjs';
+import { SiteCode, SiteConfig } from 'src/app/core/i18n/sites';
 import { CountryDetectionService } from 'src/app/core/services/country-detection.service';
 import { SiteService } from 'src/app/core/services/site.services';
 
@@ -28,10 +28,10 @@ export class CountryEntryComponent implements OnInit {
   readonly isResolving = signal(true);
   readonly detectedCountryCode = signal<string | null>(null);
   readonly suggestedSite = signal<SiteCode | null>(null);
-  readonly siteOptions = this.siteService.getSiteOptions();
+  readonly siteOptions = this.siteService.siteOptions;
   readonly suggestedOption = computed(
     () =>
-      this.siteOptions.find((option) => option.code === this.suggestedSite()) ??
+      this.siteOptions().find((option) => option.code === this.suggestedSite()) ??
       null,
   );
 
@@ -40,10 +40,21 @@ export class CountryEntryComponent implements OnInit {
       return;
     }
 
+    this.ensureSiteOptions()
+      .pipe(take(1))
+      .subscribe(() => this.resolveSite());
+  }
+
+  chooseSite(site: SiteCode): void {
+    this.siteService.saveSitePreference(site);
+    this.redirectToSite(site);
+  }
+
+  private resolveSite(): void {
     const preferredSite = this.siteService.getPreferredSite();
 
     if (preferredSite) {
-      this.redirectToSite(preferredSite);
+      this.redirectToSiteIfAvailable(preferredSite);
       return;
     }
 
@@ -52,18 +63,67 @@ export class CountryEntryComponent implements OnInit {
       .pipe(take(1))
       .subscribe((countryCode) => {
         this.detectedCountryCode.set(countryCode);
-        this.suggestedSite.set(siteFromCountryCode(countryCode));
+        const suggestedSite = this.siteService.siteFromCountryCode(countryCode);
+
+        if (!suggestedSite && countryCode && !this.siteService.sites().length) {
+          this.loadSuggestedSite(countryCode);
+          return;
+        }
+
+        this.suggestedSite.set(suggestedSite);
         this.isResolving.set(false);
       });
-  }
-
-  chooseSite(site: SiteCode): void {
-    this.siteService.saveSitePreference(site);
-    this.redirectToSite(site);
   }
 
   private redirectToSite(site: SiteCode): void {
     this.siteService.setCurrentSite(site);
     void this.router.navigate(['/', site, 'products'], { replaceUrl: true });
+  }
+
+  private ensureSiteOptions(): Observable<SiteConfig[]> {
+    const sites = this.siteService.sites();
+
+    if (sites.length) {
+      return of(sites);
+    }
+
+    return this.siteService.loadSites().pipe(catchError(() => of([])));
+  }
+
+  private redirectToSiteIfAvailable(site: SiteCode): void {
+    this.ensureSiteConfig(site)
+      .pipe(take(1))
+      .subscribe((isAvailable) => {
+        if (isAvailable) {
+          this.redirectToSite(site);
+          return;
+        }
+
+        this.isResolving.set(false);
+      });
+  }
+
+  private loadSuggestedSite(countryCode: string): void {
+    this.ensureSiteConfig(countryCode)
+      .pipe(take(1))
+      .subscribe((isAvailable) => {
+        const site = isAvailable
+          ? this.siteService.siteFromCountryCode(countryCode)
+          : null;
+
+        this.suggestedSite.set(site);
+        this.isResolving.set(false);
+      });
+  }
+
+  private ensureSiteConfig(site: SiteCode): Observable<boolean> {
+    if (this.siteService.isSupportedSite(site)) {
+      return of(true);
+    }
+
+    return this.siteService.loadSite(site).pipe(
+      map((config) => Boolean(config)),
+      catchError(() => of(false)),
+    );
   }
 }
