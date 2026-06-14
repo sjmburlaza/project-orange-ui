@@ -5,7 +5,7 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
 import { PERMISSIONS, ROLES } from 'src/app/core/auth/auth.constants';
 import {
@@ -13,9 +13,11 @@ import {
   LoginDto,
   User,
 } from 'src/app/core/auth/auth.models';
+import { SiteService } from 'src/app/core/services/site.services';
 
 @Injectable()
 export class MockAuthInterceptor implements HttpInterceptor {
+  private readonly siteService = inject(SiteService);
   private readonly mockUser: User = {
     id: '52a0adc1-25d3-4cac-9154-48649ebe9d16',
     email: 'admin@example.com',
@@ -40,7 +42,9 @@ export class MockAuthInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    if (req.url.includes('/api/geo/country') && req.method === 'GET') {
+    const apiPath = this.getApiPath(req.url);
+
+    if (apiPath === '/geo/country' && req.method === 'GET') {
       return of(
         new HttpResponse({
           status: 200,
@@ -49,7 +53,7 @@ export class MockAuthInterceptor implements HttpInterceptor {
       ).pipe(delay(100));
     }
 
-    if (req.url.includes('/api/auth/login') && req.method === 'POST') {
+    if (apiPath === '/auth/login' && req.method === 'POST') {
       const body = req.body as Partial<LoginDto> | null;
 
       return of(
@@ -60,7 +64,7 @@ export class MockAuthInterceptor implements HttpInterceptor {
       ).pipe(delay(800));
     }
 
-    if (req.url.includes('/api/auth/register') && req.method === 'POST') {
+    if (apiPath === '/auth/register' && req.method === 'POST') {
       return of(
         new HttpResponse({
           status: 201,
@@ -68,7 +72,7 @@ export class MockAuthInterceptor implements HttpInterceptor {
       ).pipe(delay(800));
     }
 
-    if (req.url.includes('/api/auth/session') && req.method === 'GET') {
+    if (apiPath === '/auth/session' && req.method === 'GET') {
       return of(
         new HttpResponse({
           status: 200,
@@ -77,7 +81,7 @@ export class MockAuthInterceptor implements HttpInterceptor {
       ).pipe(delay(300));
     }
 
-    if (req.url.includes('/api/auth/logout') && req.method === 'POST') {
+    if (apiPath === '/auth/logout' && req.method === 'POST') {
       return of(
         new HttpResponse({
           status: 204,
@@ -86,6 +90,18 @@ export class MockAuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req);
+  }
+
+  private getApiPath(url: string): string | null {
+    if (!url.startsWith('/api/')) {
+      return null;
+    }
+
+    const segments = url.slice('/api/'.length).split('/');
+
+    return this.siteService.isSupportedSite(segments[0])
+      ? `/${segments.slice(1).join('/')}`
+      : `/${segments.join('/')}`;
   }
 
   private createMockSession(email = this.mockUser.email): AuthSession {

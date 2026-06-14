@@ -24,7 +24,7 @@
 
         <strong>
           {{
-            option.price === 0 ? "Free" : (option.price | currency: currency)
+            option.price === 0 ? "Free" : (option.price | currency: currency())
           }}
         </strong>
       </button>

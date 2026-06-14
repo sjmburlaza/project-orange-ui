@@ -5,6 +5,7 @@ import type {
   Cart,
   UpdateQuantityRequest,
 } from '../src/app/core/models/cart.model';
+import type { SiteConfig } from '../src/app/core/i18n/sites';
 import type { ProductSort } from '../src/app/core/models/product.model';
 import {
   categories,
@@ -17,6 +18,60 @@ import {
 } from './fixtures/catalog';
 
 const sitePreferenceKey = 'orange.sitePreference';
+const siteConfigs: SiteConfig[] = [
+  {
+    code: 'ph',
+    countryName: 'Philippines',
+    locale: 'en-PH',
+    currency: 'PHP',
+    defaultLanguage: 'en',
+    supportedLanguages: ['en'],
+    features: {
+      insurance: true,
+      tradeIn: false,
+      vouchers: true,
+    },
+  },
+  {
+    code: 'fr',
+    countryName: 'France',
+    locale: 'fr-FR',
+    currency: 'EUR',
+    defaultLanguage: 'fr',
+    supportedLanguages: ['fr'],
+    features: {
+      insurance: true,
+      tradeIn: true,
+      vouchers: true,
+    },
+  },
+  {
+    code: 'cn',
+    countryName: 'China',
+    locale: 'zh-CN',
+    currency: 'CNY',
+    defaultLanguage: 'zh',
+    supportedLanguages: ['zh'],
+    features: {
+      insurance: true,
+      tradeIn: true,
+      vouchers: true,
+    },
+  },
+  {
+    code: 'jp',
+    countryName: 'Japan',
+    locale: 'ja-JP',
+    currency: 'JPY',
+    defaultLanguage: 'ja',
+    supportedLanguages: ['ja'],
+    features: {
+      insurance: true,
+      tradeIn: true,
+      vouchers: true,
+    },
+  },
+];
 
 test.describe('routing and catalog', () => {
   test.beforeEach(async ({ page }) => {
@@ -370,40 +425,69 @@ async function mockOrangeApi(page: Page): Promise<void> {
   };
 
   await mockGeoCountry(page, 'PH');
+  await mockSites(page);
 
-  await page.route('**/api/categories', async (route) => {
+  await page.route(/\/api\/(?:[a-z]{2}\/)?categories$/, async (route) => {
     await route.fulfill({ json: categories });
   });
 
-  await page.route('**/api/products**', async (route) => {
-    const url = new URL(route.request().url());
-    const categoryId = url.searchParams.get('categoryId');
-    const sortBy = url.searchParams.get('sortBy') as ProductSort | null;
-    const minPrice = Number(url.searchParams.get('minPrice') ?? 0);
-    const maxPrice = Number(url.searchParams.get('maxPrice') ?? 100000);
-    const filteredProducts = categoryId
-      ? products.filter((product) => product.categoryId === Number(categoryId))
-      : [...products];
-    const visibleProducts = sortProducts(
-      filteredProducts.filter(
-        (product) => product.price >= minPrice && product.price <= maxPrice,
-      ),
-      sortBy,
-    );
+  await page.route(
+    /\/api\/(?:[a-z]{2}\/)?products(?:\?.*)?$/,
+    async (route) => {
+      const url = new URL(route.request().url());
+      const categoryId = url.searchParams.get('categoryId');
+      const sortBy = url.searchParams.get('sortBy') as ProductSort | null;
+      const minPrice = Number(url.searchParams.get('minPrice') ?? 0);
+      const maxPrice = Number(url.searchParams.get('maxPrice') ?? 100000);
+      const filteredProducts = categoryId
+        ? products.filter((product) => product.categoryId === Number(categoryId))
+        : [...products];
+      const visibleProducts = sortProducts(
+        filteredProducts.filter(
+          (product) => product.price >= minPrice && product.price <= maxPrice,
+        ),
+        sortBy,
+      );
 
-    await route.fulfill({ json: visibleProducts });
-  });
+      await route.fulfill({ json: visibleProducts });
+    },
+  );
 
-  await page.route('**/api/carts/**', async (route) => {
+  await page.route(/\/api\/(?:[a-z]{2}\/)?carts(?:\/.*)?$/, async (route) => {
     await handleCartRoute(route, state);
   });
 
-  await page.route('**/api/checkout/form', async (route) => {
+  await page.route(/\/api\/(?:[a-z]{2}\/)?checkout\/form$/, async (route) => {
     await route.fulfill({ json: checkoutForm });
   });
 
-  await page.route('**/api/shipping/options**', async (route) => {
-    await route.fulfill({ json: shippingOptions });
+  await page.route(
+    /\/api\/(?:[a-z]{2}\/)?shipping\/options(?:\?.*)?$/,
+    async (route) => {
+      await route.fulfill({ json: shippingOptions });
+    },
+  );
+}
+
+async function mockSites(page: Page): Promise<void> {
+  await page.route(/\/api\/sites$/, async (route) => {
+    await route.fulfill({ json: { sites: siteConfigs } });
+  });
+
+  await page.route(/\/api\/sites\/[^/]+$/, async (route) => {
+    const pathname = new URL(route.request().url()).pathname;
+    const siteCode = pathname.split('/').at(-1);
+    const site = siteConfigs.find((config) => config.code === siteCode);
+
+    if (!site) {
+      await route.fulfill({
+        status: 404,
+        json: { message: 'Site not found' },
+      });
+      return;
+    }
+
+    await route.fulfill({ json: site });
   });
 }
 
@@ -411,13 +495,13 @@ async function mockGeoCountry(
   page: Page,
   countryCode: string | null,
 ): Promise<void> {
-  await page.route('**/api/geo/country', async (route) => {
+  await page.route(/\/api\/geo\/country$/, async (route) => {
     await route.fulfill({ json: { countryCode } });
   });
 }
 
 async function mockGeoError(page: Page): Promise<void> {
-  await page.route('**/api/geo/country', async (route) => {
+  await page.route(/\/api\/geo\/country$/, async (route) => {
     await route.fulfill({ status: 500, json: { message: 'Not available' } });
   });
 }
@@ -445,7 +529,8 @@ async function handleCartRoute(
 ): Promise<void> {
   const request = route.request();
   const url = new URL(request.url());
-  const segments = url.pathname.split('/').filter(Boolean);
+  const pathname = apiPathname(url);
+  const segments = pathname.split('/').filter(Boolean);
   const method = request.method();
 
   if (method === 'GET' && segments.at(-1) === 'e2e-cart') {
@@ -453,7 +538,7 @@ async function handleCartRoute(
     return;
   }
 
-  if (method === 'POST' && url.pathname === '/api/carts/items') {
+  if (method === 'POST' && pathname === '/api/carts/items') {
     const body = request.postDataJSON() as AddToCartRequest;
     const product = products.find((item) => item.id === body.productId);
 
@@ -508,6 +593,16 @@ async function handleCartRoute(
   }
 
   await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
+}
+
+function apiPathname(url: URL): string {
+  const segments = url.pathname.split('/').filter(Boolean);
+
+  if (segments[0] === 'api' && segments[1]?.length === 2) {
+    return `/api/${segments.slice(2).join('/')}`;
+  }
+
+  return url.pathname;
 }
 
 function updateCartItemQuantity(

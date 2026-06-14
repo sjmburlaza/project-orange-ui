@@ -8,6 +8,7 @@
   border-radius: 16px;
   padding: 36px 24px;
   max-width: 400px;
+  height: 582px;
 
   &__image {
     height: token(spacing, 30);
@@ -21,7 +22,7 @@
   }
 
   &__actions {
-    margin-top: 24px;
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;

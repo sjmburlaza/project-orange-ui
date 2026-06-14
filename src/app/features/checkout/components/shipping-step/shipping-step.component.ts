@@ -25,7 +25,7 @@ import { SiteService } from 'src/app/core/services/site.services';
 export class ShippingStepComponent implements OnInit, OnChanges {
   private readonly shippingPricingService = inject(ShippingPricingService);
   readonly siteService = inject(SiteService);
-  readonly currency = this.siteService.config().currency;
+  readonly currency = this.siteService.currency;
   @Input({ required: true }) fields: DynamicField[] = [];
   @Input() initialValue: unknown = {};
   @Input() postalCode = '';

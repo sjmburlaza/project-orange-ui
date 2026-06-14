@@ -4,7 +4,10 @@ import { CartFacade } from '../store/cart.facade';
 import { AsyncPipe } from '@angular/common';
 import { AddonComponent } from '../components/addon/addon.component';
 import { SiteService } from 'src/app/core/services/site.services';
-import { UpdateCartItemAddonRequest } from 'src/app/core/models/cart.model';
+import {
+  Addon,
+  UpdateCartItemAddonRequest,
+} from 'src/app/core/models/cart.model';
 
 @Component({
   selector: 'app-cart',
@@ -48,5 +51,9 @@ export class CartComponent implements OnInit {
 
   onAddonRemove(data: { productId: number; addonId: string }): void {
     this.cartFacade.removeItemAddon(data.productId, data.addonId);
+  }
+
+  enabledAddons(addons: Addon[]): Addon[] {
+    return addons.filter((addon) => this.siteService.isAddonEnabled(addon.id));
   }
 }

@@ -21,7 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const authReq = req.url.startsWith('/api/')
+    const authReq = this.isApiUrl(req.url)
       ? req.clone({ withCredentials: true })
       : req;
 
@@ -31,9 +31,8 @@ export class AuthInterceptor implements HttpInterceptor {
           this.authStore.clearSession();
 
           if (!this.isAuthEndpoint(authReq.url)) {
-            void this.router.navigate([
-              `/${this.siteService.getCurrentSite()}/auth/login`,
-            ]);
+            const site = this.siteService.getCurrentSite();
+            void this.router.navigate([site ? `/${site}/auth/login` : '/']);
           }
         }
 
@@ -43,6 +42,22 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private isAuthEndpoint(url: string): boolean {
-    return url.startsWith('/api/auth/');
+    return this.getApiPath(url)?.startsWith('/auth/') ?? false;
+  }
+
+  private isApiUrl(url: string): boolean {
+    return this.getApiPath(url) !== null;
+  }
+
+  private getApiPath(url: string): string | null {
+    if (url.startsWith('/api/')) {
+      const segments = url.slice('/api/'.length).split('/');
+
+      return this.siteService.isSupportedSite(segments[0])
+        ? `/${segments.slice(1).join('/')}`
+        : `/${segments.join('/')}`;
+    }
+
+    return null;
   }
 }
