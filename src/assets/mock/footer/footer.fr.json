@@ -1,33 +1,37 @@
 {
   "brand": "ORANGE",
-  "intro": "Discover devices, plans, services, and support built for everyday shopping.",
+  "intro": "Decouvrez des appareils, forfaits, services et options d'assistance pour vos achats du quotidien.",
   "contact": {
-    "text": "Need shopping help?",
-    "label": "Chat with an Orange Specialist",
+    "text": "Besoin d'aide pour acheter ?",
+    "label": "Discuter avec un specialiste Orange",
     "href": "#support"
   },
   "sections": [
     {
-      "title": "Shop and Learn",
+      "title": "Explorer et acheter",
       "links": [
         {
-          "label": "Phones",
+          "label": "Telephones",
           "href": "/products?category=phones"
         },
         {
-          "label": "Laptops",
+          "label": "Ordinateurs portables",
           "href": "/products?category=laptops"
         },
         {
-          "label": "Accessories",
+          "label": "Moniteurs",
+          "href": "/products?category=monitors"
+        },
+        {
+          "label": "Accessoires",
           "href": "/products?category=accessories"
         },
         {
-          "label": "New Arrivals",
+          "label": "Nouveautes",
           "href": "/products"
         },
         {
-          "label": "Certified Pre-Owned",
+          "label": "Reconditionne certifie",
           "href": "/products?condition=pre-owned"
         }
       ]
@@ -40,78 +44,78 @@
           "href": "#orange-care"
         },
         {
-          "label": "Trade In",
+          "label": "Reprise",
           "href": "#trade-in"
         },
         {
-          "label": "Mobile Plans",
+          "label": "Forfaits mobiles",
           "href": "#mobile-plans"
         },
         {
-          "label": "Delivery and Pickup",
+          "label": "Livraison et retrait",
           "href": "#delivery"
         }
       ]
     },
     {
-      "title": "Account",
+      "title": "Compte",
       "links": [
         {
-          "label": "Manage Your Account",
+          "label": "Gerer votre compte",
           "href": "/profile/account-settings"
         },
         {
-          "label": "Track an Order",
+          "label": "Suivre une commande",
           "href": "/profile/orders"
         },
         {
-          "label": "Saved Items",
+          "label": "Articles enregistres",
           "href": "/profile"
         },
         {
-          "label": "Cart",
+          "label": "Panier",
           "href": "/cart"
         }
       ]
     },
     {
-      "title": "Support",
+      "title": "Assistance",
       "links": [
         {
-          "label": "Contact Us",
+          "label": "Nous contacter",
           "href": "#support"
         },
         {
-          "label": "Returns",
+          "label": "Retours",
           "href": "#returns"
         },
         {
-          "label": "Warranty",
+          "label": "Garantie",
           "href": "#warranty"
         },
         {
-          "label": "Repair Services",
+          "label": "Reparation",
           "href": "#repair"
         }
       ]
     },
     {
-      "title": "Orange Values",
+      "title": "Valeurs Orange",
       "links": [
         {
-          "label": "Accessibility",
+          "label": "Accessibilite",
           "href": "#accessibility"
         },
         {
-          "label": "Environment",
+          "label": "Environnement",
           "href": "#environment"
         },
         {
-          "label": "Privacy",
+          "label": "Confidentialite",
           "href": "#privacy"
         },
         {
-          "label": "Supplier Responsibility",
+          "label": "Responsabilite fournisseurs",
           "href": "#supplier-responsibility"
         }
       ]
@@ -135,29 +139,29 @@
     }
   ],
   "finePrint": [
-    "0% installment offers, trade-in values, and delivery availability may vary by location, payment partner, and product eligibility.",
-    "Product images, prices, and availability shown in this mock storefront are for demonstration only."
+    "Les offres de paiement en plusieurs fois, les valeurs de reprise et la disponibilite de la livraison peuvent varier selon la region, le partenaire de paiement et l'eligibilite du produit.",
+    "Les images, prix et disponibilites presentes dans cette boutique de demonstration sont fournis a titre indicatif."
   ],
-  "localeLabel": "Philippines",
+  "localeLabel": "France",
   "legalLinks": [
     {
-      "label": "Privacy Policy",
+      "label": "Politique de confidentialite",
       "href": "#privacy-policy"
     },
     {
-      "label": "Terms of Use",
+      "label": "Conditions d'utilisation",
       "href": "#terms"
     },
     {
-      "label": "Sales and Refunds",
+      "label": "Ventes et remboursements",
       "href": "#sales-refunds"
     },
     {
-      "label": "Legal",
+      "label": "Mentions legales",
       "href": "#legal"
     },
     {
-      "label": "Site Map",
+      "label": "Plan du site",
       "href": "#site-map"
     }
   ]

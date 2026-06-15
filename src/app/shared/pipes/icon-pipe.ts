@@ -8,6 +8,7 @@ export class IconPipe implements PipeTransform {
     phones: 'bi bi-phone',
     laptops: 'bi bi-laptop',
     accessories: 'bi bi-keyboard',
+    monitors: 'bi bi-display',
     insurance: 'bi bi-shield-check',
     'mobile-plan': 'bi bi-sim',
     'trade-in': 'bi bi-arrow-repeat',

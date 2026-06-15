@@ -1,9 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { SiteService } from 'src/app/core/services/site.services';
-import footerCnMockData from 'src/assets/mock/footer.cn.json';
-import footerFrMockData from 'src/assets/mock/footer.fr.json';
-import footerJpMockData from 'src/assets/mock/footer.jp.json';
-import footerMockData from 'src/assets/mock/footer.json';
+import footerCnMockData from 'src/assets/mock/footer/footer.cn.json';
+import footerFrMockData from 'src/assets/mock/footer/footer.fr.json';
+import footerJpMockData from 'src/assets/mock/footer/footer.jp.json';
+import footerMockData from 'src/assets/mock/footer/footer.json';
 
 interface FooterLink {
   label: string;

@@ -1,13 +1,30 @@
 <div class="header-container">
-  <button class="home-btn" (click)="goToProducts()">
+  <a
+    class="home-btn"
+    [routerLink]="['/', site(), 'products']"
+    aria-label="Orange home"
+  >
     <h1>ORANGE</h1>
-  </button>
+  </a>
+  <nav aria-label="Primary navigation">
+    @for (item of navItems(); track item.displayName) {
+      <a
+        class="nav-item"
+        [routerLink]="['/', site(), 'products']"
+        [queryParams]="item.queryParams"
+        routerLinkActive="nav-item--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ item.displayName }}
+      </a>
+    }
+  </nav>
   <div class="cta">
     <div class="cta__search">
       <i class="bi bi-search"></i>
     </div>
     <div class="cta__cart">
-      <button [matBadge]="itemCount$ | async" (click)="goToCart()">
+      <button type="button" [matBadge]="itemCount$ | async" (click)="goToCart()">
         <i class="bi bi-cart2"></i>
       </button>
     </div>
@@ -15,7 +32,7 @@
       <i class="bi bi-person-circle"></i>
       <div class="account-dropdown">
         @for (item of (accountMenuItems$ | async) ?? []; track item.label) {
-          <button (click)="item.action()">
+          <button type="button" (click)="item.action()">
             <i [class]="item.icon"></i>
             {{ item.label }}
           </button>

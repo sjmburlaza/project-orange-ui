@@ -1,16 +1,29 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { finalize, map } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { AuthStore } from 'src/app/core/auth/auth.store';
 import { SiteService } from 'src/app/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
+import headerCnMockData from 'src/assets/mock/header/header.cn.json';
+import headerFrMockData from 'src/assets/mock/header/header.fr.json';
+import headerJpMockData from 'src/assets/mock/header/header.jp.json';
+import headerMockData from 'src/assets/mock/header/header.json';
+
+interface HeaderNavItem {
+  displayName: string;
+  queryParams: { category: string } | null;
+}
+
+interface HeaderData {
+  navItems: HeaderNavItem[];
+}
 
 @Component({
   selector: 'app-header',
-  imports: [MatBadgeModule, AsyncPipe],
+  imports: [MatBadgeModule, AsyncPipe, RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -21,7 +34,19 @@ export class HeaderComponent implements OnInit {
   private readonly authService = inject(AuthService);
   readonly siteService = inject(SiteService);
   readonly itemCount$ = this.cartFacade.itemCount$;
-  readonly site = this.siteService.currentSite();
+  readonly site = this.siteService.currentSite;
+
+  private readonly headerBySite: Record<string, HeaderData> = {
+    ph: headerMockData as HeaderData,
+    fr: headerFrMockData as HeaderData,
+    cn: headerCnMockData as HeaderData,
+    jp: headerJpMockData as HeaderData,
+  };
+
+  readonly navItems = computed(
+    () =>
+      (this.headerBySite[this.site()] ?? this.headerBySite['ph']).navItems,
+  );
 
   readonly accountMenuItems$ = this.authStore.isAuthenticated$.pipe(
     map((isAuthenticated) => [
@@ -53,27 +78,23 @@ export class HeaderComponent implements OnInit {
   }
 
   goToCart(): void {
-    this.router.navigate([`/${this.site}/cart`]);
-  }
-
-  goToProducts(): void {
-    this.router.navigate([`/${this.site}/products`]);
+    this.router.navigate([`/${this.site()}/cart`]);
   }
 
   goToOrders(): void {
-    this.router.navigate([`/${this.site}/profile/orders`]);
+    this.router.navigate([`/${this.site()}/profile/orders`]);
   }
 
   goToSaves(): void {
-    this.router.navigate([`/${this.site}/profile`]);
+    this.router.navigate([`/${this.site()}/profile`]);
   }
 
   goToAccount(): void {
-    this.router.navigate([`/${this.site}/profile/account-settings`]);
+    this.router.navigate([`/${this.site()}/profile/account-settings`]);
   }
 
   goToLogin(): void {
-    this.router.navigate([`/${this.site}/auth/login`]);
+    this.router.navigate([`/${this.site()}/auth/login`]);
   }
 
   logout(): void {
