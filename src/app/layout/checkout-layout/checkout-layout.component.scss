@@ -25,11 +25,23 @@
     justify-items: center;
     align-items: center;
     height: 80vh;
-  }
 
-  p {
-    font-size: 40px;
-    color: token(color, text-secondary);
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+
+      i {
+        font-size: 80px;
+        color: token(color, text-secondary);
+      }
+
+      p {
+        font-size: 40px;
+        color: token(color, text-secondary);
+      }
+    }
   }
 }
 

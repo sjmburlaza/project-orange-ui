@@ -10,7 +10,17 @@
       </main>
       <app-sidebar></app-sidebar>
     } @else {
-      <p>{{ "cart.empty" | translate }}</p>
+      <div class="main-content">
+        <i [class]="'cart' | icon"></i>
+        <p>{{ "cart.empty" | translate }}</p>
+        <button
+          type="button"
+          matButton="filled"
+          [routerLink]="['/', site(), 'products']"
+        >
+          {{ "cart.continueShopping" | translate }}
+        </button>
+      </div>
     }
   </div>
 

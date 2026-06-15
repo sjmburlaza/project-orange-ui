@@ -1,6 +1,7 @@
 {
   "cart": {
     "empty": "您的购物车是空的",
+    "continueShopping": "继续购物",
     "inStock": "有库存",
     "remove": "移除",
     "total": "您的总计",
@@ -24,7 +25,21 @@
     "addon": {
       "add": "添加",
       "cancel": "取消",
-      "noPlansAvailable": "暂无可用方案。"
+      "noPlansAvailable": "暂无可用方案。",
+      "removeDialog": {
+        "title": "移除 {{ titleName }}",
+        "message": "确定要移除 {{ name }} 吗？",
+        "cancel": "取消",
+        "proceed": "移除"
+      }
+    },
+    "item": {
+      "removeDialog": {
+        "title": "移除商品",
+        "message": "确定要移除 {{ name }} 吗？",
+        "cancel": "取消",
+        "proceed": "移除"
+      }
     }
   }
 }

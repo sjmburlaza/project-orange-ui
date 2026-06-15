@@ -33,9 +33,14 @@
     display: inline-grid;
     place-items: center;
     border-radius: 50%;
-    background: token(color, primary);
+    background: token(color, main);
     color: token(color, text-inverse);
     font-size: token(font-size, lg);
+  }
+
+  &__brand-name {
+    color: token(color, main);
+    font-size: 36px;
   }
 
   &__loading {
