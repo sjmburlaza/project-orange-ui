@@ -1,14 +1,11 @@
 <div class="product-list">
   @if (products$ | async; as products) {
     <app-product-list-toolbar
-      [categoryOptions]="categoryOptions$ | async"
       [sortOptions]="sortOptions$ | async"
-      [selectedCategory]="selectedCategoryId$ | async"
       [selectedSort]="selectedSort$ | async"
       [priceRange]="priceRange$ | async"
       [priceMax]="(priceMax$ | async) ?? 0"
       [pricePrefix]="pricePrefix()"
-      (categoryChange)="onCategoryChange($event)"
       (sortChange)="onSortChange($event)"
       (priceRangeChange)="onApplyPriceFilter($event)"
       (clearFilters)="onClearFilters()"

@@ -31,13 +31,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListToolbarComponent {
-  @Input() categoryOptions!: SelectOption<number>[] | null;
   @Input() sortOptions!: SelectOption<ProductSort>[] | null;
 
-  @Input() selectedCategory: number | null = null;
   @Input() selectedSort: ProductSort | null = null;
 
-  @Output() categoryChange = new EventEmitter<number | null>();
   @Output() sortChange = new EventEmitter<ProductSort | null>();
   @Output() priceRangeChange = new EventEmitter<RangeValue>();
   @Output() clearFilters = new EventEmitter();
@@ -53,10 +50,6 @@ export class ProductListToolbarComponent {
 
   onPriceRangeChange(value: RangeValue): void {
     this.priceRangeChange.emit(value);
-  }
-
-  onCategoryChange(value: number | null): void {
-    this.categoryChange.emit(value);
   }
 
   onSortChange(value: ProductSort | null): void {

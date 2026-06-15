@@ -21,7 +21,6 @@ import {
   filter,
   map,
   Subject,
-  take,
   withLatestFrom,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -54,7 +53,6 @@ export class ProductListComponent implements OnInit {
   readonly loading$ = this.productFacade.loadingProducts$;
   readonly error$ = this.productFacade.productsError$;
 
-  readonly categoryOptions$ = this.productFacade.categoryOptions$;
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
 
   readonly sortOptions$ = this.productFacade.sortOptions$;
@@ -140,11 +138,6 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  onCategoryChange(categoryId: number | null): void {
-    this.productFacade.selectCategory(categoryId);
-    this.updateCategoryQueryParam(categoryId);
-  }
-
   onSortChange(sortBy: ProductSort | null): void {
     this.productFacade.selectSort(sortBy);
   }
@@ -203,25 +196,6 @@ export class ProductListComponent implements OnInit {
       .replace(/^-+|-+$/g, '');
 
     return slug || null;
-  }
-
-  private updateCategoryQueryParam(categoryId: number | null): void {
-    if (categoryId === null) {
-      this.clearCategoryQueryParam();
-      return;
-    }
-
-    this.productFacade.categories$.pipe(take(1)).subscribe((categories) => {
-      const category = categories.find((item) => item.id === categoryId);
-
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          category: this.normalizeCategorySlug(category?.name),
-        },
-        queryParamsHandling: 'merge',
-      });
-    });
   }
 
   private clearCategoryQueryParam(): void {
