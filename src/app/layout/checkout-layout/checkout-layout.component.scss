@@ -9,6 +9,7 @@
 .content {
   width: 100%;
   max-width: 1200px;
+  min-height: 80vh;
   display: grid;
   margin: 0 auto;
   grid-template-columns: minmax(0, 1fr) 390px;
@@ -28,6 +29,7 @@
 
   p {
     font-size: 40px;
+    color: token(color, text-secondary);
   }
 }
 

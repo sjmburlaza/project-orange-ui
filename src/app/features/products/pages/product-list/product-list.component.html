@@ -1,24 +1,40 @@
-@if (products$ | async; as products) {
-  <app-product-list-toolbar
-    [categoryOptions]="categoryOptions$ | async"
-    [sortOptions]="sortOptions$ | async"
-    [selectedCategory]="selectedCategoryId$ | async"
-    [selectedSort]="selectedSort$ | async"
-    [priceRange]="priceRange$ | async"
-    (categoryChange)="onCategoryChange($event)"
-    (sortChange)="onSortChange($event)"
-    (priceRangeChange)="onApplyPriceFilter($event)"
-    (clearFilters)="onClearFilters()"
-  ></app-product-list-toolbar>
-  <div class="products">
-    @for (product of products; track product.id) {
-      <app-product-card
-        [product]="product"
-        [currency]="siteService.currency()"
-        (addToCart)="addToCart($event)"
-      ></app-product-card>
+<div class="product-list">
+  @if (products$ | async; as products) {
+    <app-product-list-toolbar
+      [categoryOptions]="categoryOptions$ | async"
+      [sortOptions]="sortOptions$ | async"
+      [selectedCategory]="selectedCategoryId$ | async"
+      [selectedSort]="selectedSort$ | async"
+      [priceRange]="priceRange$ | async"
+      [priceMax]="(priceMax$ | async) ?? 0"
+      [pricePrefix]="pricePrefix()"
+      (categoryChange)="onCategoryChange($event)"
+      (sortChange)="onSortChange($event)"
+      (priceRangeChange)="onApplyPriceFilter($event)"
+      (clearFilters)="onClearFilters()"
+    ></app-product-list-toolbar>
+    @if (products.length > 0) {
+      <div class="products">
+        @for (product of products; track product.id) {
+          <app-product-card
+            [product]="product"
+            [currency]="siteService.currency()"
+            (addToCart)="addToCart($event)"
+          ></app-product-card>
+        }
+      </div>
+    } @else {
+      @if ((loading$ | async) === false) {
+        <p class="products-empty">
+          @if (hasActiveProductFilters$ | async) {
+            {{ "products.emptyFiltered" | translate }}
+          } @else {
+            {{ "products.empty" | translate }}
+          }
+        </p>
+      }
     }
-  </div>
-} @else {
-  <p>{{ "products.empty" | translate }}</p>
-}
+  } @else {
+    <p>{{ "products.empty" | translate }}</p>
+  }
+</div>

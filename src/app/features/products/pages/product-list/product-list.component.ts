@@ -1,5 +1,11 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { AsyncPipe, getCurrencySymbol } from '@angular/common';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
@@ -11,7 +17,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -44,11 +50,18 @@ export class ProductListComponent implements OnInit {
   readonly selectedSort$ = this.productFacade.selectedSort$;
 
   readonly priceRange$ = this.productFacade.priceRange$;
+  readonly priceMax$ = this.productFacade.priceMax$;
+  readonly hasActiveProductFilters$ =
+    this.productFacade.hasActiveProductFilters$;
+  readonly pricePrefix = computed(() => {
+    const currency = this.siteService.currency();
+
+    return currency ? getCurrencySymbol(currency, 'narrow') : '';
+  });
   private readonly priceRangeChange$ = new Subject<RangeValue>();
 
   ngOnInit(): void {
-    this.productFacade.loadCategories();
-    this.productFacade.loadProducts();
+    this.initializeProductList();
 
     this.priceRangeChange$
       .pipe(
@@ -83,6 +96,11 @@ export class ProductListComponent implements OnInit {
           }
         });
       });
+  }
+
+  private initializeProductList(): void {
+    this.productFacade.loadCategories();
+    this.productFacade.clearProductFilters();
   }
 
   onCategoryChange(categoryId: number | null): void {

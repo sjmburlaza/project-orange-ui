@@ -1,6 +1,7 @@
 {
   "products": {
     "empty": "No products to show.",
+    "emptyFiltered": "No products are available with the current filters.",
     "filters": {
       "sortBy": "Sort by:",
       "defaultSort": "Default",

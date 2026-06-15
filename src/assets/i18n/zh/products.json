@@ -1,6 +1,7 @@
 {
   "products": {
     "empty": "没有可显示的产品。",
+    "emptyFiltered": "当前筛选条件下没有可用产品。",
     "filters": {
       "sortBy": "排序方式：",
       "defaultSort": "默认",

@@ -1,6 +1,7 @@
 {
   "products": {
     "empty": "表示する商品がありません。",
+    "emptyFiltered": "現在のフィルターで利用できる商品はありません。",
     "filters": {
       "sortBy": "並び替え:",
       "defaultSort": "デフォルト",

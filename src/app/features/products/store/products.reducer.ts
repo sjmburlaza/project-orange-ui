@@ -24,6 +24,7 @@ export interface ProductState {
   selectedSort: ProductSort | null;
   minPrice: number | null;
   maxPrice: number | null;
+  priceFilterMax: number | null;
 
   loadingProducts: boolean;
   loadingProductDetail: boolean;
@@ -51,6 +52,7 @@ export const initialState: ProductState = {
   selectedSort: null,
   minPrice: null,
   maxPrice: null,
+  priceFilterMax: null,
 
   loadingProducts: false,
   loadingProductDetail: false,
@@ -75,9 +77,12 @@ const reducer = createReducer(
     productsError: null,
   })),
 
-  on(ProductActions.loadProductsSuccess, (state, { products }) => ({
+  on(ProductActions.loadProductsSuccess, (state, { products, filters }) => ({
     ...state,
     products,
+    priceFilterMax: isBaseProductListRequest(filters)
+      ? getProductsMaxPrice(products)
+      : state.priceFilterMax,
     loadingProducts: false,
     productsError: null,
   })),
@@ -270,3 +275,24 @@ export const productFeature = createFeature({
   name: productFeatureKey,
   reducer,
 });
+
+function isBaseProductListRequest(
+  filters?: Partial<{
+    categoryId: number | null;
+    minPrice: number | null;
+    maxPrice: number | null;
+  }>,
+): boolean {
+  return (
+    !filters?.categoryId &&
+    filters?.minPrice == null &&
+    filters?.maxPrice == null
+  );
+}
+
+function getProductsMaxPrice(products: Product[]): number {
+  return products.reduce(
+    (maxPrice, product) => Math.max(maxPrice, product.price),
+    0,
+  );
+}

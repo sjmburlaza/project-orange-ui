@@ -25,10 +25,10 @@
     <div class="filter-price">
       <app-range-slider
         [label]="'products.filters.filterPrice' | translate"
-        prefix="₱"
+        [prefix]="pricePrefix"
         [min]="priceMin"
-        [max]="priceMax"
-        [step]="5000"
+        [max]="priceMax ?? priceMin"
+        [step]="100"
         [value]="priceRange"
         (valueChange)="onPriceRangeChange($event)"
       />

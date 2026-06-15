@@ -1,6 +1,7 @@
 {
   "products": {
     "empty": "Aucun produit à afficher.",
+    "emptyFiltered": "Aucun produit n'est disponible avec les filtres actuels.",
     "filters": {
       "sortBy": "Trier par :",
       "defaultSort": "Par défaut",

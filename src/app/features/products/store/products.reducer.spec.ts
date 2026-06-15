@@ -33,8 +33,24 @@ describe('products reducer', () => {
     );
 
     expect(state.products).toEqual(products);
+    expect(state.priceFilterMax).toBe(39999);
     expect(state.loadingProducts).toBe(false);
     expect(state.productsError).toBeNull();
+  });
+
+  it('keeps the price filter max from shrinking after filtered product loads', () => {
+    const state = productFeature.reducer(
+      {
+        ...initialState,
+        priceFilterMax: 72990,
+      },
+      ProductActions.loadProductsSuccess({
+        products: [createProduct({ id: 3, price: 3500 })],
+        filters: { minPrice: 0, maxPrice: 5000 },
+      }),
+    );
+
+    expect(state.priceFilterMax).toBe(72990);
   });
 
   it('tracks selected filters and clears them together', () => {
@@ -90,7 +106,7 @@ describe('products reducer', () => {
         name: 'Screen protection',
         code: 'screen-protect',
         description: 'Accidental damage protection',
-        amount: '499.00',
+        amount: 499,
       },
     ];
 

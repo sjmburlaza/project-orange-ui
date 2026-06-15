@@ -1,8 +1,25 @@
 @use "tokens/tokens" as *;
 
+.product-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+}
+
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: token(spacing, 6);
   padding: token(spacing, 6);
+}
+
+.products-empty {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  margin: 0;
+  padding: token(spacing, 8) token(spacing, 6);
+  color: token(color, text-secondary);
+  text-align: center;
+  font-size: 36px;
 }

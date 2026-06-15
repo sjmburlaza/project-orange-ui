@@ -43,11 +43,12 @@ export class ProductListToolbarComponent {
   @Output() clearFilters = new EventEmitter();
 
   readonly priceMin = 0;
-  readonly priceMax = 100000;
+  @Input() priceMax: number | null = 0;
+  @Input() pricePrefix = '';
 
   @Input() priceRange: RangeValue | null = {
     min: this.priceMin,
-    max: this.priceMax,
+    max: this.priceMin,
   };
 
   onPriceRangeChange(value: RangeValue): void {
