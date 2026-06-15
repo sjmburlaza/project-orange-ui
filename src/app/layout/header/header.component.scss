@@ -13,6 +13,10 @@
   justify-content: space-between;
   align-items: center;
 
+  .home-btn {
+    cursor: pointer;
+  }
+
   .cta {
     display: flex;
     gap: 20px;

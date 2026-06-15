@@ -1,5 +1,11 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { AsyncPipe, getCurrencySymbol } from '@angular/common';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
@@ -44,6 +50,14 @@ export class ProductListComponent implements OnInit {
   readonly selectedSort$ = this.productFacade.selectedSort$;
 
   readonly priceRange$ = this.productFacade.priceRange$;
+  readonly priceMax$ = this.productFacade.priceMax$;
+  readonly hasActiveProductFilters$ =
+    this.productFacade.hasActiveProductFilters$;
+  readonly pricePrefix = computed(() => {
+    const currency = this.siteService.currency();
+
+    return currency ? getCurrencySymbol(currency, 'narrow') : '';
+  });
   private readonly priceRangeChange$ = new Subject<RangeValue>();
 
   ngOnInit(): void {

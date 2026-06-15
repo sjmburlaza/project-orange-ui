@@ -13,7 +13,10 @@ export const ProductActions = createActionGroup({
   source: 'Products',
   events: {
     'Load Products': props<{ filters?: Partial<ProductFilters> }>(),
-    'Load Products Success': props<{ products: Product[] }>(),
+    'Load Products Success': props<{
+      products: Product[];
+      filters?: Partial<ProductFilters>;
+    }>(),
     'Load Products Failure': props<{ error: string }>(),
 
     'Load Categories': emptyProps(),

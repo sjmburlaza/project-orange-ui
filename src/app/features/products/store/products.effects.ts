@@ -20,7 +20,9 @@ export class ProductEffects {
       ofType(ProductActions.loadProducts),
       switchMap(({ filters }) =>
         this.productApiService.getProducts(filters).pipe(
-          map((products) => ProductActions.loadProductsSuccess({ products })),
+          map((products) =>
+            ProductActions.loadProductsSuccess({ products, filters }),
+          ),
           catchError((error) =>
             of(
               ProductActions.loadProductsFailure({

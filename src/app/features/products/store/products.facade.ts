@@ -25,8 +25,10 @@ import {
   selectSelectedCategoryId,
   selectSelectedSort,
   selectSortOptions,
+  selectHasActiveProductFilters,
   selectProductFilters,
   selectPriceRange,
+  selectPriceMax,
   selectInsurancePlansForProduct,
   selectMobilePlansForProduct,
   selectLoadingInsurancePlansForProduct,
@@ -67,8 +69,12 @@ export class ProductFacade {
   readonly sortOptions$ = this.store.select(selectSortOptions);
 
   readonly priceRange$ = this.store.select(selectPriceRange);
+  readonly priceMax$ = this.store.select(selectPriceMax);
 
   readonly filters$ = this.store.select(selectProductFilters);
+  readonly hasActiveProductFilters$ = this.store.select(
+    selectHasActiveProductFilters,
+  );
 
   loadProducts(): void {
     this.store.dispatch(ProductActions.loadProducts({ filters: {} }));

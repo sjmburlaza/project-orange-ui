@@ -18,6 +18,7 @@ export const {
 
   selectMinPrice,
   selectMaxPrice,
+  selectPriceFilterMax,
 
   selectLoadingProducts,
   selectLoadingProductDetail,
@@ -52,6 +53,14 @@ export const selectProductFilters = createSelector(
     minPrice,
     maxPrice,
   }),
+);
+
+export const selectHasActiveProductFilters = createSelector(
+  selectSelectedCategoryId,
+  selectMinPrice,
+  selectMaxPrice,
+  (categoryId, minPrice, maxPrice) =>
+    categoryId !== null || minPrice !== null || maxPrice !== null,
 );
 
 export const selectSelectedProductDetail = createSelector(
@@ -116,6 +125,13 @@ export const selectProductListWithStockStatus = createSelector(
     })),
 );
 
+export const selectPriceMax = createSelector(
+  selectPriceFilterMax,
+  selectMaxPrice,
+  (priceFilterMax, selectedMaxPrice) =>
+    Math.max(priceFilterMax ?? 0, selectedMaxPrice ?? 0),
+);
+
 const SORT_OPTIONS: SelectOption<ProductSort>[] = [
   {
     label: 'Price: Low to High',
@@ -140,8 +156,9 @@ export const selectSortOptions = createSelector(() => SORT_OPTIONS);
 export const selectPriceRange = createSelector(
   selectMinPrice,
   selectMaxPrice,
-  (minPrice, maxPrice): RangeValue => ({
+  selectPriceMax,
+  (minPrice, maxPrice, priceMax): RangeValue => ({
     min: minPrice ?? 0,
-    max: maxPrice ?? 100000,
+    max: maxPrice ?? priceMax,
   }),
 );

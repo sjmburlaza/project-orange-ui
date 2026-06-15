@@ -5,8 +5,10 @@ import {
   ProductDetail,
 } from 'src/app/core/models/product.model';
 import {
+  selectHasActiveProductFilters,
   selectInsurancePlansForProduct,
   selectMobilePlansForProduct,
+  selectPriceMax,
   selectPriceRange,
   selectProductFilters,
   selectProductListWithStockStatus,
@@ -23,6 +25,19 @@ describe('product selectors', () => {
       minPrice: 1000,
       maxPrice: 5000,
     });
+  });
+
+  it('detects active product filters that can reduce the result count', () => {
+    expect(selectHasActiveProductFilters.projector(null, null, null)).toBe(
+      false,
+    );
+    expect(selectHasActiveProductFilters.projector(3, null, null)).toBe(true);
+    expect(selectHasActiveProductFilters.projector(null, 1000, null)).toBe(
+      true,
+    );
+    expect(selectHasActiveProductFilters.projector(null, null, 5000)).toBe(
+      true,
+    );
   });
 
   it('returns the selected product detail from the detail cache', () => {
@@ -54,10 +69,19 @@ describe('product selectors', () => {
     ]);
   });
 
-  it('falls back to the default price range when no range is selected', () => {
-    expect(selectPriceRange.projector(null, null)).toEqual({
+  it('uses the first loaded product max when no max price is selected', () => {
+    expect(selectPriceMax.projector(72990, null)).toBe(72990);
+    expect(selectPriceRange.projector(null, null, 72990)).toEqual({
       min: 0,
-      max: 100000,
+      max: 72990,
+    });
+  });
+
+  it('keeps the slider max at least as high as the selected max price', () => {
+    expect(selectPriceMax.projector(39999, 50000)).toBe(50000);
+    expect(selectPriceRange.projector(1000, 50000, 50000)).toEqual({
+      min: 1000,
+      max: 50000,
     });
   });
 
@@ -68,7 +92,7 @@ describe('product selectors', () => {
           name: 'Screen protection',
           code: 'screen-protect',
           description: 'Accidental damage protection',
-          amount: '499.00',
+          amount: 499,
         },
       ],
     };
@@ -77,7 +101,7 @@ describe('product selectors', () => {
         {
           name: 'Starter data plan',
           code: 'starter-data',
-          amount: '999.00',
+          amount: 999,
           dataAllowance: '10GB',
           description: 'A starter monthly data bundle',
         },
