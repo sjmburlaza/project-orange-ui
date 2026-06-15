@@ -1,15 +1,16 @@
 $primitive-colors: (
+  orange-main: #ffa500,
   // Brand
-  orange-50: #fff7e6,
-  orange-100: #ffe7bf,
-  orange-200: #ffd280,
-  orange-300: #ffc04d,
-  orange-400: #ffb326,
-  orange-500: #ffa500,
-  orange-600: #e69500,
-  orange-700: #cc8400,
-  orange-800: #a36a00,
-  orange-900: #7a5000,
+  orange-50: #fff7ed,
+  orange-100: #ffedd5,
+  orange-200: #fed7aa,
+  orange-300: #fdba74,
+  orange-400: #fb923c,
+  orange-500: #f97316,
+  orange-600: #ea580c,
+  orange-700: #c2410c,
+  orange-800: #9a3412,
+  orange-900: #7c2d12,
 
   // Neutral
   neutral-0: #ffffff,
@@ -38,13 +39,14 @@ $primitive-colors: (
 
   // Info
   blue-500: #2563eb,
-  blue-600: #1d4ed8
+  blue-600: #1d4ed8,
 );
 
 $semantic-colors: (
   // Brand
-  primary: map-get($primitive-colors, orange-500),
-  primary-hover: map-get($primitive-colors, orange-600),
+  main: map-get($primitive-colors, orange-main),
+  primary: map-get($primitive-colors, orange-700),
+  primary-hover: map-get($primitive-colors, orange-800),
   // Layout
   background: map-get($primitive-colors, neutral-0),
   surface: map-get($primitive-colors, neutral-50),
