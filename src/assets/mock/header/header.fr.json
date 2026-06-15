@@ -1,0 +1,32 @@
+{
+  "navItems": [
+    {
+      "displayName": "Boutique",
+      "queryParams": null
+    },
+    {
+      "displayName": "Telephones",
+      "queryParams": {
+        "category": "phones"
+      }
+    },
+    {
+      "displayName": "Ordinateurs portables",
+      "queryParams": {
+        "category": "laptops"
+      }
+    },
+    {
+      "displayName": "Moniteurs",
+      "queryParams": {
+        "category": "monitors"
+      }
+    },
+    {
+      "displayName": "Accessoires",
+      "queryParams": {
+        "category": "accessories"
+      }
+    }
+  ]
+}

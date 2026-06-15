@@ -6,6 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import { Category } from 'src/app/core/models/category.model';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
@@ -13,10 +14,19 @@ import { ProductCardComponent } from 'src/app/features/products/components/produ
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
 import { RangeValue } from 'src/app/shared/components/range-slider/range-slider.component';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Subject,
+  take,
+  withLatestFrom,
+} from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -37,6 +47,7 @@ export class ProductListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   readonly siteService = inject(SiteService);
 
   readonly products$ = this.productFacade.products$;
@@ -62,6 +73,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeProductList();
+    this.watchCategoryRouteParam();
 
     this.priceRangeChange$
       .pipe(
@@ -103,8 +115,34 @@ export class ProductListComponent implements OnInit {
     this.productFacade.clearProductFilters();
   }
 
+  private watchCategoryRouteParam(): void {
+    combineLatest([
+      this.route.queryParamMap.pipe(
+        map((params) => this.normalizeCategorySlug(params.get('category'))),
+        distinctUntilChanged(),
+      ),
+      this.productFacade.categories$,
+    ])
+      .pipe(
+        filter(([, categories]) => categories.length > 0),
+        map(([categorySlug, categories]) =>
+          this.findCategoryId(categories, categorySlug),
+        ),
+        distinctUntilChanged(),
+        withLatestFrom(this.selectedCategoryId$),
+        filter(
+          ([categoryId, selectedCategoryId]) => categoryId !== selectedCategoryId,
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([categoryId]) => {
+        this.productFacade.selectCategory(categoryId);
+      });
+  }
+
   onCategoryChange(categoryId: number | null): void {
     this.productFacade.selectCategory(categoryId);
+    this.updateCategoryQueryParam(categoryId);
   }
 
   onSortChange(sortBy: ProductSort | null): void {
@@ -117,6 +155,7 @@ export class ProductListComponent implements OnInit {
 
   onClearFilters(): void {
     this.productFacade.clearProductFilters();
+    this.clearCategoryQueryParam();
   }
 
   addToCart(product: Product): void {
@@ -124,6 +163,72 @@ export class ProductListComponent implements OnInit {
       productId: product.id,
       quantity: 1,
       addons: [],
+    });
+  }
+
+  private findCategoryId(
+    categories: Category[],
+    categorySlug: string | null,
+  ): number | null {
+    if (!categorySlug) {
+      return null;
+    }
+
+    const category = categories.find((item) => {
+      const itemSlug = this.normalizeCategorySlug(item.name);
+
+      if (!itemSlug) {
+        return false;
+      }
+
+      return (
+        itemSlug === categorySlug ||
+        itemSlug.endsWith(`-${categorySlug}`) ||
+        categorySlug.endsWith(`-${itemSlug}`)
+      );
+    });
+
+    return category?.id ?? null;
+  }
+
+  private normalizeCategorySlug(
+    category: string | null | undefined,
+  ): string | null {
+    const slug = category
+      ?.normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    return slug || null;
+  }
+
+  private updateCategoryQueryParam(categoryId: number | null): void {
+    if (categoryId === null) {
+      this.clearCategoryQueryParam();
+      return;
+    }
+
+    this.productFacade.categories$.pipe(take(1)).subscribe((categories) => {
+      const category = categories.find((item) => item.id === categoryId);
+
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          category: this.normalizeCategorySlug(category?.name),
+        },
+        queryParamsHandling: 'merge',
+      });
+    });
+  }
+
+  private clearCategoryQueryParam(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { category: null },
+      queryParamsHandling: 'merge',
     });
   }
 }

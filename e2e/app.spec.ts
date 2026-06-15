@@ -98,10 +98,13 @@ test.describe('routing and catalog', () => {
         page.evaluate((key) => localStorage.getItem(key), sitePreferenceKey),
       )
       .toBe('ph');
-    await expect(page.getByRole('heading', { name: 'ORANGE' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'ORANGE', exact: true }),
+    ).toBeVisible();
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
     await expect(productCard(page, 'MacBook Air M5')).toBeVisible();
     await expect(productCard(page, 'Mechanical Keyboard')).toBeVisible();
+    await expect(productCard(page, 'Orange Studio Monitor')).toBeVisible();
   });
 
   test('uses a saved country preference when visiting the root URL', async ({
@@ -133,6 +136,9 @@ test.describe('routing and catalog', () => {
     await page.goto('/fr/products');
 
     await expect(page).toHaveURL(/\/fr\/products$/);
+    await expect(
+      page.locator('app-header').getByRole('link', { name: 'Moniteurs' }),
+    ).toBeVisible();
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
   });
 
@@ -200,6 +206,41 @@ test.describe('routing and catalog', () => {
     await expect(productNames(page)).toHaveText([
       'iPhone 15',
       'MacBook Air M5',
+      'Orange Studio Monitor',
+      'Mechanical Keyboard',
+    ]);
+  });
+
+  test('filters products from the header navigation', async ({ page }) => {
+    const header = page.locator('app-header');
+
+    await page.goto('/ph/products');
+
+    await header.getByRole('link', { name: 'Phones' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/products\?category=phones$/);
+    await expect(productNames(page)).toHaveText(['iPhone 15']);
+    await expect(header.getByRole('link', { name: 'Phones' })).toHaveClass(
+      /nav-item--active/,
+    );
+
+    await header.getByRole('link', { name: 'Accessories' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/products\?category=accessories$/);
+    await expect(productNames(page)).toHaveText(['Mechanical Keyboard']);
+
+    await header.getByRole('link', { name: 'Monitors' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/products\?category=monitors$/);
+    await expect(productNames(page)).toHaveText(['Orange Studio Monitor']);
+
+    await header.getByRole('link', { name: 'Store', exact: true }).click();
+
+    await expect(page).toHaveURL(/\/ph\/products$/);
+    await expect(productNames(page)).toHaveText([
+      'iPhone 15',
+      'MacBook Air M5',
+      'Orange Studio Monitor',
       'Mechanical Keyboard',
     ]);
   });
@@ -212,6 +253,7 @@ test.describe('routing and catalog', () => {
 
     await expect(productNames(page)).toHaveText([
       'Mechanical Keyboard',
+      'Orange Studio Monitor',
       'iPhone 15',
       'MacBook Air M5',
     ]);
@@ -222,6 +264,7 @@ test.describe('routing and catalog', () => {
     await expect(productNames(page)).toHaveText([
       'MacBook Air M5',
       'iPhone 15',
+      'Orange Studio Monitor',
       'Mechanical Keyboard',
     ]);
   });

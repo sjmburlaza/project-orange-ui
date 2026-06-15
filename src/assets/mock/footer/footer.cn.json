@@ -1,117 +1,121 @@
 {
   "brand": "ORANGE",
-  "intro": "日常のショッピングに役立つデバイス、プラン、サービス、サポートを見つけましょう。",
+  "intro": "探索适合日常选购的设备、套餐、服务和支持。",
   "contact": {
-    "text": "購入についてお困りですか？",
-    "label": "Orange スペシャリストに相談",
+    "text": "需要购物帮助？",
+    "label": "联系 Orange 专员",
     "href": "#support"
   },
   "sections": [
     {
-      "title": "製品を見る",
+      "title": "选购与了解",
       "links": [
         {
-          "label": "スマートフォン",
+          "label": "手机",
           "href": "/products?category=phones"
         },
         {
-          "label": "ノートパソコン",
+          "label": "笔记本电脑",
           "href": "/products?category=laptops"
         },
         {
-          "label": "アクセサリ",
+          "label": "显示器",
+          "href": "/products?category=monitors"
+        },
+        {
+          "label": "配件",
           "href": "/products?category=accessories"
         },
         {
-          "label": "新製品",
+          "label": "新品",
           "href": "/products"
         },
         {
-          "label": "認定整備済製品",
+          "label": "官方认证二手",
           "href": "/products?condition=pre-owned"
         }
       ]
     },
     {
-      "title": "サービス",
+      "title": "服务",
       "links": [
         {
           "label": "OrangeCare+",
           "href": "#orange-care"
         },
         {
-          "label": "下取り",
+          "label": "以旧换新",
           "href": "#trade-in"
         },
         {
-          "label": "モバイルプラン",
+          "label": "移动套餐",
           "href": "#mobile-plans"
         },
         {
-          "label": "配送と受け取り",
+          "label": "配送与自提",
           "href": "#delivery"
         }
       ]
     },
     {
-      "title": "アカウント",
+      "title": "账户",
       "links": [
         {
-          "label": "アカウント管理",
+          "label": "管理账户",
           "href": "/profile/account-settings"
         },
         {
-          "label": "注文状況",
+          "label": "查看订单",
           "href": "/profile/orders"
         },
         {
-          "label": "保存済みアイテム",
+          "label": "收藏商品",
           "href": "/profile"
         },
         {
-          "label": "バッグ",
+          "label": "购物车",
           "href": "/cart"
         }
       ]
     },
     {
-      "title": "サポート",
+      "title": "支持",
       "links": [
         {
-          "label": "お問い合わせ",
+          "label": "联系我们",
           "href": "#support"
         },
         {
-          "label": "返品",
+          "label": "退货",
           "href": "#returns"
         },
         {
-          "label": "保証",
+          "label": "保修",
           "href": "#warranty"
         },
         {
-          "label": "修理サービス",
+          "label": "维修服务",
           "href": "#repair"
         }
       ]
     },
     {
-      "title": "Orangeの取り組み",
+      "title": "Orange 价值观",
       "links": [
         {
-          "label": "アクセシビリティ",
+          "label": "辅助功能",
           "href": "#accessibility"
         },
         {
-          "label": "環境",
+          "label": "环境责任",
           "href": "#environment"
         },
         {
-          "label": "プライバシー",
+          "label": "隐私",
           "href": "#privacy"
         },
         {
-          "label": "サプライヤー責任",
+          "label": "供应商责任",
           "href": "#supplier-responsibility"
         }
       ]
@@ -135,29 +139,29 @@
     }
   ],
   "finePrint": [
-    "分割払い、下取り額、配送の利用可否は、地域、決済パートナー、製品の条件によって異なる場合があります。",
-    "このモックストアに表示される製品画像、価格、在庫状況はデモ用です。"
+    "免息分期、以旧换新估值和配送服务可能因地区、支付合作伙伴和产品资格而异。",
+    "此演示商城中的产品图片、价格和库存仅用于展示。"
   ],
-  "localeLabel": "日本",
+  "localeLabel": "中国",
   "legalLinks": [
     {
-      "label": "プライバシーポリシー",
+      "label": "隐私政策",
       "href": "#privacy-policy"
     },
     {
-      "label": "利用規約",
+      "label": "使用条款",
       "href": "#terms"
     },
     {
-      "label": "販売と返金",
+      "label": "销售与退款",
       "href": "#sales-refunds"
     },
     {
-      "label": "法的情報",
+      "label": "法律信息",
       "href": "#legal"
     },
     {
-      "label": "サイトマップ",
+      "label": "网站地图",
       "href": "#site-map"
     }
   ]

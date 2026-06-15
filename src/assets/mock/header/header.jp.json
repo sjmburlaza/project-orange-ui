@@ -1,0 +1,32 @@
+{
+  "navItems": [
+    {
+      "displayName": "ストア",
+      "queryParams": null
+    },
+    {
+      "displayName": "スマートフォン",
+      "queryParams": {
+        "category": "phones"
+      }
+    },
+    {
+      "displayName": "ノートパソコン",
+      "queryParams": {
+        "category": "laptops"
+      }
+    },
+    {
+      "displayName": "モニター",
+      "queryParams": {
+        "category": "monitors"
+      }
+    },
+    {
+      "displayName": "アクセサリ",
+      "queryParams": {
+        "category": "accessories"
+      }
+    }
+  ]
+}

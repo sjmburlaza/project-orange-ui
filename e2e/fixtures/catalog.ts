@@ -11,6 +11,7 @@ import type { ShippingOption } from '../../src/app/features/checkout/services/sh
 export const categories: Category[] = [
   { id: 1, name: 'Phones' },
   { id: 2, name: 'Laptops' },
+  { id: 4, name: 'Monitors' },
   { id: 3, name: 'Accessories' },
 ];
 
@@ -34,6 +35,16 @@ export const products: Product[] = [
     imageUrl: '',
     categoryId: 2,
     categoryName: 'Laptops',
+  },
+  {
+    id: 4,
+    name: 'Orange Studio Monitor',
+    description: '27-inch 4K display',
+    price: 24999,
+    stockQuantity: 8,
+    imageUrl: '',
+    categoryId: 4,
+    categoryName: 'Monitors',
   },
   {
     id: 3,

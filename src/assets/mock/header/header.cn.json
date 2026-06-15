@@ -1,0 +1,32 @@
+{
+  "navItems": [
+    {
+      "displayName": "商店",
+      "queryParams": null
+    },
+    {
+      "displayName": "手机",
+      "queryParams": {
+        "category": "phones"
+      }
+    },
+    {
+      "displayName": "笔记本电脑",
+      "queryParams": {
+        "category": "laptops"
+      }
+    },
+    {
+      "displayName": "显示器",
+      "queryParams": {
+        "category": "monitors"
+      }
+    },
+    {
+      "displayName": "配件",
+      "queryParams": {
+        "category": "accessories"
+      }
+    }
+  ]
+}

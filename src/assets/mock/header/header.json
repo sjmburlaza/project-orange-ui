@@ -1,0 +1,32 @@
+{
+  "navItems": [
+    {
+      "displayName": "Store",
+      "queryParams": null
+    },
+    {
+      "displayName": "Phones",
+      "queryParams": {
+        "category": "phones"
+      }
+    },
+    {
+      "displayName": "Laptops",
+      "queryParams": {
+        "category": "laptops"
+      }
+    },
+    {
+      "displayName": "Monitors",
+      "queryParams": {
+        "category": "monitors"
+      }
+    },
+    {
+      "displayName": "Accessories",
+      "queryParams": {
+        "category": "accessories"
+      }
+    }
+  ]
+}
