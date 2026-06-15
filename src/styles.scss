@@ -44,6 +44,13 @@ html {
       protected-state-layer-color: token(color, primary),
     )
   );
+
+  @include mat.badge-overrides(
+    (
+      background-color: token(color, primary),
+      text-color: token(color, text-inverse),
+    )
+  );
 }
 
 body {

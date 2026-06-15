@@ -14,6 +14,7 @@ export class IconPipe implements PipeTransform {
     'trade-in': 'bi bi-arrow-repeat',
     delete: 'bi bi-trash',
     add: 'bi bi-plus-lg',
+    cart: 'bi bi-cart2',
   };
 
   transform(category: string | null | undefined): string {

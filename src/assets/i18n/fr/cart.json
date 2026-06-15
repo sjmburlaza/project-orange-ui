@@ -1,6 +1,7 @@
 {
   "cart": {
     "empty": "Votre panier est vide",
+    "continueShopping": "Continuer vos achats",
     "inStock": "En stock",
     "remove": "Supprimer",
     "total": "Votre total",
@@ -24,7 +25,21 @@
     "addon": {
       "add": "Ajouter",
       "cancel": "Annuler",
-      "noPlansAvailable": "Aucun forfait disponible."
+      "noPlansAvailable": "Aucun forfait disponible.",
+      "removeDialog": {
+        "title": "Supprimer {{ titleName }}",
+        "message": "Voulez-vous vraiment supprimer {{ name }} ?",
+        "cancel": "Annuler",
+        "proceed": "Supprimer"
+      }
+    },
+    "item": {
+      "removeDialog": {
+        "title": "Supprimer l'article",
+        "message": "Voulez-vous vraiment supprimer {{ name }} ?",
+        "cancel": "Annuler",
+        "proceed": "Supprimer"
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 {
   "cart": {
     "empty": "カートは空です",
+    "continueShopping": "買い物を続ける",
     "inStock": "在庫あり",
     "remove": "削除",
     "total": "合計",
@@ -24,7 +25,21 @@
     "addon": {
       "add": "追加",
       "cancel": "キャンセル",
-      "noPlansAvailable": "利用可能なプランがありません。"
+      "noPlansAvailable": "利用可能なプランがありません。",
+      "removeDialog": {
+        "title": "{{ titleName }}を削除",
+        "message": "{{ name }}を削除してもよろしいですか？",
+        "cancel": "キャンセル",
+        "proceed": "削除"
+      }
+    },
+    "item": {
+      "removeDialog": {
+        "title": "商品を削除",
+        "message": "{{ name }}を削除してもよろしいですか？",
+        "cancel": "キャンセル",
+        "proceed": "削除"
+      }
     }
   }
 }
