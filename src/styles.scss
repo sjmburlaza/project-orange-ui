@@ -4,16 +4,44 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use "@angular/material" as mat;
+@use "tokens/tokens" as *;
 
 html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$orange-palette,
+        tertiary: mat.$orange-palette,
       ),
       typography: Roboto,
       density: 0,
+    )
+  );
+
+  @include mat.theme-overrides(
+    (
+      primary: token(color, primary),
+      on-primary: token(color, text-inverse),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-color: token(color, primary),
+      filled-label-text-color: token(color, text-inverse),
+      filled-state-layer-color: token(color, text-inverse),
+      filled-ripple-color: color-mix(
+          in srgb,
+          token(color, text-inverse) 18%,
+          transparent
+        ),
+      outlined-label-text-color: token(color, primary),
+      outlined-outline-color: token(color, primary),
+      outlined-state-layer-color: token(color, primary),
+      text-label-text-color: token(color, primary),
+      text-state-layer-color: token(color, primary),
+      protected-label-text-color: token(color, primary),
+      protected-state-layer-color: token(color, primary),
     )
   );
 }

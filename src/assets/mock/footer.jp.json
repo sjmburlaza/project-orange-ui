@@ -1,0 +1,164 @@
+{
+  "brand": "ORANGE",
+  "intro": "日常のショッピングに役立つデバイス、プラン、サービス、サポートを見つけましょう。",
+  "contact": {
+    "text": "購入についてお困りですか？",
+    "label": "Orange スペシャリストに相談",
+    "href": "#support"
+  },
+  "sections": [
+    {
+      "title": "製品を見る",
+      "links": [
+        {
+          "label": "スマートフォン",
+          "href": "/products?category=phones"
+        },
+        {
+          "label": "ノートパソコン",
+          "href": "/products?category=laptops"
+        },
+        {
+          "label": "アクセサリ",
+          "href": "/products?category=accessories"
+        },
+        {
+          "label": "新製品",
+          "href": "/products"
+        },
+        {
+          "label": "認定整備済製品",
+          "href": "/products?condition=pre-owned"
+        }
+      ]
+    },
+    {
+      "title": "サービス",
+      "links": [
+        {
+          "label": "OrangeCare+",
+          "href": "#orange-care"
+        },
+        {
+          "label": "下取り",
+          "href": "#trade-in"
+        },
+        {
+          "label": "モバイルプラン",
+          "href": "#mobile-plans"
+        },
+        {
+          "label": "配送と受け取り",
+          "href": "#delivery"
+        }
+      ]
+    },
+    {
+      "title": "アカウント",
+      "links": [
+        {
+          "label": "アカウント管理",
+          "href": "/profile/account-settings"
+        },
+        {
+          "label": "注文状況",
+          "href": "/profile/orders"
+        },
+        {
+          "label": "保存済みアイテム",
+          "href": "/profile"
+        },
+        {
+          "label": "バッグ",
+          "href": "/cart"
+        }
+      ]
+    },
+    {
+      "title": "サポート",
+      "links": [
+        {
+          "label": "お問い合わせ",
+          "href": "#support"
+        },
+        {
+          "label": "返品",
+          "href": "#returns"
+        },
+        {
+          "label": "保証",
+          "href": "#warranty"
+        },
+        {
+          "label": "修理サービス",
+          "href": "#repair"
+        }
+      ]
+    },
+    {
+      "title": "Orangeの取り組み",
+      "links": [
+        {
+          "label": "アクセシビリティ",
+          "href": "#accessibility"
+        },
+        {
+          "label": "環境",
+          "href": "#environment"
+        },
+        {
+          "label": "プライバシー",
+          "href": "#privacy"
+        },
+        {
+          "label": "サプライヤー責任",
+          "href": "#supplier-responsibility"
+        }
+      ]
+    }
+  ],
+  "socialLinks": [
+    {
+      "label": "Facebook",
+      "href": "#facebook",
+      "icon": "bi-facebook"
+    },
+    {
+      "label": "Instagram",
+      "href": "#instagram",
+      "icon": "bi-instagram"
+    },
+    {
+      "label": "YouTube",
+      "href": "#youtube",
+      "icon": "bi-youtube"
+    }
+  ],
+  "finePrint": [
+    "分割払い、下取り額、配送の利用可否は、地域、決済パートナー、製品の条件によって異なる場合があります。",
+    "このモックストアに表示される製品画像、価格、在庫状況はデモ用です。"
+  ],
+  "localeLabel": "日本",
+  "legalLinks": [
+    {
+      "label": "プライバシーポリシー",
+      "href": "#privacy-policy"
+    },
+    {
+      "label": "利用規約",
+      "href": "#terms"
+    },
+    {
+      "label": "販売と返金",
+      "href": "#sales-refunds"
+    },
+    {
+      "label": "法的情報",
+      "href": "#legal"
+    },
+    {
+      "label": "サイトマップ",
+      "href": "#site-map"
+    }
+  ]
+}

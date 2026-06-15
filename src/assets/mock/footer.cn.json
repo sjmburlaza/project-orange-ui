@@ -1,0 +1,164 @@
+{
+  "brand": "ORANGE",
+  "intro": "探索适合日常选购的设备、套餐、服务和支持。",
+  "contact": {
+    "text": "需要购物帮助？",
+    "label": "联系 Orange 专员",
+    "href": "#support"
+  },
+  "sections": [
+    {
+      "title": "选购与了解",
+      "links": [
+        {
+          "label": "手机",
+          "href": "/products?category=phones"
+        },
+        {
+          "label": "笔记本电脑",
+          "href": "/products?category=laptops"
+        },
+        {
+          "label": "配件",
+          "href": "/products?category=accessories"
+        },
+        {
+          "label": "新品",
+          "href": "/products"
+        },
+        {
+          "label": "官方认证二手",
+          "href": "/products?condition=pre-owned"
+        }
+      ]
+    },
+    {
+      "title": "服务",
+      "links": [
+        {
+          "label": "OrangeCare+",
+          "href": "#orange-care"
+        },
+        {
+          "label": "以旧换新",
+          "href": "#trade-in"
+        },
+        {
+          "label": "移动套餐",
+          "href": "#mobile-plans"
+        },
+        {
+          "label": "配送与自提",
+          "href": "#delivery"
+        }
+      ]
+    },
+    {
+      "title": "账户",
+      "links": [
+        {
+          "label": "管理账户",
+          "href": "/profile/account-settings"
+        },
+        {
+          "label": "查看订单",
+          "href": "/profile/orders"
+        },
+        {
+          "label": "收藏商品",
+          "href": "/profile"
+        },
+        {
+          "label": "购物车",
+          "href": "/cart"
+        }
+      ]
+    },
+    {
+      "title": "支持",
+      "links": [
+        {
+          "label": "联系我们",
+          "href": "#support"
+        },
+        {
+          "label": "退货",
+          "href": "#returns"
+        },
+        {
+          "label": "保修",
+          "href": "#warranty"
+        },
+        {
+          "label": "维修服务",
+          "href": "#repair"
+        }
+      ]
+    },
+    {
+      "title": "Orange 价值观",
+      "links": [
+        {
+          "label": "辅助功能",
+          "href": "#accessibility"
+        },
+        {
+          "label": "环境责任",
+          "href": "#environment"
+        },
+        {
+          "label": "隐私",
+          "href": "#privacy"
+        },
+        {
+          "label": "供应商责任",
+          "href": "#supplier-responsibility"
+        }
+      ]
+    }
+  ],
+  "socialLinks": [
+    {
+      "label": "Facebook",
+      "href": "#facebook",
+      "icon": "bi-facebook"
+    },
+    {
+      "label": "Instagram",
+      "href": "#instagram",
+      "icon": "bi-instagram"
+    },
+    {
+      "label": "YouTube",
+      "href": "#youtube",
+      "icon": "bi-youtube"
+    }
+  ],
+  "finePrint": [
+    "免息分期、以旧换新估值和配送服务可能因地区、支付合作伙伴和产品资格而异。",
+    "此演示商城中的产品图片、价格和库存仅用于展示。"
+  ],
+  "localeLabel": "中国",
+  "legalLinks": [
+    {
+      "label": "隐私政策",
+      "href": "#privacy-policy"
+    },
+    {
+      "label": "使用条款",
+      "href": "#terms"
+    },
+    {
+      "label": "销售与退款",
+      "href": "#sales-refunds"
+    },
+    {
+      "label": "法律信息",
+      "href": "#legal"
+    },
+    {
+      "label": "网站地图",
+      "href": "#site-map"
+    }
+  ]
+}
