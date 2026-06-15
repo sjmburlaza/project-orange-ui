@@ -1,1 +1,72 @@
-<p>footer works!</p>
+<footer class="footer" aria-label="Orange footer">
+  @let footerData = footer();
+
+  <div class="footer__inner">
+    <section class="footer__service" aria-labelledby="footer-service-title">
+      <div>
+        <p id="footer-service-title" class="footer__brand">
+          {{ footerData.brand }}
+        </p>
+        <p class="footer__intro">{{ footerData.intro }}</p>
+      </div>
+
+      <p class="footer__contact">
+        {{ footerData.contact.text }}
+        <a [href]="resolveHref(footerData.contact.href)">
+          {{ footerData.contact.label }}
+        </a>
+      </p>
+    </section>
+
+    <nav class="footer__directory" aria-label="Footer navigation">
+      @for (section of footerData.sections; track section.title) {
+        <section class="footer__section">
+          <h2>{{ section.title }}</h2>
+
+          <ul>
+            @for (link of section.links; track link.label) {
+              <li>
+                <a [href]="resolveHref(link.href)">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    </nav>
+
+    <section class="footer__fine-print" aria-label="Shopping information">
+      @for (note of footerData.finePrint; track note) {
+        <p>{{ note }}</p>
+      }
+    </section>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">
+        Copyright &copy; {{ currentYear }} {{ footerData.brand }} Store. All rights
+        reserved.
+      </p>
+
+      <nav class="footer__legal" aria-label="Legal links">
+        @for (link of footerData.legalLinks; track link.label) {
+          <a [href]="resolveHref(link.href)">{{ link.label }}</a>
+        }
+      </nav>
+
+      <div class="footer__meta">
+        <span>{{ footerData.localeLabel }}</span>
+
+        <div class="footer__social" aria-label="Social links">
+          @for (link of footerData.socialLinks; track link.label) {
+            <a
+              [href]="resolveHref(link.href)"
+              [attr.aria-label]="link.label"
+              [title]="link.label"
+            >
+              <i [class]="link.icon" aria-hidden="true"></i>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

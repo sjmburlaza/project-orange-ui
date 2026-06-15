@@ -1,0 +1,164 @@
+{
+  "brand": "ORANGE",
+  "intro": "Decouvrez des appareils, forfaits, services et options d'assistance pour vos achats du quotidien.",
+  "contact": {
+    "text": "Besoin d'aide pour acheter ?",
+    "label": "Discuter avec un specialiste Orange",
+    "href": "#support"
+  },
+  "sections": [
+    {
+      "title": "Explorer et acheter",
+      "links": [
+        {
+          "label": "Telephones",
+          "href": "/products?category=phones"
+        },
+        {
+          "label": "Ordinateurs portables",
+          "href": "/products?category=laptops"
+        },
+        {
+          "label": "Accessoires",
+          "href": "/products?category=accessories"
+        },
+        {
+          "label": "Nouveautes",
+          "href": "/products"
+        },
+        {
+          "label": "Reconditionne certifie",
+          "href": "/products?condition=pre-owned"
+        }
+      ]
+    },
+    {
+      "title": "Services",
+      "links": [
+        {
+          "label": "OrangeCare+",
+          "href": "#orange-care"
+        },
+        {
+          "label": "Reprise",
+          "href": "#trade-in"
+        },
+        {
+          "label": "Forfaits mobiles",
+          "href": "#mobile-plans"
+        },
+        {
+          "label": "Livraison et retrait",
+          "href": "#delivery"
+        }
+      ]
+    },
+    {
+      "title": "Compte",
+      "links": [
+        {
+          "label": "Gerer votre compte",
+          "href": "/profile/account-settings"
+        },
+        {
+          "label": "Suivre une commande",
+          "href": "/profile/orders"
+        },
+        {
+          "label": "Articles enregistres",
+          "href": "/profile"
+        },
+        {
+          "label": "Panier",
+          "href": "/cart"
+        }
+      ]
+    },
+    {
+      "title": "Assistance",
+      "links": [
+        {
+          "label": "Nous contacter",
+          "href": "#support"
+        },
+        {
+          "label": "Retours",
+          "href": "#returns"
+        },
+        {
+          "label": "Garantie",
+          "href": "#warranty"
+        },
+        {
+          "label": "Reparation",
+          "href": "#repair"
+        }
+      ]
+    },
+    {
+      "title": "Valeurs Orange",
+      "links": [
+        {
+          "label": "Accessibilite",
+          "href": "#accessibility"
+        },
+        {
+          "label": "Environnement",
+          "href": "#environment"
+        },
+        {
+          "label": "Confidentialite",
+          "href": "#privacy"
+        },
+        {
+          "label": "Responsabilite fournisseurs",
+          "href": "#supplier-responsibility"
+        }
+      ]
+    }
+  ],
+  "socialLinks": [
+    {
+      "label": "Facebook",
+      "href": "#facebook",
+      "icon": "bi-facebook"
+    },
+    {
+      "label": "Instagram",
+      "href": "#instagram",
+      "icon": "bi-instagram"
+    },
+    {
+      "label": "YouTube",
+      "href": "#youtube",
+      "icon": "bi-youtube"
+    }
+  ],
+  "finePrint": [
+    "Les offres de paiement en plusieurs fois, les valeurs de reprise et la disponibilite de la livraison peuvent varier selon la region, le partenaire de paiement et l'eligibilite du produit.",
+    "Les images, prix et disponibilites presentes dans cette boutique de demonstration sont fournis a titre indicatif."
+  ],
+  "localeLabel": "France",
+  "legalLinks": [
+    {
+      "label": "Politique de confidentialite",
+      "href": "#privacy-policy"
+    },
+    {
+      "label": "Conditions d'utilisation",
+      "href": "#terms"
+    },
+    {
+      "label": "Ventes et remboursements",
+      "href": "#sales-refunds"
+    },
+    {
+      "label": "Mentions legales",
+      "href": "#legal"
+    },
+    {
+      "label": "Plan du site",
+      "href": "#site-map"
+    }
+  ]
+}

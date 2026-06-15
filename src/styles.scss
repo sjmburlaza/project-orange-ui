@@ -31,10 +31,10 @@ html {
       filled-label-text-color: token(color, text-inverse),
       filled-state-layer-color: token(color, text-inverse),
       filled-ripple-color: color-mix(
-        in srgb,
-        token(color, text-inverse) 18%,
-        transparent
-      ),
+          in srgb,
+          token(color, text-inverse) 18%,
+          transparent
+        ),
       outlined-label-text-color: token(color, primary),
       outlined-outline-color: token(color, primary),
       outlined-state-layer-color: token(color, primary),
