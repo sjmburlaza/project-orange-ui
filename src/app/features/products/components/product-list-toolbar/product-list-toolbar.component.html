@@ -10,17 +10,6 @@
       />
     </div>
   }
-  @if (categoryOptions) {
-    <div class="filter filter-category">
-      <p>{{ "products.filters.category" | translate }}</p>
-      <app-select-dropdown
-        [placeholder]="'products.filters.allCategories' | translate"
-        [options]="categoryOptions"
-        [selectedValue]="selectedCategory"
-        (selectedValueChange)="onCategoryChange($event)"
-      />
-    </div>
-  }
   @if (priceRange) {
     <div class="filter-price">
       <app-range-slider

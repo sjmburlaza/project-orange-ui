@@ -193,16 +193,23 @@ test.describe('routing and catalog', () => {
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
   });
 
-  test('filters products by category and clears the filter', async ({ page }) => {
+  test('omits the toolbar category filter and clears header category filters', async ({
+    page,
+  }) => {
+    const header = page.locator('app-header');
+
     await page.goto('/ph/products');
 
-    await page.locator('.filter-category mat-select').click();
-    await page.getByRole('option', { name: 'Accessories' }).click();
+    await expect(page.locator('.filter-category')).toHaveCount(0);
 
+    await header.getByRole('link', { name: 'Accessories' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/products\?category=accessories$/);
     await expect(productNames(page)).toHaveText(['Mechanical Keyboard']);
 
     await page.getByRole('button', { name: 'Clear filters' }).click();
 
+    await expect(page).toHaveURL(/\/ph\/products$/);
     await expect(productNames(page)).toHaveText([
       'iPhone 15',
       'MacBook Air M5',
