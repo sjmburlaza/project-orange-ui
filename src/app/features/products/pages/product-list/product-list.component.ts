@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -47,8 +47,7 @@ export class ProductListComponent implements OnInit {
   private readonly priceRangeChange$ = new Subject<RangeValue>();
 
   ngOnInit(): void {
-    this.productFacade.loadCategories();
-    this.productFacade.loadProducts();
+    this.initializeProductList();
 
     this.priceRangeChange$
       .pipe(
@@ -83,6 +82,11 @@ export class ProductListComponent implements OnInit {
           }
         });
       });
+  }
+
+  private initializeProductList(): void {
+    this.productFacade.loadCategories();
+    this.productFacade.clearProductFilters();
   }
 
   onCategoryChange(categoryId: number | null): void {
