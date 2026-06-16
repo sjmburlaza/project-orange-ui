@@ -1,1 +1,14 @@
-{}
+{
+  "common": {
+    "orderItems": {
+      "header": "订单摘要",
+      "itemCount": "您的购物车中有 {{ count }} 件商品。"
+    },
+    "orderSummary": {
+      "header": "摘要"
+    },
+    "cta": {
+      "continueToCheckout": "继续结账"
+    }
+  }
+}

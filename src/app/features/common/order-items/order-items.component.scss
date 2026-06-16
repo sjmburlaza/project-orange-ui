@@ -1,0 +1,41 @@
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  h3 {
+    font-size: 24px;
+  }
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+
+  &__image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    i {
+      font-size: 60px;
+      color: teal;
+    }
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &-name {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}
+
+.divider {
+  height: 1px;
+  background: rgb(211, 211, 211);
+}

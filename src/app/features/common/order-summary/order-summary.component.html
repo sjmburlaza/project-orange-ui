@@ -1,20 +1,20 @@
 <div class="summary-container">
-  <h3>Summary</h3>
+  <h3>{{ "common.orderSummary.header" | translate }}</h3>
   <div class="items">
     @for (item of summary$ | async; track item.name) {
       @if (item.name !== "Total") {
         <div class="item">
           <div class="item__name">{{ item.name }}</div>
-          @if (item.displayValue) {
-            <div class="item__value">{{ item.displayValue }}</div>
-          } @else {
-            <div class="item__value">
+          <div class="item__value">
+            @if (item.displayValue) {
+              {{ item.displayValue }}
+            } @else {
               {{ item.amount | currency: currency() }}
               @if (item.billingFrequency) {
                 /{{ item.billingFrequency }}
               }
-            </div>
-          }
+            }
+          </div>
         </div>
       }
     }

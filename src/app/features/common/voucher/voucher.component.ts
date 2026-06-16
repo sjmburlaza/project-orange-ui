@@ -4,10 +4,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartFacade } from '../../cart/store/cart.facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatAnchor } from '@angular/material/button';
 
 @Component({
   selector: 'app-voucher',
-  imports: [AsyncPipe, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, ReactiveFormsModule, TranslatePipe, MatAnchor],
   templateUrl: './voucher.component.html',
   styleUrl: './voucher.component.scss',
 })

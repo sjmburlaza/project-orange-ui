@@ -1,0 +1,40 @@
+<div class="order-items">
+  <h3>{{ "common.orderItems.header" | translate }}</h3>
+
+  <p>
+    {{
+      "common.orderItems.itemCount" | translate: { count: itemCount$ | async }
+    }}
+  </p>
+
+  @for (item of items$ | async; track item.productId; let lastItem = $last) {
+    <div class="item">
+      <div class="item__image">
+        @if (item.imageUrl) {
+          <img [src]="item.imageUrl" [alt]="item.productName" />
+        } @else {
+          <i [class]="item.categoryName | icon"></i>
+        }
+      </div>
+      <div class="item__description">
+        <div class="item__description-name">
+          {{ item.productName }}
+        </div>
+        <div class="item__description-specs">
+          @for (spec of item.itemSpecs; track spec.name; let lastSpec = $last) {
+            {{ spec.value }}
+            @if (!lastSpec) {
+              ,
+            }
+          }
+        </div>
+        <div class="item__description-amount">
+          {{ item.price | currency: currency() }} x {{ item.quantity }}
+        </div>
+      </div>
+    </div>
+    @if (!lastItem) {
+      <div class="divider"></div>
+    }
+  }
+</div>
