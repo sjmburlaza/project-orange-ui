@@ -1,1 +1,14 @@
-{}
+{
+  "common": {
+    "orderItems": {
+      "header": "Order Summary",
+      "itemCount": "You have {{ count }} item/s in your cart."
+    },
+    "orderSummary": {
+      "header": "Summary"
+    },
+    "cta": {
+      "continueToCheckout": "Continue to checkout"
+    }
+  }
+}

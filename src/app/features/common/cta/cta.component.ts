@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { SiteService } from 'src/app/core/services/site.services';
 
 @Component({
   selector: 'app-cta',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, TranslatePipe],
   templateUrl: './cta.component.html',
   styleUrl: './cta.component.scss',
 })

@@ -1,1 +1,14 @@
-{}
+{
+  "common": {
+    "orderItems": {
+      "header": "Récapitulatif de la commande",
+      "itemCount": "Vous avez {{ count }} article(s) dans votre panier."
+    },
+    "orderSummary": {
+      "header": "Résumé"
+    },
+    "cta": {
+      "continueToCheckout": "Continuer vers le paiement"
+    }
+  }
+}

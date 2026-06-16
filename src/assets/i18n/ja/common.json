@@ -1,1 +1,14 @@
-{}
+{
+  "common": {
+    "orderItems": {
+      "header": "注文概要",
+      "itemCount": "カートに {{ count }} 点の商品があります。"
+    },
+    "orderSummary": {
+      "header": "概要"
+    },
+    "cta": {
+      "continueToCheckout": "チェックアウトへ進む"
+    }
+  }
+}
