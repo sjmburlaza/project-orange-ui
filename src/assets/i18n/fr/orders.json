@@ -1,0 +1,43 @@
+{
+  "orders": {
+    "confirmation": {
+      "loading": "Chargement de la confirmation de commande...",
+      "eyebrow": "Confirmation de commande",
+      "title": "Commande confirmée",
+      "orderNumber": "Numéro de commande",
+      "statusSummaryLabel": "Résumé du statut de la commande",
+      "paymentStatus": "Statut du paiement",
+      "orderStatus": "Statut de la commande",
+      "deliveryEstimate": "Estimation de livraison",
+      "totalAmount": "Montant total",
+      "itemsOrdered": "Articles commandés",
+      "itemCount": {
+        "one": "{{ count }} article",
+        "other": "{{ count }} articles"
+      },
+      "quantity": "Qté {{ quantity }}",
+      "shippingAddress": "Adresse de livraison",
+      "nextSteps": "Prochaines étapes",
+      "continueShopping": "Continuer vos achats",
+      "viewOrders": "Voir les commandes",
+      "errors": {
+        "notFound": "Commande introuvable.",
+        "loadFailed": "Impossible de charger cette commande pour le moment."
+      },
+      "statuses": {
+        "pending": "En attente",
+        "paid": "Payé",
+        "failed": "Échec",
+        "cancelled": "Annulé",
+        "expired": "Expiré",
+        "refunded": "Remboursé",
+        "pending_payment": "Paiement en attente",
+        "confirmed": "Confirmé",
+        "processing": "En traitement",
+        "shipped": "Expédié",
+        "delivered": "Livré",
+        "payment_failed": "Paiement échoué"
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   inject,
   Input,
@@ -26,6 +27,7 @@ import {
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { ValidatorMapperService } from '../../services/validator-mapper.service';
 import { AsyncValidatorMapperService } from '../../services/async-validator-mapper.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -41,6 +43,7 @@ import { AsyncValidatorMapperService } from '../../services/async-validator-mapp
 export class DynamicFormComponent implements OnInit, OnChanges {
   private readonly validatorService = inject(ValidatorMapperService);
   private readonly asyncValidatorService = inject(AsyncValidatorMapperService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input({ required: true }) fields!: DynamicField[];
   @Input() initialValue: DynamicFormObject | null = null;
@@ -183,9 +186,11 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         dependentControl.value === field.visibleIf.value,
       );
 
-      dependentControl.valueChanges.subscribe((value) => {
-        this.applyVisibility(control, value === field.visibleIf?.value);
-      });
+      dependentControl.valueChanges
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((value) => {
+          this.applyVisibility(control, value === field.visibleIf?.value);
+        });
     });
   }
 

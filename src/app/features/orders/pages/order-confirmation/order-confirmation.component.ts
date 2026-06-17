@@ -11,6 +11,7 @@ import {
 } from 'src/app/core/models/order.model';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'src/app/core/services/site.services';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
 
@@ -22,6 +23,7 @@ type DisplayStatus = OrderStatus | PaymentStatus;
     MatButtonModule,
     MatIconModule,
     RouterLink,
+    TranslatePipe,
   ],
   templateUrl: './order-confirmation.component.html',
   styleUrl: './order-confirmation.component.scss',
@@ -41,7 +43,7 @@ export class OrderConfirmationComponent implements OnInit {
     const orderId = this.route.snapshot.paramMap.get('orderId');
 
     if (!orderId) {
-      this.errorMessage.set('Order not found.');
+      this.errorMessage.set('orders.confirmation.errors.notFound');
       this.isLoading.set(false);
       return;
     }
@@ -52,17 +54,10 @@ export class OrderConfirmationComponent implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('We could not load this order right now.');
+        this.errorMessage.set('orders.confirmation.errors.loadFailed');
         this.isLoading.set(false);
       },
     });
-  }
-
-  formatStatus(status: DisplayStatus): string {
-    return status
-      .split('_')
-      .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
-      .join(' ');
   }
 
   statusTone(status: DisplayStatus): string {
