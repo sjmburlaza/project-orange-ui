@@ -36,6 +36,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
+    path: ':site/orders/**',
+    renderMode: RenderMode.Client,
+  },
+  {
     path: ':site/profile/**',
     renderMode: RenderMode.Client,
   },

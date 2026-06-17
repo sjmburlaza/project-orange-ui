@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { FooterComponent } from 'src/app/layout/footer/footer.component';
@@ -28,7 +28,12 @@ import { SiteService } from 'src/app/core/services/site.services';
 })
 export class CheckoutLayoutComponent {
   private readonly cartFacade = inject(CartFacade);
+  private readonly router = inject(Router);
   readonly siteService = inject(SiteService);
   readonly site = this.siteService.currentSite;
   readonly itemCount$ = this.cartFacade.itemCount$;
+
+  get isOrderConfirmationRoute(): boolean {
+    return this.router.url.includes('/orders/confirmation/');
+  }
 }

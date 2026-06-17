@@ -1,0 +1,101 @@
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import {
+  OrderConfirmation,
+  OrderShippingAddress,
+  OrderStatus,
+  PaymentStatus,
+} from 'src/app/core/models/order.model';
+import { OrderService } from 'src/app/features/orders/services/order.service';
+import { SiteService } from 'src/app/core/services/site.services';
+
+type DisplayStatus = OrderStatus | PaymentStatus;
+
+@Component({
+  selector: 'app-order-confirmation',
+  imports: [
+    CommonModule,
+    CurrencyPipe,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+  ],
+  templateUrl: './order-confirmation.component.html',
+  styleUrl: './order-confirmation.component.scss',
+})
+export class OrderConfirmationComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly orderService = inject(OrderService);
+  private readonly siteService = inject(SiteService);
+
+  readonly order = signal<OrderConfirmation | null>(null);
+  readonly isLoading = signal(true);
+  readonly errorMessage = signal('');
+  readonly site = this.siteService.currentSite;
+  readonly currency = computed(() => this.siteService.currency() || 'PHP');
+
+  ngOnInit(): void {
+    const orderId = this.route.snapshot.paramMap.get('orderId');
+
+    if (!orderId) {
+      this.errorMessage.set('Order not found.');
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.orderService.getOrder(orderId).subscribe({
+      next: (order) => {
+        this.order.set(order);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('We could not load this order right now.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  formatStatus(status: DisplayStatus): string {
+    return status
+      .split('_')
+      .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+      .join(' ');
+  }
+
+  statusTone(status: DisplayStatus): string {
+    switch (status) {
+      case 'paid':
+      case 'confirmed':
+      case 'delivered':
+        return 'success';
+      case 'pending':
+      case 'pending_payment':
+        return 'warning';
+      case 'processing':
+      case 'shipped':
+      case 'refunded':
+        return 'info';
+      case 'failed':
+      case 'expired':
+      case 'payment_failed':
+        return 'error';
+      case 'cancelled':
+        return 'neutral';
+    }
+  }
+
+  addressLines(address: OrderShippingAddress): string[] {
+    return [
+      address.addressLine1,
+      address.addressLine2,
+      address.barangay,
+      address.city,
+      address.region,
+      address.postalCode,
+      address.country,
+    ].filter((line): line is string => Boolean(line));
+  }
+}

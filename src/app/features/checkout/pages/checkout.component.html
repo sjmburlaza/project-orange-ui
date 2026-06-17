@@ -27,8 +27,7 @@
               <app-dynamic-form
                 #activeStep
                 [fields]="step.fields ?? []"
-                [initialValue]="checkoutData()[step.id]"
-                (valueChanged)="onStepValueChanged(step.id, $event)"
+                [initialValue]="getDynamicFormInitialValue(step.id)"
               />
             }
           }
@@ -40,8 +39,17 @@
               </button>
             }
 
-            <button matButton="filled" type="button" (click)="next()">
-              {{ i === steps().length - 1 ? "Place Order" : "Next" }}
+            <button
+              matButton="filled"
+              type="button"
+              [disabled]="isPlacingOrder()"
+              (click)="next()"
+            >
+              @if (i === steps().length - 1 && isPlacingOrder()) {
+                Processing Payment...
+              } @else {
+                {{ i === steps().length - 1 ? "Place Order" : "Next" }}
+              }
             </button>
           </div>
         }

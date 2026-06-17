@@ -1,0 +1,119 @@
+@if (isLoading()) {
+  <section class="confirmation confirmation--loading" role="status">
+    <mat-icon>hourglass_top</mat-icon>
+    <p>Loading order confirmation...</p>
+  </section>
+} @else if (order(); as order) {
+  <section class="confirmation">
+    <header class="confirmation__header">
+      <div>
+        <p class="eyebrow">Order Confirmation</p>
+        <h1>Order confirmed</h1>
+        <p class="confirmation__intro">
+          Order number <strong>{{ order.orderNumber }}</strong>
+        </p>
+      </div>
+
+      <mat-icon aria-hidden="true" class="confirmation__icon">
+        check_circle
+      </mat-icon>
+    </header>
+
+    <div class="status-grid" aria-label="Order status summary">
+      <div class="summary-panel">
+        <span>Payment status</span>
+        <strong [class]="'status-badge status-badge--' + statusTone(order.paymentStatus)">
+          {{ formatStatus(order.paymentStatus) }}
+        </strong>
+      </div>
+
+      <div class="summary-panel">
+        <span>Order status</span>
+        <strong [class]="'status-badge status-badge--' + statusTone(order.orderStatus)">
+          {{ formatStatus(order.orderStatus) }}
+        </strong>
+      </div>
+
+      <div class="summary-panel">
+        <span>Delivery estimate</span>
+        <strong>{{ order.deliveryEstimate }}</strong>
+      </div>
+
+      <div class="summary-panel">
+        <span>Total amount</span>
+        <strong>{{ order.totalAmount | currency: currency() }}</strong>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>Items ordered</h2>
+        <span>{{ order.items.length }} item{{ order.items.length === 1 ? "" : "s" }}</span>
+      </div>
+
+      <div class="item-list">
+        @for (item of order.items; track item.productId) {
+          <article class="item">
+            <div class="item__media">
+              @if (item.imageUrl) {
+                <img [src]="item.imageUrl" [alt]="item.productName" />
+              } @else {
+                <mat-icon aria-hidden="true">inventory_2</mat-icon>
+              }
+            </div>
+
+            <div class="item__details">
+              <h3>{{ item.productName }}</h3>
+              @if (item.itemSpecs.length) {
+                <p>{{ item.itemSpecs.join(", ") }}</p>
+              }
+              <span>Qty {{ item.quantity }}</span>
+            </div>
+
+            <strong class="item__amount">
+              {{ item.price * item.quantity | currency: currency() }}
+            </strong>
+          </article>
+        }
+      </div>
+    </section>
+
+    <div class="details-grid">
+      <section class="section">
+        <h2>Shipping address</h2>
+        <address class="address">
+          <strong>{{ order.shippingAddress.recipientName }}</strong>
+          <span>{{ order.shippingAddress.mobileNumber }}</span>
+          @for (line of addressLines(order.shippingAddress); track line) {
+            <span>{{ line }}</span>
+          }
+        </address>
+      </section>
+
+      <section class="section">
+        <h2>Next steps</h2>
+        <ol class="next-steps">
+          @for (step of order.nextSteps; track step) {
+            <li>{{ step }}</li>
+          }
+        </ol>
+      </section>
+    </div>
+
+    <footer class="confirmation__actions">
+      <a matButton="outlined" [routerLink]="['/', site(), 'products']">
+        <mat-icon>storefront</mat-icon>
+        Continue shopping
+      </a>
+      <a matButton="filled" [routerLink]="['/', site(), 'profile', 'orders']">
+        <mat-icon>receipt_long</mat-icon>
+        View orders
+      </a>
+    </footer>
+  </section>
+} @else {
+  <section class="confirmation confirmation--loading" role="alert">
+    <mat-icon>error</mat-icon>
+    <p>{{ errorMessage() }}</p>
+  </section>
+}

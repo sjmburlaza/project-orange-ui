@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-type CheckoutData = Record<string, Record<string, any>>;
+type CheckoutData = Record<string, Record<string, unknown>>;
 
 @Injectable({ providedIn: 'root' })
 export class CheckoutStorageService {
@@ -12,7 +12,7 @@ export class CheckoutStorageService {
     return this.checkoutData();
   }
 
-  saveStep(stepId: string, value: Record<string, any>): void {
+  saveStep(stepId: string, value: Record<string, unknown>): void {
     this.checkoutData.update((data) => {
       const updatedData = {
         ...data,

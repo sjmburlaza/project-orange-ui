@@ -399,11 +399,6 @@ test.describe('checkout journey', () => {
   test('completes customer, shipping, payment, and place-order steps', async ({
     page,
   }) => {
-    const consoleMessages: string[] = [];
-    page.on('console', (message) => {
-      consoleMessages.push(message.text());
-    });
-
     await startCheckout(page);
     await fillCustomerDetails(page);
     await page.getByRole('button', { name: 'Next' }).click();
@@ -420,13 +415,21 @@ test.describe('checkout journey', () => {
     await page.getByRole('button', { name: /Credit Card/ }).click();
     await page.getByRole('button', { name: 'Place Order' }).click();
 
-    await expect
-      .poll(() =>
-        consoleMessages.some((message) =>
-          message.includes('Final checkout payload:'),
-        ),
-      )
-      .toBe(true);
+    await expect(page).toHaveURL(/\/ph\/orders\/confirmation\/OR-\d{8}-\d{4}$/);
+    await expect(
+      page.getByRole('heading', { name: 'Order confirmed' }),
+    ).toBeVisible();
+    await expect(page.getByText(/Order number OR-\d{8}-\d{4}/)).toBeVisible();
+    await expect(page.getByText('Paid', { exact: true })).toBeVisible();
+    await expect(page.getByText('Confirmed', { exact: true })).toBeVisible();
+    await expect(page.getByText('iPhone 15')).toBeVisible();
+    await expect(page.getByText('Ada Lovelace')).toBeVisible();
+    await expect(page.getByText('123 Orange Avenue')).toBeVisible();
+    await expect(page.getByText('3-5 business days')).toBeVisible();
+    await expect(page.getByText('Total amount')).toBeVisible();
+    await expect(
+      page.getByText('Your payment has been processed successfully.'),
+    ).toBeVisible();
   });
 });
 
