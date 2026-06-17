@@ -10,18 +10,27 @@ import { MatStepperModule } from '@angular/material/stepper';
 
 import { MatAnchor, MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { catchError, EMPTY, from, switchMap, take, tap } from 'rxjs';
 import { CheckoutApiService } from '../services/checkout-api.service';
-import { CheckoutStep } from 'src/app/core/models/checkout.model';
+import {
+  CheckoutStep,
+  DynamicFormObject,
+} from 'src/app/core/models/checkout.model';
 import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.component';
 import { ShippingStepComponent } from '../components/shipping-step/shipping-step.component';
 import { PaymentStepComponent } from '../components/payment-step/payment-step.component';
 import { CheckoutStorageService } from '../services/checkout-storage.service';
 import { CartFacade } from '../../cart/store/cart.facade';
+import { OrderService } from 'src/app/features/orders/services/order.service';
+import { SiteService } from 'src/app/core/services/site.services';
 
 type CheckoutStepComponent =
   | DynamicFormComponent
   | ShippingStepComponent
   | PaymentStepComponent;
+
+type CheckoutStepValue = Record<string, unknown>;
 
 @Component({
   selector: 'app-checkout',
@@ -41,12 +50,16 @@ export class CheckoutComponent implements OnInit {
   private readonly checkoutApiService = inject(CheckoutApiService);
   private readonly checkoutStorage = inject(CheckoutStorageService);
   private readonly cartFacade = inject(CartFacade);
+  private readonly orderService = inject(OrderService);
+  private readonly router = inject(Router);
+  private readonly siteService = inject(SiteService);
 
   @ViewChild('activeStep')
   activeStep?: CheckoutStepComponent;
 
   readonly steps = signal<CheckoutStep[]>([]);
   readonly currentIndex = signal(0);
+  readonly isPlacingOrder = signal(false);
   readonly checkoutData = this.checkoutStorage.checkoutData;
 
   readonly currentStep = computed(() => {
@@ -89,11 +102,11 @@ export class CheckoutComponent implements OnInit {
     this.currentIndex.update((index) => index + 1);
   }
 
-  onStepValueChanged(stepId: string, value: any): void {
+  onStepValueChanged(stepId: string, value: CheckoutStepValue): void {
     this.saveStepData(stepId, value);
 
     if (stepId === 'shipping') {
-      this.updateCartShipping(value.shippingMethod);
+      this.updateCartShipping(this.readString(value, 'shippingMethod'));
     }
   }
 
@@ -107,14 +120,23 @@ export class CheckoutComponent implements OnInit {
 
   getPostalCode(): string {
     const data = this.checkoutStorage.getAll();
-    const customer = data['customer'];
-    const deliveryAddress = customer['deliveryAddress'];
-    const shippingAddress = customer['shippingAddress'];
+    const customer = this.asRecord(data['customer']);
+    const deliveryAddress = this.asRecord(customer['deliveryAddress']);
+    const shippingAddress = this.asRecord(customer['shippingAddress']);
 
-    return deliveryAddress?.postalCode ?? shippingAddress?.postalCode ?? '';
+    return (
+      this.readString(deliveryAddress, 'postalCode') ||
+      this.readString(shippingAddress, 'postalCode')
+    );
   }
 
-  private saveCurrentStep(validate: boolean): unknown | null {
+  getDynamicFormInitialValue(stepId: string): DynamicFormObject | null {
+    const value = this.checkoutData()[stepId];
+
+    return this.isDynamicFormObject(value) ? value : null;
+  }
+
+  private saveCurrentStep(validate: boolean): CheckoutStepValue | null {
     const step = this.steps()[this.currentIndex()];
     const component = this.activeStep;
 
@@ -136,10 +158,71 @@ export class CheckoutComponent implements OnInit {
   }
 
   private placeOrder(): void {
-    console.log('Final checkout payload:', this.checkoutData());
+    if (this.isPlacingOrder()) {
+      return;
+    }
+
+    this.isPlacingOrder.set(true);
+
+    this.cartFacade.cart$
+      .pipe(
+        take(1),
+        switchMap((cart) =>
+          this.orderService.placeOrder({
+            checkoutData: this.checkoutData(),
+            cart,
+          }),
+        ),
+        tap(() => {
+          this.checkoutStorage.clear();
+          this.cartFacade.clearCart();
+        }),
+        switchMap((order) =>
+          from(
+            this.router.navigate([
+              '/',
+              this.siteService.getCurrentSite(),
+              'orders',
+              'confirmation',
+              order.id,
+            ]),
+          ),
+        ),
+        catchError((error) => {
+          console.error('Failed to place order:', error);
+          this.isPlacingOrder.set(false);
+
+          return EMPTY;
+        }),
+      )
+      .subscribe();
   }
 
-  private saveStepData(stepId: string, value: Record<string, any>): void {
+  private saveStepData(stepId: string, value: CheckoutStepValue): void {
     this.checkoutStorage.saveStep(stepId, value);
+  }
+
+  private asRecord(value: unknown): Record<string, unknown> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value)
+      ? (value as Record<string, unknown>)
+      : {};
+  }
+
+  private readString(record: Record<string, unknown>, key: string): string {
+    const value = record[key];
+
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    if (typeof value === 'number') {
+      return String(value);
+    }
+
+    return '';
+  }
+
+  private isDynamicFormObject(value: unknown): value is DynamicFormObject {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 }

@@ -20,6 +20,16 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  &.confirmation {
+    max-width: 960px;
+    grid-template-columns: minmax(0, 1fr);
+
+    .main-content {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   &.empty {
     grid-template-columns: 1fr;
     justify-items: center;

@@ -60,6 +60,13 @@ export const routes: Routes = [
                 (m) => m.CHECKOUT_ROUTES,
               ),
           },
+          {
+            path: 'orders',
+            loadChildren: () =>
+              import('./features/orders/orders.routes').then(
+                (m) => m.ORDERS_ROUTES,
+              ),
+          },
         ],
       },
       {
