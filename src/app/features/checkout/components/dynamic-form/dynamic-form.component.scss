@@ -9,12 +9,20 @@
     grid-column: span 12;
   }
 
+  .col-lg-8 {
+    grid-column: span 8;
+  }
+
   .col-lg-6 {
     grid-column: span 6;
   }
 
   .col-lg-4 {
     grid-column: span 4;
+  }
+
+  .col-lg-3 {
+    grid-column: span 3;
   }
 }
 

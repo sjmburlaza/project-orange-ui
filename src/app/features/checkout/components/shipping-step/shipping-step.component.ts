@@ -1,6 +1,7 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   inject,
   Input,
@@ -15,6 +16,7 @@ import {
   ShippingPricingService,
 } from '../../services/shipping-pricing.service';
 import { SiteService } from 'src/app/core/services/site.services';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-shipping-step',
@@ -24,6 +26,7 @@ import { SiteService } from 'src/app/core/services/site.services';
 })
 export class ShippingStepComponent implements OnInit, OnChanges {
   private readonly shippingPricingService = inject(ShippingPricingService);
+  private readonly destroyRef = inject(DestroyRef);
   readonly siteService = inject(SiteService);
   readonly currency = this.siteService.currency;
   @Input({ required: true }) fields: DynamicField[] = [];
@@ -42,9 +45,11 @@ export class ShippingStepComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.shippingMethod.valueChanges.subscribe(() => {
-      this.valueChanged.emit(this.getValue());
-    });
+    this.shippingMethod.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.valueChanged.emit(this.getValue());
+      });
   }
 
   ngOnChanges(): void {
@@ -66,16 +71,19 @@ export class ShippingStepComponent implements OnInit, OnChanges {
     this.isLoading = true;
     this.shippingOptions = [];
 
-    this.shippingPricingService.getOptions(postalCode).subscribe({
-      next: (options) => {
-        this.shippingOptions = options;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.shippingOptions = [];
-        this.isLoading = false;
-      },
-    });
+    this.shippingPricingService
+      .getOptions(postalCode)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (options) => {
+          this.shippingOptions = options;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.shippingOptions = [];
+          this.isLoading = false;
+        },
+      });
   }
 
   selectShipping(option: ShippingOption): void {

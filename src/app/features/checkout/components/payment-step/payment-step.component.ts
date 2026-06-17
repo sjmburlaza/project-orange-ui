@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DynamicField } from 'src/app/core/models/checkout.model';
@@ -18,6 +21,7 @@ import { DynamicField } from 'src/app/core/models/checkout.model';
   styleUrl: './payment-step.component.scss',
 })
 export class PaymentStepComponent implements OnInit, OnChanges {
+  private readonly destroyRef = inject(DestroyRef);
   @Input({ required: true }) fields: DynamicField[] = [];
   @Input() initialValue: unknown = {};
 
@@ -30,9 +34,11 @@ export class PaymentStepComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.paymentMethod.valueChanges.subscribe(() => {
-      this.valueChanged.emit(this.getValue());
-    });
+    this.paymentMethod.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.valueChanged.emit(this.getValue());
+      });
   }
 
   ngOnChanges(): void {

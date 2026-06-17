@@ -1,0 +1,43 @@
+{
+  "orders": {
+    "confirmation": {
+      "loading": "Loading order confirmation...",
+      "eyebrow": "Order Confirmation",
+      "title": "Order confirmed",
+      "orderNumber": "Order number",
+      "statusSummaryLabel": "Order status summary",
+      "paymentStatus": "Payment status",
+      "orderStatus": "Order status",
+      "deliveryEstimate": "Delivery estimate",
+      "totalAmount": "Total amount",
+      "itemsOrdered": "Items ordered",
+      "itemCount": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      },
+      "quantity": "Qty {{ quantity }}",
+      "shippingAddress": "Shipping address",
+      "nextSteps": "Next steps",
+      "continueShopping": "Continue shopping",
+      "viewOrders": "View orders",
+      "errors": {
+        "notFound": "Order not found.",
+        "loadFailed": "We could not load this order right now."
+      },
+      "statuses": {
+        "pending": "Pending",
+        "paid": "Paid",
+        "failed": "Failed",
+        "cancelled": "Cancelled",
+        "expired": "Expired",
+        "refunded": "Refunded",
+        "pending_payment": "Pending payment",
+        "confirmed": "Confirmed",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "payment_failed": "Payment failed"
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "orders": {
+    "confirmation": {
+      "loading": "注文確認を読み込んでいます...",
+      "eyebrow": "注文確認",
+      "title": "注文が確定しました",
+      "orderNumber": "注文番号",
+      "statusSummaryLabel": "注文ステータスの概要",
+      "paymentStatus": "支払い状況",
+      "orderStatus": "注文状況",
+      "deliveryEstimate": "配送予定",
+      "totalAmount": "合計金額",
+      "itemsOrdered": "注文商品",
+      "itemCount": {
+        "one": "{{ count }} 点",
+        "other": "{{ count }} 点"
+      },
+      "quantity": "数量 {{ quantity }}",
+      "shippingAddress": "配送先住所",
+      "nextSteps": "次のステップ",
+      "continueShopping": "買い物を続ける",
+      "viewOrders": "注文を見る",
+      "errors": {
+        "notFound": "注文が見つかりません。",
+        "loadFailed": "現在、この注文を読み込めません。"
+      },
+      "statuses": {
+        "pending": "保留中",
+        "paid": "支払い済み",
+        "failed": "失敗",
+        "cancelled": "キャンセル済み",
+        "expired": "期限切れ",
+        "refunded": "返金済み",
+        "pending_payment": "支払い待ち",
+        "confirmed": "確定済み",
+        "processing": "処理中",
+        "shipped": "発送済み",
+        "delivered": "配達済み",
+        "payment_failed": "支払い失敗"
+      }
+    }
+  }
+}

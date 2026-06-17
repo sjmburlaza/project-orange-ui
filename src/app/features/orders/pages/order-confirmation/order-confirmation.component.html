@@ -1,16 +1,17 @@
 @if (isLoading()) {
   <section class="confirmation confirmation--loading" role="status">
     <mat-icon>hourglass_top</mat-icon>
-    <p>Loading order confirmation...</p>
+    <p>{{ "orders.confirmation.loading" | translate }}</p>
   </section>
 } @else if (order(); as order) {
   <section class="confirmation">
     <header class="confirmation__header">
       <div>
-        <p class="eyebrow">Order Confirmation</p>
-        <h1>Order confirmed</h1>
+        <p class="eyebrow">{{ "orders.confirmation.eyebrow" | translate }}</p>
+        <h1>{{ "orders.confirmation.title" | translate }}</h1>
         <p class="confirmation__intro">
-          Order number <strong>{{ order.orderNumber }}</strong>
+          {{ "orders.confirmation.orderNumber" | translate }}
+          <strong>{{ order.orderNumber }}</strong>
         </p>
       </div>
 
@@ -19,36 +20,46 @@
       </mat-icon>
     </header>
 
-    <div class="status-grid" aria-label="Order status summary">
+    <div
+      class="status-grid"
+      [attr.aria-label]="'orders.confirmation.statusSummaryLabel' | translate"
+    >
       <div class="summary-panel">
-        <span>Payment status</span>
+        <span>{{ "orders.confirmation.paymentStatus" | translate }}</span>
         <strong [class]="'status-badge status-badge--' + statusTone(order.paymentStatus)">
-          {{ formatStatus(order.paymentStatus) }}
+          {{ ("orders.confirmation.statuses." + order.paymentStatus) | translate }}
         </strong>
       </div>
 
       <div class="summary-panel">
-        <span>Order status</span>
+        <span>{{ "orders.confirmation.orderStatus" | translate }}</span>
         <strong [class]="'status-badge status-badge--' + statusTone(order.orderStatus)">
-          {{ formatStatus(order.orderStatus) }}
+          {{ ("orders.confirmation.statuses." + order.orderStatus) | translate }}
         </strong>
       </div>
 
       <div class="summary-panel">
-        <span>Delivery estimate</span>
+        <span>{{ "orders.confirmation.deliveryEstimate" | translate }}</span>
         <strong>{{ order.deliveryEstimate }}</strong>
       </div>
 
       <div class="summary-panel">
-        <span>Total amount</span>
+        <span>{{ "orders.confirmation.totalAmount" | translate }}</span>
         <strong>{{ order.totalAmount | currency: currency() }}</strong>
       </div>
     </div>
 
     <section class="section">
       <div class="section__header">
-        <h2>Items ordered</h2>
-        <span>{{ order.items.length }} item{{ order.items.length === 1 ? "" : "s" }}</span>
+        <h2>{{ "orders.confirmation.itemsOrdered" | translate }}</h2>
+        <span>
+          {{
+            (order.items.length === 1
+              ? "orders.confirmation.itemCount.one"
+              : "orders.confirmation.itemCount.other")
+              | translate: { count: order.items.length }
+          }}
+        </span>
       </div>
 
       <div class="item-list">
@@ -67,7 +78,12 @@
               @if (item.itemSpecs.length) {
                 <p>{{ item.itemSpecs.join(", ") }}</p>
               }
-              <span>Qty {{ item.quantity }}</span>
+              <span>
+                {{
+                  "orders.confirmation.quantity"
+                    | translate: { quantity: item.quantity }
+                }}
+              </span>
             </div>
 
             <strong class="item__amount">
@@ -80,7 +96,7 @@
 
     <div class="details-grid">
       <section class="section">
-        <h2>Shipping address</h2>
+        <h2>{{ "orders.confirmation.shippingAddress" | translate }}</h2>
         <address class="address">
           <strong>{{ order.shippingAddress.recipientName }}</strong>
           <span>{{ order.shippingAddress.mobileNumber }}</span>
@@ -91,7 +107,7 @@
       </section>
 
       <section class="section">
-        <h2>Next steps</h2>
+        <h2>{{ "orders.confirmation.nextSteps" | translate }}</h2>
         <ol class="next-steps">
           @for (step of order.nextSteps; track step) {
             <li>{{ step }}</li>
@@ -103,17 +119,17 @@
     <footer class="confirmation__actions">
       <a matButton="outlined" [routerLink]="['/', site(), 'products']">
         <mat-icon>storefront</mat-icon>
-        Continue shopping
+        {{ "orders.confirmation.continueShopping" | translate }}
       </a>
       <a matButton="filled" [routerLink]="['/', site(), 'profile', 'orders']">
         <mat-icon>receipt_long</mat-icon>
-        View orders
+        {{ "orders.confirmation.viewOrders" | translate }}
       </a>
     </footer>
   </section>
 } @else {
   <section class="confirmation confirmation--loading" role="alert">
     <mat-icon>error</mat-icon>
-    <p>{{ errorMessage() }}</p>
+    <p>{{ errorMessage() | translate }}</p>
   </section>
 }
