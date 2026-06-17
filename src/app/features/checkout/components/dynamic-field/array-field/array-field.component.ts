@@ -6,7 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFieldComponent } from '../dynamic-field.component';
 import { DynamicField } from 'src/app/core/models/checkout.model';
 
@@ -22,9 +22,9 @@ export class ArrayFieldComponent {
   @Input() form!: FormGroup;
 
   @Output() add = new EventEmitter<void>();
-  @Output() remove = new EventEmitter<any>();
+  @Output() remove = new EventEmitter<number>();
 
-  get array() {
-    return this.form.get(this.field.name) as any;
+  get array(): FormArray<FormGroup> {
+    return this.form.get(this.field.name) as FormArray<FormGroup>;
   }
 }

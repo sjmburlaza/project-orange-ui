@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { SelectFieldComponent } from './select-field.component';
+import { DynamicField } from 'src/app/core/models/checkout.model';
 
 describe('SelectFieldComponent', () => {
   let component: SelectFieldComponent;
@@ -14,6 +16,17 @@ describe('SelectFieldComponent', () => {
 
     fixture = TestBed.createComponent(SelectFieldComponent);
     component = fixture.componentInstance;
+    const field: DynamicField = {
+      type: 'select',
+      name: 'shippingMethod',
+      label: 'Shipping method',
+      options: [{ label: 'Standard', value: 'standard' }],
+    };
+
+    component.field = field;
+    component.form = new FormGroup({
+      shippingMethod: new FormControl('standard'),
+    });
     fixture.detectChanges();
   });
 

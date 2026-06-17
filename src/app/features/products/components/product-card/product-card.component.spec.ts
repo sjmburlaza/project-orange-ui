@@ -14,6 +14,17 @@ describe('ProductCardComponent', () => {
 
     fixture = TestBed.createComponent(ProductCardComponent);
     component = fixture.componentInstance;
+    component.product = {
+      id: 1,
+      name: 'Orange Phone',
+      description: 'A compact storefront test product.',
+      price: 699,
+      stockQuantity: 5,
+      imageUrl: '',
+      categoryId: 1,
+      categoryName: 'phones',
+    };
+    component.currency = 'USD';
     fixture.detectChanges();
   });
 

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { DynamicFieldComponent } from './dynamic-field.component';
+import { DynamicField } from 'src/app/core/models/checkout.model';
 
 describe('DynamicFieldComponent', () => {
   let component: DynamicFieldComponent;
@@ -14,6 +16,16 @@ describe('DynamicFieldComponent', () => {
 
     fixture = TestBed.createComponent(DynamicFieldComponent);
     component = fixture.componentInstance;
+    const field: DynamicField = {
+      type: 'text',
+      name: 'firstName',
+      label: 'First name',
+    };
+
+    component.field = field;
+    component.form = new FormGroup({
+      firstName: new FormControl(''),
+    });
     fixture.detectChanges();
   });
 

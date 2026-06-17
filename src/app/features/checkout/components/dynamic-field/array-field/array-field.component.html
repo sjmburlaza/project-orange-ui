@@ -1,7 +1,7 @@
 <div [formGroup]="form">
   <h3>{{ field.label }}</h3>
   <div formArrayName="{{ field.name }}">
-    @for (group of array?.controls; track group; let i = $index) {
+    @for (group of array.controls; track group; let i = $index) {
       <div [formGroupName]="i">
         @for (child of field.fields; track child) {
           <app-dynamic-field [field]="child" [form]="group"></app-dynamic-field>
