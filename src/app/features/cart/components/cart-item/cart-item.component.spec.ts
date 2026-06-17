@@ -14,6 +14,18 @@ describe('CartItemComponent', () => {
 
     fixture = TestBed.createComponent(CartItemComponent);
     component = fixture.componentInstance;
+    component.item = {
+      productId: 1,
+      productName: 'Orange Phone',
+      price: 699,
+      quantity: 1,
+      stockQuantity: 5,
+      imageUrl: '',
+      categoryName: 'phones',
+      itemSpecs: [{ name: 'Storage', value: '128GB' }],
+      addons: [],
+    };
+    component.currency = 'USD';
     fixture.detectChanges();
   });
 

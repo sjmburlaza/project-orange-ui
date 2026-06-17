@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { CheckboxFieldComponent } from './checkbox-field.component';
+import { DynamicField } from 'src/app/core/models/checkout.model';
 
 describe('CheckboxFieldComponent', () => {
   let component: CheckboxFieldComponent;
@@ -14,6 +16,16 @@ describe('CheckboxFieldComponent', () => {
 
     fixture = TestBed.createComponent(CheckboxFieldComponent);
     component = fixture.componentInstance;
+    const field: DynamicField = {
+      type: 'checkbox',
+      name: 'acceptTerms',
+      label: 'Accept terms',
+    };
+
+    component.field = field;
+    component.form = new FormGroup({
+      acceptTerms: new FormControl(false),
+    });
     fixture.detectChanges();
   });
 

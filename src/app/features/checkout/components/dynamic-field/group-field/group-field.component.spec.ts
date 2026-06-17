@@ -1,20 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { GroupFieldComponent } from './group-field.component';
 
 describe('GroupFieldComponent', () => {
   let component: GroupFieldComponent;
-  let fixture: ComponentFixture<GroupFieldComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [GroupFieldComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(GroupFieldComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    component = new GroupFieldComponent();
+    component.field = {
+      type: 'group',
+      name: 'address',
+      label: 'Address',
+      fields: [],
+    };
+    component.form = new FormGroup({
+      address: new FormGroup({
+        street: new FormControl(''),
+      }),
+    });
   });
 
   it('should create', () => {

@@ -14,6 +14,16 @@ describe('AddonComponent', () => {
 
     fixture = TestBed.createComponent(AddonComponent);
     component = fixture.componentInstance;
+    component.addon = {
+      id: 'insurance',
+      name: 'Device protection',
+      title: 'Device protection',
+      description: 'Coverage for accidental damage.',
+      imageUrl: '',
+      isAdded: false,
+    };
+    component.productId = 1;
+    component.currency = 'USD';
     fixture.detectChanges();
   });
 

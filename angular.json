@@ -117,6 +117,7 @@
           "options": {
             "buildTarget": "project-orange-v2:build:development",
             "tsConfig": "tsconfig.spec.json",
+            "providersFile": "src/test-providers.ts",
             "runner": "vitest"
           }
         },
