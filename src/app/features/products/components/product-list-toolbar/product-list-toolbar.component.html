@@ -1,7 +1,9 @@
 <div class="filter-container">
   @if (sortOptions) {
     <div class="filter filter-sort">
-      {{ "products.filters.sortBy" | translate }}
+      <p>
+        {{ "products.filters.sortBy" | translate }}
+      </p>
       <app-select-dropdown
         [placeholder]="'products.filters.defaultSort' | translate"
         [options]="sortOptions"
@@ -23,9 +25,10 @@
       />
     </div>
   }
-  <div class="filter-clear">
-    <button matButton="outlined" (click)="clearFilters.emit()">
-      {{ "products.filters.clearFilters" | translate }}
-    </button>
-  </div>
+
+  <!-- <button class="filter-clear" type="button" (click)="clearFilters.emit()">
+    {{ "products.filters.clearFilters" | translate }}
+  </button> -->
+
+  <div class="filter-results">{{ productsCount }} Results</div>
 </div>

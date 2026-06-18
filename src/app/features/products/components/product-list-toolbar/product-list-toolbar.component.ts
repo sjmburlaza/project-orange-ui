@@ -32,8 +32,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ProductListToolbarComponent {
   @Input() sortOptions!: SelectOption<ProductSort>[] | null;
-
   @Input() selectedSort: ProductSort | null = null;
+  @Input() productsCount = 0;
 
   @Output() sortChange = new EventEmitter<ProductSort | null>();
   @Output() priceRangeChange = new EventEmitter<RangeValue>();

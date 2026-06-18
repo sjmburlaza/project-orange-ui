@@ -98,6 +98,11 @@ body {
   background-color: gray;
 }
 
+.mat-step-text-label {
+  height: 32px;
+  padding-top: 6px;
+}
+
 .cdk-global-overlay-wrapper:has(.trade-in-dialog-panel) {
   align-items: flex-start;
   overflow-y: auto;
