@@ -1,10 +1,4 @@
 <div class="range-slider">
-  <p class="range-slider__label">
-    {{ label }}: {{ prefix }}{{ value.min }}{{ suffix }}
-    -
-    {{ prefix }}{{ value.max }}{{ suffix }}
-  </p>
-
   <mat-slider [min]="min" [max]="max" [step]="step">
     <input
       matSliderStartThumb
@@ -18,4 +12,9 @@
       (valueChange)="onValueChange()"
     />
   </mat-slider>
+  <p class="range-slider__label">
+    {{ label }}: {{ prefix }}{{ value.min }}{{ suffix }}
+    -
+    {{ prefix }}{{ value.max }}{{ suffix }}
+  </p>
 </div>

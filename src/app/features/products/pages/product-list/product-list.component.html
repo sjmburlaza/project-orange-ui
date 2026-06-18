@@ -6,6 +6,7 @@
       [priceRange]="priceRange$ | async"
       [priceMax]="(priceMax$ | async) ?? 0"
       [pricePrefix]="pricePrefix()"
+      [productsCount]="products.length"
       (sortChange)="onSortChange($event)"
       (priceRangeChange)="onApplyPriceFilter($event)"
       (clearFilters)="onClearFilters()"

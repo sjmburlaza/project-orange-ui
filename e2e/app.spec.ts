@@ -198,31 +198,6 @@ test.describe('routing and catalog', () => {
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
   });
 
-  test('omits the toolbar category filter and clears header category filters', async ({
-    page,
-  }) => {
-    const header = page.locator('app-header');
-
-    await page.goto('/ph/products');
-
-    await expect(page.locator('.filter-category')).toHaveCount(0);
-
-    await header.getByRole('link', { name: 'Accessories' }).click();
-
-    await expect(page).toHaveURL(/\/ph\/products\?category=accessories$/);
-    await expect(productNames(page)).toHaveText(['Mechanical Keyboard']);
-
-    await page.getByRole('button', { name: 'Clear filters' }).click();
-
-    await expect(page).toHaveURL(/\/ph\/products$/);
-    await expect(productNames(page)).toHaveText([
-      'iPhone 15',
-      'MacBook Air M5',
-      'Orange Studio Monitor',
-      'Mechanical Keyboard',
-    ]);
-  });
-
   test('filters products from the header navigation', async ({ page }) => {
     const header = page.locator('app-header');
 
@@ -410,11 +385,18 @@ test.describe('checkout journey', () => {
   }) => {
     await startCheckout(page);
     await fillCustomerDetails(page);
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(0);
+
     await page.getByRole('button', { name: 'Next' }).click();
 
     await expect(
       page.getByRole('heading', { name: 'Choose your shipping method' }),
     ).toBeVisible();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+
     await page.getByRole('button', { name: /Standard Delivery/ }).click();
     await page.getByRole('button', { name: 'Next' }).click();
 

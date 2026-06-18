@@ -6,15 +6,21 @@
   padding: token(spacing, 6);
 
   .filter {
-    width: token(spacing, 27);
     display: flex;
-    flex-direction: column;
     gap: token(spacing, 2);
   }
 
-  .filter-clear {
+  .filter-sort {
+    p {
+      margin-top: 8px;
+    }
+  }
+
+  .filter-results {
     margin-left: auto;
-    margin-top: token(spacing, 8);
+    display: flex;
+    align-items: center;
+    font-size: 18px;
   }
 }
 

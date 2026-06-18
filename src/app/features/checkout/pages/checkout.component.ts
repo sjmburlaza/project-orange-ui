@@ -1,7 +1,9 @@
 import {
+  afterNextRender,
   Component,
   computed,
   inject,
+  Injector,
   OnInit,
   signal,
   ViewChild,
@@ -9,7 +11,7 @@ import {
 import { MatStepperModule } from '@angular/material/stepper';
 
 import { MatAnchor, MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, from, switchMap, take, tap } from 'rxjs';
 import { CheckoutApiService } from '../services/checkout-api.service';
@@ -53,6 +55,8 @@ export class CheckoutComponent implements OnInit {
   private readonly orderService = inject(OrderService);
   private readonly router = inject(Router);
   private readonly siteService = inject(SiteService);
+  private readonly injector = inject(Injector);
+  private readonly viewportScroller = inject(ViewportScroller);
 
   @ViewChild('activeStep')
   activeStep?: CheckoutStepComponent;
@@ -100,6 +104,7 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.currentIndex.update((index) => index + 1);
+    this.scrollToTopAfterRender();
   }
 
   onStepValueChanged(stepId: string, value: CheckoutStepValue): void {
@@ -200,6 +205,15 @@ export class CheckoutComponent implements OnInit {
 
   private saveStepData(stepId: string, value: CheckoutStepValue): void {
     this.checkoutStorage.saveStep(stepId, value);
+  }
+
+  private scrollToTopAfterRender(): void {
+    afterNextRender(
+      () => {
+        this.viewportScroller.scrollToPosition([0, 0]);
+      },
+      { injector: this.injector },
+    );
   }
 
   private asRecord(value: unknown): Record<string, unknown> {
