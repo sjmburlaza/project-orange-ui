@@ -5,6 +5,11 @@ import type {
   Cart,
   UpdateQuantityRequest,
 } from '../src/app/core/models/cart.model';
+import type {
+  OrderConfirmation,
+  PaymentStatus,
+  PlaceOrderRequest,
+} from '../src/app/core/models/order.model';
 import type { SiteConfig } from '../src/app/core/i18n/sites';
 import type { ProductSort } from '../src/app/core/models/product.model';
 import {
@@ -353,6 +358,10 @@ test.describe('cart journey', () => {
       .filter({ hasText: 'iPhone 15' })
       .getByRole('button', { name: 'Remove' })
       .click();
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: 'Remove' })
+      .click();
 
     await expect(page.getByText('Your cart is empty')).toBeVisible();
   });
@@ -475,6 +484,8 @@ async function fillCustomerDetails(page: Page): Promise<void> {
 async function mockOrangeApi(page: Page): Promise<void> {
   const state = {
     cart: createCart(),
+    orderSequence: 1,
+    orders: new Map<string, OrderConfirmation>(),
   };
 
   await mockGeoCountry(page, 'PH');
@@ -508,6 +519,10 @@ async function mockOrangeApi(page: Page): Promise<void> {
 
   await page.route(/\/api\/(?:[a-z]{2}\/)?carts(?:\/.*)?$/, async (route) => {
     await handleCartRoute(route, state);
+  });
+
+  await page.route(/\/api\/(?:[a-z]{2}\/)?orders(?:\/.*)?$/, async (route) => {
+    await handleOrderRoute(route, state);
   });
 
   await page.route(/\/api\/(?:[a-z]{2}\/)?checkout\/form$/, async (route) => {
@@ -648,6 +663,51 @@ async function handleCartRoute(
   await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
 }
 
+async function handleOrderRoute(
+  route: Route,
+  state: {
+    cart: Cart;
+    orderSequence: number;
+    orders: Map<string, OrderConfirmation>;
+  },
+): Promise<void> {
+  const request = route.request();
+  const url = new URL(request.url());
+  const pathname = apiPathname(url);
+  const segments = pathname.split('/').filter(Boolean);
+  const method = request.method();
+
+  if (method === 'GET' && pathname === '/api/orders') {
+    await route.fulfill({ json: [...state.orders.values()] });
+    return;
+  }
+
+  if (method === 'GET' && segments.at(-2) === 'orders') {
+    const orderNumber = decodeURIComponent(segments.at(-1) ?? '');
+    const order = state.orders.get(orderNumber);
+
+    if (!order) {
+      await route.fulfill({ status: 404, json: { message: 'Order not found' } });
+      return;
+    }
+
+    await route.fulfill({ json: order });
+    return;
+  }
+
+  if (method === 'POST' && pathname === '/api/orders') {
+    const body = request.postDataJSON() as PlaceOrderRequest;
+    const order = createOrderConfirmation(body, state.cart, state.orderSequence);
+
+    state.orderSequence += 1;
+    state.orders.set(order.orderNumber, order);
+    await route.fulfill({ json: order });
+    return;
+  }
+
+  await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
+}
+
 function apiPathname(url: URL): string {
   const segments = url.pathname.split('/').filter(Boolean);
 
@@ -669,4 +729,118 @@ function updateCartItemQuantity(
     ),
     cart.appliedVouchers,
   );
+}
+
+function createOrderConfirmation(
+  request: PlaceOrderRequest,
+  fallbackCart: Cart,
+  sequence: number,
+): OrderConfirmation {
+  const cart = request.cart ?? fallbackCart;
+  const orderNumber = `OR-20260618-${String(sequence).padStart(4, '0')}`;
+  const payment = asRecord(request.checkoutData['payment']);
+  const shipping = asRecord(request.checkoutData['shipping']);
+  const paymentMethod = readString(payment, 'paymentMethod', 'credit-card');
+  const shippingMethod = readString(shipping, 'shippingMethod', 'standard');
+  const paymentStatus: PaymentStatus =
+    paymentMethod === 'cod' ? 'pending' : 'paid';
+
+  return {
+    id: orderNumber,
+    orderNumber,
+    paymentStatus,
+    orderStatus: paymentStatus === 'paid' ? 'confirmed' : 'pending_payment',
+    items: cart.entries.map((item) => ({
+      productId: item.productId,
+      productName: item.productName,
+      price: item.price,
+      quantity: item.quantity,
+      imageUrl: item.imageUrl,
+      categoryName: item.categoryName,
+      itemSpecs: item.itemSpecs.map((spec) => spec.value),
+    })),
+    shippingAddress: getShippingAddress(request.checkoutData),
+    deliveryEstimate:
+      shippingMethod === 'express' ? '1-2 business days' : '3-5 business days',
+    totalAmount: getCartTotal(cart),
+    nextSteps: getNextSteps(request.checkoutData, paymentStatus),
+    placedAt: '2026-06-18T00:00:00.000Z',
+  };
+}
+
+function getShippingAddress(
+  checkoutData: PlaceOrderRequest['checkoutData'],
+): OrderConfirmation['shippingAddress'] {
+  const customer = asRecord(checkoutData['customer']);
+  const deliveryAddress = asRecord(customer['deliveryAddress']);
+  const firstName = readString(customer, 'firstName');
+  const lastName = readString(customer, 'lastName');
+  const recipientName = [firstName, lastName].filter(Boolean).join(' ');
+
+  return {
+    recipientName,
+    mobileNumber: readString(customer, 'mobileNumber'),
+    addressLine1:
+      readString(deliveryAddress, 'addressLine1') ||
+      readString(deliveryAddress, 'street'),
+    addressLine2: readString(deliveryAddress, 'addressLine2') || undefined,
+    barangay: readString(deliveryAddress, 'barangay') || undefined,
+    city: readString(deliveryAddress, 'city'),
+    region: readString(deliveryAddress, 'region') || undefined,
+    postalCode: readString(deliveryAddress, 'postalCode'),
+    country: 'Philippines',
+  };
+}
+
+function getCartTotal(cart: Cart): number {
+  return (
+    cart.cartSummary.find((item) => item.name.toLowerCase() === 'total')
+      ?.amount ??
+    cart.entries.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    )
+  );
+}
+
+function getNextSteps(
+  checkoutData: PlaceOrderRequest['checkoutData'],
+  paymentStatus: PaymentStatus,
+): string[] {
+  const customer = asRecord(checkoutData['customer']);
+  const email = readString(customer, 'email');
+
+  return [
+    paymentStatus === 'paid'
+      ? 'Your payment has been processed successfully.'
+      : 'Payment will be collected when your order is delivered.',
+    email
+      ? `We sent the order details to ${email}.`
+      : 'We sent the order details to your email.',
+    'We will notify you when the order starts processing.',
+  ];
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function readString(
+  record: Record<string, unknown>,
+  key: string,
+  fallback = '',
+): string {
+  const value = record[key];
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (typeof value === 'number') {
+    return String(value);
+  }
+
+  return fallback;
 }

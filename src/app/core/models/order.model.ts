@@ -40,7 +40,7 @@ export interface OrderShippingAddress {
 }
 
 export interface OrderConfirmation {
-  id: string;
+  id?: string;
   orderNumber: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
