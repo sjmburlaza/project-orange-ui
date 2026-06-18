@@ -184,7 +184,7 @@ export class CheckoutComponent implements OnInit {
               this.siteService.getCurrentSite(),
               'orders',
               'confirmation',
-              order.id,
+              order.orderNumber || order.id,
             ]),
           ),
         ),
