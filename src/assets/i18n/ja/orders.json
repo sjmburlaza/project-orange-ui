@@ -19,6 +19,7 @@
       "deliveredPrefix": "配達日",
       "estimatedDeliveryPrefix": "配送予定",
       "quantity": "数量: {{ quantity }}",
+      "addons": "アドオン",
       "total": "合計:",
       "subtotal": "小計:",
       "shipping": "送料:",
@@ -45,6 +46,20 @@
       },
       "errors": {
         "notFound": "この注文は存在しません。"
+      }
+    },
+    "history": {
+      "eyebrow": "注文履歴",
+      "title": "ご注文",
+      "intro": "最近の購入履歴を確認し、各注文を開いて配送、支払い、利用可能な操作の詳細を確認できます。",
+      "loading": "注文を読み込んでいます...",
+      "searchLabel": "注文番号で検索",
+      "searchPlaceholder": "例: OR-20260618-0001",
+      "clearSearch": "検索をクリア",
+      "emptyState": "注文はまだありません。",
+      "noSearchResults": "その注文番号に一致する注文はありません。",
+      "errors": {
+        "loadFailed": "現在、注文を読み込めません。"
       }
     },
     "confirmation": {

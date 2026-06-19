@@ -1,4 +1,4 @@
-import { Cart } from './cart.model';
+import { Addon, Cart, ItemSpec } from './cart.model';
 
 export type OrderStatus =
   | 'pending_payment'
@@ -28,7 +28,8 @@ export interface OrderProductItem {
   quantity: number;
   imageUrl: string;
   categoryName?: string;
-  itemSpecs: string[];
+  itemSpecs: ItemSpec[];
+  addons?: Addon[];
 }
 
 export interface OrderShippingAddress {

@@ -1,8 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideTranslateService } from '@ngx-translate/core';
 
+import { AuthSession } from 'src/app/core/auth/auth.models';
+import {
+  AuthSessionState,
+  AuthStore,
+} from 'src/app/core/auth/auth.store';
 import { OrderItem } from 'src/app/core/models/order.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { OrderService } from 'src/app/features/orders/services/order.service';
@@ -11,7 +16,11 @@ import { OrdersComponent } from './orders.component';
 describe('OrdersComponent', () => {
   let component: OrdersComponent;
   let fixture: ComponentFixture<OrdersComponent>;
-  let orderService: { lookupOrder: ReturnType<typeof vi.fn> };
+  let orderService: {
+    lookupOrder: ReturnType<typeof vi.fn>;
+    getOrders: ReturnType<typeof vi.fn>;
+  };
+  let authSession: BehaviorSubject<AuthSessionState>;
 
   const order: OrderItem = {
     orderNumber: 'OR-20260618-0001',
@@ -26,7 +35,7 @@ describe('OrdersComponent', () => {
         quantity: 1,
         imageUrl: '',
         categoryName: 'Phones',
-        itemSpecs: ['128 GB'],
+        itemSpecs: [{ name: 'Storage', value: '128 GB' }],
       },
     ],
     shippingAddress: {
@@ -43,8 +52,27 @@ describe('OrdersComponent', () => {
     placedAt: '2026-06-18T00:00:00.000Z',
   };
 
+  const session: AuthSession = {
+    user: {
+      id: 'user-1',
+      email: 'ada@example.com',
+      fullName: 'Ada Lovelace',
+      roles: ['customer'],
+      permissions: [],
+    },
+    session: {
+      id: 'session-1',
+      createdAtUtc: '2026-06-18T00:00:00.000Z',
+      expiresAtUtc: '2026-06-19T00:00:00.000Z',
+    },
+  };
+
   beforeEach(async () => {
-    orderService = { lookupOrder: vi.fn() };
+    authSession = new BehaviorSubject<AuthSessionState>(null);
+    orderService = {
+      lookupOrder: vi.fn(),
+      getOrders: vi.fn(),
+    };
 
     await TestBed.configureTestingModule({
       imports: [OrdersComponent],
@@ -54,6 +82,13 @@ describe('OrdersComponent', () => {
         {
           provide: OrderService,
           useValue: orderService,
+        },
+        {
+          provide: AuthStore,
+          useValue: {
+            session$: authSession.asObservable(),
+            getSessionSnapshot: () => authSession.value,
+          },
         },
         {
           provide: SiteService,
@@ -125,5 +160,16 @@ describe('OrdersComponent', () => {
 
     expect(component.order()).toBeNull();
     expect(component.errorMessage()).toBe('orders.lookup.errors.notFound');
+  });
+
+  it('loads order history for authenticated users', () => {
+    orderService.getOrders.mockReturnValue(of([order]));
+
+    authSession.next(session);
+    fixture.detectChanges();
+
+    expect(orderService.getOrders).toHaveBeenCalled();
+    expect(component.ordersHistory()).toEqual([order]);
+    expect(component.isAuthenticated()).toBe(true);
   });
 });

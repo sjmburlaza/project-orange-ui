@@ -755,7 +755,8 @@ function createOrderConfirmation(
       quantity: item.quantity,
       imageUrl: item.imageUrl,
       categoryName: item.categoryName,
-      itemSpecs: item.itemSpecs.map((spec) => spec.value),
+      itemSpecs: item.itemSpecs,
+      addons: item.addons.filter((addon) => addon.isAdded),
     })),
     shippingAddress: getShippingAddress(request.checkoutData),
     deliveryEstimate:

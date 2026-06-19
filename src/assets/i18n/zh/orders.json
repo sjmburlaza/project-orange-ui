@@ -19,6 +19,7 @@
       "deliveredPrefix": "送达于",
       "estimatedDeliveryPrefix": "预计送达",
       "quantity": "数量：{{ quantity }}",
+      "addons": "附加服务",
       "total": "总计：",
       "subtotal": "小计：",
       "shipping": "运费：",
@@ -45,6 +46,20 @@
       },
       "errors": {
         "notFound": "该订单不存在。"
+      }
+    },
+    "history": {
+      "eyebrow": "订单历史",
+      "title": "您的订单",
+      "intro": "查看最近购买的商品，并打开每个订单查看配送、付款和可用操作详情。",
+      "loading": "正在加载您的订单...",
+      "searchLabel": "按订单号搜索",
+      "searchPlaceholder": "示例：OR-20260618-0001",
+      "clearSearch": "清除搜索",
+      "emptyState": "您还没有任何订单。",
+      "noSearchResults": "没有匹配该订单号的订单。",
+      "errors": {
+        "loadFailed": "目前无法加载您的订单。"
       }
     },
     "confirmation": {

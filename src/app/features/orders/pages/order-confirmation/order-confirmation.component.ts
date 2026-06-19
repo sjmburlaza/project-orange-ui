@@ -12,6 +12,7 @@ import {
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'src/app/core/services/site.services';
 import { TranslatePipe } from '@ngx-translate/core';
+import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
 
@@ -23,6 +24,7 @@ type DisplayStatus = OrderStatus | PaymentStatus;
     MatButtonModule,
     MatIconModule,
     RouterLink,
+    IconPipe,
     TranslatePipe,
   ],
   templateUrl: './order-confirmation.component.html',
@@ -38,6 +40,16 @@ export class OrderConfirmationComponent implements OnInit {
   readonly errorMessage = signal('');
   readonly site = this.siteService.currentSite;
   readonly currency = computed(() => this.siteService.currency() || 'PHP');
+  readonly displayItems = computed(() =>
+    (this.order()?.items ?? []).map((item) => ({
+      addedAddons: (item.addons ?? []).filter((addon) => addon.isAdded),
+      item,
+      specs: item.itemSpecs
+        .map((spec) => spec.value)
+        .filter(Boolean)
+        .join(', '),
+    })),
+  );
 
   ngOnInit(): void {
     const orderId = this.route.snapshot.paramMap.get('orderId');

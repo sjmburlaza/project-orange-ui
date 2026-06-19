@@ -45,21 +45,21 @@ http://localhost:4200/jp/products
 
 ## Available Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm start` | Runs `ng serve` with `proxy.conf.cjs`. |
-| `npm run mock:api` | Runs the local json-server analytics mock on port `5176`. |
-| `npm run start:e2e` | Runs the Angular dev server with the e2e build configuration. |
-| `npm run build` | Builds the app for production into `dist/`. |
-| `npm run watch` | Builds in watch mode with the development configuration. |
-| `npm test` | Runs unit tests. |
-| `npm run test:watch` | Runs unit tests in watch mode. |
-| `npm run test:ci` | Runs unit tests once for CI. |
-| `npm run e2e` | Runs Playwright tests. |
-| `npm run e2e:ui` | Opens the Playwright UI runner. |
-| `npm run e2e:headed` | Runs Playwright tests in headed mode. |
-| `npm run lint` | Runs Angular ESLint over TypeScript and templates. |
-| `npm run build:ssr` | Builds the server-output application. |
+| Command                               | Description                                                                  |
+| ------------------------------------- | ---------------------------------------------------------------------------- |
+| `npm start`                           | Runs `ng serve` with `proxy.conf.cjs`.                                       |
+| `npm run mock:api`                    | Runs the local json-server analytics mock on port `5176`.                    |
+| `npm run start:e2e`                   | Runs the Angular dev server with the e2e build configuration.                |
+| `npm run build`                       | Builds the app for production into `dist/`.                                  |
+| `npm run watch`                       | Builds in watch mode with the development configuration.                     |
+| `npm test`                            | Runs unit tests.                                                             |
+| `npm run test:watch`                  | Runs unit tests in watch mode.                                               |
+| `npm run test:ci`                     | Runs unit tests once for CI.                                                 |
+| `npm run e2e`                         | Runs Playwright tests.                                                       |
+| `npm run e2e:ui`                      | Opens the Playwright UI runner.                                              |
+| `npm run e2e:headed`                  | Runs Playwright tests in headed mode.                                        |
+| `npm run lint`                        | Runs Angular ESLint over TypeScript and templates.                           |
+| `npm run build:ssr`                   | Builds the server-output application.                                        |
 | `npm run serve:ssr:project-orange-v2` | Serves the built SSR bundle from `dist/project-orange-v2/server/server.mjs`. |
 
 ## Application Flow
@@ -68,20 +68,22 @@ The root route (`/`) loads the country entry screen. It uses `/api/sites` and `/
 
 Most app routes are scoped by site:
 
-| Route | Purpose |
-| --- | --- |
-| `/:site/products` | Product listing with category, sort, and price filters. |
-| `/:site/products/detail` | Product detail page. |
-| `/:site/cart` | Cart review, quantity updates, vouchers, shipping, and add-ons. |
-| `/:site/checkout` | Dynamic checkout form, shipping, payment, and order summary flow. |
-| `/:site/auth/login` | Sign in. |
-| `/:site/auth/register` | Account registration. |
-| `/:site/auth/forgot-password` | Password reset entry point. |
-| `/:site/orders/my-orders` | Guest order lookup by order number and email. |
-| `/:site/profile/account-settings` | Customer account settings. |
-| `/:site/admin/dashboard` | Admin dashboard. Requires an authenticated admin session. |
-| `/:site/admin/manage-orders` | Admin order management. Requires an authenticated admin session. |
-| `/:site/admin/manage-products` | Admin product management. Requires an authenticated admin session. |
+| Route                                 | Purpose                                                            |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| `/:site/products`                     | Product listing with category, sort, and price filters.            |
+| `/:site/products/detail`              | Product detail page.                                               |
+| `/:site/cart`                         | Cart review, quantity updates, vouchers, shipping, and add-ons.    |
+| `/:site/checkout`                     | Dynamic checkout form, shipping, payment, and order summary flow.  |
+| `/:site/auth/login`                   | Sign in.                                                           |
+| `/:site/auth/register`                | Account registration.                                              |
+| `/:site/auth/forgot-password`         | Password reset entry point.                                        |
+| `/:site/orders`                       | Guest order lookup or signed-in order history.                     |
+| `/:site/orders/my-orders`             | Orders route alias for lookup and history.                         |
+| `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                            |
+| `/:site/profile/account-settings`     | Customer account settings.                                         |
+| `/:site/admin/dashboard`              | Admin dashboard. Requires an authenticated admin session.          |
+| `/:site/admin/manage-orders`          | Admin order management. Requires an authenticated admin session.   |
+| `/:site/admin/manage-products`        | Admin product management. Requires an authenticated admin session. |
 
 Unsupported site codes are redirected back to the country selector.
 
@@ -111,19 +113,20 @@ The interceptor leaves these unscoped endpoints unchanged:
 
 Primary API areas used by the UI:
 
-| Area | Endpoints |
-| --- | --- |
-| Sites | `GET /api/sites`, `GET /api/sites/:site` |
-| Country detection | `GET /api/geo/country` |
-| Auth | `POST /api/auth/login`, `POST /api/auth/register`, `GET /api/auth/session`, `POST /api/auth/logout` |
-| Catalog | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories` |
-| Product add-ons | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans` |
-| Cart | `GET /api/carts/:cartCode`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:productId`, `DELETE /api/carts/:cartCode/items/:productId` |
-| Cart add-ons | `PUT /api/carts/:cartCode/items/:productId/addons/:addonId`, `DELETE /api/carts/:cartCode/items/:productId/addons/:addonId` |
-| Vouchers | `POST /api/carts/:cartCode/vouchers`, `DELETE /api/carts/:cartCode/vouchers/:code` |
-| Checkout | `GET /api/checkout/form` |
-| Shipping | `GET /api/shipping/options?postalCode=...`, `PUT /api/carts/:cartCode/shipping` |
-| Trade-in | `GET /api/trade-ins/config`, `GET /api/trade-ins/categories`, `GET /api/trade-ins/brands`, `GET /api/trade-ins/devices`, `GET /api/trade-ins/storages` |
+| Area              | Endpoints                                                                                                                                                                                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sites             | `GET /api/sites`, `GET /api/sites/:site`                                                                                                                                                                                                             |
+| Country detection | `GET /api/geo/country`                                                                                                                                                                                                                               |
+| Auth              | `POST /api/auth/login`, `POST /api/auth/register`, `GET /api/auth/session`, `POST /api/auth/logout`                                                                                                                                                  |
+| Catalog           | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories`                                                                                                                                                                                  |
+| Product add-ons   | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans`                                                                                                                                                                        |
+| Cart              | `GET /api/carts/:cartCode`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:productId`, `DELETE /api/carts/:cartCode/items/:productId`                                                                  |
+| Cart add-ons      | `PUT /api/carts/:cartCode/items/:productId/addons/:addonId`, `DELETE /api/carts/:cartCode/items/:productId/addons/:addonId`                                                                                                                          |
+| Vouchers          | `POST /api/carts/:cartCode/vouchers`, `DELETE /api/carts/:cartCode/vouchers/:code`                                                                                                                                                                   |
+| Checkout          | `GET /api/checkout/form`                                                                                                                                                                                                                             |
+| Orders            | `POST /api/orders`, `GET /api/orders`, `GET /api/orders/:orderNumber`, `GET /api/orders/lookup?orderNumber=...&email=...`                                                                                                                            |
+| Shipping          | `GET /api/shipping/options?postalCode=...`, `PUT /api/carts/:cartCode/shipping`                                                                                                                                                                      |
+| Trade-in          | `GET /api/trade-ins/config`, `GET /api/trade-ins/categories`, `GET /api/trade-ins/brands`, `GET /api/trade-ins/devices`, `GET /api/trade-ins/storages`                                                                                               |
 | Trade-in sessions | `POST /api/trade-in-sessions`, `GET /api/trade-in-sessions/:id`, `PATCH /api/trade-in-sessions/:id/step-one`, `PATCH /api/trade-in-sessions/:id/step-two`, `PATCH /api/trade-in-sessions/:id/step-three`, `PATCH /api/trade-in-sessions/:id/confirm` |
 
 Auth requests use credentials and XSRF support. `AuthInterceptor` adds `withCredentials` to API requests and redirects unauthenticated users to the site login page when protected requests return `401`.
@@ -168,6 +171,7 @@ common.json
 home.json
 products.json
 cart.json
+orders.json
 ```
 
 `MultiTranslateLoader` loads and merges those resources for the active language. Current language folders are:
@@ -210,8 +214,9 @@ src/app/features
   common/           Reusable commerce UI such as order summary, voucher, CTA
   country-entry/    Country selector and detected-country entry flow
   home/             Home feature
+  orders/           Guest lookup, signed-in history, confirmation, and order item card
   products/         Product list, product detail, filters, product store
-  profile/          Orders and account settings
+  profile/          Account settings
   trade-in/         Trade-in store and API
 
 src/app/layout

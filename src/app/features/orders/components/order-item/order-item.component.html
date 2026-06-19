@@ -1,4 +1,8 @@
 @let currentOrder = order();
+@let statusToneClass = orderStatusTone();
+@let delivery = deliveryInfo();
+@let items = displayItems();
+@let actions = orderActions();
 
 <mat-expansion-panel
   class="order-panel"
@@ -23,29 +27,23 @@
         {{ currentOrder.placedAt | date: "MMM d, y" }}
       </span>
 
-      <strong
-        [class]="
-          'status-badge status-badge--' + statusTone(currentOrder.orderStatus)
-        "
-      >
+      <strong [class]="'status-badge status-badge--' + statusToneClass">
         <mat-icon aria-hidden="true">local_shipping</mat-icon>
         {{
-          "orders.confirmation.statuses." + currentOrder.orderStatus
-            | translate
+          "orders.confirmation.statuses." + currentOrder.orderStatus | translate
         }}
       </strong>
-
     </mat-panel-description>
   </mat-expansion-panel-header>
 
   <div class="order-body">
     <section class="delivery-block">
       <strong>
-        {{ deliveryLabel(currentOrder) | translate }}
-        @if (currentOrder.deliveredAt) {
-          {{ deliveryDate(currentOrder) | date: "MMM d, y" }}
+        {{ delivery.label | translate }}
+        @if (delivery.isDelivered) {
+          {{ delivery.date | date: "MMM d, y" }}
         } @else {
-          {{ deliveryDate(currentOrder) }}
+          {{ delivery.date }}
         }
       </strong>
 
@@ -65,31 +63,62 @@
     </section>
 
     <section class="product-list">
-      @for (item of currentOrder.items; track item.productId) {
+      @for (row of items; track row.item.productId) {
         <article class="product-row">
           <div class="product-row__media">
-            @if (item.imageUrl) {
-              <img [src]="item.imageUrl" [alt]="item.productName" />
+            @if (row.item.imageUrl) {
+              <img [src]="row.item.imageUrl" [alt]="row.item.productName" />
             } @else {
-              <mat-icon aria-hidden="true">inventory_2</mat-icon>
+              <i [class]="row.item.categoryName | icon" aria-hidden="true"></i>
             }
           </div>
 
           <div class="product-row__details">
-            <h3>{{ item.productName }}</h3>
-            @if (itemSpecs(item)) {
-              <p>{{ itemSpecs(item) }}</p>
+            <h3>{{ row.item.productName }}</h3>
+            @if (row.specs) {
+              <p>{{ row.specs }}</p>
             }
             <span>
               {{
                 "orders.lookup.quantity"
-                  | translate: { quantity: item.quantity }
+                  | translate: { quantity: row.item.quantity }
               }}
             </span>
+
+            @if (row.addedAddons.length) {
+              <div class="product-row__addons">
+                <span class="product-row__addons-label">
+                  {{ "orders.lookup.addons" | translate }}
+                </span>
+
+                @for (addon of row.addedAddons; track addon.id) {
+                  <span class="product-row__addon">
+                    <span class="product-row__addon-icon">
+                      @if (addon.imageUrl) {
+                        <img [src]="addon.imageUrl" [alt]="addon.name" />
+                      } @else {
+                        <i [class]="addon.id | icon" aria-hidden="true"></i>
+                      }
+                    </span>
+                    <span class="product-row__addon-title">
+                      {{ addon.title || addon.name }}
+                    </span>
+                    <strong>
+                      @if (addon.amount !== undefined) {
+                        {{ addon.amount | currency: currency() }}
+                      }
+                      @if (addon.billingFrequency) {
+                        / {{ addon.billingFrequency }}
+                      }
+                    </strong>
+                  </span>
+                }
+              </div>
+            }
           </div>
 
           <strong class="product-row__price">
-            {{ item.price | currency: currency() }}
+            {{ row.item.price | currency: currency() }}
           </strong>
         </article>
       }
@@ -115,25 +144,25 @@
     </section>
 
     <footer class="order-actions order-actions--expanded">
-      @if (canCancel(currentOrder)) {
+      @if (actions.canCancel) {
         <button matButton="outlined" type="button">
           {{ "orders.lookup.cancelOrder" | translate }}
         </button>
       }
 
-      @if (canChangePayment(currentOrder)) {
+      @if (actions.canChangePayment) {
         <button matButton="outlined" type="button">
           {{ "orders.lookup.changePaymentMethod" | translate }}
         </button>
       }
 
-      @if (canPayNow(currentOrder)) {
+      @if (actions.canPayNow) {
         <button matButton="filled" type="button">
           {{ "orders.lookup.payNow" | translate }}
         </button>
       }
 
-      @if (canTrack(currentOrder)) {
+      @if (actions.canTrack) {
         <button
           matButton="outlined"
           type="button"
@@ -143,25 +172,25 @@
         </button>
       }
 
-      @if (canBuyAgain(currentOrder)) {
+      @if (actions.canBuyAgain) {
         <button matButton="filled" type="button">
           {{ "orders.lookup.buyAgain" | translate }}
         </button>
       }
 
-      @if (canReview(currentOrder)) {
+      @if (actions.canReview) {
         <button matButton="outlined" type="button">
           {{ "orders.lookup.writeReview" | translate }}
         </button>
       }
 
-      @if (canReturn(currentOrder)) {
+      @if (actions.canReturn) {
         <button matButton="outlined" type="button">
           {{ "orders.lookup.returnItem" | translate }}
         </button>
       }
 
-      @if (canDownloadInvoice(currentOrder)) {
+      @if (actions.canDownloadInvoice) {
         <a matButton="outlined" [href]="currentOrder.invoiceUrl" download>
           {{ "orders.lookup.downloadInvoice" | translate }}
         </a>

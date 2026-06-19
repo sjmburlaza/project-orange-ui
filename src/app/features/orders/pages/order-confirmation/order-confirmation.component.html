@@ -63,31 +63,60 @@
       </div>
 
       <div class="item-list">
-        @for (item of order.items; track item.productId) {
+        @for (row of displayItems(); track row.item.productId) {
           <article class="item">
             <div class="item__media">
-              @if (item.imageUrl) {
-                <img [src]="item.imageUrl" [alt]="item.productName" />
+              @if (row.item.imageUrl) {
+                <img [src]="row.item.imageUrl" [alt]="row.item.productName" />
               } @else {
-                <mat-icon aria-hidden="true">inventory_2</mat-icon>
+                <i [class]="row.item.categoryName | icon" aria-hidden="true"></i>
               }
             </div>
 
             <div class="item__details">
-              <h3>{{ item.productName }}</h3>
-              @if (item.itemSpecs.length) {
-                <p>{{ item.itemSpecs.join(", ") }}</p>
+              <h3>{{ row.item.productName }}</h3>
+              @if (row.specs) {
+                <p>{{ row.specs }}</p>
               }
               <span>
                 {{
                   "orders.confirmation.quantity"
-                    | translate: { quantity: item.quantity }
+                    | translate: { quantity: row.item.quantity }
                 }}
               </span>
+
+              @if (row.addedAddons.length) {
+                <div class="item__addons">
+                  <span class="item__addons-label">
+                    {{ "orders.lookup.addons" | translate }}
+                  </span>
+
+                  @for (addon of row.addedAddons; track addon.id) {
+                    <span class="item__addon">
+                      <span class="item__addon-icon">
+                        @if (addon.imageUrl) {
+                          <img [src]="addon.imageUrl" [alt]="addon.name" />
+                        } @else {
+                          <i [class]="addon.id | icon" aria-hidden="true"></i>
+                        }
+                      </span>
+                      <span class="item__addon-title">
+                        {{ addon.title || addon.name }}
+                      </span>
+                      @if (addon.amount !== undefined) {
+                        <strong>{{ addon.amount | currency: currency() }}</strong>
+                      }
+                      @if (addon.billingFrequency) {
+                        <small>/ {{ addon.billingFrequency }}</small>
+                      }
+                    </span>
+                  }
+                </div>
+              }
             </div>
 
             <strong class="item__amount">
-              {{ item.price * item.quantity | currency: currency() }}
+              {{ row.item.price * row.item.quantity | currency: currency() }}
             </strong>
           </article>
         }

@@ -23,7 +23,30 @@ describe('OrderItemComponent', () => {
         quantity: 1,
         imageUrl: '',
         categoryName: 'Phones',
-        itemSpecs: ['512GB', 'Titanium Black'],
+        itemSpecs: [
+          { name: 'Storage', value: '512GB' },
+          { name: 'Color', value: 'Titanium Black' },
+        ],
+        addons: [
+          {
+            id: 'insurance',
+            name: 'Device protection',
+            title: 'Device protection',
+            description: 'Coverage for accidental damage.',
+            imageUrl: '',
+            isAdded: true,
+            amount: 499,
+            billingFrequency: 'month',
+          },
+          {
+            id: 'trade-in',
+            name: 'Trade in',
+            title: 'Trade in',
+            description: 'Trade in an old device.',
+            imageUrl: '',
+            isAdded: false,
+          },
+        ],
       },
     ],
     shippingAddress: {
@@ -83,5 +106,19 @@ describe('OrderItemComponent', () => {
     expect(component.subtotal()).toBe(84990);
     expect(component.shippingAmount()).toBe(0);
     expect(component.discountAmount()).toBe(5000);
+  });
+
+  it('displays added add-ons for each product row', () => {
+    const textContent = fixture.nativeElement.textContent;
+
+    expect(textContent).toContain('orders.lookup.addons');
+    expect(textContent).toContain('Device protection');
+    expect(textContent).toContain('month');
+    expect(textContent).not.toContain('Trade in');
+  });
+
+  it('uses cart-style fallback icons for product images and add-ons', () => {
+    expect(fixture.nativeElement.querySelector('.bi-phone')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.bi-shield-check')).toBeTruthy();
   });
 });
