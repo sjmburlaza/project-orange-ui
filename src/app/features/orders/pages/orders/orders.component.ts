@@ -47,6 +47,12 @@ export class OrdersComponent {
   }
 
   onSubmit(): void {
+    const formValue = this.lookupForm.getRawValue();
+    const orderNumber = formValue.orderNumber.trim();
+    const email = formValue.email.trim();
+
+    this.lookupForm.setValue({ orderNumber, email }, { emitEvent: false });
+
     if (this.lookupForm.invalid) {
       this.lookupForm.markAllAsTouched();
       this.errorMessage.set('');
@@ -54,11 +60,6 @@ export class OrdersComponent {
       return;
     }
 
-    const formValue = this.lookupForm.getRawValue();
-    const orderNumber = formValue.orderNumber.trim();
-    const email = formValue.email.trim();
-
-    this.lookupForm.setValue({ orderNumber, email }, { emitEvent: false });
     this.isLoading.set(true);
     this.errorMessage.set('');
     this.order.set(null);
