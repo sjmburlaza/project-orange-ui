@@ -1,0 +1,25 @@
+<div class="tab-panel">
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Conversion Funnel</h2>
+      <span>{{ data.purchaseConversionRate | percent: "1.1-1" }} purchase conversion</span>
+    </div>
+    <div class="funnel-chart">
+      @for (step of data.funnel; track step.label) {
+        <div class="funnel-chart__row">
+          <div>
+            <strong>{{ step.label }}</strong>
+            <span>{{ step.rateFromVisitors | percent: "1.1-1" }} of visitors</span>
+          </div>
+          <div class="bar">
+            <span
+              class="bar__fill"
+              [style.width]="barWidth(step.value, data.visitors)"
+            ></span>
+          </div>
+          <strong>{{ step.value | number }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+</div>

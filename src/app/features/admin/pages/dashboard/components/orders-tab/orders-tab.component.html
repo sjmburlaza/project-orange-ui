@@ -1,0 +1,34 @@
+<div class="tab-panel">
+  <section class="metric-grid metric-grid--compact">
+    @for (card of cards; track card.label) {
+      <article class="metric-card" [class]="'metric-card metric-card--' + (card.tone ?? 'default')">
+        <span>{{ card.label }}</span>
+        <strong>{{ card.value }}</strong>
+        <small>{{ card.helper }}</small>
+      </article>
+    }
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Recent Orders</h2>
+      <span>{{ data.orders.length }} latest</span>
+    </div>
+    <div class="data-table data-table--orders">
+      <div class="data-table__head">
+        <span>Order</span>
+        <span>Date</span>
+        <span>Items</span>
+        <span>Revenue</span>
+      </div>
+      @for (order of data.orders; track order.orderNumber) {
+        <div class="data-table__row">
+          <strong>{{ order.orderNumber }}</strong>
+          <span>{{ order.occurredAt | date: "MMM d, h:mm a" }}</span>
+          <span>{{ order.units | number }}</span>
+          <strong>{{ order.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+</div>

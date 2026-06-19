@@ -1,0 +1,56 @@
+<div class="tab-panel">
+  <section class="metric-grid metric-grid--compact">
+    @for (card of cards; track card.label) {
+      <article class="metric-card" [class]="'metric-card metric-card--' + (card.tone ?? 'default')">
+        <span>{{ card.label }}</span>
+        <strong>{{ card.value }}</strong>
+        <small>{{ card.helper }}</small>
+      </article>
+    }
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Revenue Trend</h2>
+      <span>{{ data.revenue | currency: currency: "symbol": "1.0-0" }}</span>
+    </div>
+    <div class="daily-bars">
+      @for (day of data.daily; track day.dateKey) {
+        <div class="daily-row">
+          <span>{{ day.label }}</span>
+          <div class="bar">
+            <span
+              class="bar__fill"
+              [style.width]="barWidth(day.revenue, maxDailyRevenue)"
+            ></span>
+          </div>
+          <strong>{{ day.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Revenue By Category</h2>
+      <span>{{ data.topCategories.length }} categories</span>
+    </div>
+    <div class="category-bars">
+      @for (category of data.topCategories; track category.categoryName) {
+        <div class="category-row">
+          <div>
+            <strong>{{ category.categoryName }}</strong>
+            <span>{{ category.unitsSold | number }} units sold</span>
+          </div>
+          <div class="bar">
+            <span
+              class="bar__fill"
+              [style.width]="barWidth(category.revenue, maxCategoryRevenue)"
+            ></span>
+          </div>
+          <strong>{{ category.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+</div>

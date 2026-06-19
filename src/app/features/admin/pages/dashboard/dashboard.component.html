@@ -1,0 +1,69 @@
+@let data = dashboard();
+@let currencyCode = currency();
+
+<section class="analytics">
+  <header class="analytics__header">
+    <div>
+      <p class="eyebrow">Admin Analytics</p>
+      <h1>Analytics Dashboard</h1>
+    </div>
+    <div class="analytics__period">Last 7 days</div>
+  </header>
+
+  <mat-tab-group class="analytics-tabs" [mat-stretch-tabs]="false">
+    <mat-tab label="Overview">
+      <app-overview-tab
+        [cards]="overviewCards()"
+        [currency]="currencyCode"
+        [data]="data"
+      ></app-overview-tab>
+    </mat-tab>
+
+    <mat-tab label="Revenue">
+      <app-revenue-tab
+        [cards]="revenueCards()"
+        [currency]="currencyCode"
+        [data]="data"
+        [maxCategoryRevenue]="maxCategoryRevenue()"
+        [maxDailyRevenue]="maxDailyRevenue()"
+      ></app-revenue-tab>
+    </mat-tab>
+
+    <mat-tab label="Orders">
+      <app-orders-tab
+        [cards]="orderCards()"
+        [currency]="currencyCode"
+        [data]="data"
+      ></app-orders-tab>
+    </mat-tab>
+
+    <mat-tab label="Visitors">
+      <app-visitors-tab
+        [cards]="visitorCards()"
+        [data]="data"
+        [maxDailyViews]="maxDailyViews()"
+        [maxDailyVisitors]="maxDailyVisitors()"
+      ></app-visitors-tab>
+    </mat-tab>
+
+    <mat-tab label="Funnel">
+      <app-funnel-tab [data]="data"></app-funnel-tab>
+    </mat-tab>
+
+    <mat-tab label="Top Products">
+      <app-top-products-tab
+        [currency]="currencyCode"
+        [data]="data"
+        [maxProductRevenue]="maxProductRevenue()"
+      ></app-top-products-tab>
+    </mat-tab>
+
+    <mat-tab label="Payment Failures">
+      <app-payment-failures-tab
+        [cards]="paymentCards()"
+        [currency]="currencyCode"
+        [data]="data"
+      ></app-payment-failures-tab>
+    </mat-tab>
+  </mat-tab-group>
+</section>

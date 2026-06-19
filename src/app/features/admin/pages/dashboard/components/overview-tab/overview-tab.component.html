@@ -1,0 +1,55 @@
+<div class="tab-panel">
+  <section class="metric-grid" aria-label="Analytics metrics">
+    @for (card of cards; track card.label) {
+      <article class="metric-card" [class]="'metric-card metric-card--' + (card.tone ?? 'default')">
+        <span>{{ card.label }}</span>
+        <strong>{{ card.value }}</strong>
+        <small>{{ card.helper }}</small>
+      </article>
+    }
+  </section>
+
+  <div class="overview-grid">
+    <section class="panel">
+      <div class="panel__header">
+        <h2>Funnel Health</h2>
+        <span>{{ data.purchaseConversionRate | percent: "1.1-1" }}</span>
+      </div>
+      <div class="funnel-list">
+        @for (step of data.funnel; track step.label) {
+          <div class="funnel-step">
+            <div class="funnel-step__meta">
+              <span>{{ step.label }}</span>
+              <strong>{{ step.value | number }}</strong>
+            </div>
+            <div class="bar">
+              <span
+                class="bar__fill"
+                [style.width]="barWidth(step.value, data.visitors)"
+              ></span>
+            </div>
+            <small>{{ step.rateFromPrevious | percent: "1.1-1" }} from previous</small>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__header">
+        <h2>Top Products</h2>
+        <span>{{ data.topProducts.length }} tracked</span>
+      </div>
+      <div class="rank-list">
+        @for (product of data.topProducts.slice(0, 5); track product.productId) {
+          <div class="rank-row">
+            <div>
+              <strong>{{ product.productName }}</strong>
+              <span>{{ product.categoryName }}</span>
+            </div>
+            <strong>{{ product.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="tab-panel">
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Top Products</h2>
+      <span>Ranked by revenue</span>
+    </div>
+    <div class="product-table">
+      @for (product of data.topProducts; track product.productId) {
+        <div class="product-row">
+          <div class="product-row__name">
+            <strong>{{ product.productName }}</strong>
+            <span>{{ product.categoryName }}</span>
+          </div>
+          <div class="product-row__bar">
+            <div class="bar">
+              <span
+                class="bar__fill"
+                [style.width]="barWidth(product.revenue, maxProductRevenue)"
+              ></span>
+            </div>
+          </div>
+          <span>{{ product.views | number }} views</span>
+          <span>{{ product.addToCarts | number }} carts</span>
+          <span>{{ product.unitsSold | number }} sold</span>
+          <strong>{{ product.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Top Categories</h2>
+      <span>Revenue and conversion</span>
+    </div>
+    <div class="data-table data-table--categories">
+      <div class="data-table__head">
+        <span>Category</span>
+        <span>Views</span>
+        <span>Carts</span>
+        <span>Units</span>
+        <span>Conversion</span>
+        <span>Revenue</span>
+      </div>
+      @for (category of data.topCategories; track category.categoryName) {
+        <div class="data-table__row">
+          <strong>{{ category.categoryName }}</strong>
+          <span>{{ category.views | number }}</span>
+          <span>{{ category.addToCarts | number }}</span>
+          <span>{{ category.unitsSold | number }}</span>
+          <span>{{ category.conversionRate | percent: "1.1-1" }}</span>
+          <strong>{{ category.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+</div>

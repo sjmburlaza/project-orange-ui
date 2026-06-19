@@ -1,0 +1,39 @@
+<div class="tab-panel">
+  <section class="metric-grid metric-grid--compact">
+    @for (card of cards; track card.label) {
+      <article class="metric-card" [class]="'metric-card metric-card--' + (card.tone ?? 'default')">
+        <span>{{ card.label }}</span>
+        <strong>{{ card.value }}</strong>
+        <small>{{ card.helper }}</small>
+      </article>
+    }
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
+      <h2>Failure Log</h2>
+      <span>{{ data.paymentFailureEvents.length }} latest</span>
+    </div>
+
+    @if (data.paymentFailureEvents.length) {
+      <div class="data-table data-table--failures">
+        <div class="data-table__head">
+          <span>Date</span>
+          <span>Amount</span>
+          <span>Reason</span>
+          <span>Cart</span>
+        </div>
+        @for (failure of data.paymentFailureEvents; track failure.id) {
+          <div class="data-table__row">
+            <span>{{ failure.occurredAt | date: "MMM d, h:mm a" }}</span>
+            <strong>{{ failure.amount | currency: currency: "symbol": "1.0-0" }}</strong>
+            <span>{{ failure.reason }}</span>
+            <span>{{ failure.items.length || 1 }} item(s)</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="empty-state">No payment failures recorded.</p>
+    }
+  </section>
+</div>

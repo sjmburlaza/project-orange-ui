@@ -26,7 +26,13 @@ Start the development server:
 npm start
 ```
 
-The app runs at `http://localhost:4200/`. The dev server uses `proxy.conf.json` to forward `/api` requests to `http://localhost:5175`.
+The app runs at `http://localhost:4200/`. The dev server uses `proxy.conf.json` to forward most `/api` requests to `http://localhost:5175`, with analytics mock requests forwarded to `http://localhost:5176`.
+
+For the local analytics dashboard mock, run this in a second terminal:
+
+```bash
+npm run mock:api
+```
 
 To enter the storefront, choose a country from the root page or visit a site-scoped route directly:
 
@@ -42,6 +48,7 @@ http://localhost:4200/jp/products
 | Command | Description |
 | --- | --- |
 | `npm start` | Runs `ng serve` with `proxy.conf.json`. |
+| `npm run mock:api` | Runs the local json-server analytics mock on port `5176`. |
 | `npm run start:e2e` | Runs the Angular dev server with the e2e build configuration. |
 | `npm run build` | Builds the app for production into `dist/`. |
 | `npm run watch` | Builds in watch mode with the development configuration. |
@@ -80,7 +87,7 @@ Unsupported site codes are redirected back to the country selector.
 
 ## API Behavior
 
-All API calls start with `/api`. During local development, `proxy.conf.json` forwards those requests to `http://localhost:5175`.
+All API calls start with `/api`. During local development, `proxy.conf.json` forwards most requests to `http://localhost:5175`; analytics dashboard and analytics event routes are forwarded to the json-server mock at `http://localhost:5176`.
 
 `ApiSitePrefixInterceptor` automatically prefixes scoped API calls with the active site code. For example, a component that requests:
 

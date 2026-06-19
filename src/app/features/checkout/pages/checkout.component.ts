@@ -26,6 +26,8 @@ import { CheckoutStorageService } from '../services/checkout-storage.service';
 import { CartFacade } from '../../cart/store/cart.facade';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'src/app/core/services/site.services';
+import { AnalyticsService } from 'src/app/core/services/analytics.service';
+import { Cart } from 'src/app/core/models/cart.model';
 
 type CheckoutStepComponent =
   | DynamicFormComponent
@@ -55,6 +57,7 @@ export class CheckoutComponent implements OnInit {
   private readonly orderService = inject(OrderService);
   private readonly router = inject(Router);
   private readonly siteService = inject(SiteService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly injector = inject(Injector);
   private readonly viewportScroller = inject(ViewportScroller);
 
@@ -72,6 +75,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkoutData.set(this.checkoutStorage.getAll());
+    this.trackCheckoutStarted();
 
     this.checkoutApiService.getCheckoutForm().subscribe({
       next: (config) => {
@@ -168,17 +172,22 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.isPlacingOrder.set(true);
+    let checkoutCart: Cart | null = null;
 
     this.cartFacade.cart$
       .pipe(
         take(1),
+        tap((cart) => {
+          checkoutCart = cart;
+        }),
         switchMap((cart) =>
           this.orderService.placeOrder({
             checkoutData: this.checkoutData(),
             cart,
           }),
         ),
-        tap(() => {
+        tap((order) => {
+          this.analytics.trackPurchase(order);
           this.checkoutStorage.clear();
           this.cartFacade.clearCart();
         }),
@@ -195,12 +204,22 @@ export class CheckoutComponent implements OnInit {
         ),
         catchError((error) => {
           console.error('Failed to place order:', error);
+          this.analytics.trackPaymentFailure(
+            checkoutCart,
+            this.getPaymentFailureReason(error),
+          );
           this.isPlacingOrder.set(false);
 
           return EMPTY;
         }),
       )
       .subscribe();
+  }
+
+  private trackCheckoutStarted(): void {
+    this.cartFacade.cart$.pipe(take(1)).subscribe((cart) => {
+      this.analytics.trackCheckoutStarted(cart);
+    });
   }
 
   private saveStepData(stepId: string, value: CheckoutStepValue): void {
@@ -238,5 +257,17 @@ export class CheckoutComponent implements OnInit {
 
   private isDynamicFormObject(value: unknown): value is DynamicFormObject {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
+  }
+
+  private getPaymentFailureReason(error: unknown): string {
+    if (typeof error === 'object' && error !== null && 'message' in error) {
+      const message = (error as { message?: unknown }).message;
+
+      if (typeof message === 'string' && message.trim()) {
+        return message;
+      }
+    }
+
+    return 'Payment could not be completed';
   }
 }
