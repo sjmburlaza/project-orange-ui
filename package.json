@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve --proxy-config proxy.conf.cjs",
     "mock:api": "node mock-api/server.cjs",
     "start:e2e": "ng serve --configuration e2e",
     "build": "ng build",

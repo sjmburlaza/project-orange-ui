@@ -26,7 +26,7 @@ Start the development server:
 npm start
 ```
 
-The app runs at `http://localhost:4200/`. The dev server uses `proxy.conf.json` to forward most `/api` requests to `http://localhost:5175`, with analytics mock requests forwarded to `http://localhost:5176`.
+The app runs at `http://localhost:4200/`. The dev server uses `proxy.conf.cjs` to forward `/api` requests to `http://localhost:5175`. Analytics requests prefer the json-server mock on `http://localhost:5176` when it is running, and fall back to `http://localhost:5175` otherwise.
 
 For the local analytics dashboard mock, run this in a second terminal:
 
@@ -47,7 +47,7 @@ http://localhost:4200/jp/products
 
 | Command | Description |
 | --- | --- |
-| `npm start` | Runs `ng serve` with `proxy.conf.json`. |
+| `npm start` | Runs `ng serve` with `proxy.conf.cjs`. |
 | `npm run mock:api` | Runs the local json-server analytics mock on port `5176`. |
 | `npm run start:e2e` | Runs the Angular dev server with the e2e build configuration. |
 | `npm run build` | Builds the app for production into `dist/`. |
@@ -87,7 +87,7 @@ Unsupported site codes are redirected back to the country selector.
 
 ## API Behavior
 
-All API calls start with `/api`. During local development, `proxy.conf.json` forwards most requests to `http://localhost:5175`; analytics dashboard and analytics event routes are forwarded to the json-server mock at `http://localhost:5176`.
+All API calls start with `/api`. During local development, `proxy.conf.cjs` forwards most requests to `http://localhost:5175`; analytics dashboard and analytics event routes prefer the json-server mock at `http://localhost:5176` and fall back to `http://localhost:5175` when the mock is not running.
 
 `ApiSitePrefixInterceptor` automatically prefixes scoped API calls with the active site code. For example, a component that requests:
 

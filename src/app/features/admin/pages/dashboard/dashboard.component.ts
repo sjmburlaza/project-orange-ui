@@ -1,5 +1,6 @@
 import {
   Component,
+  OnInit,
   ViewEncapsulation,
   computed,
   inject,
@@ -32,7 +33,7 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
   private readonly siteService = inject(SiteService);
 
@@ -201,6 +202,10 @@ export class DashboardComponent {
   readonly maxCategoryRevenue = computed(() =>
     maxBy(this.dashboard().topCategories, (category) => category.revenue),
   );
+
+  ngOnInit(): void {
+    this.analytics.loadDashboard();
+  }
 
   private formatNumber(value: number): string {
     return new Intl.NumberFormat('en', {
