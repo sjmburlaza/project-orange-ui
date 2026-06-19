@@ -1,16 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { ROLES, Role } from 'src/app/core/auth/auth.constants';
+import { AuthSession } from 'src/app/core/auth/auth.models';
+import { AuthService } from 'src/app/core/auth/auth.service';
+import { AuthStore } from 'src/app/core/auth/auth.store';
+import { SiteService } from 'src/app/core/services/site.services';
 
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let authService: { login: ReturnType<typeof vi.fn> };
+  let authStore: { setSession: ReturnType<typeof vi.fn> };
+  let router: { navigate: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
+    authService = { login: vi.fn() };
+    authStore = { setSession: vi.fn() };
+    router = { navigate: vi.fn() };
+
     await TestBed.configureTestingModule({
-      imports: [LoginComponent]
-    })
-    .compileComponents();
+      imports: [LoginComponent],
+      providers: [
+        { provide: AuthService, useValue: authService },
+        { provide: AuthStore, useValue: authStore },
+        { provide: Router, useValue: router },
+        { provide: SiteService, useValue: { currentSite: () => 'ph' } },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
@@ -20,4 +39,49 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('redirects admin users to the admin dashboard after login', () => {
+    const session = createSession([ROLES.ADMIN]);
+    authService.login.mockReturnValue(of(session));
+
+    submitLoginForm();
+
+    expect(authStore.setSession).toHaveBeenCalledWith(session);
+    expect(router.navigate).toHaveBeenCalledWith(['/ph/admin/dashboard']);
+  });
+
+  it('redirects non-admin users to the cart after login', () => {
+    const session = createSession([ROLES.CUSTOMER]);
+    authService.login.mockReturnValue(of(session));
+
+    submitLoginForm();
+
+    expect(authStore.setSession).toHaveBeenCalledWith(session);
+    expect(router.navigate).toHaveBeenCalledWith(['/ph/cart']);
+  });
+
+  function submitLoginForm(): void {
+    component.loginForm.setValue({
+      email: 'user@example.com',
+      password: 'password',
+    });
+    component.onSubmit();
+  }
 });
+
+function createSession(roles: Role[]): AuthSession {
+  return {
+    user: {
+      id: '52a0adc1-25d3-4cac-9154-48649ebe9d16',
+      email: 'user@example.com',
+      fullName: 'Sample User',
+      roles,
+      permissions: [],
+    },
+    session: {
+      id: 'f48e7a9fc19d4a73b48d4e0720415073',
+      createdAtUtc: '2026-06-12T21:37:26.126677+00:00',
+      expiresAtUtc: '2026-06-12T23:37:26.126677+00:00',
+    },
+  };
+}

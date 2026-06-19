@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { ROLES } from 'src/app/core/auth/auth.constants';
+import { AuthSession } from 'src/app/core/auth/auth.models';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { AuthStore } from 'src/app/core/auth/auth.store';
 import { SiteService } from 'src/app/core/services/site.services';
@@ -60,7 +62,7 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
           this.authStore.setSession(response);
-          this.router.navigate([`/${this.site}/cart`]);
+          this.router.navigate([this.getPostLoginUrl(response)]);
         },
         error: (error) => {
           console.error('Login failed:', error);
@@ -74,5 +76,11 @@ export class LoginComponent {
 
   goToRegister(): void {
     this.router.navigate([`/${this.site}/auth/register`]);
+  }
+
+  private getPostLoginUrl(response: AuthSession): string {
+    return response.user.roles.includes(ROLES.ADMIN)
+      ? `/${this.site}/admin/dashboard`
+      : `/${this.site}/cart`;
   }
 }
