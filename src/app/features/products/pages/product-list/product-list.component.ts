@@ -9,6 +9,7 @@ import {
 import { Category } from 'src/app/core/models/category.model';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
+import { AnalyticsService } from 'src/app/core/services/analytics.service';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
@@ -47,6 +48,7 @@ export class ProductListComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly analytics = inject(AnalyticsService);
   readonly siteService = inject(SiteService);
 
   readonly products$ = this.productFacade.products$;
@@ -72,6 +74,7 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.initializeProductList();
     this.watchCategoryRouteParam();
+    this.trackProductViews();
 
     this.priceRangeChange$
       .pipe(
@@ -152,11 +155,28 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
+    this.analytics.trackAddToCart(product);
     this.cartFacade.addToCart({
       productId: product.id,
       quantity: 1,
       addons: [],
     });
+  }
+
+  private trackProductViews(): void {
+    this.products$
+      .pipe(
+        filter((products) => products.length > 0),
+        distinctUntilChanged(
+          (previous, current) =>
+            previous.map((product) => product.id).join(',') ===
+            current.map((product) => product.id).join(','),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((products) => {
+        this.analytics.trackProductViews(products);
+      });
   }
 
   private findCategoryId(

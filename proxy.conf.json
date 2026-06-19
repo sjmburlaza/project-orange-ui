@@ -1,4 +1,28 @@
 {
+  "/api/admin/analytics": {
+    "target": "http://localhost:5176",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/api/analytics": {
+    "target": "http://localhost:5176",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "^/api/[^/]+/admin/analytics": {
+    "target": "http://localhost:5176",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "^/api/[^/]+/analytics": {
+    "target": "http://localhost:5176",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
   "/api": {
     "target": "http://localhost:5175",
     "secure": false,

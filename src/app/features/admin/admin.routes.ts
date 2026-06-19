@@ -5,22 +5,22 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent
+      import('./pages/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent,
       ),
   },
   {
     path: 'manage-orders',
     loadComponent: () =>
-      import('./manage-orders/manage-orders.component').then(
-        (m) => m.ManageOrdersComponent
+      import('./pages/manage-orders/manage-orders.component').then(
+        (m) => m.ManageOrdersComponent,
       ),
   },
   {
     path: 'manage-products',
     loadComponent: () =>
-      import('./manage-products/manage-products.component').then(
-        (m) => m.ManageProductsComponent
+      import('./pages/manage-products/manage-products.component').then(
+        (m) => m.ManageProductsComponent,
       ),
   },
 ];
