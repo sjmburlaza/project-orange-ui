@@ -5,7 +5,7 @@ import {
   AnalyticsDailyPoint,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
-import { InfoTooltipComponent } from '../../../../components/info-tooltip/info-tooltip.component';
+import { InfoTooltipComponent } from 'src/app/shared/components/info-tooltip/info-tooltip.component';
 import { barWidth } from '../dashboard-tab.utils';
 
 @Component({
