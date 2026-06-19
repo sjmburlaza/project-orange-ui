@@ -30,8 +30,15 @@ describe('AnalyticsService', () => {
     sessionStorage.clear();
   });
 
-  it('loads the ecommerce analytics dashboard from the API', () => {
+  it('does not load the admin dashboard when the service is created', () => {
+    http.expectNone('/api/admin/analytics/dashboard');
+  });
+
+  it('loads the ecommerce analytics dashboard from the API on demand', () => {
     const dashboard = createDashboard({ visitors: 42, revenue: 180000 });
+
+    service.loadDashboard();
+
     const req = http.expectOne('/api/admin/analytics/dashboard');
 
     expect(req.request.method).toBe('GET');
@@ -41,8 +48,6 @@ describe('AnalyticsService', () => {
   });
 
   it('records add-to-cart events through the analytics API', () => {
-    flushInitialDashboard();
-
     const product = createProduct();
     const updatedDashboard = createDashboard({
       addToCarts: 1,
@@ -71,8 +76,6 @@ describe('AnalyticsService', () => {
   });
 
   it('records purchases once per order number in the current session', () => {
-    flushInitialDashboard();
-
     const product = createProduct();
     const order = createOrder(product);
     const updatedDashboard = createDashboard({
@@ -102,8 +105,6 @@ describe('AnalyticsService', () => {
   });
 
   it('records checkout and payment failure events through the analytics API', () => {
-    flushInitialDashboard();
-
     const product = createProduct();
     const cart = createCart(product);
 
@@ -134,10 +135,6 @@ describe('AnalyticsService', () => {
 
     failureReq.flush(createDashboard({ paymentFailures: 1 }));
   });
-
-  function flushInitialDashboard(): void {
-    http.expectOne('/api/admin/analytics/dashboard').flush(createDashboard());
-  }
 });
 
 function createDashboard(

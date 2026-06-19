@@ -33,10 +33,6 @@ export class AnalyticsService {
 
   readonly dashboard = this.dashboardSignal.asReadonly();
 
-  constructor() {
-    this.loadDashboard();
-  }
-
   trackVisitor(): void {
     if (!this.canUseBrowserStorage()) return;
 
@@ -121,7 +117,7 @@ export class AnalyticsService {
     });
   }
 
-  private loadDashboard(): void {
+  loadDashboard(): void {
     if (!this.canUseBrowserStorage()) return;
 
     const requestId = ++this.latestDashboardRequest;
