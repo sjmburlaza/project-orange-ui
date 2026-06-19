@@ -39,7 +39,28 @@ describe('AnalyticsService', () => {
 
     service.loadDashboard();
 
-    const req = http.expectOne('/api/admin/analytics/dashboard');
+    const req = http.expectOne(
+      (request) =>
+        request.url === '/api/admin/analytics/dashboard' &&
+        request.params.get('period') === 'last-7-days',
+    );
+
+    expect(req.request.method).toBe('GET');
+    req.flush(dashboard);
+
+    expect(service.dashboard()).toEqual(dashboard);
+  });
+
+  it('loads the dashboard for the requested analytics period', () => {
+    const dashboard = createDashboard({ visitors: 100, revenue: 250000 });
+
+    service.loadDashboard('past-year');
+
+    const req = http.expectOne(
+      (request) =>
+        request.url === '/api/admin/analytics/dashboard' &&
+        request.params.get('period') === 'past-year',
+    );
 
     expect(req.request.method).toBe('GET');
     req.flush(dashboard);

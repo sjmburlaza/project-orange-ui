@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { catchError, EMPTY } from 'rxjs';
 import {
   AnalyticsDashboard,
+  AnalyticsDashboardPeriod,
   AnalyticsEvent,
 } from 'src/app/core/models/analytics.model';
 import { Cart } from 'src/app/core/models/cart.model';
@@ -117,13 +118,14 @@ export class AnalyticsService {
     });
   }
 
-  loadDashboard(): void {
+  loadDashboard(period: AnalyticsDashboardPeriod = 'last-7-days'): void {
     if (!this.canUseBrowserStorage()) return;
 
     const requestId = ++this.latestDashboardRequest;
+    const params = new HttpParams().set('period', period);
 
     this.http
-      .get<AnalyticsDashboard>(this.dashboardUrl)
+      .get<AnalyticsDashboard>(this.dashboardUrl, { params })
       .pipe(catchError(() => EMPTY))
       .subscribe((dashboard) => this.applyDashboard(dashboard, requestId));
   }

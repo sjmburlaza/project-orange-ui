@@ -25,7 +25,11 @@ describe('DashboardComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    const req = http.expectOne('/api/admin/analytics/dashboard');
+    const req = http.expectOne(
+      (request) =>
+        request.url === '/api/admin/analytics/dashboard' &&
+        request.params.get('period') === 'last-7-days',
+    );
 
     expect(req.request.method).toBe('GET');
     req.flush(createDashboard());
@@ -37,6 +41,45 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('shows period options and reloads dashboard when a period is selected', () => {
+    fixture.detectChanges();
+
+    const trigger = fixture.nativeElement.querySelector(
+      '.analytics__period-trigger',
+    ) as HTMLButtonElement;
+
+    expect(trigger).toBeTruthy();
+    expect(trigger.textContent?.trim()).toBe('Last 7 days');
+
+    trigger.click();
+    fixture.detectChanges();
+
+    const options = [
+      ...fixture.nativeElement.querySelectorAll('.analytics__period-option'),
+    ] as HTMLButtonElement[];
+
+    expect(options.map((option) => option.textContent?.trim())).toEqual([
+      'Last 7 days',
+      'Past month',
+      'Past year',
+      'From the start',
+    ]);
+
+    options[2].click();
+
+    const req = http.expectOne(
+      (request) =>
+        request.url === '/api/admin/analytics/dashboard' &&
+        request.params.get('period') === 'past-year',
+    );
+
+    expect(req.request.method).toBe('GET');
+    req.flush(createDashboard());
+    fixture.detectChanges();
+
+    expect(component.selectedPeriod()).toBe('past-year');
   });
 });
 

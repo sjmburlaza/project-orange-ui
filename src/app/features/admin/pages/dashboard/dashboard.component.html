@@ -7,7 +7,40 @@
       <p class="eyebrow">Admin Analytics</p>
       <h1>Analytics Dashboard</h1>
     </div>
-    <div class="analytics__period">Last 7 days</div>
+    <div class="analytics__period">
+      <span class="analytics__period-label">Period</span>
+      <div class="analytics__period-control">
+        <button
+          class="analytics__period-trigger"
+          type="button"
+          aria-haspopup="listbox"
+          [attr.aria-expanded]="isPeriodMenuOpen()"
+          (click)="togglePeriodMenu()"
+          (keydown.escape)="closePeriodMenu()"
+        >
+          {{ selectedPeriodLabel() }}
+        </button>
+
+        @if (isPeriodMenuOpen()) {
+          <div class="analytics__period-menu" role="listbox">
+            @for (option of periodOptions; track option.value) {
+              <button
+                class="analytics__period-option"
+                type="button"
+                role="option"
+                [class.analytics__period-option--selected]="
+                  option.value === selectedPeriod()
+                "
+                [attr.aria-selected]="option.value === selectedPeriod()"
+                (click)="selectPeriod(option.value)"
+              >
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
   </header>
 
   <mat-tab-group class="analytics-tabs" [mat-stretch-tabs]="false">

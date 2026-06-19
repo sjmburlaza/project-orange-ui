@@ -1,0 +1,25 @@
+<button
+  class="info-tooltip"
+  type="button"
+  [attr.aria-label]="'About ' + label + ': ' + info.description"
+  [attr.aria-describedby]="tooltipId"
+  (blur)="hideTooltip()"
+  (focus)="showTooltip()"
+  (keydown.escape)="hideTooltip()"
+  (mouseenter)="showTooltip()"
+  (mouseleave)="hideTooltip()"
+>
+  <i class="bi bi-info-circle" aria-hidden="true"></i>
+</button>
+
+<div
+  #tooltip
+  class="info-tooltip__content"
+  role="tooltip"
+  [id]="tooltipId"
+  [class.info-tooltip__content--visible]="isTooltipOpen"
+  [style.left.px]="tooltipLeft"
+  [style.top.px]="tooltipTop"
+>
+  {{ info.description }}
+</div>

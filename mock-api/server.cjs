@@ -4,6 +4,7 @@ const jsonServer = require('json-server');
 
 const PORT = Number(process.env.PORT ?? 5176);
 const DEFAULT_SITE = 'ph';
+const DEFAULT_ANALYTICS_PERIOD = 'last-7-days';
 const ANALYTICS_TYPES = new Set([
   'visitor',
   'product_view',
@@ -11,6 +12,12 @@ const ANALYTICS_TYPES = new Set([
   'checkout_start',
   'purchase',
   'payment_failure',
+]);
+const ANALYTICS_PERIODS = new Set([
+  DEFAULT_ANALYTICS_PERIOD,
+  'past-month',
+  'past-year',
+  'from-start',
 ]);
 const UNSCOPED_API_PREFIXES = new Set(['geo', 'sites']);
 const DEFAULT_SITES = [
@@ -115,11 +122,16 @@ server.get('/api/options/:kind', sendOptions);
 server.get('/api/:site/options/:kind', sendOptions);
 
 server.get('/api/admin/analytics/dashboard', (req, res) => {
-  res.jsonp(buildDashboard(getAnalyticsEvents(req)));
+  res.jsonp(buildDashboard(getAnalyticsEvents(req), getAnalyticsPeriod(req)));
 });
 
 server.get('/api/:site/admin/analytics/dashboard', (req, res) => {
-  res.jsonp(buildDashboard(getAnalyticsEvents(req, req.params.site)));
+  res.jsonp(
+    buildDashboard(
+      getAnalyticsEvents(req, req.params.site),
+      getAnalyticsPeriod(req),
+    ),
+  );
 });
 
 server.post('/api/analytics/events', (req, res) => {
@@ -205,7 +217,11 @@ function saveAnalyticsEvents(req, res, site) {
     events.push(...acceptedEvents).write();
   }
 
-  res.status(201).jsonp(buildDashboard(getAnalyticsEvents(req, site)));
+  res
+    .status(201)
+    .jsonp(
+      buildDashboard(getAnalyticsEvents(req, site), getAnalyticsPeriod(req)),
+    );
 }
 
 function normalizeAnalyticsPayload(body, site) {
@@ -271,17 +287,27 @@ function getAnalyticsEvents(req, site) {
   });
 }
 
-function buildDashboard(events) {
+function getAnalyticsPeriod(req) {
+  const period =
+    typeof req.query.period === 'string'
+      ? req.query.period
+      : DEFAULT_ANALYTICS_PERIOD;
+
+  return ANALYTICS_PERIODS.has(period) ? period : DEFAULT_ANALYTICS_PERIOD;
+}
+
+function buildDashboard(events, period = DEFAULT_ANALYTICS_PERIOD) {
+  const scopedEvents = filterEventsByPeriod(events, period);
   const visitors = uniqueCount(
-    events.filter((event) => event.type === 'visitor'),
+    scopedEvents.filter((event) => event.type === 'visitor'),
     (event) => event.visitorId,
   );
-  const productViews = countEvents(events, 'product_view');
-  const addToCarts = countEvents(events, 'add_to_cart');
-  const checkoutStarts = countEvents(events, 'checkout_start');
-  const purchases = countEvents(events, 'purchase');
-  const paymentFailures = countEvents(events, 'payment_failure');
-  const purchaseEvents = events.filter((event) => event.type === 'purchase');
+  const productViews = countEvents(scopedEvents, 'product_view');
+  const addToCarts = countEvents(scopedEvents, 'add_to_cart');
+  const checkoutStarts = countEvents(scopedEvents, 'checkout_start');
+  const purchases = countEvents(scopedEvents, 'purchase');
+  const paymentFailures = countEvents(scopedEvents, 'payment_failure');
+  const purchaseEvents = scopedEvents.filter((event) => event.type === 'purchase');
   const revenue = purchaseEvents.reduce(
     (total, event) => total + (Number(event.value) || 0),
     0,
@@ -290,7 +316,7 @@ function buildDashboard(events) {
     (total, event) => total + sumItems(event.items),
     0,
   );
-  const topProducts = buildTopProducts(events);
+  const topProducts = buildTopProducts(scopedEvents);
   const topCategories = buildTopCategories(topProducts);
 
   return {
@@ -304,11 +330,14 @@ function buildDashboard(events) {
     addToCartRate: safeDivide(addToCarts, productViews),
     checkoutStartRate: safeDivide(checkoutStarts, addToCarts),
     purchaseConversionRate: safeDivide(purchases, visitors),
-    cartAbandonmentRate: safeDivide(Math.max(addToCarts - purchases, 0), addToCarts),
+    cartAbandonmentRate: safeDivide(
+      Math.max(addToCarts - purchases, 0),
+      addToCarts,
+    ),
     paymentFailures,
     paymentFailureRate: safeDivide(paymentFailures, purchases + paymentFailures),
     unitsSold,
-    daily: buildDailyPoints(events),
+    daily: buildDailyPoints(scopedEvents, period),
     funnel: buildFunnel({
       visitors,
       productViews,
@@ -320,33 +349,73 @@ function buildDashboard(events) {
     topCategories,
     orders: buildOrders(purchaseEvents),
     paymentFailureEvents: buildPaymentFailures(
-      events.filter((event) => event.type === 'payment_failure'),
+      scopedEvents.filter((event) => event.type === 'payment_failure'),
     ),
   };
 }
 
-function buildDailyPoints(events) {
+function filterEventsByPeriod(events, period) {
+  const cutoff = getAnalyticsPeriodStart(period);
+
+  if (!cutoff) return events;
+
+  return events.filter((event) => {
+    const occurredAt = new Date(event.occurredAt);
+
+    return !Number.isNaN(occurredAt.getTime()) && occurredAt >= cutoff;
+  });
+}
+
+function getAnalyticsPeriodStart(period) {
   const today = startOfDay(new Date());
+
+  switch (period) {
+    case 'past-month':
+      return addDays(today, -29);
+    case 'past-year':
+      return addDays(today, -364);
+    case 'from-start':
+      return null;
+    case 'last-7-days':
+    default:
+      return addDays(today, -6);
+  }
+}
+
+function buildDailyPoints(events, period) {
+  if (period === 'past-year') {
+    return buildMonthlyPoints(events, addMonths(startOfMonth(new Date()), -11));
+  }
+
+  if (period === 'from-start') {
+    const earliest = findEarliestEventDate(events);
+
+    if (!earliest) return [];
+
+    const today = startOfDay(new Date());
+    const start = startOfDay(earliest);
+    const days = daysBetween(start, today) + 1;
+
+    if (days > 45) {
+      return buildMonthlyPoints(events, startOfMonth(start));
+    }
+
+    return buildDayPoints(events, start, today);
+  }
+
+  const today = startOfDay(new Date());
+  const dayCount = period === 'past-month' ? 30 : 7;
+
+  return buildDayPoints(events, addDays(today, -(dayCount - 1)), today);
+}
+
+function buildDayPoints(events, startDate, endDate) {
   const points = new Map();
 
-  for (let day = 6; day >= 0; day -= 1) {
-    const date = addDays(today, -day);
+  for (let date = startDate; date <= endDate; date = addDays(date, 1)) {
     const key = dateKey(date);
 
-    points.set(key, {
-      dateKey: key,
-      label: date.toLocaleDateString('en', {
-        month: 'short',
-        day: 'numeric',
-      }),
-      visitors: 0,
-      productViews: 0,
-      addToCarts: 0,
-      checkoutStarts: 0,
-      purchases: 0,
-      revenue: 0,
-      paymentFailures: 0,
-    });
+    points.set(key, createAnalyticsPoint(key, formatDayLabel(date)));
   }
 
   for (const event of events) {
@@ -355,30 +424,73 @@ function buildDailyPoints(events) {
 
     if (!point) continue;
 
-    switch (event.type) {
-      case 'visitor':
-        point.visitors += 1;
-        break;
-      case 'product_view':
-        point.productViews += 1;
-        break;
-      case 'add_to_cart':
-        point.addToCarts += 1;
-        break;
-      case 'checkout_start':
-        point.checkoutStarts += 1;
-        break;
-      case 'purchase':
-        point.purchases += 1;
-        point.revenue += Number(event.value) || 0;
-        break;
-      case 'payment_failure':
-        point.paymentFailures += 1;
-        break;
-    }
+    addEventToPoint(point, event);
   }
 
   return [...points.values()];
+}
+
+function buildMonthlyPoints(events, startDate) {
+  const points = new Map();
+  const endDate = startOfMonth(new Date());
+
+  for (let date = startDate; date <= endDate; date = addMonths(date, 1)) {
+    const key = monthKey(date);
+
+    points.set(key, createAnalyticsPoint(key, formatMonthLabel(date)));
+  }
+
+  for (const event of events) {
+    const occurredAt = new Date(event.occurredAt);
+
+    if (Number.isNaN(occurredAt.getTime())) continue;
+
+    const point = points.get(monthKey(occurredAt));
+
+    if (!point) continue;
+
+    addEventToPoint(point, event);
+  }
+
+  return [...points.values()];
+}
+
+function createAnalyticsPoint(dateKey, label) {
+  return {
+    dateKey,
+    label,
+    visitors: 0,
+    productViews: 0,
+    addToCarts: 0,
+    checkoutStarts: 0,
+    purchases: 0,
+    revenue: 0,
+    paymentFailures: 0,
+  };
+}
+
+function addEventToPoint(point, event) {
+  switch (event.type) {
+    case 'visitor':
+      point.visitors += 1;
+      break;
+    case 'product_view':
+      point.productViews += 1;
+      break;
+    case 'add_to_cart':
+      point.addToCarts += 1;
+      break;
+    case 'checkout_start':
+      point.checkoutStarts += 1;
+      break;
+    case 'purchase':
+      point.purchases += 1;
+      point.revenue += Number(event.value) || 0;
+      break;
+    case 'payment_failure':
+      point.paymentFailures += 1;
+      break;
+  }
 }
 
 function buildFunnel(values) {
@@ -581,6 +693,123 @@ function createSeedEvents() {
     },
   ];
   const days = [
+    {
+      daysAgo: 720,
+      visitors: 42,
+      productViews: 58,
+      addToCarts: 9,
+      checkoutStarts: 5,
+      purchases: 2,
+      paymentFailures: 1,
+    },
+    {
+      daysAgo: 545,
+      visitors: 67,
+      productViews: 102,
+      addToCarts: 18,
+      checkoutStarts: 9,
+      purchases: 4,
+      paymentFailures: 1,
+    },
+    {
+      daysAgo: 420,
+      visitors: 84,
+      productViews: 136,
+      addToCarts: 22,
+      checkoutStarts: 13,
+      purchases: 7,
+      paymentFailures: 2,
+    },
+    {
+      daysAgo: 360,
+      visitors: 96,
+      productViews: 154,
+      addToCarts: 26,
+      checkoutStarts: 15,
+      purchases: 8,
+      paymentFailures: 2,
+    },
+    {
+      daysAgo: 300,
+      visitors: 118,
+      productViews: 196,
+      addToCarts: 34,
+      checkoutStarts: 21,
+      purchases: 12,
+      paymentFailures: 3,
+    },
+    {
+      daysAgo: 240,
+      visitors: 137,
+      productViews: 224,
+      addToCarts: 42,
+      checkoutStarts: 27,
+      purchases: 16,
+      paymentFailures: 4,
+    },
+    {
+      daysAgo: 180,
+      visitors: 156,
+      productViews: 263,
+      addToCarts: 51,
+      checkoutStarts: 33,
+      purchases: 20,
+      paymentFailures: 5,
+    },
+    {
+      daysAgo: 120,
+      visitors: 174,
+      productViews: 292,
+      addToCarts: 57,
+      checkoutStarts: 37,
+      purchases: 24,
+      paymentFailures: 4,
+    },
+    {
+      daysAgo: 90,
+      visitors: 193,
+      productViews: 336,
+      addToCarts: 71,
+      checkoutStarts: 48,
+      purchases: 32,
+      paymentFailures: 6,
+    },
+    {
+      daysAgo: 60,
+      visitors: 211,
+      productViews: 365,
+      addToCarts: 76,
+      checkoutStarts: 51,
+      purchases: 35,
+      paymentFailures: 5,
+    },
+    {
+      daysAgo: 29,
+      visitors: 225,
+      productViews: 389,
+      addToCarts: 83,
+      checkoutStarts: 58,
+      purchases: 39,
+      paymentFailures: 7,
+    },
+    {
+      daysAgo: 21,
+      visitors: 236,
+      productViews: 418,
+      addToCarts: 91,
+      checkoutStarts: 63,
+      purchases: 43,
+      paymentFailures: 6,
+    },
+    {
+      daysAgo: 14,
+      visitors: 248,
+      productViews: 444,
+      addToCarts: 97,
+      checkoutStarts: 66,
+      purchases: 46,
+      paymentFailures: 8,
+    },
     {
       daysAgo: 6,
       visitors: 132,
@@ -837,6 +1066,10 @@ function startOfDay(date) {
   return nextDate;
 }
 
+function startOfMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
 function addDays(date, days) {
   const nextDate = new Date(date);
 
@@ -845,10 +1078,53 @@ function addDays(date, days) {
   return nextDate;
 }
 
+function addMonths(date, months) {
+  return new Date(date.getFullYear(), date.getMonth() + months, 1);
+}
+
+function daysBetween(startDate, endDate) {
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+  return Math.floor(
+    (endDate.getTime() - startDate.getTime()) / millisecondsPerDay,
+  );
+}
+
 function dateKey(date) {
   return [
     date.getFullYear(),
     String(date.getMonth() + 1).padStart(2, '0'),
     String(date.getDate()).padStart(2, '0'),
   ].join('-');
+}
+
+function monthKey(date) {
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, '0'),
+  ].join('-');
+}
+
+function formatDayLabel(date) {
+  return date.toLocaleDateString('en', {
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+function formatMonthLabel(date) {
+  return date.toLocaleDateString('en', {
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+function findEarliestEventDate(events) {
+  return events.reduce((earliest, event) => {
+    const occurredAt = new Date(event.occurredAt);
+
+    if (Number.isNaN(occurredAt.getTime())) return earliest;
+
+    return !earliest || occurredAt < earliest ? occurredAt : earliest;
+  }, null);
 }

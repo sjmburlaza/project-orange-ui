@@ -4,11 +4,12 @@ import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
+import { InfoTooltipComponent } from '../../../../components/info-tooltip/info-tooltip.component';
 import { barWidth } from '../dashboard-tab.utils';
 
 @Component({
   selector: 'app-revenue-tab',
-  imports: [CurrencyPipe, DecimalPipe],
+  imports: [InfoTooltipComponent, CurrencyPipe, DecimalPipe],
   templateUrl: './revenue-tab.component.html',
 })
 export class RevenueTabComponent {

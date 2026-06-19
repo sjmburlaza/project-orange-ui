@@ -4,10 +4,11 @@ import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
+import { InfoTooltipComponent } from '../../../../components/info-tooltip/info-tooltip.component';
 
 @Component({
   selector: 'app-payment-failures-tab',
-  imports: [CurrencyPipe, DatePipe],
+  imports: [InfoTooltipComponent, CurrencyPipe, DatePipe],
   templateUrl: './payment-failures-tab.component.html',
 })
 export class PaymentFailuresTabComponent {
