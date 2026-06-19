@@ -1,78 +1,88 @@
 <section class="orders">
-  <header class="orders__header">
-    <div>
-      <p class="eyebrow">{{ "orders.lookup.eyebrow" | translate }}</p>
-      <h1>{{ "orders.lookup.title" | translate }}</h1>
-      <p>{{ "orders.lookup.intro" | translate }}</p>
-    </div>
-    <mat-icon aria-hidden="true">receipt_long</mat-icon>
-  </header>
+  @if (isAuthenticated()) {
+    <app-orders-history
+      [orders]="ordersHistory()"
+      [isLoading]="isHistoryLoading()"
+      [errorMessage]="historyErrorMessage()"
+    ></app-orders-history>
+  } @else {
+    <header class="orders__header">
+      <div>
+        <p class="eyebrow">{{ "orders.lookup.eyebrow" | translate }}</p>
+        <h1>{{ "orders.lookup.title" | translate }}</h1>
+        <p>{{ "orders.lookup.intro" | translate }}</p>
+      </div>
+      <mat-icon aria-hidden="true">receipt_long</mat-icon>
+    </header>
 
-  <form
-    class="lookup-form"
-    [formGroup]="lookupForm"
-    (ngSubmit)="onSubmit()"
-    novalidate
-  >
-    <mat-form-field appearance="outline">
-      <mat-label>{{ "orders.lookup.orderNumberLabel" | translate }}</mat-label>
-      <input
-        matInput
-        autocomplete="off"
-        formControlName="orderNumber"
-        [placeholder]="'orders.lookup.orderNumberPlaceholder' | translate"
-      />
+    <form
+      class="lookup-form"
+      [formGroup]="lookupForm"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "orders.lookup.orderNumberLabel" | translate }}</mat-label>
+        <input
+          matInput
+          autocomplete="off"
+          formControlName="orderNumber"
+          [placeholder]="'orders.lookup.orderNumberPlaceholder' | translate"
+        />
 
-      @if (orderNumber.touched && orderNumber.hasError("required")) {
-        <mat-error>
-          {{ "orders.lookup.validation.orderNumberRequired" | translate }}
-        </mat-error>
-      }
-    </mat-form-field>
+        @if (orderNumber.touched && orderNumber.hasError("required")) {
+          <mat-error>
+            {{ "orders.lookup.validation.orderNumberRequired" | translate }}
+          </mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>{{ "orders.lookup.emailLabel" | translate }}</mat-label>
-      <input
-        matInput
-        autocomplete="email"
-        type="email"
-        formControlName="email"
-        [placeholder]="'orders.lookup.emailPlaceholder' | translate"
-      />
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "orders.lookup.emailLabel" | translate }}</mat-label>
+        <input
+          matInput
+          autocomplete="email"
+          type="email"
+          formControlName="email"
+          [placeholder]="'orders.lookup.emailPlaceholder' | translate"
+        />
 
-      @if (email.touched && email.hasError("required")) {
-        <mat-error>
-          {{ "orders.lookup.validation.emailRequired" | translate }}
-        </mat-error>
-      } @else if (email.touched && email.hasError("email")) {
-        <mat-error>
-          {{ "orders.lookup.validation.emailInvalid" | translate }}
-        </mat-error>
-      }
-    </mat-form-field>
+        @if (email.touched && email.hasError("required")) {
+          <mat-error>
+            {{ "orders.lookup.validation.emailRequired" | translate }}
+          </mat-error>
+        } @else if (email.touched && email.hasError("email")) {
+          <mat-error>
+            {{ "orders.lookup.validation.emailInvalid" | translate }}
+          </mat-error>
+        }
+      </mat-form-field>
 
-    <button matButton="filled" type="submit" [disabled]="isLoading()">
-      <mat-icon aria-hidden="true">{{ isLoading() ? "hourglass_top" : "search" }}</mat-icon>
-      {{
-        (isLoading() ? "orders.lookup.searching" : "orders.lookup.submit")
-          | translate
-      }}
-    </button>
-  </form>
+      <button matButton="filled" type="submit" [disabled]="isLoading()">
+        <mat-icon aria-hidden="true">{{
+          isLoading() ? "hourglass_top" : "search"
+        }}</mat-icon>
+        {{
+          (isLoading() ? "orders.lookup.searching" : "orders.lookup.submit")
+            | translate
+        }}
+      </button>
+    </form>
 
-  @if (errorMessage()) {
-    <p class="lookup-message lookup-message--error" role="alert">
-      <mat-icon aria-hidden="true">error</mat-icon>
-      {{ errorMessage() | translate }}
-    </p>
-  }
+    @if (errorMessage()) {
+      <p class="lookup-message lookup-message--error" role="alert">
+        <mat-icon aria-hidden="true">error</mat-icon>
+        {{ errorMessage() | translate }}
+      </p>
+    }
 
-  @if (order(); as order) {
-    <app-order-item [order]="order"></app-order-item>
-  } @else if (!errorMessage()) {
-    <section class="empty-state">
-      <mat-icon aria-hidden="true">manage_search</mat-icon>
-      <p>{{ "orders.lookup.emptyState" | translate }}</p>
-    </section>
+    @if (order(); as order) {
+      <app-order-item [order]="order"></app-order-item>
+    } @else if (!errorMessage()) {
+      <section class="empty-state">
+        <mat-icon aria-hidden="true">manage_search</mat-icon>
+        <p>{{ "orders.lookup.emptyState" | translate }}</p>
+      </section>
+    }
   }
 </section>

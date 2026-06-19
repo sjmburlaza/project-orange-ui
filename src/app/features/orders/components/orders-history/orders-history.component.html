@@ -1,0 +1,73 @@
+<section class="orders-history">
+  @let currentOrders = orders();
+  @let matchingOrders = filteredOrders();
+  @let isSearching = hasSearchTerm();
+
+  <header class="orders-history__header">
+    <div>
+      <p class="eyebrow">{{ "orders.history.eyebrow" | translate }}</p>
+      <h1>{{ "orders.history.title" | translate }}</h1>
+      <p>{{ "orders.history.intro" | translate }}</p>
+    </div>
+    <mat-icon aria-hidden="true">shopping_bag</mat-icon>
+  </header>
+
+  @if (isLoading()) {
+    <section class="history-state" aria-live="polite">
+      <mat-icon aria-hidden="true">hourglass_top</mat-icon>
+      <p>{{ "orders.history.loading" | translate }}</p>
+    </section>
+  } @else if (errorMessage()) {
+    <p class="history-message history-message--error" role="alert">
+      <mat-icon aria-hidden="true">error</mat-icon>
+      {{ errorMessage() | translate }}
+    </p>
+  } @else if (currentOrders.length) {
+    <section
+      class="orders-history__search"
+      role="search"
+      [attr.aria-label]="'orders.history.searchLabel' | translate"
+    >
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "orders.history.searchLabel" | translate }}</mat-label>
+        <input
+          #orderSearch
+          matInput
+          type="search"
+          autocomplete="off"
+          [value]="searchTerm()"
+          [placeholder]="'orders.history.searchPlaceholder' | translate"
+          (input)="setSearchTerm(orderSearch.value)"
+        />
+      </mat-form-field>
+
+      @if (isSearching) {
+        <button
+          matButton="outlined"
+          type="button"
+          (click)="setSearchTerm('')"
+        >
+          {{ "orders.history.clearSearch" | translate }}
+        </button>
+      }
+    </section>
+
+    @if (matchingOrders.length) {
+      <div class="orders-history__list">
+        @for (order of matchingOrders; track order.orderNumber) {
+          <app-order-item [order]="order"></app-order-item>
+        }
+      </div>
+    } @else {
+      <section class="history-state">
+        <mat-icon aria-hidden="true">manage_search</mat-icon>
+        <p>{{ "orders.history.noSearchResults" | translate }}</p>
+      </section>
+    }
+  } @else {
+    <section class="history-state">
+      <mat-icon aria-hidden="true">receipt_long</mat-icon>
+      <p>{{ "orders.history.emptyState" | translate }}</p>
+    </section>
+  }
+</section>

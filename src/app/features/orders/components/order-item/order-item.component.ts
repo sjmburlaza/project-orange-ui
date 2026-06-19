@@ -10,8 +10,20 @@ import {
   PaymentStatus,
 } from 'src/app/core/models/order.model';
 import { SiteService } from 'src/app/core/services/site.services';
+import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
+
+interface OrderActionState {
+  canCancel: boolean;
+  canChangePayment: boolean;
+  canPayNow: boolean;
+  canTrack: boolean;
+  canBuyAgain: boolean;
+  canReview: boolean;
+  canReturn: boolean;
+  canDownloadInvoice: boolean;
+}
 
 @Component({
   selector: 'app-order-item',
@@ -21,6 +33,7 @@ type DisplayStatus = OrderStatus | PaymentStatus;
     MatButtonModule,
     MatExpansionModule,
     MatIconModule,
+    IconPipe,
     TranslatePipe,
   ],
   templateUrl: './order-item.component.html',
@@ -32,6 +45,51 @@ export class OrderItemComponent {
   readonly order = input.required<OrderItem>();
   readonly isExpanded = signal(false);
   readonly currency = computed(() => this.siteService.currency() || 'PHP');
+  readonly orderStatusTone = computed(() =>
+    this.statusTone(this.order().orderStatus),
+  );
+  readonly deliveryInfo = computed(() => {
+    const order = this.order();
+
+    return {
+      date: order.deliveredAt || order.deliveryEstimate,
+      isDelivered: Boolean(order.deliveredAt),
+      label: order.deliveredAt
+        ? 'orders.lookup.deliveredPrefix'
+        : 'orders.lookup.estimatedDeliveryPrefix',
+    };
+  });
+  readonly displayItems = computed(() =>
+    this.order().items.map((item) => ({
+      addedAddons: (item.addons ?? []).filter((addon) => addon.isAdded),
+      item,
+      specs: item.itemSpecs
+        .map((spec) => spec.value)
+        .filter(Boolean)
+        .join(' • '),
+    })),
+  );
+  readonly orderActions = computed<OrderActionState>(() => {
+    const order = this.order();
+
+    return {
+      canCancel: ['pending_payment', 'confirmed', 'processing', 'packed'].includes(
+        order.orderStatus,
+      ),
+      canChangePayment: order.orderStatus === 'pending_payment',
+      canPayNow:
+        order.orderStatus === 'pending_payment' ||
+        order.paymentStatus === 'pending',
+      canTrack: ['shipped', 'out_for_delivery'].includes(order.orderStatus),
+      canBuyAgain: ['delivered', 'cancelled', 'refunded', 'returned'].includes(
+        order.orderStatus,
+      ),
+      canReview: order.orderStatus === 'delivered',
+      canReturn: order.orderStatus === 'delivered',
+      canDownloadInvoice:
+        order.orderStatus === 'delivered' && Boolean(order.invoiceUrl),
+    };
+  });
 
   readonly subtotal = computed(
     () =>
@@ -59,11 +117,7 @@ export class OrderItemComponent {
     this.isExpanded.set(isExpanded);
   }
 
-  itemSpecs(item: OrderItem['items'][number]): string {
-    return item.itemSpecs.filter(Boolean).join(' • ');
-  }
-
-  statusTone(status: DisplayStatus): string {
+  private statusTone(status: DisplayStatus): string {
     switch (status) {
       case 'paid':
       case 'confirmed':
@@ -86,56 +140,5 @@ export class OrderItemComponent {
       case 'returned':
         return 'neutral';
     }
-  }
-
-  deliveryLabel(order: OrderItem): string {
-    if (order.deliveredAt) {
-      return 'orders.lookup.deliveredPrefix';
-    }
-
-    return 'orders.lookup.estimatedDeliveryPrefix';
-  }
-
-  deliveryDate(order: OrderItem): string {
-    return order.deliveredAt || order.deliveryEstimate;
-  }
-
-  canCancel(order: OrderItem): boolean {
-    return ['pending_payment', 'confirmed', 'processing', 'packed'].includes(
-      order.orderStatus,
-    );
-  }
-
-  canChangePayment(order: OrderItem): boolean {
-    return order.orderStatus === 'pending_payment';
-  }
-
-  canPayNow(order: OrderItem): boolean {
-    return (
-      order.orderStatus === 'pending_payment' ||
-      order.paymentStatus === 'pending'
-    );
-  }
-
-  canTrack(order: OrderItem): boolean {
-    return ['shipped', 'out_for_delivery'].includes(order.orderStatus);
-  }
-
-  canBuyAgain(order: OrderItem): boolean {
-    return ['delivered', 'cancelled', 'refunded', 'returned'].includes(
-      order.orderStatus,
-    );
-  }
-
-  canReview(order: OrderItem): boolean {
-    return order.orderStatus === 'delivered';
-  }
-
-  canReturn(order: OrderItem): boolean {
-    return order.orderStatus === 'delivered';
-  }
-
-  canDownloadInvoice(order: OrderItem): boolean {
-    return order.orderStatus === 'delivered' && Boolean(order.invoiceUrl);
   }
 }

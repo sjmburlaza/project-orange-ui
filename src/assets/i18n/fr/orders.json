@@ -19,6 +19,7 @@
       "deliveredPrefix": "Livrée le",
       "estimatedDeliveryPrefix": "Livraison estimée",
       "quantity": "Qté : {{ quantity }}",
+      "addons": "Options",
       "total": "Total :",
       "subtotal": "Sous-total :",
       "shipping": "Livraison :",
@@ -45,6 +46,20 @@
       },
       "errors": {
         "notFound": "Cette commande n'existe pas."
+      }
+    },
+    "history": {
+      "eyebrow": "Historique des commandes",
+      "title": "Vos commandes",
+      "intro": "Consultez vos achats récents et ouvrez chaque commande pour voir la livraison, le paiement et les actions disponibles.",
+      "loading": "Chargement de vos commandes...",
+      "searchLabel": "Rechercher par numéro de commande",
+      "searchPlaceholder": "Exemple : OR-20260618-0001",
+      "clearSearch": "Effacer la recherche",
+      "emptyState": "Vous n'avez pas encore de commandes.",
+      "noSearchResults": "Aucune commande ne correspond à ce numéro.",
+      "errors": {
+        "loadFailed": "Impossible de charger vos commandes pour le moment."
       }
     },
     "confirmation": {

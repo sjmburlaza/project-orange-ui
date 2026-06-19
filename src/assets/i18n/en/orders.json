@@ -19,6 +19,7 @@
       "deliveredPrefix": "Delivered",
       "estimatedDeliveryPrefix": "Estimated delivery",
       "quantity": "Qty: {{ quantity }}",
+      "addons": "Add-ons",
       "total": "Total:",
       "subtotal": "Subtotal:",
       "shipping": "Shipping:",
@@ -45,6 +46,20 @@
       },
       "errors": {
         "notFound": "This order doesn't exist."
+      }
+    },
+    "history": {
+      "eyebrow": "Order History",
+      "title": "Your orders",
+      "intro": "Review your recent purchases and open each order for delivery, payment, and action details.",
+      "loading": "Loading your orders...",
+      "searchLabel": "Search by order number",
+      "searchPlaceholder": "Example: OR-20260618-0001",
+      "clearSearch": "Clear search",
+      "emptyState": "You don't have any orders yet.",
+      "noSearchResults": "No orders match that order number.",
+      "errors": {
+        "loadFailed": "We couldn't load your orders right now."
       }
     },
     "confirmation": {
