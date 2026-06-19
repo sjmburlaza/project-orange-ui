@@ -4,10 +4,11 @@ import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
+import { InfoTooltipComponent } from '../../../../components/info-tooltip/info-tooltip.component';
 
 @Component({
   selector: 'app-orders-tab',
-  imports: [CurrencyPipe, DatePipe, DecimalPipe],
+  imports: [InfoTooltipComponent, CurrencyPipe, DatePipe, DecimalPipe],
   templateUrl: './orders-tab.component.html',
 })
 export class OrdersTabComponent {

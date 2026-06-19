@@ -2,7 +2,13 @@
   <section class="metric-grid metric-grid--compact">
     @for (card of cards; track card.label) {
       <article class="metric-card" [class]="'metric-card metric-card--' + (card.tone ?? 'default')">
-        <span>{{ card.label }}</span>
+        <span class="metric-card__label">
+          {{ card.label }}
+          <app-info-tooltip
+            [info]="card.info"
+            [label]="card.label"
+          ></app-info-tooltip>
+        </span>
         <strong>{{ card.value }}</strong>
         <small>{{ card.helper }}</small>
       </article>

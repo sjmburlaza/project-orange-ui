@@ -34,8 +34,19 @@ export interface AnalyticsMetricCard {
   label: string;
   value: string;
   helper: string;
+  info: AnalyticsInfoTooltip;
   tone?: 'default' | 'good' | 'warning' | 'danger';
 }
+
+export interface AnalyticsInfoTooltip {
+  description: string;
+}
+
+export type AnalyticsDashboardPeriod =
+  | 'last-7-days'
+  | 'past-month'
+  | 'past-year'
+  | 'from-start';
 
 export interface AnalyticsDailyPoint {
   dateKey: string;

@@ -2,7 +2,13 @@
   <section class="metric-grid metric-grid--compact">
     @for (card of cards; track card.label) {
       <article class="metric-card" [class]="'metric-card metric-card--' + (card.tone ?? 'default')">
-        <span>{{ card.label }}</span>
+        <span class="metric-card__label">
+          {{ card.label }}
+          <app-info-tooltip
+            [info]="card.info"
+            [label]="card.label"
+          ></app-info-tooltip>
+        </span>
         <strong>{{ card.value }}</strong>
         <small>{{ card.helper }}</small>
       </article>
@@ -15,7 +21,7 @@
       <span>{{ data.productViews | number }} product views</span>
     </div>
     <div class="daily-bars daily-bars--traffic">
-      @for (day of data.daily; track day.dateKey) {
+      @for (day of dailyLatestFirst; track day.dateKey) {
         <div class="daily-row">
           <span>{{ day.label }}</span>
           <div class="bar-group">
