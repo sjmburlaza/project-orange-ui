@@ -1,0 +1,171 @@
+@let currentOrder = order();
+
+<mat-expansion-panel
+  class="order-panel"
+  [expanded]="isExpanded()"
+  (opened)="setExpanded(true)"
+  (closed)="setExpanded(false)"
+  aria-live="polite"
+>
+  <mat-expansion-panel-header
+    class="order-panel__header"
+    collapsedHeight="auto"
+    expandedHeight="auto"
+  >
+    <mat-panel-title class="order-panel__title">
+      {{ "orders.lookup.orderNumberPrefix" | translate
+      }}{{ currentOrder.orderNumber }}
+    </mat-panel-title>
+
+    <mat-panel-description class="order-panel__description">
+      <span>
+        {{ "orders.lookup.placedOnPrefix" | translate }}
+        {{ currentOrder.placedAt | date: "MMM d, y" }}
+      </span>
+
+      <strong
+        [class]="
+          'status-badge status-badge--' + statusTone(currentOrder.orderStatus)
+        "
+      >
+        <mat-icon aria-hidden="true">local_shipping</mat-icon>
+        {{
+          "orders.confirmation.statuses." + currentOrder.orderStatus
+            | translate
+        }}
+      </strong>
+
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="order-body">
+    <section class="delivery-block">
+      <strong>
+        {{ deliveryLabel(currentOrder) | translate }}
+        @if (currentOrder.deliveredAt) {
+          {{ deliveryDate(currentOrder) | date: "MMM d, y" }}
+        } @else {
+          {{ deliveryDate(currentOrder) }}
+        }
+      </strong>
+
+      @if (currentOrder.trackingNumber) {
+        <span>
+          {{ "orders.lookup.tracking" | translate }}
+          {{ currentOrder.trackingNumber }}
+        </span>
+      }
+
+      @if (currentOrder.courier) {
+        <span>
+          {{ "orders.lookup.courier" | translate }}
+          {{ currentOrder.courier }}
+        </span>
+      }
+    </section>
+
+    <section class="product-list">
+      @for (item of currentOrder.items; track item.productId) {
+        <article class="product-row">
+          <div class="product-row__media">
+            @if (item.imageUrl) {
+              <img [src]="item.imageUrl" [alt]="item.productName" />
+            } @else {
+              <mat-icon aria-hidden="true">inventory_2</mat-icon>
+            }
+          </div>
+
+          <div class="product-row__details">
+            <h3>{{ item.productName }}</h3>
+            @if (itemSpecs(item)) {
+              <p>{{ itemSpecs(item) }}</p>
+            }
+            <span>
+              {{
+                "orders.lookup.quantity"
+                  | translate: { quantity: item.quantity }
+              }}
+            </span>
+          </div>
+
+          <strong class="product-row__price">
+            {{ item.price | currency: currency() }}
+          </strong>
+        </article>
+      }
+    </section>
+
+    <section class="payment-summary">
+      <div>
+        <span>{{ "orders.lookup.subtotal" | translate }}</span>
+        <strong>{{ subtotal() | currency: currency() }}</strong>
+      </div>
+      <div>
+        <span>{{ "orders.lookup.shipping" | translate }}</span>
+        <strong>{{ shippingAmount() | currency: currency() }}</strong>
+      </div>
+      <div>
+        <span>{{ "orders.lookup.discount" | translate }}</span>
+        <strong>-{{ discountAmount() | currency: currency() }}</strong>
+      </div>
+      <div class="payment-total">
+        <span>{{ "orders.lookup.total" | translate }}</span>
+        <strong>{{ currentOrder.totalAmount | currency: currency() }}</strong>
+      </div>
+    </section>
+
+    <footer class="order-actions order-actions--expanded">
+      @if (canCancel(currentOrder)) {
+        <button matButton="outlined" type="button">
+          {{ "orders.lookup.cancelOrder" | translate }}
+        </button>
+      }
+
+      @if (canChangePayment(currentOrder)) {
+        <button matButton="outlined" type="button">
+          {{ "orders.lookup.changePaymentMethod" | translate }}
+        </button>
+      }
+
+      @if (canPayNow(currentOrder)) {
+        <button matButton="filled" type="button">
+          {{ "orders.lookup.payNow" | translate }}
+        </button>
+      }
+
+      @if (canTrack(currentOrder)) {
+        <button
+          matButton="outlined"
+          type="button"
+          [disabled]="!currentOrder.trackingNumber"
+        >
+          {{ "orders.lookup.trackPackage" | translate }}
+        </button>
+      }
+
+      @if (canBuyAgain(currentOrder)) {
+        <button matButton="filled" type="button">
+          {{ "orders.lookup.buyAgain" | translate }}
+        </button>
+      }
+
+      @if (canReview(currentOrder)) {
+        <button matButton="outlined" type="button">
+          {{ "orders.lookup.writeReview" | translate }}
+        </button>
+      }
+
+      @if (canReturn(currentOrder)) {
+        <button matButton="outlined" type="button">
+          {{ "orders.lookup.returnItem" | translate }}
+        </button>
+      }
+
+      @if (canDownloadInvoice(currentOrder)) {
+        <a matButton="outlined" [href]="currentOrder.invoiceUrl" download>
+          {{ "orders.lookup.downloadInvoice" | translate }}
+        </a>
+      }
+    </footer>
+  </div>
+</mat-expansion-panel>

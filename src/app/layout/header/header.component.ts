@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToOrders(): void {
-    this.router.navigate([`/${this.site()}/profile/orders`]);
+    this.router.navigate([`/${this.site()}/orders/my-orders`]);
   }
 
   goToSaves(): void {

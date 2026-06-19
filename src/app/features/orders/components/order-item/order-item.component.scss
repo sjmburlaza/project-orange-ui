@@ -1,0 +1,274 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: block;
+}
+
+.order-panel {
+  border: 1px solid token(color, border);
+  border-radius: 8px;
+  background: token(color, background);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+}
+
+.order-panel__header {
+  height: auto;
+  min-height: auto;
+  padding: 22px;
+
+  @include respond-down(sm) {
+    padding: 18px;
+  }
+}
+
+:host ::ng-deep .order-panel .mat-expansion-panel-body {
+  padding: 0 22px 22px;
+
+  @include respond-down(sm) {
+    padding: 0 18px 18px;
+  }
+}
+
+:host ::ng-deep .order-panel .mat-content {
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+:host ::ng-deep .order-panel .mat-expansion-indicator {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.order-panel__title {
+  width: 100%;
+  margin-right: 0;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.order-panel__description {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: 0;
+  margin-left: 0;
+  margin-right: 0;
+  color: token(color, text-secondary);
+
+  span,
+  strong {
+    flex: 0 0 auto;
+  }
+}
+
+.order-body {
+  display: grid;
+  gap: 20px;
+  width: 100%;
+}
+
+.status-badge {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: normal;
+
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+}
+
+.status-badge--success {
+  border-color: #bbf7d0;
+  background: #dcfce7;
+  color: token(color, success-hover);
+}
+
+.status-badge--warning {
+  border-color: #fde68a;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge--info {
+  border-color: #bfdbfe;
+  background: #dbeafe;
+  color: token(color, info-hover);
+}
+
+.status-badge--error {
+  border-color: #fecaca;
+  background: #fee2e2;
+  color: token(color, error-hover);
+}
+
+.status-badge--neutral {
+  border-color: token(color, border-strong);
+  background: token(color, surface-secondary);
+  color: token(color, text-secondary);
+}
+
+.delivery-block {
+  display: grid;
+  gap: 6px;
+
+  strong {
+    font-size: 16px;
+  }
+
+  span {
+    color: token(color, text-secondary);
+  }
+}
+
+.product-list {
+  display: grid;
+  gap: 16px;
+}
+
+.product-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+  padding-top: 16px;
+  border-top: 1px solid token(color, border);
+
+  &:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  @include respond-down(sm) {
+    grid-template-columns: 56px minmax(0, 1fr);
+
+    .product-row__price {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+}
+
+.product-row__media {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: token(color, surface-secondary);
+  color: token(color, text-secondary);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  mat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
+
+  @include respond-down(sm) {
+    width: 56px;
+  }
+}
+
+.product-row__details {
+  min-width: 0;
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  p,
+  span {
+    display: block;
+    margin: 0;
+    color: token(color, text-secondary);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+.product-row__price {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.payment-summary {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid token(color, border);
+  padding-top: 18px;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+  }
+
+  span {
+    color: token(color, text-secondary);
+  }
+}
+
+.payment-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  border-top: 1px solid token(color, border);
+  padding-top: 18px;
+  font-size: 17px;
+
+  span {
+    color: token(color, text-secondary);
+  }
+}
+
+.payment-summary .payment-total {
+  margin-top: 4px;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  @include respond-down(sm) {
+    flex-direction: column;
+
+    a,
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.order-actions--expanded {
+  justify-content: flex-start;
+}

@@ -2,20 +2,13 @@
   <app-header></app-header>
 
   @let itemCount = itemCount$ | async;
-  @let isConfirmation = isOrderConfirmationRoute;
 
-  <div
-    class="content"
-    [class.empty]="!itemCount && !isConfirmation"
-    [class.confirmation]="isConfirmation"
-  >
-    @if (itemCount || isConfirmation) {
+  <div class="content" [class.empty]="!itemCount">
+    @if (itemCount) {
       <main class="main-content">
         <router-outlet></router-outlet>
       </main>
-      @if (!isConfirmation) {
-        <app-sidebar></app-sidebar>
-      }
+      <app-sidebar></app-sidebar>
     } @else {
       <div class="main-content">
         <i [class]="'cart' | icon"></i>

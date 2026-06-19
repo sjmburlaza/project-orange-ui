@@ -77,7 +77,7 @@ Most app routes are scoped by site:
 | `/:site/auth/login` | Sign in. |
 | `/:site/auth/register` | Account registration. |
 | `/:site/auth/forgot-password` | Password reset entry point. |
-| `/:site/profile/orders` | Customer order history. |
+| `/:site/orders/my-orders` | Guest order lookup by order number and email. |
 | `/:site/profile/account-settings` | Customer account settings. |
 | `/:site/admin/dashboard` | Admin dashboard. Requires an authenticated admin session. |
 | `/:site/admin/manage-orders` | Admin order management. Requires an authenticated admin session. |

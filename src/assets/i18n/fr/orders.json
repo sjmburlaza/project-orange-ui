@@ -1,5 +1,52 @@
 {
   "orders": {
+    "lookup": {
+      "eyebrow": "Recherche de commande",
+      "title": "Retrouver votre commande",
+      "intro": "Saisissez le numéro de commande et l'adresse e-mail utilisée lors du paiement pour consulter les détails.",
+      "orderNumberLabel": "Numéro de commande",
+      "orderNumberPlaceholder": "Exemple : OR-20260618-0001",
+      "emailLabel": "Adresse e-mail",
+      "emailPlaceholder": "vous@example.com",
+      "submit": "Rechercher",
+      "searching": "Recherche...",
+      "emptyState": "Les détails de votre commande apparaîtront ici après une recherche réussie.",
+      "resultEyebrow": "Commande trouvée",
+      "resultTitle": "Détails de la commande",
+      "orderNumberPrefix": "Commande #",
+      "placedPrefix": "Passée le",
+      "placedOnPrefix": "Passée le",
+      "deliveredPrefix": "Livrée le",
+      "estimatedDeliveryPrefix": "Livraison estimée",
+      "quantity": "Qté : {{ quantity }}",
+      "total": "Total :",
+      "subtotal": "Sous-total :",
+      "shipping": "Livraison :",
+      "discount": "Remise :",
+      "placedAt": "Passée le",
+      "contactEmail": "E-mail de contact",
+      "tracking": "Suivi :",
+      "trackingUnavailable": "Pas encore disponible",
+      "courier": "Transporteur :",
+      "track": "Suivre",
+      "trackPackage": "Suivre le colis",
+      "buyAgain": "Acheter à nouveau",
+      "viewDetails": "Voir les détails",
+      "cancelOrder": "Annuler la commande",
+      "changePaymentMethod": "Changer le mode de paiement",
+      "payNow": "Payer maintenant",
+      "writeReview": "Rédiger un avis",
+      "returnItem": "Retourner l'article",
+      "downloadInvoice": "Télécharger la facture",
+      "validation": {
+        "orderNumberRequired": "Le numéro de commande est obligatoire.",
+        "emailRequired": "L'adresse e-mail est obligatoire.",
+        "emailInvalid": "Saisissez une adresse e-mail valide."
+      },
+      "errors": {
+        "notFound": "Cette commande n'existe pas."
+      }
+    },
     "confirmation": {
       "loading": "Chargement de la confirmation de commande...",
       "eyebrow": "Confirmation de commande",
@@ -34,9 +81,12 @@
         "pending_payment": "Paiement en attente",
         "confirmed": "Confirmé",
         "processing": "En traitement",
+        "packed": "Préparé",
         "shipped": "Expédié",
+        "out_for_delivery": "En cours de livraison",
         "delivered": "Livré",
-        "payment_failed": "Paiement échoué"
+        "payment_failed": "Paiement échoué",
+        "returned": "Retourné"
       }
     }
   }

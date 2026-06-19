@@ -664,11 +664,26 @@ async function handleOrderRoute(
     return;
   }
 
+  if (method === 'GET' && pathname === '/api/orders/lookup') {
+    const orderNumber = url.searchParams.get('orderNumber') ?? '';
+    const email = url.searchParams.get('email')?.toLowerCase();
+    const order = state.orders.get(orderNumber);
+
+    if (!orderNumber || !email || order?.customerEmail?.toLowerCase() !== email) {
+      await route.fulfill({ status: 404, json: { message: 'Order not found' } });
+      return;
+    }
+
+    await route.fulfill({ json: order });
+    return;
+  }
+
   if (method === 'GET' && segments.at(-2) === 'orders') {
     const orderNumber = decodeURIComponent(segments.at(-1) ?? '');
     const order = state.orders.get(orderNumber);
+    const email = url.searchParams.get('email')?.toLowerCase();
 
-    if (!order) {
+    if (!order || (email && order.customerEmail?.toLowerCase() !== email)) {
       await route.fulfill({ status: 404, json: { message: 'Order not found' } });
       return;
     }
@@ -730,6 +745,7 @@ function createOrderConfirmation(
   return {
     id: orderNumber,
     orderNumber,
+    customerEmail: readString(asRecord(request.checkoutData['customer']), 'email'),
     paymentStatus,
     orderStatus: paymentStatus === 'paid' ? 'confirmed' : 'pending_payment',
     items: cart.entries.map((item) => ({
@@ -744,6 +760,13 @@ function createOrderConfirmation(
     shippingAddress: getShippingAddress(request.checkoutData),
     deliveryEstimate:
       shippingMethod === 'express' ? '1-2 business days' : '3-5 business days',
+    deliveredAt: '2026-06-21T00:00:00.000Z',
+    trackingNumber: 'ABC123456',
+    courier: 'Orange Express',
+    invoiceUrl: `/api/orders/${orderNumber}/invoice`,
+    subtotalAmount: getCartTotal(cart),
+    shippingAmount: 0,
+    discountAmount: 0,
     totalAmount: getCartTotal(cart),
     nextSteps: getNextSteps(request.checkoutData, paymentStatus),
     placedAt: '2026-06-18T00:00:00.000Z',
