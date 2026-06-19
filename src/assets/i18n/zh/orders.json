@@ -1,5 +1,52 @@
 {
   "orders": {
+    "lookup": {
+      "eyebrow": "订单查询",
+      "title": "查找您的订单",
+      "intro": "输入订单号和结账时使用的电子邮箱，即可查看订单详情。",
+      "orderNumberLabel": "订单号",
+      "orderNumberPlaceholder": "示例：OR-20260618-0001",
+      "emailLabel": "电子邮箱",
+      "emailPlaceholder": "you@example.com",
+      "submit": "查询订单",
+      "searching": "正在查询...",
+      "emptyState": "查询成功后，您的订单详情会显示在这里。",
+      "resultEyebrow": "已找到订单",
+      "resultTitle": "订单详情",
+      "orderNumberPrefix": "订单 #",
+      "placedPrefix": "下单于",
+      "placedOnPrefix": "下单于",
+      "deliveredPrefix": "送达于",
+      "estimatedDeliveryPrefix": "预计送达",
+      "quantity": "数量：{{ quantity }}",
+      "total": "总计：",
+      "subtotal": "小计：",
+      "shipping": "运费：",
+      "discount": "折扣：",
+      "placedAt": "下单时间",
+      "contactEmail": "联系邮箱",
+      "tracking": "物流单号：",
+      "trackingUnavailable": "暂不可用",
+      "courier": "承运商：",
+      "track": "追踪",
+      "trackPackage": "追踪包裹",
+      "buyAgain": "再次购买",
+      "viewDetails": "查看详情",
+      "cancelOrder": "取消订单",
+      "changePaymentMethod": "更改付款方式",
+      "payNow": "立即付款",
+      "writeReview": "撰写评价",
+      "returnItem": "退货",
+      "downloadInvoice": "下载发票",
+      "validation": {
+        "orderNumberRequired": "订单号为必填项。",
+        "emailRequired": "电子邮箱为必填项。",
+        "emailInvalid": "请输入有效的电子邮箱。"
+      },
+      "errors": {
+        "notFound": "该订单不存在。"
+      }
+    },
     "confirmation": {
       "loading": "正在加载订单确认信息...",
       "eyebrow": "订单确认",
@@ -34,9 +81,12 @@
         "pending_payment": "待支付",
         "confirmed": "已确认",
         "processing": "处理中",
+        "packed": "已打包",
         "shipped": "已发货",
+        "out_for_delivery": "派送中",
         "delivered": "已送达",
-        "payment_failed": "支付失败"
+        "payment_failed": "支付失败",
+        "returned": "已退回"
       }
     }
   }

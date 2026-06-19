@@ -1,0 +1,124 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.orders {
+  display: grid;
+  gap: 24px;
+  width: min(100%, 960px);
+  padding: 40px 16px 56px;
+  color: token(color, text-primary);
+
+  @include respond-down(md) {
+    padding: 28px 0 40px;
+  }
+}
+
+.orders__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  padding-bottom: 22px;
+  border-bottom: 1px solid token(color, border-strong);
+
+  h1 {
+    margin: 4px 0 8px;
+    font-size: 38px;
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  p {
+    max-width: 620px;
+    margin: 0;
+    color: token(color, text-secondary);
+    line-height: 1.5;
+  }
+
+  > mat-icon {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    font-size: 52px;
+    color: token(color, primary);
+  }
+
+  @include respond-down(md) {
+    align-items: flex-start;
+
+    h1 {
+      font-size: 30px;
+    }
+  }
+
+  @include respond-down(sm) {
+    flex-direction: column;
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  color: token(color, primary);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.lookup-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+
+  button {
+    min-height: 56px;
+    padding-inline: 18px;
+
+    mat-icon {
+      margin-right: 6px;
+    }
+  }
+
+  @include respond-down(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lookup-message,
+.empty-state {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: token(color, text-secondary);
+
+  p {
+    margin: 0;
+  }
+}
+
+.lookup-message--error {
+  border: 1px solid #fecaca;
+  background: #fee2e2;
+  color: token(color, error-hover);
+}
+
+.empty-state {
+  justify-content: center;
+  min-height: 180px;
+  border: 1px dashed token(color, border-strong);
+  background: token(color, surface-secondary);
+  text-align: center;
+
+  mat-icon {
+    color: token(color, primary);
+  }
+}

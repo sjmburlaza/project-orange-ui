@@ -1,7 +1,9 @@
 @use "tokens/tokens" as *;
 
 :host {
-  display: block;
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
   width: 100%;
 }
 

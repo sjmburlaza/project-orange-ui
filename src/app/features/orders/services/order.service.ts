@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   OrderConfirmation,
+  OrderItem,
   PlaceOrderRequest,
 } from 'src/app/core/models/order.model';
 
@@ -23,5 +24,14 @@ export class OrderService {
     return this.http.get<OrderConfirmation>(
       `${this.baseUrl}/${encodeURIComponent(orderNumber)}`,
     );
+  }
+
+  lookupOrder(
+    orderNumber: string,
+    email: string,
+  ): Observable<OrderItem> {
+    return this.http.get<OrderItem>(`${this.baseUrl}/lookup`, {
+      params: { orderNumber, email },
+    });
   }
 }

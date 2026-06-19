@@ -1,5 +1,52 @@
 {
   "orders": {
+    "lookup": {
+      "eyebrow": "Order Lookup",
+      "title": "Find your order",
+      "intro": "Enter the order number and email address used at checkout to view your order details.",
+      "orderNumberLabel": "Order number",
+      "orderNumberPlaceholder": "Example: OR-20260618-0001",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Search order",
+      "searching": "Searching...",
+      "emptyState": "Your order details will appear here after a successful search.",
+      "resultEyebrow": "Order Found",
+      "resultTitle": "Order details",
+      "orderNumberPrefix": "Order #",
+      "placedPrefix": "Placed",
+      "placedOnPrefix": "Placed on",
+      "deliveredPrefix": "Delivered",
+      "estimatedDeliveryPrefix": "Estimated delivery",
+      "quantity": "Qty: {{ quantity }}",
+      "total": "Total:",
+      "subtotal": "Subtotal:",
+      "shipping": "Shipping:",
+      "discount": "Discount:",
+      "placedAt": "Placed on",
+      "contactEmail": "Contact email",
+      "tracking": "Tracking:",
+      "trackingUnavailable": "Not available yet",
+      "courier": "Courier:",
+      "track": "Track",
+      "trackPackage": "Track Package",
+      "buyAgain": "Buy Again",
+      "viewDetails": "View Details",
+      "cancelOrder": "Cancel Order",
+      "changePaymentMethod": "Change Payment Method",
+      "payNow": "Pay Now",
+      "writeReview": "Write Review",
+      "returnItem": "Return Item",
+      "downloadInvoice": "Download Invoice",
+      "validation": {
+        "orderNumberRequired": "Order number is required.",
+        "emailRequired": "Email address is required.",
+        "emailInvalid": "Enter a valid email address."
+      },
+      "errors": {
+        "notFound": "This order doesn't exist."
+      }
+    },
     "confirmation": {
       "loading": "Loading order confirmation...",
       "eyebrow": "Order Confirmation",
@@ -34,9 +81,12 @@
         "pending_payment": "Pending payment",
         "confirmed": "Confirmed",
         "processing": "Processing",
+        "packed": "Packed",
         "shipped": "Shipped",
+        "out_for_delivery": "Out for delivery",
         "delivered": "Delivered",
-        "payment_failed": "Payment failed"
+        "payment_failed": "Payment failed",
+        "returned": "Returned"
       }
     }
   }

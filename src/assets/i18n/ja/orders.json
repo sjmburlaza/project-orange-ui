@@ -1,5 +1,52 @@
 {
   "orders": {
+    "lookup": {
+      "eyebrow": "注文検索",
+      "title": "注文を探す",
+      "intro": "注文番号とチェックアウト時に使用したメールアドレスを入力すると、注文詳細を確認できます。",
+      "orderNumberLabel": "注文番号",
+      "orderNumberPlaceholder": "例: OR-20260618-0001",
+      "emailLabel": "メールアドレス",
+      "emailPlaceholder": "you@example.com",
+      "submit": "注文を検索",
+      "searching": "検索中...",
+      "emptyState": "検索に成功すると、注文詳細がここに表示されます。",
+      "resultEyebrow": "注文が見つかりました",
+      "resultTitle": "注文詳細",
+      "orderNumberPrefix": "注文 #",
+      "placedPrefix": "注文日",
+      "placedOnPrefix": "注文日",
+      "deliveredPrefix": "配達日",
+      "estimatedDeliveryPrefix": "配送予定",
+      "quantity": "数量: {{ quantity }}",
+      "total": "合計:",
+      "subtotal": "小計:",
+      "shipping": "送料:",
+      "discount": "割引:",
+      "placedAt": "注文日時",
+      "contactEmail": "連絡先メール",
+      "tracking": "追跡番号:",
+      "trackingUnavailable": "まだ利用できません",
+      "courier": "配送会社:",
+      "track": "追跡",
+      "trackPackage": "荷物を追跡",
+      "buyAgain": "再購入",
+      "viewDetails": "詳細を見る",
+      "cancelOrder": "注文をキャンセル",
+      "changePaymentMethod": "支払い方法を変更",
+      "payNow": "今すぐ支払う",
+      "writeReview": "レビューを書く",
+      "returnItem": "返品する",
+      "downloadInvoice": "請求書をダウンロード",
+      "validation": {
+        "orderNumberRequired": "注文番号は必須です。",
+        "emailRequired": "メールアドレスは必須です。",
+        "emailInvalid": "有効なメールアドレスを入力してください。"
+      },
+      "errors": {
+        "notFound": "この注文は存在しません。"
+      }
+    },
     "confirmation": {
       "loading": "注文確認を読み込んでいます...",
       "eyebrow": "注文確認",
@@ -34,9 +81,12 @@
         "pending_payment": "支払い待ち",
         "confirmed": "確定済み",
         "processing": "処理中",
+        "packed": "梱包済み",
         "shipped": "発送済み",
+        "out_for_delivery": "配達中",
         "delivered": "配達済み",
-        "payment_failed": "支払い失敗"
+        "payment_failed": "支払い失敗",
+        "returned": "返品済み"
       }
     }
   }

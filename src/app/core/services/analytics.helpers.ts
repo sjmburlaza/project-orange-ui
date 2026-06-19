@@ -4,7 +4,7 @@ import {
   AnalyticsItem,
 } from 'src/app/core/models/analytics.model';
 import { Cart, CartItem } from 'src/app/core/models/cart.model';
-import { OrderItem } from 'src/app/core/models/order.model';
+import { OrderProductItem } from 'src/app/core/models/order.model';
 
 export function createEmptyDashboard(): AnalyticsDashboard {
   const daily = buildEmptyDailyPoints();
@@ -69,7 +69,7 @@ export function cartItemToAnalyticsItem(item: CartItem): AnalyticsItem {
   };
 }
 
-export function orderItemToAnalyticsItem(item: OrderItem): AnalyticsItem {
+export function orderItemToAnalyticsItem(item: OrderProductItem): AnalyticsItem {
   return {
     productId: item.productId,
     productName: item.productName,

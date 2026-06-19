@@ -16,6 +16,7 @@ describe('OrderService', () => {
 
   const order: OrderConfirmation = {
     orderNumber: 'OR-20260618-1234',
+    customerEmail: 'ada@example.com',
     paymentStatus: 'paid',
     orderStatus: 'confirmed',
     items: [
@@ -82,6 +83,22 @@ describe('OrderService', () => {
     });
 
     const req = http.expectOne(`/api/orders/${order.orderNumber}`);
+
+    expect(req.request.method).toBe('GET');
+    req.flush(order);
+  });
+
+  it('looks up an order by order number and email from the orders API', () => {
+    service.lookupOrder(order.orderNumber, order.customerEmail ?? '').subscribe((result) => {
+      expect(result).toEqual(order);
+    });
+
+    const req = http.expectOne(
+      (request) =>
+        request.url === '/api/orders/lookup' &&
+        request.params.get('orderNumber') === order.orderNumber &&
+        request.params.get('email') === order.customerEmail,
+    );
 
     expect(req.request.method).toBe('GET');
     req.flush(order);

@@ -70,7 +70,9 @@ export class OrderConfirmationComponent implements OnInit {
       case 'pending_payment':
         return 'warning';
       case 'processing':
+      case 'packed':
       case 'shipped':
+      case 'out_for_delivery':
       case 'refunded':
         return 'info';
       case 'failed':
@@ -78,6 +80,7 @@ export class OrderConfirmationComponent implements OnInit {
       case 'payment_failed':
         return 'error';
       case 'cancelled':
+      case 'returned':
         return 'neutral';
     }
   }

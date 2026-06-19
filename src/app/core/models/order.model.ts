@@ -4,10 +4,14 @@ export type OrderStatus =
   | 'pending_payment'
   | 'confirmed'
   | 'processing'
+  | 'packed'
   | 'shipped'
+  | 'out_for_delivery'
   | 'delivered'
   | 'cancelled'
-  | 'payment_failed';
+  | 'payment_failed'
+  | 'refunded'
+  | 'returned';
 
 export type PaymentStatus =
   | 'pending'
@@ -17,7 +21,7 @@ export type PaymentStatus =
   | 'expired'
   | 'refunded';
 
-export interface OrderItem {
+export interface OrderProductItem {
   productId: number;
   productName: string;
   price: number;
@@ -39,18 +43,28 @@ export interface OrderShippingAddress {
   country: string;
 }
 
-export interface OrderConfirmation {
+export interface OrderItem {
   id?: string;
   orderNumber: string;
+  customerEmail?: string;
   paymentStatus: PaymentStatus;
   orderStatus: OrderStatus;
-  items: OrderItem[];
+  items: OrderProductItem[];
   shippingAddress: OrderShippingAddress;
   deliveryEstimate: string;
+  deliveredAt?: string;
+  trackingNumber?: string;
+  courier?: string;
+  invoiceUrl?: string;
+  subtotalAmount?: number;
+  shippingAmount?: number;
+  discountAmount?: number;
   totalAmount: number;
   nextSteps: string[];
   placedAt: string;
 }
+
+export type OrderConfirmation = OrderItem;
 
 export interface PlaceOrderRequest {
   checkoutData: Record<string, Record<string, unknown>>;
