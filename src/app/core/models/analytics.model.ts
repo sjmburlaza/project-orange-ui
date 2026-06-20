@@ -34,12 +34,8 @@ export interface AnalyticsMetricCard {
   label: string;
   value: string;
   helper: string;
-  info: AnalyticsInfoTooltip;
+  info: string;
   tone?: 'default' | 'good' | 'warning' | 'danger';
-}
-
-export interface AnalyticsInfoTooltip {
-  description: string;
 }
 
 export type AnalyticsDashboardPeriod =
