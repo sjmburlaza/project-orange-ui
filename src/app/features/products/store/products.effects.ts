@@ -64,20 +64,20 @@ export class ProductEffects {
     ),
   );
 
-  loadProductDetail$ = createEffect(() =>
+  loadProductConfigure$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ProductActions.loadProductDetail),
+      ofType(ProductActions.loadProductConfigure),
       switchMap(({ id }) =>
-        this.productApiService.getProductById(id).pipe(
+        this.productApiService.getProductConfigure(id).pipe(
           map((product) =>
-            ProductActions.loadProductDetailSuccess({ product }),
+            ProductActions.loadProductConfigureSuccess({ product }),
           ),
           catchError((error) =>
             of(
-              ProductActions.loadProductDetailFailure({
+              ProductActions.loadProductConfigureFailure({
                 error: this.getErrorMessage(
                   error,
-                  'Failed to load product detail',
+                  'Failed to load product configuration',
                 ),
               }),
             ),

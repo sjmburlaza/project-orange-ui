@@ -190,7 +190,7 @@
 
   i {
     font-size: 30px;
-    color: teal;
+    filter: opacity(0.7);
   }
 
   mat-icon {
@@ -276,7 +276,7 @@
   width: 22px;
   height: 22px;
   overflow: hidden;
-  color: teal;
+  color: gray;
   line-height: 1;
 
   img {

@@ -69,7 +69,11 @@
             @if (row.item.imageUrl) {
               <img [src]="row.item.imageUrl" [alt]="row.item.productName" />
             } @else {
-              <i [class]="row.item.categoryName | icon" aria-hidden="true"></i>
+              <i
+                [class]="row.item.categoryName | icon"
+                [style.color]="row.item.itemSpecs | iconColor"
+                aria-hidden="true"
+              ></i>
             }
           </div>
 

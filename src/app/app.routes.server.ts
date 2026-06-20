@@ -16,6 +16,12 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server,
   },
 
+  // product configurator
+  {
+    path: ':site/products/:slug/configure',
+    renderMode: RenderMode.Server,
+  },
+
   // product details
   {
     path: ':site/products/:slug',

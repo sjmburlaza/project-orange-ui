@@ -10,10 +10,10 @@
   <div class="product__description">{{ product.description }}</div>
   <div class="product__price">{{ product.price | currency: currency }}</div>
   <div class="product__actions">
-    <button matButton="filled" (click)="onAddToCart(product)">
+    <button matButton="filled" (click)="onConfigureProduct(product)">
       {{ "products.actions.buy" | translate }}
     </button>
-    <button matButton="outlined">
+    <button matButton="outlined" (click)="onViewProductDetail(product)">
       {{ "products.actions.learnMore" | translate }}
     </button>
   </div>

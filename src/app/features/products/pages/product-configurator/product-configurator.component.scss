@@ -1,0 +1,228 @@
+@use "tokens/tokens" as *;
+
+.product-configurator-page {
+  display: flex;
+  flex-direction: column;
+  gap: token(spacing, 6);
+  padding: token(spacing, 6);
+  min-height: 70vh;
+
+  &__back {
+    width: fit-content;
+    color: token(color, text-secondary);
+    font-size: token(font-size, sm);
+    text-decoration: underline;
+  }
+
+  &__status {
+    display: grid;
+    flex: 1;
+    min-height: 360px;
+    place-items: center;
+    color: token(color, text-secondary);
+    text-align: center;
+
+    &--error {
+      color: token(color, error);
+    }
+  }
+}
+
+.product-configurator {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 520px);
+  gap: token(spacing, 8);
+  align-items: start;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+
+  &__media {
+    display: grid;
+    place-items: center;
+    min-height: 520px;
+    border-radius: token(radius, md);
+    background: token(color, surface);
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      max-height: 520px;
+      object-fit: contain;
+    }
+
+    i {
+      color: black;
+      font-size: 220px;
+      filter: opacity(0.7);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: token(spacing, 5);
+    padding: token(spacing, 4) 0;
+
+    h1 {
+      margin: 0;
+      color: token(color, text-primary);
+      font-size: token(font-size, xxl);
+      line-height: 1.15;
+    }
+  }
+
+  &__category {
+    margin: 0;
+    color: token(color, text-muted);
+    font-size: token(font-size, sm);
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  &__description {
+    margin: 0;
+    color: token(color, text-secondary);
+    line-height: 1.55;
+  }
+
+  &__price {
+    color: token(color, text-primary);
+    font-size: token(font-size, xl);
+    font-weight: 700;
+  }
+
+  &__stock {
+    margin: 0;
+    color: token(color, success);
+    font-weight: 600;
+
+    &--warning {
+      color: token(color, warning);
+    }
+
+    &--error {
+      color: token(color, error);
+    }
+  }
+
+  &__purchase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: token(spacing, 4);
+    align-items: center;
+    padding-top: token(spacing, 3);
+
+    button {
+      min-width: 180px;
+    }
+  }
+}
+
+.product-options {
+  display: flex;
+  flex-direction: column;
+  gap: token(spacing, 5);
+}
+
+.product-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: token(spacing, 3);
+
+  h2 {
+    margin: 0;
+    color: token(color, text-primary);
+    font-size: token(font-size, md);
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: token(spacing, 3);
+  }
+}
+
+.product-option {
+  display: inline-flex;
+  gap: token(spacing, 2);
+  align-items: center;
+  min-height: 44px;
+  border: 1px solid token(color, border-strong);
+  border-radius: token(radius, md);
+  padding: token(spacing, 2) token(spacing, 4);
+  background: token(color, background);
+  color: token(color, text-primary);
+  cursor: pointer;
+
+  &--selected {
+    border-color: token(color, primary);
+    box-shadow: 0 0 0 1px token(color, primary);
+  }
+
+  &--unavailable {
+    color: token(color, text-muted);
+    text-decoration: line-through;
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  &__swatch {
+    width: 18px;
+    height: 18px;
+    border: 1px solid token(color, border-strong);
+    border-radius: 50%;
+  }
+}
+
+.product-configurator-info {
+  display: grid;
+  gap: token(spacing, 5);
+  padding: token(spacing, 4) 0;
+  border-top: 1px solid token(color, border);
+  border-bottom: 1px solid token(color, border);
+
+  section {
+    display: grid;
+    gap: token(spacing, 3);
+  }
+
+  h2 {
+    margin: 0;
+    color: token(color, text-primary);
+    font-size: token(font-size, md);
+  }
+
+  ul {
+    display: grid;
+    gap: token(spacing, 2);
+    margin: 0;
+    padding-left: token(spacing, 5);
+    color: token(color, text-secondary);
+    line-height: 1.5;
+  }
+}
+
+@include respond-down(md) {
+  .product-configurator-page {
+    padding: token(spacing, 4);
+  }
+
+  .product-configurator {
+    grid-template-columns: 1fr;
+    gap: token(spacing, 5);
+
+    &__media {
+      min-height: 320px;
+
+      img {
+        max-height: 320px;
+      }
+
+      i {
+        font-size: 160px;
+      }
+    }
+  }
+}

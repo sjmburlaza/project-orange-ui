@@ -1,7 +1,8 @@
 import {
   InsurancePlan,
   Product,
-  ProductDetail,
+  ProductConfigure,
+  ProductVariant,
 } from 'src/app/core/models/product.model';
 import { ProductActions } from './products.actions';
 import { initialState, productFeature } from './products.reducer';
@@ -76,28 +77,34 @@ describe('products reducer', () => {
     expect(clearedState.maxPrice).toBeNull();
   });
 
-  it('caches loaded product details by product id', () => {
-    const existingDetail = createProductDetail({ id: 1, name: 'Phone One' });
-    const loadedDetail = createProductDetail({ id: 2, name: 'Phone Two' });
+  it('caches loaded product configure data by product id', () => {
+    const existingConfigure = createProductConfigure({
+      id: 1,
+      name: 'Phone One',
+    });
+    const loadedConfigure = createProductConfigure({
+      id: 2,
+      name: 'Phone Two',
+    });
 
     const state = productFeature.reducer(
       {
         ...initialState,
-        productDetails: { [existingDetail.id]: existingDetail },
+        productConfigures: { [existingConfigure.id]: existingConfigure },
         selectedProductId: 2,
-        loadingProductDetail: true,
-        productDetailError: 'Previous failure',
+        loadingProductConfigure: true,
+        productConfigureError: 'Previous failure',
       },
-      ProductActions.loadProductDetailSuccess({ product: loadedDetail }),
+      ProductActions.loadProductConfigureSuccess({ product: loadedConfigure }),
     );
 
-    expect(state.productDetails).toEqual({
-      [existingDetail.id]: existingDetail,
-      [loadedDetail.id]: loadedDetail,
+    expect(state.productConfigures).toEqual({
+      [existingConfigure.id]: existingConfigure,
+      [loadedConfigure.id]: loadedConfigure,
     });
-    expect(state.selectedProductId).toBe(loadedDetail.id);
-    expect(state.loadingProductDetail).toBe(false);
-    expect(state.productDetailError).toBeNull();
+    expect(state.selectedProductId).toBe(loadedConfigure.id);
+    expect(state.loadingProductConfigure).toBe(false);
+    expect(state.productConfigureError).toBeNull();
   });
 
   it('tracks addon loading and errors per product id', () => {
@@ -156,6 +163,39 @@ function createProduct(overrides: Partial<Product>): Product {
   };
 }
 
-function createProductDetail(overrides: Partial<ProductDetail>): ProductDetail {
-  return createProduct(overrides);
+function createProductConfigure(
+  overrides: Partial<ProductConfigure>,
+): ProductConfigure {
+  const product = createProduct(overrides);
+
+  return {
+    ...product,
+    features: overrides.features ?? [],
+    whatsInTheBox: overrides.whatsInTheBox ?? [],
+    optionGroups: overrides.optionGroups ?? [],
+    variants:
+      overrides.variants ??
+      [
+        createProductVariant({
+          id: product.id * 1000 + 1,
+          price: product.price,
+          stockQuantity: product.stockQuantity,
+        }),
+      ],
+  };
+}
+
+function createProductVariant(
+  overrides: Partial<ProductVariant>,
+): ProductVariant {
+  return {
+    id: 1001,
+    sku: 'orange-phone-1001',
+    price: 39999,
+    stockQuantity: 8,
+    stockStatus: 'inStock',
+    imageUrl: '/assets/phone.png',
+    options: {},
+    ...overrides,
+  };
 }

@@ -14,6 +14,16 @@
       "buy": "Acheter",
       "learnMore": "En savoir plus"
     },
+    "configurator": {
+      "back": "Retour aux produits",
+      "loading": "Chargement du produit...",
+      "notFound": "Produit introuvable.",
+      "inStock": "{{ count }} en stock",
+      "lowStock": "Plus que {{ count }}",
+      "outOfStock": "Rupture de stock",
+      "features": "Fonctionnalités",
+      "whatsInTheBox": "Contenu de la boîte"
+    },
     "cart": {
       "addedTitle": "Ajouté au panier",
       "addedMessage": "L'article a été ajouté à votre panier.",

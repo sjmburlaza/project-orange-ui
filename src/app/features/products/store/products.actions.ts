@@ -4,7 +4,7 @@ import {
   InsurancePlan,
   MobilePlan,
   Product,
-  ProductDetail,
+  ProductConfigure,
   ProductFilters,
   ProductSort,
 } from 'src/app/core/models/product.model';
@@ -32,9 +32,9 @@ export const ProductActions = createActionGroup({
 
     'Clear Product Filters': emptyProps(),
 
-    'Load Product Detail': props<{ id: number }>(),
-    'Load Product Detail Success': props<{ product: ProductDetail }>(),
-    'Load Product Detail Failure': props<{ error: string }>(),
+    'Load Product Configure': props<{ id: number }>(),
+    'Load Product Configure Success': props<{ product: ProductConfigure }>(),
+    'Load Product Configure Failure': props<{ error: string }>(),
 
     'Load Product Insurance Plans': props<{ productId: number }>(),
     'Load Product Insurance Plans Success': props<{

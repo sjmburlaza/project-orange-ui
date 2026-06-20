@@ -14,6 +14,16 @@
       "buy": "购买",
       "learnMore": "了解更多"
     },
+    "configurator": {
+      "back": "返回商品列表",
+      "loading": "正在加载商品...",
+      "notFound": "未找到商品。",
+      "inStock": "库存 {{ count }} 件",
+      "lowStock": "仅剩 {{ count }} 件",
+      "outOfStock": "无库存",
+      "features": "功能亮点",
+      "whatsInTheBox": "包装内容"
+    },
     "cart": {
       "addedTitle": "已添加到购物车",
       "addedMessage": "商品已添加到您的购物车。",

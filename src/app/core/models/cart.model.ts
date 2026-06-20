@@ -53,7 +53,7 @@ export interface AddonSelectionRequest {
 }
 
 export interface AddToCartRequest extends AddonSelectionRequest {
-  productId: number;
+  variantId: number;
   quantity: number;
   addons: Addon[];
 }

@@ -17,7 +17,8 @@
           <app-product-card
             [product]="product"
             [currency]="siteService.currency()"
-            (addToCart)="addToCart($event)"
+            (configureProduct)="configureProduct($event)"
+            (viewProductDetail)="viewProductDetail($event)"
           ></app-product-card>
         }
       </div>

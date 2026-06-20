@@ -14,6 +14,16 @@
       "buy": "Buy",
       "learnMore": "Learn more"
     },
+    "configurator": {
+      "back": "Back to products",
+      "loading": "Loading product...",
+      "notFound": "Product not found.",
+      "inStock": "{{ count }} in stock",
+      "lowStock": "Only {{ count }} left",
+      "outOfStock": "Out of stock",
+      "features": "Features",
+      "whatsInTheBox": "What's in the box"
+    },
     "cart": {
       "addedTitle": "Added to Cart",
       "addedMessage": "Item has been added to your cart.",

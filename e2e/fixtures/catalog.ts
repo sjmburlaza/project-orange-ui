@@ -5,7 +5,12 @@ import type {
   Voucher,
 } from '../../src/app/core/models/cart.model';
 import type { CheckoutFormConfig } from '../../src/app/core/models/checkout.model';
-import type { Product } from '../../src/app/core/models/product.model';
+import type {
+  Product,
+  ProductConfigure,
+  ProductVariant,
+  StockStatus,
+} from '../../src/app/core/models/product.model';
 import type { ShippingOption } from '../../src/app/features/checkout/services/shipping-pricing.service';
 
 export const categories: Category[] = [
@@ -57,6 +62,10 @@ export const products: Product[] = [
     categoryName: 'Accessories',
   },
 ];
+
+export const productConfigures: ProductConfigure[] = products.map((product) =>
+  createProductConfigure(product),
+);
 
 export const checkoutForm: CheckoutFormConfig = {
   version: 'e2e',
@@ -203,4 +212,101 @@ export function createCartItem(product: Product, quantity: number): CartItem {
     itemSpecs: [],
     addons: [],
   };
+}
+
+function createProductConfigure(product: Product): ProductConfigure {
+  if (product.id === 1) {
+    const optionGroups = [
+      {
+        code: 'color',
+        label: 'Color',
+        options: [
+          { code: 'black', label: 'Black', hex: '#111111' },
+          { code: 'blue', label: 'Blue', hex: '#2563eb' },
+        ],
+      },
+      {
+        code: 'storage',
+        label: 'Storage',
+        options: [
+          { code: '128gb', label: '128GB' },
+          { code: '256gb', label: '256GB' },
+        ],
+      },
+    ];
+    const variants: ProductVariant[] = [
+      createVariant(product, 1001, 59999, 10, {
+        color: 'black',
+        storage: '128gb',
+      }),
+      createVariant(product, 1002, 59999, 3, {
+        color: 'blue',
+        storage: '128gb',
+      }),
+      createVariant(product, 1003, 69999, 2, {
+        color: 'black',
+        storage: '256gb',
+      }),
+      createVariant(product, 1004, 69999, 0, {
+        color: 'blue',
+        storage: '256gb',
+      }),
+    ];
+
+    return {
+      ...product,
+      category: { id: product.categoryId, name: product.categoryName ?? '' },
+      itemSpecs: [
+        { name: 'Display', value: '6.1-inch' },
+        { name: 'Chip', value: 'A16 Bionic' },
+      ],
+      features: [
+        'iPhone 15 with unlocked connectivity',
+        'All-day battery for everyday use',
+        'Advanced camera system',
+        'Fast USB-C charging support',
+      ],
+      whatsInTheBox: ['iPhone 15', 'USB-C charge cable', 'Documentation'],
+      optionGroups,
+      variants,
+    };
+  }
+
+  return {
+    ...product,
+    category: { id: product.categoryId, name: product.categoryName ?? '' },
+    itemSpecs: [],
+    features: [],
+    whatsInTheBox: [],
+    optionGroups: [],
+    variants: [
+      createVariant(product, product.id * 1000 + 1, product.price, product.stockQuantity),
+    ],
+  };
+}
+
+function createVariant(
+  product: Product,
+  id: number,
+  price: number,
+  stockQuantity: number,
+  options: Record<string, string> = {},
+): ProductVariant {
+  return {
+    id,
+    sku: `${product.id}-${id}`,
+    price,
+    stockQuantity,
+    stockStatus: getStockStatus(stockQuantity),
+    imageUrl: product.imageUrl,
+    options,
+  };
+}
+
+function getStockStatus(stockQuantity: number): StockStatus {
+  if (stockQuantity <= 0) {
+    return 'outOfStock';
+  }
+
+  return stockQuantity <= 5 ? 'lowStock' : 'inStock';
 }

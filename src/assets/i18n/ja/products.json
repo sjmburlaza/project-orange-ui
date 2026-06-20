@@ -14,6 +14,16 @@
       "buy": "購入",
       "learnMore": "詳細を見る"
     },
+    "configurator": {
+      "back": "商品一覧に戻る",
+      "loading": "商品を読み込んでいます...",
+      "notFound": "商品が見つかりません。",
+      "inStock": "在庫 {{ count }} 点",
+      "lowStock": "残り {{ count }} 点",
+      "outOfStock": "在庫切れ",
+      "features": "特徴",
+      "whatsInTheBox": "同梱物"
+    },
     "cart": {
       "addedTitle": "カートに追加しました",
       "addedMessage": "商品がカートに追加されました。",

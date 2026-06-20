@@ -2,7 +2,8 @@ import {
   InsurancePlan,
   MobilePlan,
   Product,
-  ProductDetail,
+  ProductConfigure,
+  ProductVariant,
 } from 'src/app/core/models/product.model';
 import {
   selectHasActiveProductFilters,
@@ -12,7 +13,7 @@ import {
   selectPriceRange,
   selectProductFilters,
   selectProductListWithStockStatus,
-  selectSelectedProductDetail,
+  selectSelectedProductConfigure,
 } from './products.selector';
 
 describe('product selectors', () => {
@@ -40,21 +41,21 @@ describe('product selectors', () => {
     );
   });
 
-  it('returns the selected product detail from the detail cache', () => {
-    const selectedProduct = createProductDetail({
+  it('returns the selected product configure data from the configure cache', () => {
+    const selectedProduct = createProductConfigure({
       id: 2,
       name: 'Selected Phone',
     });
-    const details: Record<number, ProductDetail> = {
-      1: createProductDetail({ id: 1, name: 'Other Phone' }),
+    const configures: Record<number, ProductConfigure> = {
+      1: createProductConfigure({ id: 1, name: 'Other Phone' }),
       2: selectedProduct,
     };
 
-    expect(selectSelectedProductDetail.projector(details, 2)).toEqual(
+    expect(selectSelectedProductConfigure.projector(configures, 2)).toEqual(
       selectedProduct,
     );
-    expect(selectSelectedProductDetail.projector(details, null)).toBeNull();
-    expect(selectSelectedProductDetail.projector(details, 999)).toBeNull();
+    expect(selectSelectedProductConfigure.projector(configures, null)).toBeNull();
+    expect(selectSelectedProductConfigure.projector(configures, 999)).toBeNull();
   });
 
   it('adds stock availability to product cards', () => {
@@ -134,6 +135,39 @@ function createProduct(overrides: Partial<Product>): Product {
   };
 }
 
-function createProductDetail(overrides: Partial<ProductDetail>): ProductDetail {
-  return createProduct(overrides);
+function createProductConfigure(
+  overrides: Partial<ProductConfigure>,
+): ProductConfigure {
+  const product = createProduct(overrides);
+
+  return {
+    ...product,
+    features: overrides.features ?? [],
+    whatsInTheBox: overrides.whatsInTheBox ?? [],
+    optionGroups: overrides.optionGroups ?? [],
+    variants:
+      overrides.variants ??
+      [
+        createProductVariant({
+          id: product.id * 1000 + 1,
+          price: product.price,
+          stockQuantity: product.stockQuantity,
+        }),
+      ],
+  };
+}
+
+function createProductVariant(
+  overrides: Partial<ProductVariant>,
+): ProductVariant {
+  return {
+    id: 1001,
+    sku: 'orange-phone-1001',
+    price: 39999,
+    stockQuantity: 8,
+    stockStatus: 'inStock',
+    imageUrl: '/assets/phone.png',
+    options: {},
+    ...overrides,
+  };
 }
