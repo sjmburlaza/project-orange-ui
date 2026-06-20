@@ -66,6 +66,8 @@ http://localhost:4200/jp/products
 
 The root route (`/`) loads the country entry screen. It uses `/api/sites` and `/api/geo/country` to list supported sites and suggest a country when possible. The selected site is saved in local storage under `orange.sitePreference`.
 
+For detailed analytics dashboard documentation, see [Dashboard Analytics](src/app/features/admin/pages/dashboard/README.md).
+
 Most app routes are scoped by site:
 
 | Route                                 | Purpose                                                            |
