@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -6,11 +7,13 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { delay, Observable, of } from 'rxjs';
+import { delay, Observable, of, throwError } from 'rxjs';
 import { PERMISSIONS, ROLES } from 'src/app/core/auth/auth.constants';
 import {
   AuthSession,
+  ForgotPasswordDto,
   LoginDto,
+  ResetPasswordDto,
   User,
 } from 'src/app/core/auth/auth.models';
 import { SiteService } from 'src/app/core/services/site.services';
@@ -18,6 +21,7 @@ import { SiteService } from 'src/app/core/services/site.services';
 @Injectable()
 export class MockAuthInterceptor implements HttpInterceptor {
   private readonly siteService = inject(SiteService);
+  private readonly mockResetToken = 'local-reset-token';
   private readonly mockUser: User = {
     id: '52a0adc1-25d3-4cac-9154-48649ebe9d16',
     email: 'admin@example.com',
@@ -68,6 +72,47 @@ export class MockAuthInterceptor implements HttpInterceptor {
       return of(
         new HttpResponse({
           status: 201,
+        }),
+      ).pipe(delay(800));
+    }
+
+    if (apiPath === '/auth/forgot-password' && req.method === 'POST') {
+      const body = req.body as Partial<ForgotPasswordDto> | null;
+      const email = body?.email ?? this.mockUser.email;
+      const site = this.siteService.getCurrentSite() || 'ph';
+      const resetUrl = `/${site}/auth/reset-password?email=${encodeURIComponent(
+        email,
+      )}&token=${encodeURIComponent(this.mockResetToken)}`;
+
+      return of(
+        new HttpResponse({
+          status: 200,
+          body: {
+            message:
+              'If an account exists for that email, password reset instructions will be sent.',
+            resetToken: this.mockResetToken,
+            resetUrl,
+          },
+        }),
+      ).pipe(delay(800));
+    }
+
+    if (apiPath === '/auth/reset-password' && req.method === 'POST') {
+      const body = req.body as Partial<ResetPasswordDto> | null;
+
+      if (!body?.email || body.token !== this.mockResetToken) {
+        return throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 400,
+              error: { code: 'RESET_TOKEN_INVALID' },
+            }),
+        ).pipe(delay(500));
+      }
+
+      return of(
+        new HttpResponse({
+          status: 204,
         }),
       ).pipe(delay(800));
     }

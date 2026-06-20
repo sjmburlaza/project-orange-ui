@@ -19,6 +19,22 @@ export interface LoginDto {
   password: string;
 }
 
+export interface ForgotPasswordDto {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  message?: string;
+  resetToken?: string;
+  resetUrl?: string;
+}
+
+export interface ResetPasswordDto {
+  email: string;
+  token: string;
+  newPassword: string;
+}
+
 export interface RegisterDto {
   fullName: string;
   email: string;

@@ -3,8 +3,11 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   AuthSession,
+  ForgotPasswordDto,
+  ForgotPasswordResponse,
   LoginDto,
   RegisterDto,
+  ResetPasswordDto,
 } from 'src/app/core/auth/auth.models';
 
 @Injectable({
@@ -26,6 +29,24 @@ export class AuthService {
   register(dto: RegisterDto): Observable<void> {
     return this.http.post<void>(
       `${this.baseUrl}/register`,
+      dto,
+      this.requestOptions,
+    );
+  }
+
+  requestPasswordReset(
+    dto: ForgotPasswordDto,
+  ): Observable<ForgotPasswordResponse> {
+    return this.http.post<ForgotPasswordResponse>(
+      `${this.baseUrl}/forgot-password`,
+      dto,
+      this.requestOptions,
+    );
+  }
+
+  resetPassword(dto: ResetPasswordDto): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/reset-password`,
       dto,
       this.requestOptions,
     );

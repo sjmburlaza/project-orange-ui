@@ -1,10 +1,20 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: block;
+  width: min(100%, 500px);
+}
+
 .register-form {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 100%;
+  margin-inline: auto;
   padding: 40px 36px;
-  border-radius: 24px;
-  border: 1px solid gray;
+  border-radius: token(radius, md);
+  border: 1px solid token(color, border-strong);
+  background: token(color, background);
 }
 
 mat-form-field {
@@ -21,12 +31,12 @@ mat-form-field {
     align-items: center;
     gap: 8px;
     font-size: 14px;
-    color: #9ca3af;
+    color: token(color, text-muted);
     transition: color 0.2s ease;
   }
 
   .rule.valid {
-    color: #22c55e;
+    color: token(color, success);
   }
 
   .icon {
