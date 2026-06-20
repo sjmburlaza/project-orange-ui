@@ -1,6 +1,6 @@
 # Project Orange UI
 
-Project Orange UI is an Angular storefront for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, add-on experiences, authentication, profile pages, and an admin area for dashboard, order, and product management.
+Project Orange UI is an Angular storefront and admin console for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, and an admin analytics dashboard with revenue, order, visitor, funnel, product, and payment-failure views. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
 
 ## Tech Stack
 

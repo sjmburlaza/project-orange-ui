@@ -1,4 +1,7 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
+import { PERMISSIONS, ROLES } from '../src/app/core/auth/auth.constants';
+import type { AuthSession } from '../src/app/core/auth/auth.models';
+import type { AnalyticsDashboard } from '../src/app/core/models/analytics.model';
 import type {
   AddToCartRequest,
   ApplyVoucherRequest,
@@ -359,6 +362,106 @@ test.describe('auth journey', () => {
   });
 });
 
+test.describe('order lookup', () => {
+  const lookupOrder = createLookupOrder();
+
+  test.beforeEach(async ({ page }) => {
+    await mockOrangeApi(page, { orders: [lookupOrder] });
+  });
+
+  test('validates the lookup form and displays a matching order', async ({
+    page,
+  }) => {
+    await page.goto('/ph/orders');
+
+    await expect(
+      page.getByRole('heading', { name: 'Find your order' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Search order' }).click();
+
+    await expect(page.getByText('Order number is required.')).toBeVisible();
+    await expect(page.getByText('Email address is required.')).toBeVisible();
+
+    await page.getByLabel('Order number').fill(lookupOrder.orderNumber);
+    await page.getByLabel('Email address').fill('wrong@example.com');
+    await page.getByRole('button', { name: 'Search order' }).click();
+
+    await expect(page.getByRole('alert')).toHaveText(
+      /This order doesn't exist\./,
+    );
+
+    await page.getByLabel('Email address').fill('ada@example.com');
+    await page.getByRole('button', { name: 'Search order' }).click();
+
+    await expect(
+      page.getByText(`Order #${lookupOrder.orderNumber}`),
+    ).toBeVisible();
+    await expect(page.getByText('Shipped')).toBeVisible();
+
+    await page.getByText(`Order #${lookupOrder.orderNumber}`).click();
+
+    await expect(page.getByText('iPhone 15')).toBeVisible();
+    await expect(page.getByText('Tracking: TRK-ORANGE-0007')).toBeVisible();
+    await expect(page.getByText('Courier: Orange Express')).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Track Package' }),
+    ).toBeVisible();
+  });
+});
+
+test.describe('admin dashboard', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockOrangeApi(page, {
+      authSession: createAdminSession(),
+      dashboard: (period) =>
+        createAnalyticsDashboard(
+          period === 'past-year'
+            ? {
+                visitors: 15000,
+                productViews: 42000,
+                revenue: 2400000,
+              }
+            : undefined,
+        ),
+    });
+  });
+
+  test('loads admin analytics and refreshes the selected period', async ({
+    page,
+  }) => {
+    await page.goto('/ph/admin/dashboard');
+
+    await expect(
+      page.getByRole('heading', { name: 'Analytics Dashboard' }),
+    ).toBeVisible();
+    const metrics = page.getByLabel('Analytics metrics');
+
+    await expect(page.getByText('Admin Analytics')).toBeVisible();
+    await expect(metrics.getByText('1,200')).toBeVisible();
+    await expect(metrics.getByText('3,400')).toBeVisible();
+    await expect(metrics.getByText('84 completed orders')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Last 7 days' }).click();
+    await page.getByRole('option', { name: 'Past year' }).click();
+
+    await expect(page.getByRole('button', { name: 'Past year' })).toBeVisible();
+    await expect(metrics.getByText('15,000')).toBeVisible();
+    await expect(metrics.getByText('42,000')).toBeVisible();
+
+    await page.getByRole('tab', { name: 'Orders' }).click();
+
+    await expect(
+      page.getByRole('heading', { name: 'Recent Orders' }),
+    ).toBeVisible();
+    await expect(
+      page.locator('.data-table--orders').getByText('OR-20260618-0007'),
+    ).toBeVisible();
+    await expect(
+      page.locator('.data-table--orders').getByText('96'),
+    ).toBeVisible();
+  });
+});
+
 test.describe('checkout journey', () => {
   test.beforeEach(async ({ page }) => {
     await mockOrangeApi(page);
@@ -463,11 +566,197 @@ async function fillCustomerDetails(page: Page): Promise<void> {
   await page.getByLabel('Postal Code').fill('1000');
 }
 
-async function mockOrangeApi(page: Page): Promise<void> {
+function createLookupOrder(): OrderConfirmation {
+  return {
+    id: 'lookup-order',
+    orderNumber: 'OR-20260618-0007',
+    customerEmail: 'ada@example.com',
+    paymentStatus: 'paid',
+    orderStatus: 'shipped',
+    items: [createCartItem(products[0], 1)],
+    shippingAddress: {
+      recipientName: 'Ada Lovelace',
+      mobileNumber: '09171234567',
+      addressLine1: '123 Orange Avenue',
+      city: 'Manila',
+      postalCode: '1000',
+      country: 'Philippines',
+    },
+    deliveryEstimate: '3-5 business days',
+    trackingNumber: 'TRK-ORANGE-0007',
+    courier: 'Orange Express',
+    subtotalAmount: products[0].price,
+    shippingAmount: 0,
+    discountAmount: 0,
+    totalAmount: products[0].price,
+    nextSteps: ['We will notify you when the order starts processing.'],
+    placedAt: '2026-06-18T00:00:00.000Z',
+  };
+}
+
+function createAdminSession(): AuthSession {
+  return {
+    user: {
+      id: 'admin-e2e',
+      email: 'admin@example.com',
+      fullName: 'Ada Admin',
+      roles: [ROLES.ADMIN],
+      permissions: [
+        PERMISSIONS.ORDERS_READ,
+        PERMISSIONS.PRODUCTS_READ,
+        PERMISSIONS.USERS_READ,
+      ],
+    },
+    session: {
+      id: 'session-e2e',
+      createdAtUtc: '2026-06-20T00:00:00.000Z',
+      expiresAtUtc: '2026-06-21T00:00:00.000Z',
+    },
+  };
+}
+
+function createAnalyticsDashboard(
+  overrides: Partial<AnalyticsDashboard> = {},
+): AnalyticsDashboard {
+  return {
+    visitors: 1200,
+    productViews: 3400,
+    addToCarts: 420,
+    checkoutStarts: 210,
+    purchases: 84,
+    revenue: 512000,
+    averageOrderValue: 6095,
+    addToCartRate: 0.1235,
+    checkoutStartRate: 0.5,
+    purchaseConversionRate: 0.07,
+    cartAbandonmentRate: 0.8,
+    paymentFailures: 3,
+    paymentFailureRate: 0.0345,
+    unitsSold: 96,
+    daily: [
+      {
+        dateKey: '2026-06-18',
+        label: 'Jun 18',
+        visitors: 520,
+        productViews: 1400,
+        addToCarts: 180,
+        checkoutStarts: 90,
+        purchases: 36,
+        revenue: 220000,
+        paymentFailures: 1,
+      },
+      {
+        dateKey: '2026-06-19',
+        label: 'Jun 19',
+        visitors: 680,
+        productViews: 2000,
+        addToCarts: 240,
+        checkoutStarts: 120,
+        purchases: 48,
+        revenue: 292000,
+        paymentFailures: 2,
+      },
+    ],
+    funnel: [
+      { label: 'Visitors', value: 1200, rateFromPrevious: 1, rateFromVisitors: 1 },
+      {
+        label: 'Product views',
+        value: 3400,
+        rateFromPrevious: 2.833,
+        rateFromVisitors: 2.833,
+      },
+      {
+        label: 'Add to cart',
+        value: 420,
+        rateFromPrevious: 0.1235,
+        rateFromVisitors: 0.35,
+      },
+      {
+        label: 'Checkout started',
+        value: 210,
+        rateFromPrevious: 0.5,
+        rateFromVisitors: 0.175,
+      },
+      {
+        label: 'Purchases',
+        value: 84,
+        rateFromPrevious: 0.4,
+        rateFromVisitors: 0.07,
+      },
+    ],
+    topProducts: [
+      {
+        productId: 1,
+        productName: 'iPhone 15',
+        categoryName: 'Phones',
+        views: 1800,
+        addToCarts: 260,
+        unitsSold: 64,
+        revenue: 383936,
+        conversionRate: 0.0356,
+      },
+    ],
+    topCategories: [
+      {
+        categoryName: 'Phones',
+        views: 1800,
+        addToCarts: 260,
+        unitsSold: 64,
+        revenue: 383936,
+        conversionRate: 0.0356,
+      },
+    ],
+    orders: [
+      {
+        orderNumber: 'OR-20260618-0007',
+        occurredAt: '2026-06-18T10:30:00.000Z',
+        items: [
+          {
+            productId: 1,
+            productName: 'iPhone 15',
+            categoryName: 'Phones',
+            price: 59999,
+            quantity: 1,
+          },
+        ],
+        units: 96,
+        revenue: 512000,
+      },
+    ],
+    paymentFailureEvents: [
+      {
+        id: 'failure-e2e',
+        occurredAt: '2026-06-19T10:30:00.000Z',
+        amount: 59999,
+        reason: 'Payment authorization timed out',
+        items: [],
+      },
+    ],
+    ...overrides,
+  };
+}
+
+function resolveDashboard(
+  dashboard: MockOrangeApiOptions['dashboard'],
+  period: string,
+): AnalyticsDashboard {
+  if (typeof dashboard === 'function') {
+    return dashboard(period) ?? createAnalyticsDashboard();
+  }
+
+  return dashboard ?? createAnalyticsDashboard();
+}
+
+async function mockOrangeApi(
+  page: Page,
+  options: MockOrangeApiOptions = {},
+): Promise<void> {
   const state = {
     cart: createCart(),
     orderSequence: 1,
-    orders: new Map<string, OrderConfirmation>(),
+    orders: new Map(
+      (options.orders ?? []).map((order) => [order.orderNumber, order]),
+    ),
   };
 
   await mockGeoCountry(page, 'PH');
@@ -507,6 +796,36 @@ async function mockOrangeApi(page: Page): Promise<void> {
     await handleOrderRoute(route, state);
   });
 
+  await page.route(/\/api\/(?:[a-z]{2}\/)?auth\/session$/, async (route) => {
+    if (!options.authSession) {
+      await route.fulfill({ status: 401, json: { message: 'Unauthenticated' } });
+      return;
+    }
+
+    await route.fulfill({ json: options.authSession });
+  });
+
+  await page.route(
+    /\/api\/(?:[a-z]{2}\/)?admin\/analytics\/dashboard(?:\?.*)?$/,
+    async (route) => {
+      const period =
+        new URL(route.request().url()).searchParams.get('period') ??
+        'last-7-days';
+
+      await route.fulfill({ json: resolveDashboard(options.dashboard, period) });
+    },
+  );
+
+  await page.route(
+    /\/api\/(?:[a-z]{2}\/)?analytics\/events$/,
+    async (route) => {
+      await route.fulfill({
+        status: 201,
+        json: resolveDashboard(options.dashboard, 'last-7-days'),
+      });
+    },
+  );
+
   await page.route(/\/api\/(?:[a-z]{2}\/)?checkout\/form$/, async (route) => {
     await route.fulfill({ json: checkoutForm });
   });
@@ -517,6 +836,14 @@ async function mockOrangeApi(page: Page): Promise<void> {
       await route.fulfill({ json: shippingOptions });
     },
   );
+}
+
+interface MockOrangeApiOptions {
+  authSession?: AuthSession | null;
+  dashboard?:
+    | AnalyticsDashboard
+    | ((period: string) => AnalyticsDashboard | undefined);
+  orders?: OrderConfirmation[];
 }
 
 async function mockSites(page: Page): Promise<void> {

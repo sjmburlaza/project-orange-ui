@@ -11,7 +11,6 @@ import {
 import { MatTabsModule } from '@angular/material/tabs';
 import {
   AnalyticsDashboardPeriod,
-  AnalyticsInfoTooltip,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
@@ -69,61 +68,59 @@ export class DashboardComponent implements OnInit {
         label: 'Visitors',
         value: this.formatNumber(data.visitors),
         helper: 'Unique visitors',
-        info: cardInfo('Unique visitors recorded during the selected period.'),
+        info: 'Unique visitors recorded during the selected period.',
       },
       {
         label: 'Product views',
         value: this.formatNumber(data.productViews),
         helper: 'Catalog item views',
-        info: cardInfo('Total product view events tracked for catalog items.'),
+        info: 'Total product view events tracked for catalog items.',
       },
       {
         label: 'Add-to-cart rate',
         value: this.formatPercent(data.addToCartRate),
         helper: `${this.formatNumber(data.addToCarts)} add-to-cart events`,
-        info: cardInfo('Add-to-cart events divided by product view events.'),
+        info: 'Add-to-cart events divided by product view events.',
         tone: 'good',
       },
       {
         label: 'Checkout start rate',
         value: this.formatPercent(data.checkoutStartRate),
         helper: `${this.formatNumber(data.checkoutStarts)} checkout starts`,
-        info: cardInfo('Checkout starts divided by add-to-cart events.'),
+        info: 'Checkout starts divided by add-to-cart events.',
       },
       {
         label: 'Purchase conversion',
         value: this.formatPercent(data.purchaseConversionRate),
         helper: `${this.formatNumber(data.purchases)} completed orders`,
-        info: cardInfo('Completed purchases divided by unique visitors.'),
+        info: 'Completed purchases divided by unique visitors.',
         tone: 'good',
       },
       {
         label: 'Revenue',
         value: this.formatMoney(data.revenue),
         helper: 'Gross sales',
-        info: cardInfo('Gross sales value from completed purchases.'),
+        info: 'Gross sales value from completed purchases.',
         tone: 'good',
       },
       {
         label: 'Average order value',
         value: this.formatMoney(data.averageOrderValue),
         helper: `${this.formatNumber(data.unitsSold)} units sold`,
-        info: cardInfo('Gross revenue divided by completed purchases.'),
+        info: 'Gross revenue divided by completed purchases.',
       },
       {
         label: 'Cart abandonment',
         value: this.formatPercent(data.cartAbandonmentRate),
         helper: 'Add-to-cart sessions without purchase',
-        info: cardInfo('Add-to-cart activity that did not convert to purchases.'),
+        info: 'Add-to-cart activity that did not convert to purchases.',
         tone: data.cartAbandonmentRate > 0.7 ? 'warning' : 'default',
       },
       {
         label: 'Payment failure rate',
         value: this.formatPercent(data.paymentFailureRate),
         helper: `${this.formatNumber(data.paymentFailures)} failed payments`,
-        info: cardInfo(
-          'Failed payment attempts divided by all payment attempts.',
-        ),
+        info: 'Failed payment attempts divided by all payment attempts.',
         tone: data.paymentFailureRate > 0.12 ? 'danger' : 'default',
       },
     ];
@@ -136,20 +133,20 @@ export class DashboardComponent implements OnInit {
         label: 'Revenue',
         value: this.formatMoney(data.revenue),
         helper: this.selectedPeriodLabel(),
-        info: cardInfo('Gross sales value from completed purchases.'),
+        info: 'Gross sales value from completed purchases.',
         tone: 'good',
       },
       {
         label: 'Average order value',
         value: this.formatMoney(data.averageOrderValue),
         helper: 'Revenue divided by purchases',
-        info: cardInfo('Gross revenue divided by completed purchases.'),
+        info: 'Gross revenue divided by completed purchases.',
       },
       {
         label: 'Revenue per visitor',
         value: this.formatMoney(data.revenue / Math.max(data.visitors, 1)),
         helper: 'Gross revenue efficiency',
-        info: cardInfo('Gross revenue divided by unique visitors.'),
+        info: 'Gross revenue divided by unique visitors.',
       },
     ];
   });
@@ -161,19 +158,19 @@ export class DashboardComponent implements OnInit {
         label: 'Orders',
         value: this.formatNumber(data.purchases),
         helper: 'Completed purchases',
-        info: cardInfo('Completed purchase events in the selected period.'),
+        info: 'Completed purchase events in the selected period.',
       },
       {
         label: 'Units sold',
         value: this.formatNumber(data.unitsSold),
         helper: 'Items in completed orders',
-        info: cardInfo('Total item quantity across completed purchases.'),
+        info: 'Total item quantity across completed purchases.',
       },
       {
         label: 'Cart abandonment',
         value: this.formatPercent(data.cartAbandonmentRate),
         helper: 'Carts not converted',
-        info: cardInfo('Add-to-cart activity that did not convert to purchases.'),
+        info: 'Add-to-cart activity that did not convert to purchases.',
       },
     ];
   });
@@ -185,19 +182,19 @@ export class DashboardComponent implements OnInit {
         label: 'Visitors',
         value: this.formatNumber(data.visitors),
         helper: 'Unique visitor events',
-        info: cardInfo('Unique visitors recorded during the selected period.'),
+        info: 'Unique visitors recorded during the selected period.',
       },
       {
         label: 'Product views',
         value: this.formatNumber(data.productViews),
         helper: 'Tracked product impressions',
-        info: cardInfo('Total product view events tracked for catalog items.'),
+        info: 'Total product view events tracked for catalog items.',
       },
       {
         label: 'Add-to-cart rate',
         value: this.formatPercent(data.addToCartRate),
         helper: 'Add-to-cart events per product view',
-        info: cardInfo('Add-to-cart events divided by product view events.'),
+        info: 'Add-to-cart events divided by product view events.',
       },
     ];
   });
@@ -209,16 +206,14 @@ export class DashboardComponent implements OnInit {
         label: 'Payment failures',
         value: this.formatNumber(data.paymentFailures),
         helper: 'Failed checkout attempts',
-        info: cardInfo('Checkout payment attempts that failed.'),
+        info: 'Checkout payment attempts that failed.',
         tone: data.paymentFailures > 0 ? 'warning' : 'good',
       },
       {
         label: 'Payment failure rate',
         value: this.formatPercent(data.paymentFailureRate),
         helper: 'Failures among payment attempts',
-        info: cardInfo(
-          'Failed payment attempts divided by purchases plus failures.',
-        ),
+        info: 'Failed payment attempts divided by purchases plus failures.',
         tone: data.paymentFailureRate > 0.12 ? 'danger' : 'default',
       },
       {
@@ -230,7 +225,7 @@ export class DashboardComponent implements OnInit {
           ),
         ),
         helper: 'Recoverable gross value',
-        info: cardInfo('Cart value associated with failed payment attempts.'),
+        info: 'Cart value associated with failed payment attempts.',
       },
     ];
   });
@@ -310,10 +305,6 @@ export class DashboardComponent implements OnInit {
 interface AnalyticsPeriodOption {
   value: AnalyticsDashboardPeriod;
   label: string;
-}
-
-function cardInfo(description: string): AnalyticsInfoTooltip {
-  return { description };
 }
 
 function maxBy<T>(items: T[], getValue: (item: T) => number): number {
