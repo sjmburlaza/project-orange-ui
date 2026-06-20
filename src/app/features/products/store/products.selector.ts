@@ -6,7 +6,7 @@ import { SelectOption } from 'src/app/shared/components/select-dropdown/select-d
 
 export const {
   selectProducts,
-  selectProductDetails,
+  selectProductConfigures,
   selectInsurancePlans,
   selectMobilePlans,
   selectSelectedProductId,
@@ -21,13 +21,13 @@ export const {
   selectPriceFilterMax,
 
   selectLoadingProducts,
-  selectLoadingProductDetail,
+  selectLoadingProductConfigure,
   selectLoadingInsurancePlans,
   selectLoadingMobilePlans,
   selectLoadingCategories,
 
   selectProductsError,
-  selectProductDetailError,
+  selectProductConfigureError,
   selectInsurancePlansError,
   selectMobilePlansError,
   selectCategoriesError,
@@ -63,20 +63,20 @@ export const selectHasActiveProductFilters = createSelector(
     categoryId !== null || minPrice !== null || maxPrice !== null,
 );
 
-export const selectSelectedProductDetail = createSelector(
-  selectProductDetails,
+export const selectSelectedProductConfigure = createSelector(
+  selectProductConfigures,
   selectSelectedProductId,
-  (productDetails, selectedProductId) => {
+  (productConfigures, selectedProductId) => {
     if (selectedProductId === null) {
       return null;
     }
 
-    return productDetails[selectedProductId] ?? null;
+    return productConfigures[selectedProductId] ?? null;
   },
 );
 
-export const selectHasSelectedProductDetail = createSelector(
-  selectSelectedProductDetail,
+export const selectHasSelectedProductConfigure = createSelector(
+  selectSelectedProductConfigure,
   (product) => product !== null,
 );
 

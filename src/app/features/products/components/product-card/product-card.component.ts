@@ -21,11 +21,18 @@ import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 export class ProductCardComponent {
   @Input() product!: Product;
   @Input() currency!: string;
-  @Output() addToCart = new EventEmitter<Product>();
+  @Output() configureProduct = new EventEmitter<Product>();
+  @Output() viewProductDetail = new EventEmitter<Product>();
 
-  onAddToCart(value: Product): void {
+  onConfigureProduct(value: Product): void {
     if (value) {
-      this.addToCart.emit(value);
+      this.configureProduct.emit(value);
+    }
+  }
+
+  onViewProductDetail(value: Product): void {
+    if (value) {
+      this.viewProductDetail.emit(value);
     }
   }
 }

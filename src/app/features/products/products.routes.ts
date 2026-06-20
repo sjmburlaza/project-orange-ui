@@ -9,7 +9,16 @@ export const PRODUCTS_ROUTES: Routes = [
       ),
   },
   {
-    path: 'detail',
+    path: ':productId/configure',
+    loadComponent: () =>
+      import(
+        './pages/product-configurator/product-configurator.component'
+      ).then(
+        (m) => m.ProductConfiguratorComponent,
+      ),
+  },
+  {
+    path: ':productId',
     loadComponent: () =>
       import('./pages/product-detail/product-detail.component').then(
         (m) => m.ProductDetailComponent,

@@ -4,9 +4,11 @@ import { Observable } from 'rxjs';
 import {
   InsurancePlan,
   MobilePlan,
+  ProductAddon,
   Product,
-  ProductDetail,
+  ProductConfigure,
   ProductFilters,
+  ProductOptionsResponse,
 } from 'src/app/core/models/product.model';
 
 @Injectable({
@@ -19,7 +21,7 @@ export class ProductApiService {
   getProducts(filters?: Partial<ProductFilters>): Observable<Product[]> {
     let params = new HttpParams();
 
-    if (filters?.categoryId) {
+    if (filters?.categoryId != null) {
       params = params.set('categoryId', filters.categoryId);
     }
 
@@ -38,8 +40,30 @@ export class ProductApiService {
     return this.http.get<Product[]>(this.baseUrl, { params });
   }
 
-  getProductById(id: number): Observable<ProductDetail> {
-    return this.http.get<ProductDetail>(`${this.baseUrl}/${id}`);
+  getProductConfigure(id: number): Observable<ProductConfigure> {
+    return this.http.get<ProductConfigure>(`${this.baseUrl}/${id}`);
+  }
+
+  getProductOptions(
+    id: number,
+    selectedOptions: Record<string, string> = {},
+  ): Observable<ProductOptionsResponse> {
+    let params = new HttpParams();
+
+    for (const [code, value] of Object.entries(selectedOptions)) {
+      if (value) {
+        params = params.set(code, value);
+      }
+    }
+
+    return this.http.get<ProductOptionsResponse>(
+      `${this.baseUrl}/${id}/options`,
+      { params },
+    );
+  }
+
+  getProductAddons(id: number): Observable<ProductAddon[]> {
+    return this.http.get<ProductAddon[]>(`${this.baseUrl}/${id}/addons`);
   }
 
   getProductInsurancePlans(id: number): Observable<InsurancePlan[]> {

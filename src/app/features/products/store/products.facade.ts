@@ -13,11 +13,11 @@ import {
   selectProducts,
   selectProductListWithStockStatus,
   selectSelectedProductId,
-  selectSelectedProductDetail,
+  selectSelectedProductConfigure,
   selectLoadingProducts,
-  selectLoadingProductDetail,
+  selectLoadingProductConfigure,
   selectProductsError,
-  selectProductDetailError,
+  selectProductConfigureError,
   selectCategories,
   selectCategoriesError,
   selectCategoryOptions,
@@ -47,17 +47,19 @@ export class ProductFacade {
   readonly productCards$ = this.store.select(selectProductListWithStockStatus);
 
   readonly selectedProductId$ = this.store.select(selectSelectedProductId);
-  readonly selectedProductDetail$ = this.store.select(
-    selectSelectedProductDetail,
+  readonly selectedProductConfigure$ = this.store.select(
+    selectSelectedProductConfigure,
   );
 
   readonly loadingProducts$ = this.store.select(selectLoadingProducts);
-  readonly loadingProductDetail$ = this.store.select(
-    selectLoadingProductDetail,
+  readonly loadingProductConfigure$ = this.store.select(
+    selectLoadingProductConfigure,
   );
 
   readonly productsError$ = this.store.select(selectProductsError);
-  readonly productDetailError$ = this.store.select(selectProductDetailError);
+  readonly productConfigureError$ = this.store.select(
+    selectProductConfigureError,
+  );
 
   readonly categories$ = this.store.select(selectCategories);
   readonly categoryOptions$ = this.store.select(selectCategoryOptions);
@@ -105,8 +107,8 @@ export class ProductFacade {
     this.store.dispatch(ProductActions.clearProductFilters());
   }
 
-  loadProductDetail(id: number): void {
-    this.store.dispatch(ProductActions.loadProductDetail({ id }));
+  loadProductConfigure(id: number): void {
+    this.store.dispatch(ProductActions.loadProductConfigure({ id }));
   }
 
   loadProductInsurancePlans(productId: number): void {

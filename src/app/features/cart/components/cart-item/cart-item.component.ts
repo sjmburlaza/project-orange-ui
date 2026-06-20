@@ -5,11 +5,18 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem } from 'src/app/core/models/cart.model';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { QuantitySelectorComponent } from 'src/app/shared/components/quantity-selector/quantity-selector.component';
+import { IconColorPipe } from 'src/app/shared/pipes/icon-color-pipe';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 @Component({
   selector: 'app-cart-item',
-  imports: [IconPipe, QuantitySelectorComponent, CurrencyPipe, TranslatePipe],
+  imports: [
+    IconPipe,
+    IconColorPipe,
+    QuantitySelectorComponent,
+    CurrencyPipe,
+    TranslatePipe,
+  ],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })

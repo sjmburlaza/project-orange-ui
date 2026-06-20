@@ -4,10 +4,11 @@ import { SiteService } from 'src/app/core/services/site.services';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 import { TranslatePipe } from '@ngx-translate/core';
+import { IconColorPipe } from 'src/app/shared/pipes/icon-color-pipe';
 
 @Component({
   selector: 'app-order-items',
-  imports: [AsyncPipe, IconPipe, CurrencyPipe, TranslatePipe],
+  imports: [AsyncPipe, IconPipe, IconColorPipe, CurrencyPipe, TranslatePipe],
   templateUrl: './order-items.component.html',
   styleUrl: './order-items.component.scss',
 })

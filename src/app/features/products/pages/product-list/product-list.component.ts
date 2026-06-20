@@ -1,16 +1,9 @@
 import { AsyncPipe, getCurrencySymbol } from '@angular/common';
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
 import { Category } from 'src/app/core/models/category.model';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
-import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
@@ -25,9 +18,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -43,9 +34,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ProductListComponent implements OnInit {
   private readonly productFacade = inject(ProductFacade);
-  private readonly cartFacade = inject(CartFacade);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly analytics = inject(AnalyticsService);
@@ -87,28 +76,6 @@ export class ProductListComponent implements OnInit {
       .subscribe((val) => {
         this.productFacade.setPriceFilter(val.min, val.max);
       });
-
-    this.cartFacade.addToCartSuccess$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-          width: '520px',
-          maxWidth: '90vw',
-          data: {
-            title: 'products.cart.addedTitle',
-            message: 'products.cart.addedMessage',
-            cancel: 'products.cart.continueShopping',
-            proceed: 'products.cart.goToCart',
-          },
-        });
-
-        dialogRef.afterClosed().subscribe((res) => {
-          if (res === 'proceed') {
-            const site = this.siteService.currentSite();
-            this.router.navigate([`/${site}/cart`]);
-          }
-        });
-      });
   }
 
   private initializeProductList(): void {
@@ -132,7 +99,8 @@ export class ProductListComponent implements OnInit {
         distinctUntilChanged(),
         withLatestFrom(this.selectedCategoryId$),
         filter(
-          ([categoryId, selectedCategoryId]) => categoryId !== selectedCategoryId,
+          ([categoryId, selectedCategoryId]) =>
+            categoryId !== selectedCategoryId,
         ),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -154,13 +122,16 @@ export class ProductListComponent implements OnInit {
     this.clearCategoryQueryParam();
   }
 
-  addToCart(product: Product): void {
-    this.analytics.trackAddToCart(product);
-    this.cartFacade.addToCart({
-      productId: product.id,
-      quantity: 1,
-      addons: [],
-    });
+  configureProduct(product: Product): void {
+    const site = this.siteService.currentSite();
+
+    this.router.navigate(['/', site, 'products', product.id, 'configure']);
+  }
+
+  viewProductDetail(product: Product): void {
+    const site = this.siteService.currentSite();
+
+    this.router.navigate(['/', site, 'products', product.id]);
   }
 
   private trackProductViews(): void {

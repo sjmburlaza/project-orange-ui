@@ -13,6 +13,7 @@ import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'src/app/core/services/site.services';
 import { TranslatePipe } from '@ngx-translate/core';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
+import { IconColorPipe } from 'src/app/shared/pipes/icon-color-pipe';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
 
@@ -25,6 +26,7 @@ type DisplayStatus = OrderStatus | PaymentStatus;
     MatIconModule,
     RouterLink,
     IconPipe,
+    IconColorPipe,
     TranslatePipe,
   ],
   templateUrl: './order-confirmation.component.html',

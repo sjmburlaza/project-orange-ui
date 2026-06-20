@@ -10,6 +10,7 @@ import {
   PaymentStatus,
 } from 'src/app/core/models/order.model';
 import { SiteService } from 'src/app/core/services/site.services';
+import { IconColorPipe } from 'src/app/shared/pipes/icon-color-pipe';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
@@ -34,6 +35,7 @@ interface OrderActionState {
     MatExpansionModule,
     MatIconModule,
     IconPipe,
+    IconColorPipe,
     TranslatePipe,
   ],
   templateUrl: './order-item.component.html',
@@ -73,9 +75,12 @@ export class OrderItemComponent {
     const order = this.order();
 
     return {
-      canCancel: ['pending_payment', 'confirmed', 'processing', 'packed'].includes(
-        order.orderStatus,
-      ),
+      canCancel: [
+        'pending_payment',
+        'confirmed',
+        'processing',
+        'packed',
+      ].includes(order.orderStatus),
       canChangePayment: order.orderStatus === 'pending_payment',
       canPayNow:
         order.orderStatus === 'pending_payment' ||

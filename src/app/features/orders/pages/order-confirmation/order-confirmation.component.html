@@ -26,15 +26,25 @@
     >
       <div class="summary-panel">
         <span>{{ "orders.confirmation.paymentStatus" | translate }}</span>
-        <strong [class]="'status-badge status-badge--' + statusTone(order.paymentStatus)">
-          {{ ("orders.confirmation.statuses." + order.paymentStatus) | translate }}
+        <strong
+          [class]="
+            'status-badge status-badge--' + statusTone(order.paymentStatus)
+          "
+        >
+          {{
+            "orders.confirmation.statuses." + order.paymentStatus | translate
+          }}
         </strong>
       </div>
 
       <div class="summary-panel">
         <span>{{ "orders.confirmation.orderStatus" | translate }}</span>
-        <strong [class]="'status-badge status-badge--' + statusTone(order.orderStatus)">
-          {{ ("orders.confirmation.statuses." + order.orderStatus) | translate }}
+        <strong
+          [class]="
+            'status-badge status-badge--' + statusTone(order.orderStatus)
+          "
+        >
+          {{ "orders.confirmation.statuses." + order.orderStatus | translate }}
         </strong>
       </div>
 
@@ -56,8 +66,8 @@
           {{
             (order.items.length === 1
               ? "orders.confirmation.itemCount.one"
-              : "orders.confirmation.itemCount.other")
-              | translate: { count: order.items.length }
+              : "orders.confirmation.itemCount.other"
+            ) | translate: { count: order.items.length }
           }}
         </span>
       </div>
@@ -69,7 +79,11 @@
               @if (row.item.imageUrl) {
                 <img [src]="row.item.imageUrl" [alt]="row.item.productName" />
               } @else {
-                <i [class]="row.item.categoryName | icon" aria-hidden="true"></i>
+                <i
+                  [class]="row.item.categoryName | icon"
+                  [style.color]="row.item.itemSpecs | iconColor"
+                  aria-hidden="true"
+                ></i>
               }
             </div>
 
@@ -104,7 +118,9 @@
                         {{ addon.title || addon.name }}
                       </span>
                       @if (addon.amount !== undefined) {
-                        <strong>{{ addon.amount | currency: currency() }}</strong>
+                        <strong>{{
+                          addon.amount | currency: currency()
+                        }}</strong>
                       }
                       @if (addon.billingFrequency) {
                         <small>/ {{ addon.billingFrequency }}</small>

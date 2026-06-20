@@ -1,0 +1,167 @@
+<section class="product-configurator-page">
+  <a
+    class="product-configurator-page__back"
+    [routerLink]="['/', siteService.currentSite(), 'products']"
+  >
+    {{ "products.configurator.back" | translate }}
+  </a>
+
+  @if (product$ | async; as product) {
+    <div class="product-configurator">
+      <div class="product-configurator__media">
+        @if (selectedVariant?.imageUrl || product.imageUrl) {
+          <img
+            [src]="selectedVariant?.imageUrl || product.imageUrl"
+            [alt]="product.name"
+          />
+        } @else {
+          <i
+            [class]="product.categoryName | icon"
+            [style.color]="selectedOptions['color'] || 'gray'"
+          ></i>
+        }
+      </div>
+
+      <div class="product-configurator__body">
+        <p class="product-configurator__category">
+          {{ product.categoryName || product.category?.name }}
+        </p>
+        <h1>{{ product.name }}</h1>
+        <p class="product-configurator__description">
+          {{ product.description }}
+        </p>
+
+        <div class="product-configurator__price">
+          {{
+            selectedVariant?.price ?? product.price
+              | currency: siteService.currency()
+          }}
+        </div>
+
+        <p
+          class="product-configurator__stock"
+          [class.product-configurator__stock--warning]="
+            getStockStatus(product) === 'lowStock'
+          "
+          [class.product-configurator__stock--error]="
+            getStockStatus(product) === 'outOfStock'
+          "
+        >
+          @switch (getStockStatus(product)) {
+            @case ("outOfStock") {
+              {{ "products.configurator.outOfStock" | translate }}
+            }
+            @case ("lowStock") {
+              {{
+                "products.configurator.lowStock"
+                  | translate: { count: getStockQuantity(product) }
+              }}
+            }
+            @default {
+              {{
+                "products.configurator.inStock"
+                  | translate: { count: getStockQuantity(product) }
+              }}
+            }
+          }
+        </p>
+
+        @if (product.optionGroups.length > 0) {
+          <div class="product-options">
+            @for (group of product.optionGroups; track group.code) {
+              <div class="product-option-group">
+                <h2>{{ group.label }}</h2>
+                <div class="product-option-group__options">
+                  @for (option of group.options; track option.code) {
+                    <button
+                      type="button"
+                      class="product-option"
+                      [class.product-option--selected]="
+                        isOptionSelected(group.code, option.code)
+                      "
+                      [class.product-option--unavailable]="
+                        !isOptionAvailable(product, group.code, option.code)
+                      "
+                      [disabled]="
+                        !isOptionAvailable(product, group.code, option.code)
+                      "
+                      (click)="selectOption(product, group.code, option)"
+                    >
+                      @if (option.hex) {
+                        <span
+                          class="product-option__swatch"
+                          [style.background-color]="option.hex"
+                        ></span>
+                      }
+                      {{ option.label }}
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (product.features.length > 0 || product.whatsInTheBox.length > 0) {
+          <div class="product-configurator-info">
+            @if (product.features.length > 0) {
+              <section>
+                <h2>{{ "products.configurator.features" | translate }}</h2>
+                <ul>
+                  @for (feature of product.features; track feature) {
+                    <li>{{ feature }}</li>
+                  }
+                </ul>
+              </section>
+            }
+
+            @if (product.whatsInTheBox.length > 0) {
+              <section>
+                <h2>{{ "products.configurator.whatsInTheBox" | translate }}</h2>
+                <ul>
+                  @for (item of product.whatsInTheBox; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </section>
+            }
+          </div>
+        }
+
+        <div class="product-configurator__purchase">
+          <app-quantity-selector
+            [value]="quantity"
+            [min]="1"
+            [max]="getQuantityMax(product)"
+            [disabled]="getStockStatus(product) === 'outOfStock'"
+            (valueChange)="onQuantityChange($event)"
+          />
+          <button
+            matButton="filled"
+            type="button"
+            [disabled]="!canAddToCart(product)"
+            (click)="addToCart(product)"
+          >
+            {{ "products.actions.buy" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @if (loading$ | async) {
+      <p class="product-configurator-page__status">
+        {{ "products.configurator.loading" | translate }}
+      </p>
+    } @else if (error$ | async; as error) {
+      <p
+        class="product-configurator-page__status product-configurator-page__status--error"
+      >
+        {{ error }}
+      </p>
+    } @else {
+      <p class="product-configurator-page__status">
+        {{ "products.configurator.notFound" | translate }}
+      </p>
+    }
+  }
+</section>

@@ -4,7 +4,7 @@ import {
   InsurancePlan,
   MobilePlan,
   Product,
-  ProductDetail,
+  ProductConfigure,
   ProductSort,
 } from 'src/app/core/models/product.model';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
@@ -13,7 +13,7 @@ export const productFeatureKey = 'products';
 
 export interface ProductState {
   products: Product[];
-  productDetails: Record<number, ProductDetail>;
+  productConfigures: Record<number, ProductConfigure>;
   insurancePlans: Record<number, InsurancePlan[]>;
   mobilePlans: Record<number, MobilePlan[]>;
   selectedProductId: number | null;
@@ -27,13 +27,13 @@ export interface ProductState {
   priceFilterMax: number | null;
 
   loadingProducts: boolean;
-  loadingProductDetail: boolean;
+  loadingProductConfigure: boolean;
   loadingInsurancePlans: Record<number, boolean>;
   loadingMobilePlans: Record<number, boolean>;
   loadingCategories: boolean;
 
   productsError: string | null;
-  productDetailError: string | null;
+  productConfigureError: string | null;
   insurancePlansError: Record<number, string | null>;
   mobilePlansError: Record<number, string | null>;
   categoriesError: string | null;
@@ -41,7 +41,7 @@ export interface ProductState {
 
 export const initialState: ProductState = {
   products: [],
-  productDetails: {},
+  productConfigures: {},
   insurancePlans: {},
   mobilePlans: {},
   selectedProductId: null,
@@ -55,13 +55,13 @@ export const initialState: ProductState = {
   priceFilterMax: null,
 
   loadingProducts: false,
-  loadingProductDetail: false,
+  loadingProductConfigure: false,
   loadingInsurancePlans: {},
   loadingMobilePlans: {},
   loadingCategories: false,
 
   productsError: null,
-  productDetailError: null,
+  productConfigureError: null,
   insurancePlansError: {},
   mobilePlansError: {},
   categoriesError: null,
@@ -138,29 +138,29 @@ const reducer = createReducer(
     maxPrice: null,
   })),
 
-  // LOAD PRODUCT DETAIL
-  on(ProductActions.loadProductDetail, (state, { id }) => ({
+  // LOAD PRODUCT CONFIGURE
+  on(ProductActions.loadProductConfigure, (state, { id }) => ({
     ...state,
     selectedProductId: id,
-    loadingProductDetail: true,
-    productDetailError: null,
+    loadingProductConfigure: true,
+    productConfigureError: null,
   })),
 
-  on(ProductActions.loadProductDetailSuccess, (state, { product }) => ({
+  on(ProductActions.loadProductConfigureSuccess, (state, { product }) => ({
     ...state,
-    productDetails: {
-      ...state.productDetails,
+    productConfigures: {
+      ...state.productConfigures,
       [product.id]: product,
     },
     selectedProductId: product.id,
-    loadingProductDetail: false,
-    productDetailError: null,
+    loadingProductConfigure: false,
+    productConfigureError: null,
   })),
 
-  on(ProductActions.loadProductDetailFailure, (state, { error }) => ({
+  on(ProductActions.loadProductConfigureFailure, (state, { error }) => ({
     ...state,
-    loadingProductDetail: false,
-    productDetailError: error,
+    loadingProductConfigure: false,
+    productConfigureError: error,
   })),
 
   // LOAD PRODUCT INSURANCE PLANS
@@ -267,7 +267,7 @@ const reducer = createReducer(
   on(ProductActions.clearSelectedProduct, (state) => ({
     ...state,
     selectedProductId: null,
-    productDetailError: null,
+    productConfigureError: null,
   })),
 );
 

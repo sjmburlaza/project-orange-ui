@@ -20,6 +20,7 @@ import {
   checkoutForm,
   createCart,
   createCartItem,
+  productConfigures,
   products,
   save10Voucher,
   shippingOptions,
@@ -265,6 +266,11 @@ test.describe('routing and catalog', () => {
     await page.goto('/ph/products');
 
     await productCard(page, 'iPhone 15')
+      .getByRole('button', { name: 'Buy' })
+      .click();
+    await expect(page).toHaveURL(/\/ph\/products\/1\/configure$/);
+    await page
+      .locator('.product-configurator__purchase')
       .getByRole('button', { name: 'Buy' })
       .click();
 
@@ -541,6 +547,11 @@ async function addIphoneToCart(page: Page): Promise<void> {
   await productCard(page, 'iPhone 15')
     .getByRole('button', { name: 'Buy' })
     .click();
+  await expect(page).toHaveURL(/\/ph\/products\/1\/configure$/);
+  await page
+    .locator('.product-configurator__purchase')
+    .getByRole('button', { name: 'Buy' })
+    .click();
 
   await expect(
     page.getByRole('heading', { name: 'Added to Cart' }),
@@ -788,6 +799,24 @@ async function mockOrangeApi(
     },
   );
 
+  await page.route(
+    /\/api\/(?:[a-z]{2}\/)?products\/\d+$/,
+    async (route) => {
+      const productId = Number(new URL(route.request().url()).pathname.split('/').at(-1));
+      const product = productConfigures.find((item) => item.id === productId);
+
+      if (!product) {
+        await route.fulfill({
+          status: 404,
+          json: { message: 'Product not found' },
+        });
+        return;
+      }
+
+      await route.fulfill({ json: product });
+    },
+  );
+
   await page.route(/\/api\/(?:[a-z]{2}\/)?carts(?:\/.*)?$/, async (route) => {
     await handleCartRoute(route, state);
   });
@@ -917,7 +946,7 @@ async function handleCartRoute(
 
   if (method === 'POST' && pathname === '/api/carts/items') {
     const body = request.postDataJSON() as AddToCartRequest;
-    const product = products.find((item) => item.id === body.productId);
+    const product = findProductByVariantId(body.variantId);
 
     if (!product) {
       await route.fulfill({ status: 404, json: { message: 'Product not found' } });
@@ -970,6 +999,16 @@ async function handleCartRoute(
   }
 
   await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
+}
+
+function findProductByVariantId(variantId: number) {
+  const configure = productConfigures.find((product) =>
+    product.variants.some((variant) => variant.id === variantId),
+  );
+
+  return configure
+    ? products.find((product) => product.id === configure.id)
+    : undefined;
 }
 
 async function handleOrderRoute(
