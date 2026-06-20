@@ -30,9 +30,18 @@
     }
   </mat-form-field>
 
+  <button
+    class="forgot-password-link"
+    mat-button
+    type="button"
+    (click)="goToForgotPassword()"
+  >
+    Forgot password?
+  </button>
+
   <div class="actions">
     <button mat-flat-button color="primary" type="submit">Login</button>
-    <button matButton="outlined" (click)="goToRegister()">
+    <button matButton="outlined" type="button" (click)="goToRegister()">
       Create new account
     </button>
   </div>

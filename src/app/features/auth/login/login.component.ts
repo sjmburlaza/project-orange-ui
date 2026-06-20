@@ -78,6 +78,10 @@ export class LoginComponent {
     this.router.navigate([`/${this.site}/auth/register`]);
   }
 
+  goToForgotPassword(): void {
+    this.router.navigate([`/${this.site}/auth/forgot-password`]);
+  }
+
   private getPostLoginUrl(response: AuthSession): string {
     return response.user.roles.includes(ROLES.ADMIN)
       ? `/${this.site}/admin/dashboard`

@@ -77,6 +77,7 @@ Most app routes are scoped by site:
 | `/:site/auth/login`                   | Sign in.                                                           |
 | `/:site/auth/register`                | Account registration.                                              |
 | `/:site/auth/forgot-password`         | Password reset entry point.                                        |
+| `/:site/auth/reset-password`          | Complete password reset with email and token.                      |
 | `/:site/orders`                       | Guest order lookup or signed-in order history.                     |
 | `/:site/orders/my-orders`             | Orders route alias for lookup and history.                         |
 | `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                            |
@@ -117,7 +118,7 @@ Primary API areas used by the UI:
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Sites             | `GET /api/sites`, `GET /api/sites/:site`                                                                                                                                                                                                             |
 | Country detection | `GET /api/geo/country`                                                                                                                                                                                                                               |
-| Auth              | `POST /api/auth/login`, `POST /api/auth/register`, `GET /api/auth/session`, `POST /api/auth/logout`                                                                                                                                                  |
+| Auth              | `POST /api/auth/login`, `POST /api/auth/register`, `POST /api/auth/forgot-password`, `POST /api/auth/reset-password`, `GET /api/auth/session`, `POST /api/auth/logout`                                                                               |
 | Catalog           | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories`                                                                                                                                                                                  |
 | Product add-ons   | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans`                                                                                                                                                                        |
 | Cart              | `GET /api/carts/:cartCode`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:productId`, `DELETE /api/carts/:cartCode/items/:productId`                                                                  |
@@ -147,6 +148,8 @@ The mock interceptor handles:
 - `GET /api/geo/country`
 - `POST /api/auth/login`
 - `POST /api/auth/register`
+- `POST /api/auth/forgot-password`
+- `POST /api/auth/reset-password`
 - `GET /api/auth/session`
 - `POST /api/auth/logout`
 
@@ -208,7 +211,7 @@ src/app/core
 
 src/app/features
   admin/            Admin dashboard, order management, product management
-  auth/             Login, register, forgot password
+  auth/             Login, register, forgot password, reset password
   cart/             Cart page, cart store, cart API, cart item add-ons
   checkout/         Dynamic checkout form, shipping, payment
   common/           Reusable commerce UI such as order summary, voucher, CTA

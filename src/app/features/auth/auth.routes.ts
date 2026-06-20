@@ -22,4 +22,12 @@ export const AUTH_ROUTES: Routes = [
         (m) => m.ForgotPasswordComponent,
       ),
   },
+  {
+    path: 'reset-password',
+    data: { title: 'Create New Password' },
+    loadComponent: () =>
+      import('./reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent,
+      ),
+  },
 ];
