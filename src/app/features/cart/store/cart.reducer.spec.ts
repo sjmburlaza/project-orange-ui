@@ -94,6 +94,7 @@ function createCart(): Cart {
     entries: [
       {
         productId: 1,
+        variantId: 1001,
         productName: 'Orange Phone',
         price: 39999,
         quantity: 2,

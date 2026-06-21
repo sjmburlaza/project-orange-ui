@@ -39,27 +39,27 @@ export class CartApiService {
   }
 
   updateQuantity(
-    productId: number,
+    variantId: number,
     request: UpdateQuantityRequest,
   ): Observable<Cart> {
     const cartCode = this.requireCartCode();
 
     return this.http.put<Cart>(
-      `${this.baseUrl}/${cartCode}/items/${productId}`,
+      `${this.baseUrl}/${cartCode}/items/${variantId}`,
       request,
     );
   }
 
-  removeItem(productId: number): Observable<Cart> {
+  removeItem(variantId: number): Observable<Cart> {
     const cartCode = this.requireCartCode();
 
     return this.http.delete<Cart>(
-      `${this.baseUrl}/${cartCode}/items/${productId}`,
+      `${this.baseUrl}/${cartCode}/items/${variantId}`,
     );
   }
 
   upsertItemAddon(
-    productId: number,
+    variantId: number,
     addonId: string,
     request: UpdateCartItemAddonRequest,
   ): Observable<Cart> {
@@ -67,17 +67,17 @@ export class CartApiService {
     const encodedAddonId = encodeURIComponent(addonId);
 
     return this.http.put<Cart>(
-      `${this.baseUrl}/${cartCode}/items/${productId}/addons/${encodedAddonId}`,
+      `${this.baseUrl}/${cartCode}/items/${variantId}/addons/${encodedAddonId}`,
       request,
     );
   }
 
-  removeItemAddon(productId: number, addonId: string): Observable<Cart> {
+  removeItemAddon(variantId: number, addonId: string): Observable<Cart> {
     const cartCode = this.requireCartCode();
     const encodedAddonId = encodeURIComponent(addonId);
 
     return this.http.delete<Cart>(
-      `${this.baseUrl}/${cartCode}/items/${productId}/addons/${encodedAddonId}`,
+      `${this.baseUrl}/${cartCode}/items/${variantId}/addons/${encodedAddonId}`,
     );
   }
 

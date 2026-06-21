@@ -14,13 +14,13 @@ import { CurrencyPipe } from '@angular/common';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 interface UpsertAddonEvent {
-  productId: number;
+  variantId: number;
   addonId: string;
   request: UpdateCartItemAddonRequest;
 }
 
 interface RemoveAddonEvent {
-  productId: number;
+  variantId: number;
   addonId: string;
 }
 
@@ -33,6 +33,7 @@ interface RemoveAddonEvent {
 export class AddonComponent {
   @Input({ required: true }) addon!: Addon;
   @Input({ required: true }) productId!: number;
+  @Input({ required: true }) variantId!: number;
   @Input({ required: true }) currency!: string;
   @Output() upsertAddon = new EventEmitter<UpsertAddonEvent>();
   @Output() removeAddon = new EventEmitter<RemoveAddonEvent>();
@@ -76,7 +77,7 @@ export class AddonComponent {
         if (!request) return;
 
         this.upsertAddon.emit({
-          productId: this.productId,
+          variantId: this.variantId,
           addonId,
           request,
         });
@@ -100,7 +101,7 @@ export class AddonComponent {
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'proceed') {
         this.removeAddon.emit({
-          productId: this.productId,
+          variantId: this.variantId,
           addonId: this.addon.id,
         });
       }

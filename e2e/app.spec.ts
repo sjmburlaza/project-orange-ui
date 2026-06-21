@@ -964,25 +964,40 @@ async function handleCartRoute(
       return;
     }
 
-    state.cart = createCart([createCartItem(product, body.quantity)]);
+    state.cart = createCart([
+      createCartItem(product, body.quantity, body.variantId),
+    ]);
     await route.fulfill({ json: state.cart });
     return;
   }
 
   if (method === 'PUT' && segments.at(-2) === 'items') {
-    const productId = Number(segments.at(-1));
+    const variantId = Number(segments.at(-1));
     const body = request.postDataJSON() as UpdateQuantityRequest;
 
-    state.cart = updateCartItemQuantity(state.cart, productId, body.quantity);
+    state.cart = updateCartItemQuantity(state.cart, variantId, body.quantity);
+    await route.fulfill({ json: state.cart });
+    return;
+  }
+
+  if (
+    (method === 'PUT' || method === 'DELETE') &&
+    segments.at(-4) === 'items' &&
+    segments.at(-2) === 'addons'
+  ) {
+    const variantId = Number(segments.at(-3));
+    const addonId = decodeURIComponent(segments.at(-1) ?? '');
+
+    state.cart = updateCartItemAddon(state.cart, variantId, addonId, method === 'PUT');
     await route.fulfill({ json: state.cart });
     return;
   }
 
   if (method === 'DELETE' && segments.at(-2) === 'items') {
-    const productId = Number(segments.at(-1));
+    const variantId = Number(segments.at(-1));
 
     state.cart = createCart(
-      state.cart.entries.filter((entry) => entry.productId !== productId),
+      state.cart.entries.filter((entry) => entry.variantId !== variantId),
       state.cart.appliedVouchers,
     );
     await route.fulfill({ json: state.cart });
@@ -1094,12 +1109,33 @@ function apiPathname(url: URL): string {
 
 function updateCartItemQuantity(
   cart: Cart,
-  productId: number,
+  variantId: number,
   quantity: number,
 ): Cart {
   return createCart(
     cart.entries.map((entry) =>
-      entry.productId === productId ? { ...entry, quantity } : entry,
+      entry.variantId === variantId ? { ...entry, quantity } : entry,
+    ),
+    cart.appliedVouchers,
+  );
+}
+
+function updateCartItemAddon(
+  cart: Cart,
+  variantId: number,
+  addonId: string,
+  isAdded: boolean,
+): Cart {
+  return createCart(
+    cart.entries.map((entry) =>
+      entry.variantId === variantId
+        ? {
+            ...entry,
+            addons: entry.addons.map((addon) =>
+              addon.id === addonId ? { ...addon, isAdded } : addon,
+            ),
+          }
+        : entry,
     ),
     cart.appliedVouchers,
   );

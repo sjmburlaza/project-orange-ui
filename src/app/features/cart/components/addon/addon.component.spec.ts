@@ -23,6 +23,7 @@ describe('AddonComponent', () => {
       isAdded: false,
     };
     component.productId = 1;
+    component.variantId = 1001;
     component.currency = 'USD';
     fixture.detectChanges();
   });

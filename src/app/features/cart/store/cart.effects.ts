@@ -69,8 +69,8 @@ export class CartEffects {
   updateQuantity$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.updateQuantity),
-      switchMap(({ productId, quantity }) =>
-        this.cartApi.updateQuantity(productId, { quantity }).pipe(
+      switchMap(({ variantId, quantity }) =>
+        this.cartApi.updateQuantity(variantId, { quantity }).pipe(
           map((cart) => CartActions.updateQuantitySuccess({ cart })),
           catchError((error) =>
             of(
@@ -87,8 +87,8 @@ export class CartEffects {
   removeItem$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.removeItem),
-      switchMap(({ productId }) =>
-        this.cartApi.removeItem(productId).pipe(
+      switchMap(({ variantId }) =>
+        this.cartApi.removeItem(variantId).pipe(
           map((cart) => CartActions.removeItemSuccess({ cart })),
           catchError((error) =>
             of(
@@ -105,8 +105,8 @@ export class CartEffects {
   upsertItemAddon$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.upsertItemAddon),
-      switchMap(({ productId, addonId, request }) =>
-        this.cartApi.upsertItemAddon(productId, addonId, request).pipe(
+      switchMap(({ variantId, addonId, request }) =>
+        this.cartApi.upsertItemAddon(variantId, addonId, request).pipe(
           map((cart) => CartActions.upsertItemAddonSuccess({ cart })),
           catchError((error) =>
             of(
@@ -123,8 +123,8 @@ export class CartEffects {
   removeItemAddon$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.removeItemAddon),
-      switchMap(({ productId, addonId }) =>
-        this.cartApi.removeItemAddon(productId, addonId).pipe(
+      switchMap(({ variantId, addonId }) =>
+        this.cartApi.removeItemAddon(variantId, addonId).pipe(
           map((cart) => CartActions.removeItemAddonSuccess({ cart })),
           catchError((error) =>
             of(

@@ -16,6 +16,7 @@ describe('CartItemComponent', () => {
     component = fixture.componentInstance;
     component.item = {
       productId: 1,
+      variantId: 1001,
       productName: 'Orange Phone',
       price: 699,
       quantity: 1,
