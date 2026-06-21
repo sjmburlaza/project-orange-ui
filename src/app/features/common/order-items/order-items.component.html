@@ -1,11 +1,16 @@
 <div class="order-items">
   <h3>{{ "common.orderItems.header" | translate }}</h3>
-
-  <p>
-    {{
-      "common.orderItems.itemCount" | translate: { count: itemCount$ | async }
-    }}
-  </p>
+  <div class="subheader">
+    <p>
+      {{
+        "common.orderItems.itemCount" | translate: { count: itemCount$ | async }
+      }}
+    </p>
+    <button type="button" class="subheader-edit" (click)="onEdit()">
+      {{ "common.orderItems.edit" | translate }}
+      <i class="bi bi-pencil"></i>
+    </button>
+  </div>
 
   @for (item of items$ | async; track item.productId; let lastItem = $last) {
     <div class="item">

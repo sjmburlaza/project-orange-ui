@@ -8,9 +8,8 @@ describe('ProductCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductCardComponent]
-    })
-    .compileComponents();
+      imports: [ProductCardComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ProductCardComponent);
     component = fixture.componentInstance;
@@ -23,6 +22,10 @@ describe('ProductCardComponent', () => {
       imageUrl: '',
       categoryId: 1,
       categoryName: 'phones',
+      availableColors: [
+        { code: 'black', label: 'Black', hex: '#111111' },
+        { code: 'blue', label: 'Blue', hex: '#2563eb' },
+      ],
     };
     component.currency = 'USD';
     fixture.detectChanges();
@@ -30,5 +33,17 @@ describe('ProductCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('renders available colors below the description', () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const colors = element.querySelector('.product__colors');
+    const content = element.textContent ?? '';
+
+    expect(colors?.textContent).toContain('Black');
+    expect(colors?.textContent).toContain('Blue');
+    expect(content.indexOf('A compact storefront test product.')).toBeLessThan(
+      content.indexOf('Black'),
+    );
   });
 });

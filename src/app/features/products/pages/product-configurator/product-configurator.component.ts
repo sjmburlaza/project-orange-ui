@@ -43,6 +43,7 @@ export class ProductConfiguratorComponent implements OnInit {
   private readonly productFacade = inject(ProductFacade);
   private readonly cartFacade = inject(CartFacade);
   readonly siteService = inject(SiteService);
+  readonly currentSite = this.siteService.currentSite;
 
   readonly product$ = this.productFacade.selectedProductConfigure$;
   readonly loading$ = this.productFacade.loadingProductConfigure$;
@@ -94,7 +95,10 @@ export class ProductConfiguratorComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((res) => {
           if (res === 'proceed') {
-            this.router.navigate(['/', this.siteService.currentSite(), 'cart']);
+            this.router.navigate(['/', this.currentSite(), 'cart']);
+          }
+          if (res === 'cancel') {
+            this.router.navigate(['/', this.currentSite(), 'products']);
           }
         });
       });

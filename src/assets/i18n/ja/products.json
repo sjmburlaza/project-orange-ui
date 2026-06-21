@@ -14,6 +14,10 @@
       "buy": "購入",
       "learnMore": "詳細を見る"
     },
+    "card": {
+      "from": "最低価格",
+      "availableColors": "利用可能なカラー:"
+    },
     "configurator": {
       "back": "商品一覧に戻る",
       "loading": "商品を読み込んでいます...",

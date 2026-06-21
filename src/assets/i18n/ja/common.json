@@ -2,13 +2,20 @@
   "common": {
     "orderItems": {
       "header": "注文概要",
-      "itemCount": "カートに {{ count }} 点の商品があります。"
+      "itemCount": "カートに {{ count }} 点の商品があります。",
+      "edit": "編集"
     },
     "orderSummary": {
       "header": "概要"
     },
     "cta": {
       "continueToCheckout": "チェックアウトへ進む"
+    },
+    "exitDialog": {
+      "title": "このページを離れますか？",
+      "message": "今離れると、未保存の変更が失われる可能性があります。",
+      "cancel": "留まる",
+      "proceed": "離れる"
     }
   }
 }

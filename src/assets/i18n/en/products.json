@@ -14,6 +14,10 @@
       "buy": "Buy",
       "learnMore": "Learn more"
     },
+    "card": {
+      "from": "From",
+      "availableColors": "Available colors:"
+    },
     "configurator": {
       "back": "Back to products",
       "loading": "Loading product...",

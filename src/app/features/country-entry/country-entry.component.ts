@@ -7,6 +7,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { catchError, map, Observable, of, take } from 'rxjs';
 import { SiteCode, SiteConfig } from 'src/app/core/i18n/sites';
@@ -15,7 +16,7 @@ import { SiteService } from 'src/app/core/services/site.services';
 
 @Component({
   selector: 'app-country-entry',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './country-entry.component.html',
   styleUrl: './country-entry.component.scss',
 })

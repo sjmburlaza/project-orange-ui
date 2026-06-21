@@ -6,6 +6,17 @@
   h3 {
     font-size: 24px;
   }
+
+  .subheader {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+  }
 }
 
 .item {
