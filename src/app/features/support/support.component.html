@@ -1,0 +1,32 @@
+<section class="support-page" aria-labelledby="support-title">
+  <div class="support-page__hero">
+    <p class="support-page__eyebrow">
+      {{ "support.hero.eyebrow" | translate }}
+    </p>
+    <h2 id="support-title">{{ "support.hero.title" | translate }}</h2>
+    <p>{{ "support.hero.intro" | translate }}</p>
+  </div>
+
+  <div
+    class="support-page__grid"
+    [attr.aria-label]="'support.options.ariaLabel' | translate"
+  >
+    <article class="support-card">
+      <i class="bi bi-box-seam" aria-hidden="true"></i>
+      <h3>{{ "support.options.orders.title" | translate }}</h3>
+      <p>{{ "support.options.orders.description" | translate }}</p>
+    </article>
+
+    <article class="support-card">
+      <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+      <h3>{{ "support.options.returns.title" | translate }}</h3>
+      <p>{{ "support.options.returns.description" | translate }}</p>
+    </article>
+
+    <article class="support-card">
+      <i class="bi bi-person-circle" aria-hidden="true"></i>
+      <h3>{{ "support.options.account.title" | translate }}</h3>
+      <p>{{ "support.options.account.description" | translate }}</p>
+    </article>
+  </div>
+</section>

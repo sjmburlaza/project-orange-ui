@@ -1,0 +1,24 @@
+{
+  "support": {
+    "hero": {
+      "eyebrow": "Orange Support",
+      "title": "How can we help?",
+      "intro": "Get help with orders, product setup, returns, and account questions from the Orange support team."
+    },
+    "options": {
+      "ariaLabel": "Support options",
+      "orders": {
+        "title": "Orders and delivery",
+        "description": "Track an order, review delivery updates, or get help with a purchase."
+      },
+      "returns": {
+        "title": "Returns and exchanges",
+        "description": "Start a return, exchange a device, or check refund timing."
+      },
+      "account": {
+        "title": "Account support",
+        "description": "Manage sign-in, saved details, and profile settings."
+      }
+    }
+  }
+}

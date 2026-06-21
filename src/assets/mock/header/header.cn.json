@@ -27,6 +27,11 @@
       "queryParams": {
         "category": "accessories"
       }
+    },
+    {
+      "displayName": "支持",
+      "path": "support",
+      "queryParams": null
     }
   ]
 }

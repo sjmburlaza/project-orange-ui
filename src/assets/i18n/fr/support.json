@@ -1,0 +1,24 @@
+{
+  "support": {
+    "hero": {
+      "eyebrow": "Assistance Orange",
+      "title": "Comment pouvons-nous vous aider ?",
+      "intro": "Obtenez de l’aide pour vos commandes, la configuration de vos produits, les retours et les questions de compte auprès de l’équipe d’assistance Orange."
+    },
+    "options": {
+      "ariaLabel": "Options d’assistance",
+      "orders": {
+        "title": "Commandes et livraison",
+        "description": "Suivez une commande, consultez les mises à jour de livraison ou obtenez de l’aide pour un achat."
+      },
+      "returns": {
+        "title": "Retours et échanges",
+        "description": "Lancez un retour, échangez un appareil ou vérifiez les délais de remboursement."
+      },
+      "account": {
+        "title": "Assistance compte",
+        "description": "Gérez la connexion, les informations enregistrées et les paramètres de profil."
+      }
+    }
+  }
+}

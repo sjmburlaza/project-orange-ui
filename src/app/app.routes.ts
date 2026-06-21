@@ -49,6 +49,13 @@ export const routes: Routes = [
                 (m) => m.ORDERS_ROUTES,
               ),
           },
+          {
+            path: 'support',
+            loadComponent: () =>
+              import('./features/support/support.component').then(
+                (m) => m.SupportComponent,
+              ),
+          },
         ],
       },
       {
