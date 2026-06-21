@@ -370,7 +370,6 @@ Important state:
 | Property | Meaning |
 | --- | --- |
 | `periodOptions` | The supported period menu options. |
-| `isPeriodMenuOpen` | Controls the period dropdown. |
 | `selectedPeriod` | Currently selected period. Defaults to `last-7-days`. |
 | `dashboard` | Readonly signal from `AnalyticsService`. |
 | `currency` | Current site currency from `SiteService`, with `PHP` fallback. |
@@ -572,4 +571,3 @@ Use this checklist when adding a dashboard tab:
 - Purchase events are deduped by order number in both the client session flow and the mock API store.
 - Trend labels are formatted by the mock API, so production services should return display-ready labels or match the current contract.
 - Currency formatting is handled in the Angular UI with the active site currency.
-

@@ -8,38 +8,13 @@
       <h1>Analytics Dashboard</h1>
     </div>
     <div class="analytics__period">
-      <span class="analytics__period-label">Period</span>
-      <div class="analytics__period-control">
-        <button
-          class="analytics__period-trigger"
-          type="button"
-          aria-haspopup="listbox"
-          [attr.aria-expanded]="isPeriodMenuOpen()"
-          (click)="togglePeriodMenu()"
-          (keydown.escape)="closePeriodMenu()"
-        >
-          {{ selectedPeriodLabel() }}
-        </button>
-
-        @if (isPeriodMenuOpen()) {
-          <div class="analytics__period-menu" role="listbox">
-            @for (option of periodOptions; track option.value) {
-              <button
-                class="analytics__period-option"
-                type="button"
-                role="option"
-                [class.analytics__period-option--selected]="
-                  option.value === selectedPeriod()
-                "
-                [attr.aria-selected]="option.value === selectedPeriod()"
-                (click)="selectPeriod(option.value)"
-              >
-                {{ option.label }}
-              </button>
-            }
-          </div>
-        }
-      </div>
+      <app-select-dropdown
+        class="analytics__period-dropdown"
+        label="Period"
+        [options]="periodOptions"
+        [selectedValue]="selectedPeriod()"
+        (selectedValueChange)="selectPeriod($event)"
+      ></app-select-dropdown>
     </div>
   </header>
 
@@ -58,7 +33,6 @@
         [currency]="currencyCode"
         [data]="data"
         [maxCategoryRevenue]="maxCategoryRevenue()"
-        [maxDailyRevenue]="maxDailyRevenue()"
       ></app-revenue-tab>
     </mat-tab>
 
@@ -74,8 +48,6 @@
       <app-visitors-tab
         [cards]="visitorCards()"
         [data]="data"
-        [maxDailyViews]="maxDailyViews()"
-        [maxDailyVisitors]="maxDailyVisitors()"
       ></app-visitors-tab>
     </mat-tab>
 

@@ -1,11 +1,8 @@
 <div class="filter-container">
   @if (sortOptions) {
     <div class="filter filter-sort">
-      <p>
-        {{ "products.filters.sortBy" | translate }}
-      </p>
       <app-select-dropdown
-        [placeholder]="'products.filters.defaultSort' | translate"
+        [label]="'products.filters.sortBy' | translate"
         [options]="sortOptions"
         [selectedValue]="selectedSort"
         (selectedValueChange)="onSortChange($event)"

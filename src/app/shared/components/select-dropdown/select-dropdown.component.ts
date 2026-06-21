@@ -24,8 +24,7 @@ export interface SelectOption<T = string> {
 })
 export class SelectDropdownComponent<T = string> {
   @Input() label = '';
-  @Input() placeholder = 'Select option';
-  @Input() options: SelectOption<T>[] = [];
+  @Input() options: readonly SelectOption<T>[] = [];
   @Input() selectedValue: T | null = null;
 
   @Output() selectedValueChange = new EventEmitter<T | null>();

@@ -33,97 +33,10 @@
 }
 
 .analytics__period {
-  display: inline-flex;
-  align-items: center;
-  gap: token(spacing, 2);
-  padding: token(spacing, 2) token(spacing, 3);
-  border: 1px solid token(color, border-strong);
-  border-radius: token(radius, md);
-  color: token(color, text-secondary);
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.analytics__period-label {
-  font-size: 12px;
-}
-
-.analytics__period-control {
-  position: relative;
-  display: grid;
-}
-
-.analytics__period-control::before {
-  content: "From the start";
-  grid-area: 1 / 1;
-  padding-right: calc(8px + token(spacing, 2));
-  visibility: hidden;
-}
-
-.analytics__period-trigger,
-.analytics__period-option {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-}
-
-.analytics__period-trigger {
-  grid-area: 1 / 1;
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  gap: token(spacing, 2);
-  color: token(color, text-primary);
-}
-
-.analytics__period-trigger::after {
-  content: "";
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-}
-
-.analytics__period-menu {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + token(spacing, 2));
-  left: 0;
-  display: grid;
-  width: max-content;
-  min-width: 100%;
-  padding: token(spacing, 1);
-  border: 1px solid token(color, border);
-  border-radius: token(radius, md);
-  background: token(color, background);
-  box-shadow: 0 16px 36px rgb(15 23 42 / 14%);
-}
-
-.analytics__period-option {
-  padding: token(spacing, 2) token(spacing, 3);
-  border-radius: token(radius, sm);
-  color: token(color, text-secondary);
-  text-align: left;
-  white-space: nowrap;
-}
-
-.analytics__period-option:hover,
-.analytics__period-option--selected {
-  background: token(color, surface);
-  color: token(color, text-primary);
-}
-
-.analytics__period-trigger:focus-visible,
-.analytics__period-option:focus-visible {
-  outline: 2px solid token(color, primary);
-  outline-offset: 3px;
+  height: 52px;
 }
 
 .eyebrow,
-.analytics__period-label,
 .metric-card__label,
 .data-table__head {
   font-weight: 800;
@@ -136,249 +49,258 @@
   font-size: 13px;
 }
 
-  .tab-panel,
-  .panel,
-  :is(
-    .funnel-list,
-    .funnel-chart,
-    .daily-bars,
-    .category-bars,
-    .rank-list,
-    .product-table,
-    .data-table,
-    .bar-group
-  ) {
-    display: grid;
-    gap: token(spacing, 4);
-  }
+.tab-panel,
+.panel,
+:is(
+  .funnel-list,
+  .funnel-chart,
+  .category-bars,
+  .rank-list,
+  .product-table,
+  .data-table
+) {
+  display: grid;
+  gap: token(spacing, 4);
+}
 
-  .tab-panel {
-    padding-top: token(spacing, 5);
-  }
+.tab-panel {
+  padding-top: token(spacing, 5);
+}
 
-  .metric-grid,
-  .overview-grid {
-    display: grid;
-    gap: token(spacing, 3);
-  }
+.metric-grid,
+.overview-grid {
+  display: grid;
+  gap: token(spacing, 3);
+}
 
-  .metric-grid {
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  }
+.metric-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
 
-  .metric-grid--compact {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
+.metric-grid--compact {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
 
-  .overview-grid {
-    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
-    gap: token(spacing, 5);
-  }
+.overview-grid {
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: token(spacing, 5);
+}
 
-  .metric-card,
-  .panel {
-    border: 1px solid token(color, border);
-    border-radius: token(radius, md);
-    background: token(color, background);
-  }
+.metric-card,
+.panel {
+  border: 1px solid token(color, border);
+  border-radius: token(radius, md);
+  background: token(color, background);
+}
 
-  .metric-card {
-    display: grid;
-    gap: token(spacing, 2);
-    min-height: 138px;
-    padding: token(spacing, 4);
-  }
+.metric-card {
+  display: grid;
+  gap: token(spacing, 2);
+  min-height: 138px;
+  padding: token(spacing, 4);
+}
 
-  .metric-card__label {
-    display: inline-flex;
-    align-items: center;
-    gap: token(spacing, 1);
-  }
+.metric-card__label {
+  display: inline-flex;
+  align-items: center;
+  gap: token(spacing, 1);
+}
 
-  .metric-card__label,
-  .metric-card small,
-  .panel__header span,
-  .rank-row span,
-  .daily-row > span,
-  .category-row span,
-  .funnel-chart__row span,
-  .product-row span,
-  .data-table__row {
-    color: token(color, text-secondary);
-  }
+.metric-card__label,
+.metric-card small,
+.panel__header span,
+.rank-row span,
+.category-row span,
+.funnel-chart__row span,
+.product-row span,
+.data-table__row {
+  color: token(color, text-secondary);
+}
 
-  .metric-card__label,
-  .metric-card small,
-  .rank-row span,
-  .category-row span,
-  .funnel-chart__row span,
-  .product-row span {
-    font-size: 13px;
-  }
+.metric-card__label,
+.metric-card small,
+.rank-row span,
+.category-row span,
+.funnel-chart__row span,
+.product-row span {
+  font-size: 13px;
+}
 
-  .metric-card strong {
-    color: token(color, text-primary);
-    font-size: clamp(26px, 3vw, 34px);
-    line-height: 1;
-  }
+.metric-card strong {
+  color: token(color, text-primary);
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1;
+}
 
-  .panel {
-    padding: token(spacing, 5);
-  }
+.panel {
+  padding: token(spacing, 5);
+}
 
-  .panel__header h2 {
-    color: token(color, text-primary);
-    font-size: 20px;
-    line-height: 1.2;
-  }
+.panel__header h2 {
+  color: token(color, text-primary);
+  font-size: 20px;
+  line-height: 1.2;
+}
 
-  .panel__header span,
-  .daily-row > span,
-  .product-row span {
-    font-weight: 700;
-  }
+.panel__header span,
+.product-row span {
+  font-weight: 700;
+}
 
-  :is(
-    .funnel-step,
-    .funnel-chart__row,
-    .daily-row,
-    .category-row,
-    .product-row,
-    .data-table__head,
-    .data-table__row
-  ) {
-    display: grid;
-    align-items: center;
-    gap: token(spacing, 3);
-  }
+.chart-frame {
+  position: relative;
+  min-height: 320px;
+  width: 100%;
+}
 
-  .bar {
-    position: relative;
-    height: 12px;
-    overflow: hidden;
-    border-radius: token(radius, sm);
-    background: token(color, surface-secondary);
-  }
+.chart-frame--compact {
+  min-height: 260px;
+}
 
-  .bar__fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    border-radius: inherit;
-    background: linear-gradient(90deg, token(color, primary), #ffb15f);
-  }
+.chart-frame canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
 
-  .rank-row,
-  .category-row,
+.chart-data-summary {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:is(
+  .funnel-step,
   .funnel-chart__row,
+  .category-row,
   .product-row,
   .data-table__head,
-  .data-table__row {
-    padding: token(spacing, 3) 0;
-    border-bottom: 1px solid token(color, border);
+  .data-table__row
+) {
+  display: grid;
+  align-items: center;
+  gap: token(spacing, 3);
+}
+
+.bar {
+  position: relative;
+  height: 12px;
+  overflow: hidden;
+  border-radius: token(radius, sm);
+  background: token(color, surface-secondary);
+}
+
+.bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, token(color, primary), #ffb15f);
+}
+
+.rank-row,
+.category-row,
+.funnel-chart__row,
+.product-row,
+.data-table__head,
+.data-table__row {
+  padding: token(spacing, 3) 0;
+  border-bottom: 1px solid token(color, border);
+}
+
+:is(.rank-row, .category-row, .funnel-chart__row, .product-row):last-child {
+  border-bottom: 0;
+}
+
+.rank-row div,
+.category-row div:first-child,
+.funnel-chart__row div:first-child,
+.product-row__name {
+  display: grid;
+  gap: token(spacing, 1);
+  min-width: 0;
+}
+
+.category-row {
+  grid-template-columns: minmax(180px, 0.8fr) minmax(180px, 1fr) 132px;
+}
+
+.funnel-chart__row {
+  grid-template-columns: minmax(160px, 0.35fr) minmax(180px, 1fr) 96px;
+}
+
+.product-row {
+  grid-template-columns:
+    minmax(190px, 1.2fr)
+    minmax(140px, 0.7fr)
+    86px
+    82px
+    82px
+    118px;
+}
+
+.category-row > strong,
+.funnel-chart__row > strong,
+.product-row > strong {
+  text-align: right;
+}
+
+.data-table {
+  overflow-x: auto;
+}
+
+.data-table__head,
+.data-table__row {
+  min-width: 680px;
+}
+
+.data-table__head {
+  color: token(color, text-secondary);
+  font-size: 12px;
+}
+
+.data-table__row strong,
+.rank-row strong {
+  color: token(color, text-primary);
+}
+
+.data-table--orders :is(.data-table__head, .data-table__row) {
+  grid-template-columns: 1.1fr 1fr 90px 120px;
+}
+
+.data-table--categories :is(.data-table__head, .data-table__row) {
+  grid-template-columns: 1fr 90px 90px 90px 120px 120px;
+}
+
+.data-table--failures :is(.data-table__head, .data-table__row) {
+  grid-template-columns: 1fr 120px minmax(220px, 1fr) 90px;
+}
+
+.empty-state {
+  padding: token(spacing, 6);
+  border-radius: token(radius, md);
+  background: token(color, surface);
+  color: token(color, text-secondary);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .analytics__header,
+  .panel__header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  :is(.rank-row, .category-row, .funnel-chart__row, .product-row):last-child {
-    border-bottom: 0;
-  }
-
-  .rank-row div,
-  .category-row div:first-child,
-  .funnel-chart__row div:first-child,
-  .product-row__name {
-    display: grid;
-    gap: token(spacing, 1);
-    min-width: 0;
-  }
-
-  .daily-row {
-    grid-template-columns: 72px minmax(120px, 1fr) 132px;
-  }
-
-  .daily-bars--traffic .daily-row {
-    grid-template-columns: 72px minmax(140px, 1fr) 120px;
-  }
-
-  .category-row {
-    grid-template-columns: minmax(180px, 0.8fr) minmax(180px, 1fr) 132px;
-  }
-
-  .funnel-chart__row {
-    grid-template-columns: minmax(160px, 0.35fr) minmax(180px, 1fr) 96px;
-  }
-
+  .overview-grid,
+  .category-row,
+  .funnel-chart__row,
   .product-row {
-    grid-template-columns:
-      minmax(190px, 1.2fr)
-      minmax(140px, 0.7fr)
-      86px
-      82px
-      82px
-      118px;
+    grid-template-columns: 1fr;
   }
 
-  .daily-row > strong,
-  .category-row > strong,
-  .funnel-chart__row > strong,
-  .product-row > strong {
-    text-align: right;
+  :is(.category-row, .funnel-chart__row, .product-row) > strong {
+    text-align: left;
   }
-
-  .data-table {
-    overflow-x: auto;
-  }
-
-  .data-table__head,
-  .data-table__row {
-    min-width: 680px;
-  }
-
-  .data-table__head {
-    color: token(color, text-secondary);
-    font-size: 12px;
-  }
-
-  .data-table__row strong,
-  .rank-row strong {
-    color: token(color, text-primary);
-  }
-
-  .data-table--orders :is(.data-table__head, .data-table__row) {
-    grid-template-columns: 1.1fr 1fr 90px 120px;
-  }
-
-  .data-table--categories :is(.data-table__head, .data-table__row) {
-    grid-template-columns: 1fr 90px 90px 90px 120px 120px;
-  }
-
-  .data-table--failures :is(.data-table__head, .data-table__row) {
-    grid-template-columns: 1fr 120px minmax(220px, 1fr) 90px;
-  }
-
-  .empty-state {
-    padding: token(spacing, 6);
-    border-radius: token(radius, md);
-    background: token(color, surface);
-    color: token(color, text-secondary);
-    text-align: center;
-  }
-
-  @media (max-width: 900px) {
-    .analytics__header,
-    .panel__header {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .overview-grid,
-    .daily-row,
-    .daily-bars--traffic .daily-row,
-    .category-row,
-    .funnel-chart__row,
-    .product-row {
-      grid-template-columns: 1fr;
-    }
-
-    :is(.daily-row, .category-row, .funnel-chart__row, .product-row) > strong {
-      text-align: left;
-    }
-  }
+}

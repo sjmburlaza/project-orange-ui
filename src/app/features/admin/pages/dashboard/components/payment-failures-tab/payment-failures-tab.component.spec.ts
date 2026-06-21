@@ -13,7 +13,14 @@ describe('PaymentFailuresTabComponent', () => {
       currency: 'PHP',
       data: dashboard,
     });
+    const component = fixture.componentInstance;
 
+    expect(textContent(fixture)).toContain('Failure Trend');
+    expect(
+      fixture.nativeElement.querySelector('app-admin-bar-chart'),
+    ).not.toBeNull();
+    expect(component.failureChartData.labels).toEqual(['Jun 18', 'Jun 19']);
+    expect(component.failureChartData.datasets[0].data).toEqual([1, 2]);
     expect(textContent(fixture)).toContain('Failure Log');
     expect(textContent(fixture)).toContain('Payment authorization timed out');
     expect(textContent(fixture)).toContain('1 item(s)');

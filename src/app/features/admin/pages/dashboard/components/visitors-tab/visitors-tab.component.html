@@ -20,27 +20,21 @@
       <h2>Visitor Activity</h2>
       <span>{{ data.productViews | number }} product views</span>
     </div>
-    <div class="daily-bars daily-bars--traffic">
-      @for (day of dailyLatestFirst; track day.dateKey) {
-        <div class="daily-row">
-          <span>{{ day.label }}</span>
-          <div class="bar-group">
-            <div class="bar">
-              <span
-                class="bar__fill"
-                [style.width]="barWidth(day.visitors, maxDailyVisitors)"
-              ></span>
-            </div>
-            <div class="bar bar--views">
-              <span
-                class="bar__fill"
-                [style.width]="barWidth(day.productViews, maxDailyViews)"
-              ></span>
-            </div>
-          </div>
-          <strong>{{ day.visitors | number }} / {{ day.productViews | number }}</strong>
-        </div>
-      }
+    <div class="chart-frame">
+      <app-admin-line-chart
+        [data]="trafficChartData"
+        [options]="trafficChartOptions"
+        ariaLabel="Daily visitor and product view trend chart"
+        fallbackText="Daily visitor and product view trend chart."
+      ></app-admin-line-chart>
     </div>
+    <ul class="chart-data-summary" aria-label="Daily visitor activity values">
+      @for (day of dailyTrend; track day.dateKey) {
+        <li>
+          {{ day.label }}: {{ day.visitors | number }} visitors,
+          {{ day.productViews | number }} product views
+        </li>
+      }
+    </ul>
   </section>
 </div>

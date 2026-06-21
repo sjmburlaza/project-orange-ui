@@ -20,20 +20,22 @@
       <h2>Revenue Trend</h2>
       <span>{{ data.revenue | currency: currency: "symbol": "1.0-0" }}</span>
     </div>
-    <div class="daily-bars">
-      @for (day of data.daily; track day.dateKey) {
-        <div class="daily-row">
-          <span>{{ day.label }}</span>
-          <div class="bar">
-            <span
-              class="bar__fill"
-              [style.width]="barWidth(day.revenue, maxDailyRevenue)"
-            ></span>
-          </div>
-          <strong>{{ day.revenue | currency: currency: "symbol": "1.0-0" }}</strong>
-        </div>
-      }
+    <div class="chart-frame">
+      <app-admin-line-chart
+        [data]="revenueChartData"
+        [options]="revenueChartOptions"
+        ariaLabel="Daily revenue trend chart"
+        fallbackText="Daily revenue trend chart."
+      ></app-admin-line-chart>
     </div>
+    <ul class="chart-data-summary" aria-label="Daily revenue values">
+      @for (day of data.daily; track day.dateKey) {
+        <li>
+          {{ day.label }}:
+          {{ day.revenue | currency: currency: "symbol": "1.0-0" }}
+        </li>
+      }
+    </ul>
   </section>
 
   <section class="panel">

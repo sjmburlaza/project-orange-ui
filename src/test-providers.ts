@@ -8,10 +8,32 @@ import { Actions } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
+import {
+  ArcElement,
+  BarController,
+  BarElement,
+  CategoryScale,
+  Filler,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PieController,
+  PointElement,
+  Tooltip,
+} from 'chart.js';
+import { provideCharts } from 'ng2-charts';
 
 import { cartFeature } from 'src/app/features/cart/store/cart.reducer';
 import { productFeature } from 'src/app/features/products/store/products.reducer';
 import { tradeInFeature } from 'src/app/features/trade-in/store/trade-in.reducer';
+
+if (typeof HTMLCanvasElement !== 'undefined') {
+  type CanvasGetContext = HTMLCanvasElement['getContext'];
+
+  // jsdom does not render canvas; chart component tests assert generated data.
+  HTMLCanvasElement.prototype.getContext = (() => null) as CanvasGetContext;
+}
 
 const activatedRouteStub = {
   params: of({}),
@@ -53,6 +75,22 @@ const providers: (Provider | EnvironmentProviders)[] = [
   provideNoopAnimations(),
   provideRouter([]),
   provideTranslateService({ lang: 'en', fallbackLang: 'en' }),
+  provideCharts({
+    registerables: [
+      ArcElement,
+      BarController,
+      BarElement,
+      CategoryScale,
+      Filler,
+      Legend,
+      LinearScale,
+      LineController,
+      LineElement,
+      PieController,
+      PointElement,
+      Tooltip,
+    ],
+  }),
   provideStore({
     [cartFeature.name]: cartFeature.reducer,
     [productFeature.name]: productFeature.reducer,
