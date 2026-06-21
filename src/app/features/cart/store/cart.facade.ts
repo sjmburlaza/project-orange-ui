@@ -45,35 +45,35 @@ export class CartFacade {
     this.store.dispatch(CartActions.addToCart({ request }));
   }
 
-  updateQuantity(productId: number, quantity: number): void {
+  updateQuantity(variantId: number, quantity: number): void {
     this.store.dispatch(
       CartActions.updateQuantity({
-        productId,
+        variantId,
         quantity,
       }),
     );
   }
 
-  removeItem(productId: number): void {
-    this.store.dispatch(CartActions.removeItem({ productId }));
+  removeItem(variantId: number): void {
+    this.store.dispatch(CartActions.removeItem({ variantId }));
   }
 
   upsertItemAddon(
-    productId: number,
+    variantId: number,
     addonId: string,
     request: UpdateCartItemAddonRequest,
   ): void {
     this.store.dispatch(
       CartActions.upsertItemAddon({
-        productId,
+        variantId,
         addonId,
         request,
       }),
     );
   }
 
-  removeItemAddon(productId: number, addonId: string): void {
-    this.store.dispatch(CartActions.removeItemAddon({ productId, addonId }));
+  removeItemAddon(variantId: number, addonId: string): void {
+    this.store.dispatch(CartActions.removeItemAddon({ variantId, addonId }));
   }
 
   applyVoucher(code: string): void {

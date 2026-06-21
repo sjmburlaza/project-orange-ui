@@ -17,23 +17,23 @@ export const CartActions = createActionGroup({
     'Add To Cart Success': props<{ cart: Cart }>(),
     'Add To Cart Failure': props<{ error: string }>(),
 
-    'Update Quantity': props<{ productId: number; quantity: number }>(),
+    'Update Quantity': props<{ variantId: number; quantity: number }>(),
     'Update Quantity Success': props<{ cart: Cart }>(),
     'Update Quantity Failure': props<{ error: string }>(),
 
-    'Remove Item': props<{ productId: number }>(),
+    'Remove Item': props<{ variantId: number }>(),
     'Remove Item Success': props<{ cart: Cart }>(),
     'Remove Item Failure': props<{ error: string }>(),
 
     'Upsert Item Addon': props<{
-      productId: number;
+      variantId: number;
       addonId: string;
       request: UpdateCartItemAddonRequest;
     }>(),
     'Upsert Item Addon Success': props<{ cart: Cart }>(),
     'Upsert Item Addon Failure': props<{ error: string }>(),
 
-    'Remove Item Addon': props<{ productId: number; addonId: string }>(),
+    'Remove Item Addon': props<{ variantId: number; addonId: string }>(),
     'Remove Item Addon Success': props<{ cart: Cart }>(),
     'Remove Item Addon Failure': props<{ error: string }>(),
 

@@ -25,32 +25,35 @@ export class CartComponent implements OnInit {
     this.cartFacade.loadCart();
   }
 
-  removeItem(productId: number): void {
-    this.cartFacade.removeItem(productId);
+  removeItem(variantId: number): void {
+    this.cartFacade.removeItem(variantId);
   }
 
-  onQuantityChange(data: { productId: number; quantity: number }): void {
+  onQuantityChange(data: {
+    variantId: number;
+    quantity: number;
+  }): void {
     if (data.quantity === 0) {
-      this.cartFacade.removeItem(data.productId);
+      this.cartFacade.removeItem(data.variantId);
     } else {
-      this.cartFacade.updateQuantity(data.productId, data.quantity);
+      this.cartFacade.updateQuantity(data.variantId, data.quantity);
     }
   }
 
   onAddonUpsert(data: {
-    productId: number;
+    variantId: number;
     addonId: string;
     request: UpdateCartItemAddonRequest;
   }): void {
     this.cartFacade.upsertItemAddon(
-      data.productId,
+      data.variantId,
       data.addonId,
       data.request,
     );
   }
 
-  onAddonRemove(data: { productId: number; addonId: string }): void {
-    this.cartFacade.removeItemAddon(data.productId, data.addonId);
+  onAddonRemove(data: { variantId: number; addonId: string }): void {
+    this.cartFacade.removeItemAddon(data.variantId, data.addonId);
   }
 
   enabledAddons(addons: Addon[]): Addon[] {

@@ -28,17 +28,20 @@ export class CartItemComponent {
 
   @Output() removeItem = new EventEmitter<number>();
   @Output() quantityChange = new EventEmitter<{
-    productId: number;
+    variantId: number;
     quantity: number;
   }>();
 
-  onQuantityChange(productId: number, quantity: number): void {
-    if (productId != null && quantity != null) {
-      this.quantityChange.emit({ productId, quantity });
+  onQuantityChange(item: CartItem, quantity: number): void {
+    if (item.variantId != null && quantity != null) {
+      this.quantityChange.emit({
+        variantId: item.variantId,
+        quantity,
+      });
     }
   }
 
-  onRemoveItem(productId: number) {
+  onRemoveItem(variantId: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '520px',
       maxWidth: '90vw',
@@ -53,8 +56,8 @@ export class CartItemComponent {
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res === 'proceed') {
-        if (productId != null) {
-          this.removeItem.emit(productId);
+        if (variantId != null) {
+          this.removeItem.emit(variantId);
         }
       }
     });

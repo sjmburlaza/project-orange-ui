@@ -216,9 +216,14 @@ export function createCart(
   };
 }
 
-export function createCartItem(product: Product, quantity: number): CartItem {
+export function createCartItem(
+  product: Product,
+  quantity: number,
+  variantId = product.id * 1000 + 1,
+): CartItem {
   return {
     productId: product.id,
+    variantId,
     productName: product.name,
     price: product.price,
     quantity,

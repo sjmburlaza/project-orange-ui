@@ -39,6 +39,7 @@ describe('cart selectors', () => {
 function createCartItem(overrides: Partial<CartItem>): CartItem {
   return {
     productId: 1,
+    variantId: 1001,
     productName: 'Orange Phone',
     price: 39999,
     quantity: 1,

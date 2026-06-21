@@ -205,6 +205,7 @@ function createCart(product: Product): Cart {
     entries: [
       {
         productId: product.id,
+        variantId: product.id * 1000 + 1,
         productName: product.name,
         price: product.price,
         quantity: 1,
