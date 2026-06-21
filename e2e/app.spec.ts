@@ -447,10 +447,12 @@ test.describe('admin dashboard', () => {
     await expect(metrics.getByText('3,400')).toBeVisible();
     await expect(metrics.getByText('84 completed orders')).toBeVisible();
 
-    await page.getByRole('button', { name: 'Last 7 days' }).click();
+    const periodSelect = page.getByRole('combobox', { name: 'Period' });
+
+    await periodSelect.click();
     await page.getByRole('option', { name: 'Past year' }).click();
 
-    await expect(page.getByRole('button', { name: 'Past year' })).toBeVisible();
+    await expect(periodSelect).toContainText('Past year');
     await expect(metrics.getByText('15,000')).toBeVisible();
     await expect(metrics.getByText('42,000')).toBeVisible();
 
