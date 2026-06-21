@@ -2,13 +2,20 @@
   "common": {
     "orderItems": {
       "header": "Order Summary",
-      "itemCount": "You have {{ count }} item/s in your cart."
+      "itemCount": "You have {{ count }} item/s in your cart.",
+      "edit": "Edit"
     },
     "orderSummary": {
       "header": "Summary"
     },
     "cta": {
       "continueToCheckout": "Continue to checkout"
+    },
+    "exitDialog": {
+      "title": "Leave this page?",
+      "message": "Any unsaved changes may be lost if you leave now.",
+      "cancel": "Stay",
+      "proceed": "Leave"
     }
   }
 }

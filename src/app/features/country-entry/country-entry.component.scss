@@ -19,28 +19,20 @@
   }
 
   &__brand {
-    display: inline-flex;
-    align-items: center;
-    gap: token(spacing, 3);
-    color: token(color, text-primary);
-    font-size: token(font-size, lg);
-    font-weight: 700;
-  }
+    display: flex;
+    gap: 8px;
+    line-height: 40px;
+    color: token(color, primary);
 
-  &__brand-mark {
-    width: 44px;
-    height: 44px;
-    display: inline-grid;
-    place-items: center;
-    border-radius: 50%;
-    background: token(color, main);
-    color: token(color, text-inverse);
-    font-size: token(font-size, lg);
-  }
+    h1 {
+      font-size: 36px;
+    }
 
-  &__brand-name {
-    color: token(color, main);
-    font-size: 36px;
+    .mat-icon {
+      height: 36px;
+      width: 36px;
+      font-size: 36px;
+    }
   }
 
   &__loading {

@@ -1,5 +1,4 @@
 $primitive-colors: (
-  orange-main: #ff8a00,
   // Brand
   orange-50: #fff7ed,
   orange-100: #ffedd5,
@@ -39,12 +38,11 @@ $primitive-colors: (
 
   // Info
   blue-500: #2563eb,
-  blue-600: #1d4ed8,
+  blue-600: #1d4ed8
 );
 
 $semantic-colors: (
   // Brand
-  main: map-get($primitive-colors, orange-main),
   primary: map-get($primitive-colors, orange-600),
   primary-hover: map-get($primitive-colors, orange-700),
   secondary: map-get($primitive-colors, orange-500),

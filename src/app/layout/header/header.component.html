@@ -1,43 +1,59 @@
-<div class="header-container">
-  <a
-    class="home-btn"
-    [routerLink]="['/', site(), 'products']"
-    aria-label="Orange home"
-  >
-    <h1>ORANGE</h1>
-  </a>
-  <nav aria-label="Primary navigation">
-    @for (item of navItems(); track item.displayName) {
-      <a
-        class="nav-item"
-        [routerLink]="['/', site(), 'products']"
-        [queryParams]="item.queryParams"
-        routerLinkActive="nav-item--active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        {{ item.displayName }}
-      </a>
-    }
-  </nav>
-  <div class="cta">
-    <div class="cta__search">
-      <i class="bi bi-search"></i>
+@if (isCheckoutRoute) {
+  <div class="checkout-header">
+    <div class="brand">
+      <h1>ORANGE</h1>
+      <mat-icon aria-hidden="true">shopping_bag</mat-icon>
     </div>
-    <div class="cta__cart">
-      <button type="button" [matBadge]="itemCount$ | async" (click)="goToCart()">
-        <i class="bi bi-cart2"></i>
-      </button>
-    </div>
-    <div class="cta__account">
-      <i class="bi bi-person-circle"></i>
-      <div class="account-dropdown">
-        @for (item of (accountMenuItems$ | async) ?? []; track item.label) {
-          <button type="button" (click)="item.action()">
-            <i [class]="item.icon"></i>
-            {{ item.label }}
-          </button>
-        }
+  </div>
+} @else {
+  <div class="header">
+    <a
+      class="home-btn"
+      [routerLink]="['/', site(), 'products']"
+      aria-label="Orange home"
+    >
+      <div class="brand">
+        <h1>ORANGE</h1>
+        <mat-icon aria-hidden="true">shopping_bag</mat-icon>
+      </div>
+    </a>
+    <nav aria-label="Primary navigation">
+      @for (item of navItems(); track item.displayName) {
+        <a
+          class="nav-item"
+          [routerLink]="['/', site(), 'products']"
+          [queryParams]="item.queryParams"
+          routerLinkActive="nav-item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ item.displayName }}
+        </a>
+      }
+    </nav>
+    <div class="cta">
+      <div class="cta__search">
+        <i class="bi bi-search"></i>
+      </div>
+      <div class="cta__cart">
+        <button
+          type="button"
+          [matBadge]="itemCount$ | async"
+          (click)="goToCart()"
+        >
+          <i class="bi bi-cart2"></i>
+        </button>
+      </div>
+      <div class="cta__account">
+        <i class="bi bi-person-circle"></i>
+        <div class="account-dropdown">
+          @for (item of (accountMenuItems$ | async) ?? []; track item.label) {
+            <button type="button" (click)="item.action()">
+              <i [class]="item.icon"></i>
+              {{ item.label }}
+            </button>
+          }
+        </div>
       </div>
     </div>
   </div>
-</div>
+}

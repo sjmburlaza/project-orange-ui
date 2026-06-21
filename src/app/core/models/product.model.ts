@@ -13,7 +13,7 @@ export interface Product {
   imageUrl: string;
   categoryId: number;
   categoryName?: string;
-  itemSpecs?: ProductSpec[];
+  availableColors?: ProductOption[];
 }
 
 export interface ProductConfigure extends Product {

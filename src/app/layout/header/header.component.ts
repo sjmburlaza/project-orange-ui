@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { finalize, map } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -23,7 +24,13 @@ interface HeaderData {
 
 @Component({
   selector: 'app-header',
-  imports: [MatBadgeModule, AsyncPipe, RouterLink, RouterLinkActive],
+  imports: [
+    MatBadgeModule,
+    AsyncPipe,
+    RouterLink,
+    RouterLinkActive,
+    MatIconModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -44,8 +51,7 @@ export class HeaderComponent implements OnInit {
   };
 
   readonly navItems = computed(
-    () =>
-      (this.headerBySite[this.site()] ?? this.headerBySite['ph']).navItems,
+    () => (this.headerBySite[this.site()] ?? this.headerBySite['ph']).navItems,
   );
 
   readonly accountMenuItems$ = this.authStore.isAuthenticated$.pipe(
@@ -75,6 +81,10 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartFacade.loadCart();
+  }
+
+  get isCheckoutRoute(): boolean {
+    return this.router.url.includes('/checkout');
   }
 
   goToCart(): void {

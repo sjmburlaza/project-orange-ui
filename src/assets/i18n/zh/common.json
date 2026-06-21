@@ -2,13 +2,20 @@
   "common": {
     "orderItems": {
       "header": "订单摘要",
-      "itemCount": "您的购物车中有 {{ count }} 件商品。"
+      "itemCount": "您的购物车中有 {{ count }} 件商品。",
+      "edit": "编辑"
     },
     "orderSummary": {
       "header": "摘要"
     },
     "cta": {
       "continueToCheckout": "继续结账"
+    },
+    "exitDialog": {
+      "title": "离开此页面？",
+      "message": "如果您现在离开，未保存的更改可能会丢失。",
+      "cancel": "停留",
+      "proceed": "离开"
     }
   }
 }

@@ -30,6 +30,10 @@ export const products: Product[] = [
     imageUrl: '',
     categoryId: 1,
     categoryName: 'Phones',
+    availableColors: [
+      { code: 'black', label: 'Black', hex: '#111111' },
+      { code: 'blue', label: 'Blue', hex: '#2563eb' },
+    ],
   },
   {
     id: 2,
@@ -40,6 +44,10 @@ export const products: Product[] = [
     imageUrl: '',
     categoryId: 2,
     categoryName: 'Laptops',
+    availableColors: [
+      { code: 'midnight', label: 'Midnight', hex: '#1f2937' },
+      { code: 'starlight', label: 'Starlight', hex: '#f5e6cc' },
+    ],
   },
   {
     id: 4,
@@ -50,6 +58,10 @@ export const products: Product[] = [
     imageUrl: '',
     categoryId: 4,
     categoryName: 'Monitors',
+    availableColors: [
+      { code: 'silver', label: 'Silver', hex: '#d1d5db' },
+      { code: 'black', label: 'Black', hex: '#111111' },
+    ],
   },
   {
     id: 3,
@@ -60,6 +72,10 @@ export const products: Product[] = [
     imageUrl: '',
     categoryId: 3,
     categoryName: 'Accessories',
+    availableColors: [
+      { code: 'black', label: 'Black', hex: '#111111' },
+      { code: 'white', label: 'White', hex: '#ffffff' },
+    ],
   },
 ];
 

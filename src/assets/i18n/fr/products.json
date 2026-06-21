@@ -14,6 +14,10 @@
       "buy": "Acheter",
       "learnMore": "En savoir plus"
     },
+    "card": {
+      "from": "À partir de",
+      "availableColors": "Couleurs disponibles :"
+    },
     "configurator": {
       "back": "Retour aux produits",
       "loading": "Chargement du produit...",
