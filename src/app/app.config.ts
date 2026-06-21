@@ -42,6 +42,21 @@ import { catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { SiteService } from 'src/app/core/services/site.services';
 import { normalizeSiteCode, SiteConfig } from 'src/app/core/i18n/sites';
+import {
+  ArcElement,
+  BarController,
+  BarElement,
+  CategoryScale,
+  Filler,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PieController,
+  PointElement,
+  Tooltip,
+} from 'chart.js';
+import { provideCharts } from 'ng2-charts';
 
 const mockInterceptors = environment.useMockAuth
   ? [
@@ -117,6 +132,22 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEffects([ProductEffects, CartEffects, TradeInEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideCharts({
+      registerables: [
+        ArcElement,
+        BarController,
+        BarElement,
+        CategoryScale,
+        Filler,
+        Legend,
+        LinearScale,
+        LineController,
+        LineElement,
+        PieController,
+        PointElement,
+        Tooltip,
+      ],
+    }),
     provideClientHydration(withEventReplay()),
     provideAnimations(),
   ],

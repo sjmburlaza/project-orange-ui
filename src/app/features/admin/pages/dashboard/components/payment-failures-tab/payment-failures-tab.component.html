@@ -17,6 +17,26 @@
 
   <section class="panel">
     <div class="panel__header">
+      <h2>Failure Trend</h2>
+      <span>{{ data.paymentFailures | number }} failures</span>
+    </div>
+    <div class="chart-frame chart-frame--compact">
+      <app-admin-bar-chart
+        [data]="failureChartData"
+        [options]="failureChartOptions"
+        ariaLabel="Daily payment failure trend chart"
+        fallbackText="Daily payment failure trend chart."
+      ></app-admin-bar-chart>
+    </div>
+    <ul class="chart-data-summary" aria-label="Daily payment failure values">
+      @for (day of dailyTrend; track day.dateKey) {
+        <li>{{ day.label }}: {{ day.paymentFailures | number }} failures</li>
+      }
+    </ul>
+  </section>
+
+  <section class="panel">
+    <div class="panel__header">
       <h2>Failure Log</h2>
       <span>{{ data.paymentFailureEvents.length }} latest</span>
     </div>

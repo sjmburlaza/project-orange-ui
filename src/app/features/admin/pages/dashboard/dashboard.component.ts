@@ -1,7 +1,5 @@
 import {
   Component,
-  ElementRef,
-  HostListener,
   OnInit,
   ViewEncapsulation,
   computed,
@@ -15,6 +13,10 @@ import {
 } from 'src/app/core/models/analytics.model';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
 import { SiteService } from 'src/app/core/services/site.services';
+import {
+  SelectDropdownComponent,
+  SelectOption,
+} from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 import { FunnelTabComponent } from './components/funnel-tab/funnel-tab.component';
 import { OrdersTabComponent } from './components/orders-tab/orders-tab.component';
 import { OverviewTabComponent } from './components/overview-tab/overview-tab.component';
@@ -32,6 +34,7 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
     OverviewTabComponent,
     PaymentFailuresTabComponent,
     RevenueTabComponent,
+    SelectDropdownComponent,
     TopProductsTabComponent,
     VisitorsTabComponent,
   ],
@@ -41,16 +44,14 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
 })
 export class DashboardComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly siteService = inject(SiteService);
 
-  readonly periodOptions: readonly AnalyticsPeriodOption[] = [
+  readonly periodOptions: readonly SelectOption<AnalyticsDashboardPeriod>[] = [
     { value: 'last-7-days', label: 'Last 7 days' },
     { value: 'past-month', label: 'Past month' },
     { value: 'past-year', label: 'Past year' },
     { value: 'from-start', label: 'From the start' },
   ];
-  readonly isPeriodMenuOpen = signal(false);
   readonly selectedPeriod = signal<AnalyticsDashboardPeriod>('last-7-days');
   readonly dashboard = this.analytics.dashboard;
   readonly currency = computed(() => this.siteService.currency() || 'PHP');
@@ -229,15 +230,6 @@ export class DashboardComponent implements OnInit {
       },
     ];
   });
-  readonly maxDailyRevenue = computed(() =>
-    maxBy(this.dashboard().daily, (point) => point.revenue),
-  );
-  readonly maxDailyVisitors = computed(() =>
-    maxBy(this.dashboard().daily, (point) => point.visitors),
-  );
-  readonly maxDailyViews = computed(() =>
-    maxBy(this.dashboard().daily, (point) => point.productViews),
-  );
   readonly maxProductRevenue = computed(() =>
     maxBy(this.dashboard().topProducts, (product) => product.revenue),
   );
@@ -249,27 +241,8 @@ export class DashboardComponent implements OnInit {
     this.loadSelectedDashboard();
   }
 
-  @HostListener('document:click', ['$event'])
-  closePeriodMenuOnDocumentClick(event: MouseEvent): void {
-    const target = event.target as Node | null;
-
-    if (target && !this.host.nativeElement.contains(target)) {
-      this.closePeriodMenu();
-    }
-  }
-
-  togglePeriodMenu(): void {
-    this.isPeriodMenuOpen.update((isOpen) => !isOpen);
-  }
-
-  closePeriodMenu(): void {
-    this.isPeriodMenuOpen.set(false);
-  }
-
-  selectPeriod(period: AnalyticsDashboardPeriod): void {
-    this.closePeriodMenu();
-
-    if (period === this.selectedPeriod()) return;
+  selectPeriod(period: AnalyticsDashboardPeriod | null): void {
+    if (!period || period === this.selectedPeriod()) return;
 
     this.selectedPeriod.set(period);
     this.loadSelectedDashboard();
@@ -300,11 +273,6 @@ export class DashboardComponent implements OnInit {
   private loadSelectedDashboard(): void {
     this.analytics.loadDashboard(this.selectedPeriod());
   }
-}
-
-interface AnalyticsPeriodOption {
-  value: AnalyticsDashboardPeriod;
-  label: string;
 }
 
 function maxBy<T>(items: T[], getValue: (item: T) => number): number {

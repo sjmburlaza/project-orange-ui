@@ -6,21 +6,22 @@ import {
 import { VisitorsTabComponent } from './visitors-tab.component';
 
 describe('VisitorsTabComponent', () => {
-  it('sorts visitor activity by latest day first', async () => {
+  it('renders visitor activity as a chronological chart', async () => {
     const fixture = await renderTab(VisitorsTabComponent, {
       cards: metricCards,
       data: dashboard,
-      maxDailyViews: 2000,
-      maxDailyVisitors: 680,
     });
     const component = fixture.componentInstance;
-    const rows = fixture.nativeElement.querySelectorAll('.daily-row');
 
-    expect(component.dailyLatestFirst.map((day) => day.dateKey)).toEqual([
-      '2026-06-19',
+    expect(
+      fixture.nativeElement.querySelector('app-admin-line-chart'),
+    ).not.toBeNull();
+    expect(component.dailyTrend.map((day) => day.dateKey)).toEqual([
       '2026-06-18',
+      '2026-06-19',
     ]);
-    expect(rows[0].textContent).toContain('Jun 19');
-    expect(rows[0].textContent).toContain('680 / 2,000');
+    expect(component.trafficChartData.labels).toEqual(['Jun 18', 'Jun 19']);
+    expect(component.trafficChartData.datasets[0].data).toEqual([520, 680]);
+    expect(component.trafficChartData.datasets[1].data).toEqual([1400, 2000]);
   });
 });

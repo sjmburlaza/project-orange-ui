@@ -4,7 +4,12 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AnalyticsDashboard } from 'src/app/core/models/analytics.model';
+import { By } from '@angular/platform-browser';
+import {
+  AnalyticsDashboard,
+  AnalyticsDashboardPeriod,
+} from 'src/app/core/models/analytics.model';
+import { SelectDropdownComponent } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 
 import { DashboardComponent } from './dashboard.component';
 
@@ -46,28 +51,20 @@ describe('DashboardComponent', () => {
   it('shows period options and reloads dashboard when a period is selected', () => {
     fixture.detectChanges();
 
-    const trigger = fixture.nativeElement.querySelector(
-      '.analytics__period-trigger',
-    ) as HTMLButtonElement;
+    const dropdown = fixture.debugElement.query(
+      By.directive(SelectDropdownComponent),
+    ).componentInstance as SelectDropdownComponent<AnalyticsDashboardPeriod>;
 
-    expect(trigger).toBeTruthy();
-    expect(trigger.textContent?.trim()).toBe('Last 7 days');
-
-    trigger.click();
-    fixture.detectChanges();
-
-    const options = [
-      ...fixture.nativeElement.querySelectorAll('.analytics__period-option'),
-    ] as HTMLButtonElement[];
-
-    expect(options.map((option) => option.textContent?.trim())).toEqual([
+    expect(dropdown.label).toBe('Period');
+    expect(dropdown.selectedValue).toBe('last-7-days');
+    expect(dropdown.options.map((option) => option.label)).toEqual([
       'Last 7 days',
       'Past month',
       'Past year',
       'From the start',
     ]);
 
-    options[2].click();
+    dropdown.onSelectionChange('past-year');
 
     const req = http.expectOne(
       (request) =>

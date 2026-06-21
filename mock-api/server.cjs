@@ -254,6 +254,8 @@ function normalizeAnalyticsEvent(event, site) {
     return null;
   }
 
+  const value = readEventValue(event);
+
   return {
     ...event,
     id: typeof event.id === 'string' ? event.id : createId(event.type),
@@ -265,6 +267,7 @@ function normalizeAnalyticsEvent(event, site) {
       typeof event.visitorId === 'string' ? event.visitorId : createId('visitor'),
     sessionId:
       typeof event.sessionId === 'string' ? event.sessionId : createId('session'),
+    value,
     site: normalizeSite(site ?? event.site ?? DEFAULT_SITE),
   };
 }
@@ -320,7 +323,7 @@ function buildDashboard(events, period = DEFAULT_ANALYTICS_PERIOD) {
   const paymentFailures = countEvents(scopedEvents, 'payment_failure');
   const purchaseEvents = scopedEvents.filter((event) => event.type === 'purchase');
   const revenue = purchaseEvents.reduce(
-    (total, event) => total + (Number(event.value) || 0),
+    (total, event) => total + readEventValue(event),
     0,
   );
   const unitsSold = purchaseEvents.reduce(
@@ -496,7 +499,7 @@ function addEventToPoint(point, event) {
       break;
     case 'purchase':
       point.purchases += 1;
-      point.revenue += Number(event.value) || 0;
+      point.revenue += readEventValue(event);
       break;
     case 'payment_failure':
       point.paymentFailures += 1;
@@ -590,7 +593,7 @@ function buildOrders(events) {
       occurredAt: event.occurredAt,
       items: event.items ?? [],
       units: sumItems(event.items),
-      revenue: Number(event.value) || 0,
+      revenue: readEventValue(event),
     }))
     .sort(
       (a, b) =>
@@ -604,7 +607,7 @@ function buildPaymentFailures(events) {
     .map((event) => ({
       id: event.id,
       occurredAt: event.occurredAt,
-      amount: Number(event.value) || 0,
+      amount: readEventValue(event),
       reason: event.failureReason ?? 'Payment authorization failed',
       items: event.items ?? [],
     }))
@@ -658,6 +661,36 @@ function uniqueCount(events, getValue) {
 
 function sumItems(items) {
   return items?.reduce((total, item) => total + (Number(item.quantity) || 0), 0) ?? 0;
+}
+
+function readEventValue(event) {
+  return (
+    finiteNumber(event?.value) ??
+    finiteNumber(event?.revenue) ??
+    finiteNumber(event?.amount) ??
+    sumItemRevenue(event?.items)
+  );
+}
+
+function sumItemRevenue(items) {
+  return (
+    items?.reduce(
+      (total, item) =>
+        total +
+        (finiteNumber(item.price) ?? 0) * (finiteNumber(item.quantity) ?? 0),
+      0,
+    ) ?? 0
+  );
+}
+
+function finiteNumber(value) {
+  if (value === null || value === undefined || value === '') {
+    return null;
+  }
+
+  const number = Number(value);
+
+  return Number.isFinite(number) ? number : null;
 }
 
 function safeDivide(numerator, denominator) {
