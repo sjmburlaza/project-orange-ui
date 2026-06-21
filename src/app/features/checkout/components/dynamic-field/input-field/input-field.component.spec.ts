@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { InputFieldComponent } from './input-field.component';
@@ -10,9 +11,9 @@ describe('InputFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InputFieldComponent]
-    })
-    .compileComponents();
+      imports: [InputFieldComponent],
+      providers: [provideTranslateService({ lang: 'en', fallbackLang: 'en' })],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(InputFieldComponent);
     component = fixture.componentInstance;

@@ -1,0 +1,42 @@
+{
+  "checkout": {
+    "actions": {
+      "back": "返回",
+      "next": "下一步",
+      "placeOrder": "提交订单",
+      "processingPayment": "正在处理付款..."
+    },
+    "fulfillment": {
+      "title": "选择履约方式",
+      "loading": "正在加载履约选项...",
+      "typeLabel": "履约类型",
+      "tabs": {
+        "delivery": "配送",
+        "pickup": "自提"
+      },
+      "empty": "暂无可用履约选项。",
+      "emptyByType": {
+        "delivery": "暂无可用配送选项。",
+        "pickup": "暂无可用自提选项。"
+      },
+      "availability": "可用时间：",
+      "free": "免费",
+      "validation": {
+        "required": "请选择履约方式。"
+      }
+    },
+    "payment": {
+      "title": "选择付款方式",
+      "validation": {
+        "required": "请选择付款方式。"
+      }
+    },
+    "selectSearch": {
+      "searchPlaceholder": "搜索...",
+      "noResults": "未找到结果"
+    },
+    "validation": {
+      "invalidField": "{{ label }} 无效"
+    }
+  }
+}

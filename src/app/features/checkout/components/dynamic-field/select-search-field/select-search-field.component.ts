@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { DynamicField, Option } from 'src/app/core/models/checkout.model';
 import { OptionsService } from 'src/app/features/checkout/services/options.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-select-search-field',
@@ -25,6 +26,7 @@ import { OptionsService } from 'src/app/features/checkout/services/options.servi
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
+    TranslatePipe,
   ],
   templateUrl: './select-search-field.component.html',
   styleUrl: './select-search-field.component.scss',

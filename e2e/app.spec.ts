@@ -20,10 +20,10 @@ import {
   checkoutForm,
   createCart,
   createCartItem,
+  fulfillmentOptions,
   productConfigures,
   products,
   save10Voucher,
-  shippingOptions,
 } from './fixtures/catalog';
 
 const sitePreferenceKey = 'orange.sitePreference';
@@ -485,7 +485,7 @@ test.describe('checkout journey', () => {
     await expect(page.getByText('Invalid Last Name')).toBeVisible();
     await expect(page.getByText('Invalid Postal Code')).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: 'Choose your shipping method' }),
+      page.getByRole('heading', { name: 'Choose your fulfillment option' }),
     ).toHaveCount(0);
   });
 
@@ -502,9 +502,20 @@ test.describe('checkout journey', () => {
     await page.getByRole('button', { name: 'Next' }).click();
 
     await expect(
-      page.getByRole('heading', { name: 'Choose your shipping method' }),
+      page.getByRole('heading', { name: 'Choose your fulfillment option' }),
     ).toBeVisible();
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(
+      page.getByRole('button', { name: /Pick up in store/ }),
+    ).toHaveCount(0);
+    await page.getByRole('tab', { name: 'Pickup' }).click();
+    await expect(
+      page.getByRole('button', { name: /Pick up in store/ }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /Standard Delivery/ }),
+    ).toHaveCount(0);
+    await page.getByRole('tab', { name: 'Delivery' }).click();
 
     await page.getByRole('button', { name: /Standard Delivery/ }).click();
     await page.getByRole('button', { name: 'Next' }).click();
@@ -525,7 +536,7 @@ test.describe('checkout journey', () => {
     await expect(page.getByText('iPhone 15')).toBeVisible();
     await expect(page.getByText('Ada Lovelace')).toBeVisible();
     await expect(page.getByText('123 Orange Avenue')).toBeVisible();
-    await expect(page.getByText('3-5 business days')).toBeVisible();
+    await expect(page.getByText('2–4 business days')).toBeVisible();
     await expect(page.getByText('Total amount')).toBeVisible();
     await expect(
       page.getByText('Your payment has been processed successfully.'),
@@ -860,9 +871,9 @@ async function mockOrangeApi(
   });
 
   await page.route(
-    /\/api\/(?:[a-z]{2}\/)?shipping\/options(?:\?.*)?$/,
+    /\/api\/(?:[a-z]{2}\/)?fulfillment\/options(?:\?.*)?$/,
     async (route) => {
-      await route.fulfill({ json: shippingOptions });
+      await route.fulfill({ json: fulfillmentOptions });
     },
   );
 }
@@ -1105,6 +1116,9 @@ function createOrderConfirmation(
   const shipping = asRecord(request.checkoutData['shipping']);
   const paymentMethod = readString(payment, 'paymentMethod', 'credit-card');
   const shippingMethod = readString(shipping, 'shippingMethod', 'standard');
+  const fulfillmentOption = fulfillmentOptions.find(
+    (option) => option.code === shippingMethod,
+  );
   const paymentStatus: PaymentStatus =
     paymentMethod === 'cod' ? 'pending' : 'paid';
 
@@ -1126,10 +1140,10 @@ function createOrderConfirmation(
     })),
     shippingAddress: getShippingAddress(request.checkoutData),
     deliveryEstimate:
-      shippingMethod === 'express' ? '1-2 business days' : '3-5 business days',
+      fulfillmentOption?.estimatedAvailability ?? '3-5 business days',
     deliveredAt: '2026-06-21T00:00:00.000Z',
     trackingNumber: 'ABC123456',
-    courier: 'Orange Express',
+    courier: fulfillmentOption?.courierName ?? 'Orange Express',
     invoiceUrl: `/api/orders/${orderNumber}/invoice`,
     subtotalAmount: getCartTotal(cart),
     shippingAmount: 0,

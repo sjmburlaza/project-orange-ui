@@ -28,6 +28,7 @@ import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'src/app/core/services/site.services';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
 import { Cart } from 'src/app/core/models/cart.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type CheckoutStepComponent =
   | DynamicFormComponent
@@ -46,6 +47,7 @@ type CheckoutStepValue = Record<string, unknown>;
     DynamicFormComponent,
     ShippingStepComponent,
     PaymentStepComponent,
+    TranslatePipe,
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',

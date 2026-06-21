@@ -1,5 +1,5 @@
 <section class="payment-methods">
-  <h3>Choose payment method</h3>
+  <h3>{{ "checkout.payment.title" | translate }}</h3>
 
   <div class="payment-grid">
     @for (option of field?.options ?? []; track option.value) {
@@ -19,6 +19,8 @@
   </div>
 
   @if (paymentMethod.touched && paymentMethod.hasError("required")) {
-    <small class="error">Please select a payment method.</small>
+    <small class="error">
+      {{ "checkout.payment.validation.required" | translate }}
+    </small>
   }
 </section>

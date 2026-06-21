@@ -67,3 +67,8 @@ export interface UpdateQuantityRequest {
 export interface ApplyVoucherRequest {
   code: string;
 }
+
+export interface UpdateCartShippingRequest {
+  postalCode: string;
+  shippingMethodCode: string;
+}

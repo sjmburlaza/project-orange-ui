@@ -7,7 +7,7 @@ export const I18N_RESOURCES = new InjectionToken<readonly string[]>(
   'I18N_RESOURCES',
   {
     providedIn: 'root',
-    factory: () => ['common', 'home', 'products', 'cart', 'orders'],
+    factory: () => ['common', 'home', 'products', 'cart', 'orders', 'checkout'],
   },
 );
 

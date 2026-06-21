@@ -5,11 +5,11 @@ import {
   AddToCartRequest,
   ApplyVoucherRequest,
   Cart,
+  UpdateCartShippingRequest,
   UpdateCartItemAddonRequest,
   UpdateQuantityRequest,
 } from 'src/app/core/models/cart.model';
 import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
-import { UpdateCartShippingRequest } from '../../checkout/services/shipping-pricing.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartApiService {

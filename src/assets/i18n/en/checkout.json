@@ -1,0 +1,42 @@
+{
+  "checkout": {
+    "actions": {
+      "back": "Back",
+      "next": "Next",
+      "placeOrder": "Place Order",
+      "processingPayment": "Processing Payment..."
+    },
+    "fulfillment": {
+      "title": "Choose your fulfillment option",
+      "loading": "Loading fulfillment options...",
+      "typeLabel": "Fulfillment type",
+      "tabs": {
+        "delivery": "Delivery",
+        "pickup": "Pickup"
+      },
+      "empty": "No fulfillment options available.",
+      "emptyByType": {
+        "delivery": "No delivery options available.",
+        "pickup": "No pickup options available."
+      },
+      "availability": "Availability:",
+      "free": "Free",
+      "validation": {
+        "required": "Please select a fulfillment option."
+      }
+    },
+    "payment": {
+      "title": "Choose payment method",
+      "validation": {
+        "required": "Please select a payment method."
+      }
+    },
+    "selectSearch": {
+      "searchPlaceholder": "Search...",
+      "noResults": "No results found"
+    },
+    "validation": {
+      "invalidField": "Invalid {{ label }}"
+    }
+  }
+}
