@@ -35,13 +35,13 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Lint
-        run: npm run lint
+        run: npx ng lint project-orange-v2
 
       - name: Unit tests
-        run: npm run test:ci
+        run: npx ng test project-orange-v2 --watch=false
 
       - name: End-to-end tests
         run: npm run e2e
 
       - name: Build
-        run: npm run build
+        run: npx ng build project-orange-v2
