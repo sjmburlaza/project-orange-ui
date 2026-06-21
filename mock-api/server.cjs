@@ -58,24 +58,34 @@ const DEFAULT_SITES = [
     features: { insurance: true, tradeIn: true, vouchers: false },
   },
 ];
-const DEFAULT_SHIPPING_OPTIONS = [
+const DEFAULT_FULFILLMENT_OPTIONS = [
   {
-    code: 'free',
-    label: 'Free Delivery',
-    price: 0,
-    estimatedDelivery: '5-7 business days',
-  },
-  {
-    code: 'standard',
+    code: 'jnt-standard',
+    type: 'delivery',
+    courierCode: 'jnt',
+    courierName: 'J&T Express',
     label: 'Standard Delivery',
-    price: 100,
-    estimatedDelivery: '3-5 business days',
+    price: 120,
+    estimatedAvailability: '2–4 business days',
   },
   {
-    code: 'express',
+    code: 'lbc-express',
+    type: 'delivery',
+    courierCode: 'lbc',
+    courierName: 'LBC Express',
     label: 'Express Delivery',
-    price: 250,
-    estimatedDelivery: '1-2 business days',
+    price: 180,
+    estimatedAvailability: '1–2 business days',
+  },
+  {
+    code: 'pickup-sm-megamall',
+    type: 'pickup',
+    pickupLocationId: 'sm-megamall',
+    pickupLocationName: 'SM Megamall Pickup Point',
+    pickupAddress: 'Mandaluyong City',
+    label: 'Pick up in store',
+    price: 0,
+    estimatedAvailability: 'Ready in 1–2 days',
   },
 ];
 
@@ -85,7 +95,8 @@ const router = jsonServer.router({
   ...baseDb,
   categories: baseDb.categories ?? deriveCategories(baseDb.products ?? []),
   sites: baseDb.sites ?? DEFAULT_SITES,
-  shippingOptions: baseDb.shippingOptions ?? DEFAULT_SHIPPING_OPTIONS,
+  fulfillmentOptions:
+    baseDb.fulfillmentOptions ?? DEFAULT_FULFILLMENT_OPTIONS,
   analyticsEvents: baseDb.analyticsEvents ?? createSeedEvents(),
 });
 
@@ -116,8 +127,8 @@ server.get('/api/sites/:site', (req, res) => {
 
 server.get('/api/checkout/form', sendCheckoutForm);
 server.get('/api/:site/checkout/form', sendCheckoutForm);
-server.get('/api/shipping/options', sendShippingOptions);
-server.get('/api/:site/shipping/options', sendShippingOptions);
+server.get('/api/fulfillment/options', sendFulfillmentOptions);
+server.get('/api/:site/fulfillment/options', sendFulfillmentOptions);
 server.get('/api/options/:kind', sendOptions);
 server.get('/api/:site/options/:kind', sendOptions);
 
@@ -171,8 +182,8 @@ function sendCheckoutForm(_req, res) {
   res.jsonp(checkoutForm);
 }
 
-function sendShippingOptions(_req, res) {
-  res.jsonp(router.db.get('shippingOptions').value());
+function sendFulfillmentOptions(_req, res) {
+  res.jsonp(router.db.get('fulfillmentOptions').value());
 }
 
 function sendOptions(req, res) {

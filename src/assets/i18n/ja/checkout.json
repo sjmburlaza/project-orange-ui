@@ -1,0 +1,42 @@
+{
+  "checkout": {
+    "actions": {
+      "back": "戻る",
+      "next": "次へ",
+      "placeOrder": "注文する",
+      "processingPayment": "支払いを処理中..."
+    },
+    "fulfillment": {
+      "title": "受け取り方法を選択",
+      "loading": "受け取り方法を読み込み中...",
+      "typeLabel": "受け取り方法の種類",
+      "tabs": {
+        "delivery": "配送",
+        "pickup": "店舗受け取り"
+      },
+      "empty": "利用できる受け取り方法がありません。",
+      "emptyByType": {
+        "delivery": "利用できる配送オプションがありません。",
+        "pickup": "利用できる店舗受け取りオプションがありません。"
+      },
+      "availability": "利用可能時期:",
+      "free": "無料",
+      "validation": {
+        "required": "受け取り方法を選択してください。"
+      }
+    },
+    "payment": {
+      "title": "支払い方法を選択",
+      "validation": {
+        "required": "支払い方法を選択してください。"
+      }
+    },
+    "selectSearch": {
+      "searchPlaceholder": "検索...",
+      "noResults": "結果が見つかりません"
+    },
+    "validation": {
+      "invalidField": "{{ label }} が無効です"
+    }
+  }
+}

@@ -11,7 +11,7 @@ import type {
   ProductVariant,
   StockStatus,
 } from '../../src/app/core/models/product.model';
-import type { ShippingOption } from '../../src/app/features/checkout/services/shipping-pricing.service';
+import type { FulfillmentOption } from '../../src/app/features/checkout/services/fulfillment.service';
 
 export const categories: Category[] = [
   { id: 1, name: 'Phones' },
@@ -154,18 +154,34 @@ export const checkoutForm: CheckoutFormConfig = {
   ],
 };
 
-export const shippingOptions: ShippingOption[] = [
+export const fulfillmentOptions: FulfillmentOption[] = [
   {
-    code: 'standard',
+    code: 'jnt-standard',
+    type: 'delivery',
+    courierCode: 'jnt',
+    courierName: 'J&T Express',
     label: 'Standard Delivery',
-    price: 0,
-    estimatedDelivery: '3-5 business days',
+    price: 120,
+    estimatedAvailability: '2–4 business days',
   },
   {
-    code: 'express',
+    code: 'lbc-express',
+    type: 'delivery',
+    courierCode: 'lbc',
+    courierName: 'LBC Express',
     label: 'Express Delivery',
-    price: 250,
-    estimatedDelivery: '1-2 business days',
+    price: 180,
+    estimatedAvailability: '1–2 business days',
+  },
+  {
+    code: 'pickup-sm-megamall',
+    type: 'pickup',
+    pickupLocationId: 'sm-megamall',
+    pickupLocationName: 'SM Megamall Pickup Point',
+    pickupAddress: 'Mandaluyong City',
+    label: 'Pick up in store',
+    price: 0,
+    estimatedAvailability: 'Ready in 1–2 days',
   },
 ];
 

@@ -1,30 +1,71 @@
 <section class="shipping-options">
-  <h3>Choose your shipping method</h3>
+  <h3>{{ "checkout.fulfillment.title" | translate }}</h3>
 
   @if (isLoading) {
-    <p>Loading shipping options...</p>
+    <p>{{ "checkout.fulfillment.loading" | translate }}</p>
   }
 
-  @if (!isLoading && !shippingOptions.length) {
-    <p>No shipping options available.</p>
+  <div
+    class="fulfillment-tabs"
+    role="tablist"
+    [attr.aria-label]="'checkout.fulfillment.typeLabel' | translate"
+  >
+    @for (tab of fulfillmentTabs; track tab.type) {
+      <button
+        type="button"
+        role="tab"
+        class="fulfillment-tab"
+        [class.active]="selectedFulfillmentType === tab.type"
+        [attr.aria-selected]="selectedFulfillmentType === tab.type"
+        (click)="selectFulfillmentType(tab.type)"
+      >
+        <mat-icon aria-hidden="true">{{ tab.icon }}</mat-icon>
+        {{ tab.labelKey | translate }}
+      </button>
+    }
+  </div>
+
+  @if (!isLoading && !fulfillmentOptions.length) {
+    <p>{{ "checkout.fulfillment.empty" | translate }}</p>
+  } @else if (!isLoading && !filteredFulfillmentOptions.length) {
+    <p>
+      {{
+        "checkout.fulfillment.emptyByType." + selectedFulfillmentType
+          | translate
+      }}
+    </p>
   }
 
   <div class="shipping-list">
-    @for (option of shippingOptions; track option.code) {
+    @for (option of filteredFulfillmentOptions; track option.code) {
       <button
         type="button"
         class="shipping-card"
         [class.selected]="shippingMethod.value === option.code"
-        (click)="selectShipping(option)"
+        (click)="selectFulfillment(option)"
       >
         <div>
           <strong>{{ option.label }}</strong>
-          <p>Estimated delivery: {{ option.estimatedDelivery }}</p>
+          <p>
+            {{ "checkout.fulfillment.availability" | translate }}
+            {{ option.estimatedAvailability }}
+          </p>
+          @if (option.courierName) {
+            <p>{{ option.courierName }}</p>
+          }
+          @if (option.pickupLocationName) {
+            <p>{{ option.pickupLocationName }}</p>
+          }
+          @if (option.pickupAddress) {
+            <p>{{ option.pickupAddress }}</p>
+          }
         </div>
 
         <strong>
           {{
-            option.price === 0 ? "Free" : (option.price | currency: currency())
+            option.price === 0
+              ? ("checkout.fulfillment.free" | translate)
+              : (option.price | currency: currency())
           }}
         </strong>
       </button>
@@ -32,6 +73,8 @@
   </div>
 
   @if (shippingMethod.touched && shippingMethod.hasError("required")) {
-    <small class="error">Please select a shipping method.</small>
+    <small class="error">
+      {{ "checkout.fulfillment.validation.required" | translate }}
+    </small>
   }
 </section>

@@ -7,7 +7,7 @@
 
         <input
           matInput
-          placeholder="Search..."
+          [placeholder]="'checkout.selectSearch.searchPlaceholder' | translate"
           #searchInput
           (input)="search(searchInput.value)"
           (click)="onSearchClick($event)"
@@ -23,7 +23,9 @@
     }
 
     @if (!options.length) {
-      <mat-option disabled class="empty-option"> No results found </mat-option>
+      <mat-option disabled class="empty-option">
+        {{ "checkout.selectSearch.noResults" | translate }}
+      </mat-option>
     }
   </mat-select>
 </mat-form-field>

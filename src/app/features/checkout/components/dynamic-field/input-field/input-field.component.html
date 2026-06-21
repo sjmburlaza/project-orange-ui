@@ -9,6 +9,8 @@
   />
 
   @if (form.get(field.name)?.invalid) {
-    <mat-error> Invalid {{ field.label }} </mat-error>
+    <mat-error>
+      {{ "checkout.validation.invalidField" | translate: { label: field.label } }}
+    </mat-error>
   }
 </mat-form-field>

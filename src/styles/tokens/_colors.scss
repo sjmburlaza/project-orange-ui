@@ -47,6 +47,7 @@ $semantic-colors: (
   main: map-get($primitive-colors, orange-main),
   primary: map-get($primitive-colors, orange-600),
   primary-hover: map-get($primitive-colors, orange-700),
+  secondary: map-get($primitive-colors, orange-500),
   // Layout
   background: map-get($primitive-colors, neutral-0),
   surface: map-get($primitive-colors, neutral-50),

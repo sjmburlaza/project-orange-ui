@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 
@@ -20,9 +21,9 @@ describe('SelectSearchFieldComponent', () => {
             getOptions: () => of([{ label: 'Metro Manila', value: 'metro' }]),
           },
         },
+        provideTranslateService({ lang: 'en', fallbackLang: 'en' }),
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SelectSearchFieldComponent);
     component = fixture.componentInstance;

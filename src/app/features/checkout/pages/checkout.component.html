@@ -35,7 +35,7 @@
           <div class="step-actions">
             @if (i > 0) {
               <button matButton="outlined" type="button" (click)="previous()">
-                Back
+                {{ "checkout.actions.back" | translate }}
               </button>
             }
 
@@ -46,9 +46,14 @@
               (click)="next()"
             >
               @if (i === steps().length - 1 && isPlacingOrder()) {
-                Processing Payment...
+                {{ "checkout.actions.processingPayment" | translate }}
               } @else {
-                {{ i === steps().length - 1 ? "Place Order" : "Next" }}
+                {{
+                  (i === steps().length - 1
+                    ? "checkout.actions.placeOrder"
+                    : "checkout.actions.next"
+                  ) | translate
+                }}
               }
             </button>
           </div>

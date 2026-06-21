@@ -1,0 +1,42 @@
+{
+  "checkout": {
+    "actions": {
+      "back": "Retour",
+      "next": "Suivant",
+      "placeOrder": "Passer la commande",
+      "processingPayment": "Traitement du paiement..."
+    },
+    "fulfillment": {
+      "title": "Choisissez votre option de retrait ou livraison",
+      "loading": "Chargement des options...",
+      "typeLabel": "Type de retrait ou livraison",
+      "tabs": {
+        "delivery": "Livraison",
+        "pickup": "Retrait"
+      },
+      "empty": "Aucune option disponible.",
+      "emptyByType": {
+        "delivery": "Aucune option de livraison disponible.",
+        "pickup": "Aucune option de retrait disponible."
+      },
+      "availability": "Disponibilité :",
+      "free": "Gratuit",
+      "validation": {
+        "required": "Veuillez sélectionner une option."
+      }
+    },
+    "payment": {
+      "title": "Choisissez un mode de paiement",
+      "validation": {
+        "required": "Veuillez sélectionner un mode de paiement."
+      }
+    },
+    "selectSearch": {
+      "searchPlaceholder": "Rechercher...",
+      "noResults": "Aucun résultat trouvé"
+    },
+    "validation": {
+      "invalidField": "{{ label }} non valide"
+    }
+  }
+}
