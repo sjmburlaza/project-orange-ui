@@ -38,6 +38,12 @@
     },
     {
       "path": "./tsconfig.e2e.json"
+    },
+    {
+      "path": "./projects/admin/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/admin/tsconfig.spec.json"
     }
   ]
 }

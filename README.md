@@ -1,6 +1,6 @@
 # Project Orange UI
 
-Project Orange UI is an Angular storefront and admin console for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, and an admin analytics dashboard with revenue, order, visitor, funnel, product, and payment-failure views. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
+Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
 
 ## Tech Stack
 
@@ -43,6 +43,19 @@ http://localhost:4200/cn/products
 http://localhost:4200/jp/products
 ```
 
+Run the standalone admin app when working on order or product management:
+
+```bash
+npm run ng -- serve admin
+```
+
+The admin app runs from `projects/admin/src/app` and currently owns:
+
+```text
+/manage-orders
+/manage-products
+```
+
 ## Available Scripts
 
 | Command                               | Description                                                                  |
@@ -50,7 +63,8 @@ http://localhost:4200/jp/products
 | `npm start`                           | Runs `ng serve` with `proxy.conf.cjs`.                                       |
 | `npm run mock:api`                    | Runs the local json-server analytics mock on port `5176`.                    |
 | `npm run start:e2e`                   | Runs the Angular dev server with the e2e build configuration.                |
-| `npm run build`                       | Builds the app for production into `dist/`.                                  |
+| `npm run build`                       | Builds the default storefront app for production into `dist/`.               |
+| `npm run build -- admin`              | Builds the standalone admin app into `dist/admin`.                           |
 | `npm run watch`                       | Builds in watch mode with the development configuration.                     |
 | `npm test`                            | Runs unit tests.                                                             |
 | `npm run test:watch`                  | Runs unit tests in watch mode.                                               |
@@ -84,11 +98,16 @@ Most app routes are scoped by site:
 | `/:site/orders/my-orders`             | Orders route alias for lookup and history.                         |
 | `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                            |
 | `/:site/profile/account-settings`     | Customer account settings.                                         |
-| `/:site/admin/dashboard`              | Admin dashboard. Requires an authenticated admin session.          |
-| `/:site/admin/manage-orders`          | Admin order management. Requires an authenticated admin session.   |
-| `/:site/admin/manage-products`        | Admin product management. Requires an authenticated admin session. |
+| `/:site/admin/dashboard`              | Admin analytics dashboard. Requires an authenticated admin session. |
 
 Unsupported site codes are redirected back to the country selector.
+
+The standalone admin app owns management pages outside the site-scoped storefront route tree:
+
+| Route              | Purpose                   |
+| ------------------ | ------------------------- |
+| `/manage-orders`   | Admin order management.   |
+| `/manage-products` | Admin product management. |
 
 ## API Behavior
 
@@ -212,7 +231,7 @@ src/app/core
   services/         Site, storage, country detection, and postal code services
 
 src/app/features
-  admin/            Admin dashboard, order management, product management
+  admin/            Site-scoped admin analytics dashboard
   auth/             Login, register, forgot password, reset password
   cart/             Cart page, cart store, cart API, cart item add-ons
   checkout/         Dynamic checkout form, shipping, payment
@@ -234,6 +253,10 @@ src/app/shared
   components/       Shared controls such as buttons, dropdowns, sliders, spinners
   pipes/            Shared pipes
   validators/       Shared validators
+
+projects/admin/src/app
+  app.routes.ts     Standalone admin app routes
+  pages/            Admin order and product management pages
 ```
 
 ## Testing
