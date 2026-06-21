@@ -21,7 +21,7 @@
       @for (item of navItems(); track item.displayName) {
         <a
           class="nav-item"
-          [routerLink]="['/', site(), 'products']"
+          [routerLink]="['/', site(), item.path ?? 'products']"
           [queryParams]="item.queryParams"
           routerLinkActive="nav-item--active"
           [routerLinkActiveOptions]="{ exact: true }"

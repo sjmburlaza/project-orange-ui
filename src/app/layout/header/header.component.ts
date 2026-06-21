@@ -15,6 +15,7 @@ import headerMockData from 'src/assets/mock/header/header.json';
 
 interface HeaderNavItem {
   displayName: string;
+  path?: string;
   queryParams: { category: string } | null;
 }
 

@@ -1,0 +1,24 @@
+{
+  "support": {
+    "hero": {
+      "eyebrow": "Orange 支持",
+      "title": "我们可以如何帮助您？",
+      "intro": "Orange 支持团队可协助您处理订单、产品设置、退货和账户相关问题。"
+    },
+    "options": {
+      "ariaLabel": "支持选项",
+      "orders": {
+        "title": "订单和配送",
+        "description": "追踪订单、查看配送更新，或获取购买相关帮助。"
+      },
+      "returns": {
+        "title": "退货和换货",
+        "description": "发起退货、更换设备，或查看退款时间。"
+      },
+      "account": {
+        "title": "账户支持",
+        "description": "管理登录、已保存的信息和个人资料设置。"
+      }
+    }
+  }
+}

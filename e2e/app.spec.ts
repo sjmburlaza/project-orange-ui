@@ -234,6 +234,16 @@ test.describe('routing and catalog', () => {
       'Orange Studio Monitor',
       'Mechanical Keyboard',
     ]);
+
+    await header.getByRole('link', { name: 'Support' }).click();
+
+    await expect(page).toHaveURL(/\/ph\/support$/);
+    await expect(
+      page.getByRole('heading', { name: 'How can we help?' }),
+    ).toBeVisible();
+    await expect(header.getByRole('link', { name: 'Support' })).toHaveClass(
+      /nav-item--active/,
+    );
   });
 
   test('sorts products by price in both directions', async ({ page }) => {
