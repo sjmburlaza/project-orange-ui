@@ -55,9 +55,8 @@ describe('DashboardComponent', () => {
       By.directive(SelectDropdownComponent),
     ).componentInstance as SelectDropdownComponent<AnalyticsDashboardPeriod>;
 
+    expect(dropdown.label).toBe('Period');
     expect(dropdown.selectedValue).toBe('last-7-days');
-    expect(dropdown.includeEmptyOption).toBe(false);
-    expect(dropdown.variant).toBe('inline');
     expect(dropdown.options.map((option) => option.label)).toEqual([
       'Last 7 days',
       'Past month',
