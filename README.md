@@ -4,6 +4,8 @@ Project Orange UI is an Angular storefront and admin workspace for a multi-count
 
 ## Demos
 
+> ⚠️ Demo GIF may take a few seconds to load depending on your network connection.
+
 Configure product to checkout flow
 
 ![Configure product to checkout flow](src/assets/demos/checkout-flow.gif)
