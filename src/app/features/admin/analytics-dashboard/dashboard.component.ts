@@ -42,7 +42,7 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class DashboardComponent implements OnInit {
+export class AnalyticsDashboardComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
   private readonly siteService = inject(SiteService);
 

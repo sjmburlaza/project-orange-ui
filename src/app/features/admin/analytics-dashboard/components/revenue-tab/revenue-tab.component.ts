@@ -5,7 +5,7 @@ import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
-import { LineChartComponent } from 'src/app/features/admin/components/line-chart/line-chart.component';
+import { LineChartComponent } from 'src/app/features/admin/charts/line-chart/line-chart.component';
 import { InfoTooltipComponent } from 'src/app/shared/components/info-tooltip/info-tooltip.component';
 import {
   chartColors,
@@ -15,7 +15,12 @@ import { barWidth } from '../dashboard-tab.utils';
 
 @Component({
   selector: 'app-revenue-tab',
-  imports: [InfoTooltipComponent, CurrencyPipe, DecimalPipe, LineChartComponent],
+  imports: [
+    InfoTooltipComponent,
+    CurrencyPipe,
+    DecimalPipe,
+    LineChartComponent,
+  ],
   templateUrl: './revenue-tab.component.html',
 })
 export class RevenueTabComponent implements OnChanges {

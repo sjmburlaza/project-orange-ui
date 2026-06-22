@@ -92,7 +92,7 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 The root route (`/`) loads the country entry screen. It uses `/api/sites` and `/api/geo/country` to list supported sites and suggest a country when possible. The selected site is saved in local storage under `orange.sitePreference`.
 
-For detailed analytics dashboard documentation, see [Dashboard Analytics](src/app/features/admin/pages/dashboard/README.md).
+For detailed analytics dashboard documentation, see [Dashboard Analytics](src/app/features/admin/analytics-dashboard/README.md). The site-scoped dashboard now lives under `src/app/features/admin/analytics-dashboard`, its tab components live in `analytics-dashboard/components`, and reusable chart wrappers live under `src/app/features/admin/charts`.
 
 Most app routes are scoped by site:
 
@@ -243,7 +243,7 @@ src/app/core
   services/         Site, storage, country detection, and postal code services
 
 src/app/features
-  admin/            Site-scoped admin analytics dashboard
+  admin/            Site-scoped analytics dashboard plus reusable chart wrappers
   auth/             Login, register, forgot password, reset password
   cart/             Cart page, cart store, cart API, cart item add-ons
   checkout/         Dynamic checkout form, shipping, payment

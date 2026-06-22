@@ -6,7 +6,7 @@ import {
   AnalyticsDailyPoint,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
-import { BarChartComponent } from 'src/app/features/admin/components/bar-chart/bar-chart.component';
+import { BarChartComponent } from 'src/app/features/admin/charts/bar-chart/bar-chart.component';
 import { InfoTooltipComponent } from 'src/app/shared/components/info-tooltip/info-tooltip.component';
 import {
   chartColors,
@@ -29,8 +29,9 @@ export class PaymentFailuresTabComponent implements OnChanges {
   @Input({ required: true }) cards!: AnalyticsMetricCard[];
   @Input({ required: true }) currency!: string;
 
-  readonly failureChartOptions: ChartOptions<'bar'> =
-    dashboardBarChartOptions((value) => this.formatNumber(value));
+  readonly failureChartOptions: ChartOptions<'bar'> = dashboardBarChartOptions(
+    (value) => this.formatNumber(value),
+  );
   failureChartData: ChartData<'bar', number[], string> = {
     labels: [],
     datasets: [],

@@ -37,15 +37,18 @@ Primary implementation files:
 
 | Area | File |
 | --- | --- |
-| Dashboard container | `src/app/features/admin/pages/dashboard/dashboard.component.ts` |
-| Dashboard layout | `src/app/features/admin/pages/dashboard/dashboard.component.html` |
-| Dashboard styling | `src/app/features/admin/pages/dashboard/dashboard.component.scss` |
-| Shared tab math | `src/app/features/admin/pages/dashboard/components/dashboard-tab.utils.ts` |
+| Dashboard route | `src/app/features/admin/admin.routes.ts` |
+| Dashboard container | `src/app/features/admin/analytics-dashboard/dashboard.component.ts` |
+| Dashboard layout | `src/app/features/admin/analytics-dashboard/dashboard.component.html` |
+| Dashboard styling | `src/app/features/admin/analytics-dashboard/dashboard.component.scss` |
+| Shared tab math | `src/app/features/admin/analytics-dashboard/components/dashboard-tab.utils.ts` |
+| Shared chart options | `src/app/features/admin/analytics-dashboard/components/dashboard-chart.utils.ts` |
+| Reusable chart wrappers | `src/app/features/admin/charts/` |
 | Analytics models | `src/app/core/models/analytics.model.ts` |
 | Analytics client service | `src/app/core/services/analytics.service.ts` |
 | Empty dashboard helpers | `src/app/core/services/analytics.helpers.ts` |
 | Local mock API | `mock-api/server.cjs` |
-| Tab unit test fixtures | `src/app/features/admin/pages/dashboard/components/dashboard-tab.spec-fixtures.ts` |
+| Tab unit test fixtures | `src/app/features/admin/analytics-dashboard/components/dashboard-tab.spec-fixtures.ts` |
 | E2E coverage | `e2e/app.spec.ts` |
 
 Dashboard tab components:
@@ -67,7 +70,7 @@ flowchart TD
   A["Storefront UI"] --> B["AnalyticsService"]
   B --> C["POST /api/analytics/events"]
   C --> D["Analytics event store"]
-  E["Admin dashboard route"] --> F["DashboardComponent"]
+  E["Admin dashboard route"] --> F["AnalyticsDashboardComponent"]
   F --> G["GET /api/admin/analytics/dashboard?period=..."]
   G --> H["AnalyticsDashboard response"]
   H --> I["Dashboard metric cards"]
@@ -363,7 +366,7 @@ Payment authorization failed
 
 ## Dashboard Container Behavior
 
-`DashboardComponent` owns the period selector and high-level metric-card construction.
+`AnalyticsDashboardComponent` owns the period selector and high-level metric-card construction.
 
 Important state:
 
@@ -499,7 +502,7 @@ The dashboard has two levels of unit coverage:
 The tab specs share fixtures from:
 
 ```text
-src/app/features/admin/pages/dashboard/components/dashboard-tab.spec-fixtures.ts
+src/app/features/admin/analytics-dashboard/components/dashboard-tab.spec-fixtures.ts
 ```
 
 Run unit tests with:
@@ -545,7 +548,7 @@ Use this checklist when adding a dashboard metric:
 2. Update `AnalyticsEvent` or related item models if the event needs new fields.
 3. Update the backend or mock aggregation in `mock-api/server.cjs`.
 4. Add the field to `AnalyticsDashboard` if it is a top-level metric.
-5. Add a metric card in `DashboardComponent` or render the value in a tab.
+5. Add a metric card in `AnalyticsDashboardComponent` or render the value in a tab.
 6. Add or update the relevant tab unit test.
 7. Update the dashboard e2e test if the new metric is user-critical.
 8. Update this README with the metric definition and formula.
@@ -554,8 +557,8 @@ Use this checklist when adding a dashboard metric:
 
 Use this checklist when adding a dashboard tab:
 
-1. Create a standalone component under `components/<tab-name>-tab/`.
-2. Add the tab component to `DashboardComponent.imports`.
+1. Create a standalone component under `src/app/features/admin/analytics-dashboard/components/<tab-name>-tab/`.
+2. Add the tab component to `AnalyticsDashboardComponent.imports`.
 3. Add a `<mat-tab>` entry in `dashboard.component.html`.
 4. Pass only the inputs the tab needs.
 5. Keep tab-specific computation local when it only affects that tab.
