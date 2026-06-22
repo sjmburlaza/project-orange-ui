@@ -445,7 +445,7 @@ test.describe('admin dashboard', () => {
   test('loads admin analytics and refreshes the selected period', async ({
     page,
   }) => {
-    await page.goto('/ph/admin/dashboard');
+    await page.goto('/ph/admin/analytics-dashboard');
 
     await expect(
       page.getByRole('heading', { name: 'Analytics Dashboard' }),

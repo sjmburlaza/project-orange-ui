@@ -199,23 +199,11 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "buildTarget": "admin:build:development",
             "tsConfig": "projects/admin/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/admin/public"
-              }
-            ],
-            "styles": [
-              "projects/admin/src/styles.scss"
-            ]
+            "runner": "vitest"
           }
         }
       }

@@ -84,7 +84,7 @@ export class LoginComponent {
 
   private getPostLoginUrl(response: AuthSession): string {
     return response.user.roles.includes(ROLES.ADMIN)
-      ? `/${this.site}/admin/dashboard`
+      ? `/${this.site}/admin/analytics-dashboard`
       : `/${this.site}/cart`;
   }
 }

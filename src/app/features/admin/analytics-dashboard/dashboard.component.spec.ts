@@ -11,22 +11,22 @@ import {
 } from 'src/app/core/models/analytics.model';
 import { SelectDropdownComponent } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 
-import { DashboardComponent } from './dashboard.component';
+import { AnalyticsDashboardComponent } from './dashboard.component';
 
 describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
+  let component: AnalyticsDashboardComponent;
+  let fixture: ComponentFixture<AnalyticsDashboardComponent>;
   let http: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent],
+      imports: [AnalyticsDashboardComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     http = TestBed.inject(HttpTestingController);
 
-    fixture = TestBed.createComponent(DashboardComponent);
+    fixture = TestBed.createComponent(AnalyticsDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 

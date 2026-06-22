@@ -47,7 +47,9 @@ describe('LoginComponent', () => {
     submitLoginForm();
 
     expect(authStore.setSession).toHaveBeenCalledWith(session);
-    expect(router.navigate).toHaveBeenCalledWith(['/ph/admin/dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith([
+      '/ph/admin/analytics-dashboard',
+    ]);
   });
 
   it('redirects non-admin users to the cart after login', () => {
