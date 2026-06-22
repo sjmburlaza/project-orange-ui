@@ -2,6 +2,16 @@
 
 Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
 
+## Demos
+
+Configure product to checkout flow
+
+![Configure product to checkout flow](src/assets/demos/checkout-flow.gif)
+
+Analytics Dashboard
+
+![Analytics Dashboard](src/assets/demos/analytics-dashboard.gif)
+
 ## Tech Stack
 
 - Angular 20 with standalone components and lazy routes
@@ -84,20 +94,20 @@ For detailed analytics dashboard documentation, see [Dashboard Analytics](src/ap
 
 Most app routes are scoped by site:
 
-| Route                                 | Purpose                                                            |
-| ------------------------------------- | ------------------------------------------------------------------ |
-| `/:site/products`                     | Product listing with category, sort, and price filters.            |
-| `/:site/products/detail`              | Product detail page.                                               |
-| `/:site/cart`                         | Cart review, quantity updates, vouchers, shipping, and add-ons.    |
-| `/:site/checkout`                     | Dynamic checkout form, shipping, payment, and order summary flow.  |
-| `/:site/auth/login`                   | Sign in.                                                           |
-| `/:site/auth/register`                | Account registration.                                              |
-| `/:site/auth/forgot-password`         | Password reset entry point.                                        |
-| `/:site/auth/reset-password`          | Complete password reset with email and token.                      |
-| `/:site/orders`                       | Guest order lookup or signed-in order history.                     |
-| `/:site/orders/my-orders`             | Orders route alias for lookup and history.                         |
-| `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                            |
-| `/:site/profile/account-settings`     | Customer account settings.                                         |
+| Route                                 | Purpose                                                             |
+| ------------------------------------- | ------------------------------------------------------------------- |
+| `/:site/products`                     | Product listing with category, sort, and price filters.             |
+| `/:site/products/detail`              | Product detail page.                                                |
+| `/:site/cart`                         | Cart review, quantity updates, vouchers, shipping, and add-ons.     |
+| `/:site/checkout`                     | Dynamic checkout form, shipping, payment, and order summary flow.   |
+| `/:site/auth/login`                   | Sign in.                                                            |
+| `/:site/auth/register`                | Account registration.                                               |
+| `/:site/auth/forgot-password`         | Password reset entry point.                                         |
+| `/:site/auth/reset-password`          | Complete password reset with email and token.                       |
+| `/:site/orders`                       | Guest order lookup or signed-in order history.                      |
+| `/:site/orders/my-orders`             | Orders route alias for lookup and history.                          |
+| `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                             |
+| `/:site/profile/account-settings`     | Customer account settings.                                          |
 | `/:site/admin/dashboard`              | Admin analytics dashboard. Requires an authenticated admin session. |
 
 Unsupported site codes are redirected back to the country selector.
