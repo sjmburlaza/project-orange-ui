@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [MatTooltipModule],
   templateUrl: './info-tooltip.component.html',
   styleUrl: './info-tooltip.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoTooltipComponent {
   @Input({ required: true }) description!: string;

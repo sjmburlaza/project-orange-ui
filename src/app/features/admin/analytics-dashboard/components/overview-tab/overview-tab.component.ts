@@ -1,5 +1,5 @@
 import { CurrencyPipe, DecimalPipe, PercentPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
@@ -9,13 +9,9 @@ import { barWidth } from '../dashboard-tab.utils';
 
 @Component({
   selector: 'app-overview-tab',
-  imports: [
-    InfoTooltipComponent,
-    CurrencyPipe,
-    DecimalPipe,
-    PercentPipe,
-  ],
+  imports: [InfoTooltipComponent, CurrencyPipe, DecimalPipe, PercentPipe],
   templateUrl: './overview-tab.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewTabComponent {
   @Input({ required: true }) data!: AnalyticsDashboard;

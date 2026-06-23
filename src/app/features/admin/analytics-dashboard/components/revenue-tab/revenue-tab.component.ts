@@ -1,5 +1,10 @@
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+} from '@angular/core';
 import type { ChartData, ChartOptions } from 'chart.js';
 import {
   AnalyticsDashboard,
@@ -22,6 +27,7 @@ import { barWidth } from '../dashboard-tab.utils';
     LineChartComponent,
   ],
   templateUrl: './revenue-tab.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RevenueTabComponent implements OnChanges {
   @Input({ required: true }) data!: AnalyticsDashboard;

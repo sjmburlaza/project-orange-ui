@@ -1,5 +1,12 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem } from 'src/app/core/models/cart.model';
@@ -19,6 +26,7 @@ import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
   ],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartItemComponent {
   private readonly dialog = inject(MatDialog);
