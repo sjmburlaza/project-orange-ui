@@ -1,5 +1,10 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+} from '@angular/core';
 import type { ChartData, ChartOptions } from 'chart.js';
 import {
   AnalyticsDashboard,
@@ -17,6 +22,7 @@ import {
   selector: 'app-visitors-tab',
   imports: [InfoTooltipComponent, DecimalPipe, LineChartComponent],
   templateUrl: './visitors-tab.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisitorsTabComponent implements OnChanges {
   @Input({ required: true }) data!: AnalyticsDashboard;

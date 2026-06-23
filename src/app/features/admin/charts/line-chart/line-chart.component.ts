@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import type { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
@@ -7,6 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
   imports: [BaseChartDirective],
   templateUrl: './line-chart.component.html',
   styleUrl: './line-chart.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineChartComponent {
   @Input({ required: true }) data!: ChartData<'line', number[], string>;

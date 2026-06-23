@@ -1,5 +1,5 @@
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
@@ -10,6 +10,7 @@ import { InfoTooltipComponent } from 'src/app/shared/components/info-tooltip/inf
   selector: 'app-orders-tab',
   imports: [InfoTooltipComponent, CurrencyPipe, DatePipe, DecimalPipe],
   templateUrl: './orders-tab.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersTabComponent {
   @Input({ required: true }) data!: AnalyticsDashboard;

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   Addon,
@@ -29,6 +36,7 @@ interface RemoveAddonEvent {
   imports: [IconPipe, TranslatePipe, CurrencyPipe],
   templateUrl: './addon.component.html',
   styleUrl: './addon.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddonComponent {
   @Input({ required: true }) addon!: Addon;
