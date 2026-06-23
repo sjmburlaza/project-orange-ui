@@ -1,7 +1,7 @@
 <div class="product-list">
   @if (products$ | async; as products) {
     <app-product-list-toolbar
-      [sortOptions]="sortOptions$ | async"
+      [sortOptions]="sortOptions"
       [selectedSort]="selectedSort$ | async"
       [priceRange]="priceRange$ | async"
       [priceMax]="(priceMax$ | async) ?? 0"

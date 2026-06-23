@@ -6,13 +6,9 @@ import {
   ProductVariant,
 } from 'src/app/core/models/product.model';
 import {
-  selectHasActiveProductFilters,
   selectInsurancePlansForProduct,
   selectMobilePlansForProduct,
-  selectPriceMax,
-  selectPriceRange,
   selectProductFilters,
-  selectProductListWithStockStatus,
   selectSelectedProductConfigure,
 } from './products.selector';
 
@@ -26,19 +22,6 @@ describe('product selectors', () => {
       minPrice: 1000,
       maxPrice: 5000,
     });
-  });
-
-  it('detects active product filters that can reduce the result count', () => {
-    expect(selectHasActiveProductFilters.projector(null, null, null)).toBe(
-      false,
-    );
-    expect(selectHasActiveProductFilters.projector(3, null, null)).toBe(true);
-    expect(selectHasActiveProductFilters.projector(null, 1000, null)).toBe(
-      true,
-    );
-    expect(selectHasActiveProductFilters.projector(null, null, 5000)).toBe(
-      true,
-    );
   });
 
   it('returns the selected product configure data from the configure cache', () => {
@@ -56,34 +39,6 @@ describe('product selectors', () => {
     );
     expect(selectSelectedProductConfigure.projector(configures, null)).toBeNull();
     expect(selectSelectedProductConfigure.projector(configures, 999)).toBeNull();
-  });
-
-  it('adds stock availability to product cards', () => {
-    const products: Product[] = [
-      createProduct({ id: 1, stockQuantity: 5 }),
-      createProduct({ id: 2, stockQuantity: 0 }),
-    ];
-
-    expect(selectProductListWithStockStatus.projector(products)).toEqual([
-      { ...products[0], isInStock: true },
-      { ...products[1], isInStock: false },
-    ]);
-  });
-
-  it('uses the first loaded product max when no max price is selected', () => {
-    expect(selectPriceMax.projector(72990, null)).toBe(72990);
-    expect(selectPriceRange.projector(null, null, 72990)).toEqual({
-      min: 0,
-      max: 72990,
-    });
-  });
-
-  it('keeps the slider max at least as high as the selected max price', () => {
-    expect(selectPriceMax.projector(39999, 50000)).toBe(50000);
-    expect(selectPriceRange.projector(1000, 50000, 50000)).toEqual({
-      min: 1000,
-      max: 50000,
-    });
   });
 
   it('reads product add-on plans by product id', () => {

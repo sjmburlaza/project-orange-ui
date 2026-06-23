@@ -8,12 +8,14 @@ import { ProductCardComponent } from 'src/app/features/products/components/produ
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
 import { RangeValue } from 'src/app/shared/components/range-slider/range-slider.component';
+import { SelectOption } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
   filter,
   map,
+  shareReplay,
   Subject,
   withLatestFrom,
 } from 'rxjs';
@@ -46,18 +48,68 @@ export class ProductListComponent implements OnInit {
 
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
 
-  readonly sortOptions$ = this.productFacade.sortOptions$;
+  readonly sortOptions: SelectOption<ProductSort>[] = [
+    {
+      label: 'Price: Low to High',
+      value: 'price-asc',
+    },
+    {
+      label: 'Price: High to Low',
+      value: 'price-desc',
+    },
+    {
+      label: 'Name: A to Z',
+      value: 'name-asc',
+    },
+    {
+      label: 'Name: Z to A',
+      value: 'name-desc',
+    },
+  ];
   readonly selectedSort$ = this.productFacade.selectedSort$;
 
-  readonly priceRange$ = this.productFacade.priceRange$;
-  readonly priceMax$ = this.productFacade.priceMax$;
-  readonly hasActiveProductFilters$ =
-    this.productFacade.hasActiveProductFilters$;
+  readonly priceMax$ = combineLatest([
+    this.productFacade.priceFilterMax$,
+    this.productFacade.maxPrice$,
+  ]).pipe(
+    map(([priceFilterMax, selectedMaxPrice]) =>
+      Math.max(priceFilterMax ?? 0, selectedMaxPrice ?? 0),
+    ),
+    shareReplay({ bufferSize: 1, refCount: true }),
+  );
+
+  readonly priceRange$ = combineLatest([
+    this.productFacade.minPrice$,
+    this.productFacade.maxPrice$,
+    this.priceMax$,
+  ]).pipe(
+    map(
+      ([minPrice, maxPrice, priceMax]): RangeValue => ({
+        min: minPrice ?? 0,
+        max: maxPrice ?? priceMax,
+      }),
+    ),
+    shareReplay({ bufferSize: 1, refCount: true }),
+  );
+
+  readonly hasActiveProductFilters$ = combineLatest([
+    this.selectedCategoryId$,
+    this.productFacade.minPrice$,
+    this.productFacade.maxPrice$,
+  ]).pipe(
+    map(
+      ([categoryId, minPrice, maxPrice]) =>
+        categoryId !== null || minPrice !== null || maxPrice !== null,
+    ),
+    shareReplay({ bufferSize: 1, refCount: true }),
+  );
+
   readonly pricePrefix = computed(() => {
     const currency = this.siteService.currency();
 
     return currency ? getCurrencySymbol(currency, 'narrow') : '';
   });
+
   private readonly priceRangeChange$ = new Subject<RangeValue>();
 
   ngOnInit(): void {

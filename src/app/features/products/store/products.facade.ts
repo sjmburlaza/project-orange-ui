@@ -11,7 +11,6 @@ import {
 
 import {
   selectProducts,
-  selectProductListWithStockStatus,
   selectSelectedProductId,
   selectSelectedProductConfigure,
   selectLoadingProducts,
@@ -20,15 +19,12 @@ import {
   selectProductConfigureError,
   selectCategories,
   selectCategoriesError,
-  selectCategoryOptions,
   selectLoadingCategories,
   selectSelectedCategoryId,
   selectSelectedSort,
-  selectSortOptions,
-  selectHasActiveProductFilters,
-  selectProductFilters,
-  selectPriceRange,
-  selectPriceMax,
+  selectMinPrice,
+  selectMaxPrice,
+  selectPriceFilterMax,
   selectInsurancePlansForProduct,
   selectMobilePlansForProduct,
   selectLoadingInsurancePlansForProduct,
@@ -44,7 +40,6 @@ export class ProductFacade {
   private readonly store = inject(Store);
 
   readonly products$ = this.store.select(selectProducts);
-  readonly productCards$ = this.store.select(selectProductListWithStockStatus);
 
   readonly selectedProductId$ = this.store.select(selectSelectedProductId);
   readonly selectedProductConfigure$ = this.store.select(
@@ -62,21 +57,15 @@ export class ProductFacade {
   );
 
   readonly categories$ = this.store.select(selectCategories);
-  readonly categoryOptions$ = this.store.select(selectCategoryOptions);
   readonly selectedCategoryId$ = this.store.select(selectSelectedCategoryId);
   readonly loadingCategories$ = this.store.select(selectLoadingCategories);
   readonly categoriesError$ = this.store.select(selectCategoriesError);
 
   readonly selectedSort$ = this.store.select(selectSelectedSort);
-  readonly sortOptions$ = this.store.select(selectSortOptions);
 
-  readonly priceRange$ = this.store.select(selectPriceRange);
-  readonly priceMax$ = this.store.select(selectPriceMax);
-
-  readonly filters$ = this.store.select(selectProductFilters);
-  readonly hasActiveProductFilters$ = this.store.select(
-    selectHasActiveProductFilters,
-  );
+  readonly minPrice$ = this.store.select(selectMinPrice);
+  readonly maxPrice$ = this.store.select(selectMaxPrice);
+  readonly priceFilterMax$ = this.store.select(selectPriceFilterMax);
 
   loadProducts(): void {
     this.store.dispatch(ProductActions.loadProducts({ filters: {} }));
