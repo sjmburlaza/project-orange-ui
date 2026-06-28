@@ -311,7 +311,10 @@ test.describe('cart journey', () => {
     const cartItem = page.locator('app-cart-item').filter({ hasText: 'iPhone 15' });
     await expect(cartItem.getByText('In Stock')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Summary' })).toBeVisible();
-    await expect(page.getByText('Continue to checkout')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Checkout as guest' }),
+    ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'You may also like' }),
     ).toBeVisible();
@@ -346,7 +349,7 @@ test.describe('cart journey', () => {
     await expect(page.getByText('SAVE10')).toHaveCount(0);
     await expect(page.getByText('Voucher Discount')).toHaveCount(0);
 
-    await page.getByRole('button', { name: 'Continue to checkout' }).click();
+    await page.getByRole('button', { name: 'Checkout as guest' }).click();
 
     await expect(page).toHaveURL(/\/ph\/checkout$/);
     await expect(page.getByText('Customer Details')).toBeVisible();
@@ -595,7 +598,7 @@ async function addIphoneToCart(page: Page): Promise<void> {
 async function startCheckout(page: Page): Promise<void> {
   await addIphoneToCart(page);
   await page.getByRole('button', { name: 'Go to Cart' }).click();
-  await page.getByRole('button', { name: 'Continue to checkout' }).click();
+  await page.getByRole('button', { name: 'Checkout as guest' }).click();
 
   await expect(page).toHaveURL(/\/ph\/checkout$/);
   await expect(page.getByText('Customer Details')).toBeVisible();
