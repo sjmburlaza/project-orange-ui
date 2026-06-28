@@ -5,16 +5,23 @@ const ICON_MAP = {
   laptops: 'assets/icons/laptop.svg',
   accessories: 'assets/icons/keyboard.svg',
   monitors: 'assets/icons/display.svg',
+  keyboard: 'assets/icons/keyboard.svg',
+  mouse: 'assets/icons/mouse.svg',
+  earbuds: 'assets/icons/earbuds.svg',
+  headphones: 'assets/icons/headphones.svg',
+  headset: 'assets/icons/headset.svg',
+  save: 'assets/icons/bookmark.svg',
   insurance: 'assets/icons/shield-check.svg',
   'mobile-plan': 'assets/icons/sim.svg',
   'trade-in': 'assets/icons/arrow-repeat.svg',
   delete: 'assets/icons/trash.svg',
   add: 'assets/icons/plus-lg.svg',
   cart: 'assets/icons/cart2.svg',
+  error: 'assets/icons/exclamation-circle.svg',
 } as const;
 
 type IconName = keyof typeof ICON_MAP;
-type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+type IconSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
   selector: 'app-icon',

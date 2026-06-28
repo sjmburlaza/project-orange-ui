@@ -2,18 +2,25 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { Cart } from 'src/app/core/models/cart.model';
 import { CartActions } from './cart.actions';
 import { CartUiMessage } from 'src/app/core/models/cart-message.model';
+import { ProductConfigure } from 'src/app/core/models/product.model';
 
 export interface CartState {
   cart: Cart | null;
+  recommendedProducts: ProductConfigure[];
   loading: boolean;
+  loadingRecommendedProducts: boolean;
   error: string | null;
+  recommendedProductsError: string | null;
   voucherError: CartUiMessage | null;
 }
 
 export const initialCartState: CartState = {
   cart: null,
+  recommendedProducts: [],
   loading: false,
+  loadingRecommendedProducts: false,
   error: null,
+  recommendedProductsError: null,
   voucherError: null,
 };
 
@@ -68,6 +75,25 @@ export const cartFeature = createFeature({
         error,
       }),
     ),
+
+    on(CartActions.loadRecommendedProducts, (state) => ({
+      ...state,
+      loadingRecommendedProducts: true,
+      recommendedProductsError: null,
+    })),
+
+    on(CartActions.loadRecommendedProductsSuccess, (state, { products }) => ({
+      ...state,
+      recommendedProducts: products,
+      loadingRecommendedProducts: false,
+      recommendedProductsError: null,
+    })),
+
+    on(CartActions.loadRecommendedProductsFailure, (state, { error }) => ({
+      ...state,
+      loadingRecommendedProducts: false,
+      recommendedProductsError: error,
+    })),
 
     on(CartActions.applyVoucher, CartActions.removeVoucher, (state) => ({
       ...state,

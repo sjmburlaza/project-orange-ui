@@ -1,0 +1,93 @@
+@let products = (recommendedProducts$ | async) ?? [];
+
+@if (products.length > 0) {
+  <app-carousel
+    class="recommended-products"
+    [items]="products"
+    [visibleItemCount]="visibleProductCount"
+    [previousLabel]="'cart.recommendedProducts.previous' | translate"
+    [nextLabel]="'cart.recommendedProducts.next' | translate"
+    ariaLabelledBy="cart-recommended-products-title"
+  >
+    <h2
+      carouselTitle
+      id="cart-recommended-products-title"
+      class="recommended-products__title"
+    >
+      {{ "cart.recommendedProducts.title" | translate }}
+    </h2>
+
+    <ng-template appCarouselItem let-product>
+      <article class="recommended-product-card">
+        <div class="recommended-product-card__media">
+          @if (getProductImageUrl(product)) {
+            <img [src]="getProductImageUrl(product)" [alt]="product.name" />
+          } @else {
+            <i
+              [class]="product.categoryName | icon"
+              [style.color]="getSelectedColorHex(product) || 'currentColor'"
+              aria-hidden="true"
+            ></i>
+          }
+        </div>
+
+        <div class="recommended-product-card__body">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <div class="recommended-product-card__price">
+            {{ getProductPrice(product) | currency: siteService.currency() }}
+          </div>
+        </div>
+
+        @if (getProductOptionGroups(product).length > 0) {
+          <div class="recommended-product-card__options">
+            @for (group of getProductOptionGroups(product); track group.code) {
+              <div class="recommended-option-group">
+                <div class="recommended-option-group__label">
+                  {{ group.label }}
+                </div>
+                <div class="recommended-option-group__options">
+                  @for (option of group.options; track option.code) {
+                    <button
+                      type="button"
+                      class="recommended-option"
+                      [class.recommended-option--selected]="
+                        isOptionSelected(product, group.code, option.code)
+                      "
+                      [class.recommended-option--unavailable]="
+                        !isOptionAvailable(product, group.code, option.code)
+                      "
+                      [disabled]="
+                        !isOptionAvailable(product, group.code, option.code)
+                      "
+                      (click)="selectOption(product, group.code, option)"
+                    >
+                      @if (option.hex) {
+                        <span
+                          class="recommended-option__swatch"
+                          [style.background-color]="option.hex"
+                        ></span>
+                      }
+                      <span>{{ option.label }}</span>
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <div class="recommended-product-card__purchase">
+          <button
+            matButton="filled"
+            type="button"
+            [disabled]="!canAddProduct(product)"
+            (click)="addProduct(product)"
+          >
+            {{ "cart.recommendedProducts.addToCart" | translate }}
+          </button>
+        </div>
+      </article>
+    </ng-template>
+  </app-carousel>
+}

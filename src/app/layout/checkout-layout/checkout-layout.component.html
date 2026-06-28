@@ -9,6 +9,9 @@
         <router-outlet></router-outlet>
       </main>
       <app-sidebar></app-sidebar>
+      @if (isCartPage) {
+        <app-recommended-products></app-recommended-products>
+      }
     } @else {
       <div class="main-content">
         <i [class]="'cart' | icon"></i>

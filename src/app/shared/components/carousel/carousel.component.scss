@@ -1,0 +1,83 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: block;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: token(spacing, 5);
+
+  &__header {
+    min-width: 0;
+  }
+
+  &__title {
+    min-width: 0;
+  }
+
+  &__stage {
+    display: grid;
+    align-items: center;
+    gap: token(spacing, 3);
+    min-width: 0;
+
+    &--with-controls {
+      grid-template-columns: 40px minmax(0, 1fr) 40px;
+    }
+  }
+
+  &__control {
+    display: inline-grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid token(color, border-strong);
+    border-radius: 50%;
+    background: token(color, background);
+    color: token(color, text-primary);
+    cursor: pointer;
+
+    &:disabled {
+      color: token(color, disabled-text);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  &__viewport {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__track {
+    display: grid;
+    grid-template-columns: repeat(
+      var(--carousel-visible-item-count),
+      minmax(0, 1fr)
+    );
+    gap: token(spacing, 4);
+  }
+}
+
+@include respond-down(md) {
+  .carousel {
+    &__stage {
+      gap: token(spacing, 2);
+
+      &--with-controls {
+        grid-template-columns: 36px minmax(0, 1fr) 36px;
+      }
+    }
+
+    &__control {
+      width: 36px;
+      height: 36px;
+    }
+
+    &__track {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

@@ -308,11 +308,22 @@ test.describe('cart journey', () => {
 
     await expect(page).toHaveURL(/\/ph\/cart$/);
     await expect(page.getByRole('heading', { name: 'iPhone 15' })).toBeVisible();
-    await expect(page.getByText('In Stock')).toBeVisible();
+    const cartItem = page.locator('app-cart-item').filter({ hasText: 'iPhone 15' });
+    await expect(cartItem.getByText('In Stock')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Summary' })).toBeVisible();
     await expect(page.getByText('Continue to checkout')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'You may also like' }),
+    ).toBeVisible();
+    await expect(
+      page.locator('app-recommended-products .recommended-product-card'),
+    ).toHaveCount(3);
+    await expect(
+      page
+        .locator('app-recommended-products .recommended-product-card')
+        .filter({ hasText: 'MacBook Air M5' }),
+    ).toBeVisible();
 
-    const cartItem = page.locator('app-cart-item').filter({ hasText: 'iPhone 15' });
     await cartItem.locator('.quantity-btn').last().click();
 
     await expect(cartItem.locator('.quantity-input')).toHaveValue('2');
@@ -962,12 +973,24 @@ async function handleCartRoute(
   const segments = pathname.split('/').filter(Boolean);
   const method = request.method();
 
+  if (method === 'GET' && segments.at(-1) === 'recommended-products') {
+    const cartProductIds = new Set(
+      state.cart.entries.map((entry) => entry.productId),
+    );
+    const recommendedProducts = productConfigures
+      .filter((product) => !cartProductIds.has(product.id))
+      .slice(0, 3);
+
+    await route.fulfill({ json: recommendedProducts });
+    return;
+  }
+
   if (method === 'GET' && segments.at(-1) === 'e2e-cart') {
     await route.fulfill({ json: state.cart });
     return;
   }
 
-  if (method === 'POST' && pathname === '/api/carts/items') {
+  if (method === 'POST' && segments.at(-1) === 'items') {
     const body = request.postDataJSON() as AddToCartRequest;
     const product = findProductByVariantId(body.variantId);
 
@@ -976,9 +999,13 @@ async function handleCartRoute(
       return;
     }
 
-    state.cart = createCart([
-      createCartItem(product, body.quantity, body.variantId),
-    ]);
+    const cartItem = createCartItem(product, body.quantity, body.variantId);
+    const entries =
+      pathname === '/api/carts/items'
+        ? [cartItem]
+        : upsertCartItem(state.cart.entries, cartItem);
+
+    state.cart = createCart(entries, state.cart.appliedVouchers);
     await route.fulfill({ json: state.cart });
     return;
   }
@@ -1129,6 +1156,25 @@ function updateCartItemQuantity(
       entry.variantId === variantId ? { ...entry, quantity } : entry,
     ),
     cart.appliedVouchers,
+  );
+}
+
+function upsertCartItem(entries: CartItem[], item: CartItem): CartItem[] {
+  const existingItem = entries.find(
+    (entry) => entry.variantId === item.variantId,
+  );
+
+  if (!existingItem) {
+    return [...entries, item];
+  }
+
+  return entries.map((entry) =>
+    entry.variantId === item.variantId
+      ? {
+          ...entry,
+          quantity: entry.quantity + item.quantity,
+        }
+      : entry,
   );
 }
 

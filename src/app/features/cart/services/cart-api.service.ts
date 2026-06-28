@@ -9,6 +9,7 @@ import {
   UpdateCartItemAddonRequest,
   UpdateQuantityRequest,
 } from 'src/app/core/models/cart.model';
+import { ProductConfigure } from 'src/app/core/models/product.model';
 import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
 
 @Injectable({ providedIn: 'root' })
@@ -103,6 +104,18 @@ export class CartApiService {
     const cartCode = this.requireCartCode();
 
     return this.http.put<Cart>(`${this.baseUrl}/${cartCode}/shipping`, request);
+  }
+
+  getRecommendedProducts(): Observable<ProductConfigure[]> {
+    const cartCode = this.getCartCode();
+
+    if (!cartCode) {
+      return of([]);
+    }
+
+    return this.http.get<ProductConfigure[]>(
+      `${this.baseUrl}/${cartCode}/recommended-products`,
+    );
   }
 
   saveCartCode(cartCode: string): void {

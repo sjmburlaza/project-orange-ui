@@ -131,6 +131,11 @@ server.get('/api/fulfillment/options', sendFulfillmentOptions);
 server.get('/api/:site/fulfillment/options', sendFulfillmentOptions);
 server.get('/api/options/:kind', sendOptions);
 server.get('/api/:site/options/:kind', sendOptions);
+server.get('/api/carts/:cartCode/recommended-products', sendRecommendedProducts);
+server.get(
+  '/api/:site/carts/:cartCode/recommended-products',
+  sendRecommendedProducts,
+);
 
 server.get('/api/admin/analytics/dashboard', (req, res) => {
   res.jsonp(buildDashboard(getAnalyticsEvents(req), getAnalyticsPeriod(req)));
@@ -190,6 +195,83 @@ function sendOptions(req, res) {
   const collection = router.db.get(req.params.kind).value();
 
   res.jsonp(Array.isArray(collection) ? collection : []);
+}
+
+function sendRecommendedProducts(req, res) {
+  const products = router.db.get('products').value();
+  const cartProductIds = getCartProductIds(req.params.cartCode);
+  const recommendedProducts = (Array.isArray(products) ? products : [])
+    .filter((product) => !cartProductIds.has(String(product.id)))
+    .map(toRecommendedProduct)
+    .slice(0, 4);
+
+  res.jsonp(recommendedProducts);
+}
+
+function toRecommendedProduct(product) {
+  if (Array.isArray(product?.variants)) {
+    return product;
+  }
+
+  const stockQuantity = Number(product.stockQuantity ?? 0);
+
+  return {
+    ...product,
+    features: product.features ?? [],
+    whatsInTheBox: product.whatsInTheBox ?? [],
+    optionGroups: product.optionGroups ?? [],
+    variants: [
+      {
+        id: Number(product.id) * 1000 + 1,
+        sku: `${product.id}-${Number(product.id) * 1000 + 1}`,
+        price: Number(product.price ?? 0),
+        stockQuantity,
+        stockStatus: getStockStatus(stockQuantity),
+        imageUrl: product.imageUrl,
+        options: {},
+      },
+    ],
+  };
+}
+
+function getStockStatus(stockQuantity) {
+  if (stockQuantity <= 0) {
+    return 'outOfStock';
+  }
+
+  return stockQuantity <= 5 ? 'lowStock' : 'inStock';
+}
+
+function getCartProductIds(cartCode) {
+  const carts = router.db.get('carts').value();
+
+  if (Array.isArray(carts)) {
+    const cart = carts.find(
+      (item) => String(item.code ?? item.id) === String(cartCode),
+    );
+
+    return new Set(getCartLineItems(cart).map((item) => String(item.productId)));
+  }
+
+  const legacyCart = router.db.get('cart').value();
+
+  if (Array.isArray(legacyCart)) {
+    return new Set(legacyCart.map((item) => String(item.productId)));
+  }
+
+  return new Set();
+}
+
+function getCartLineItems(cart) {
+  if (!cart || typeof cart !== 'object') {
+    return [];
+  }
+
+  if (Array.isArray(cart.entries)) {
+    return cart.entries;
+  }
+
+  return Array.isArray(cart.items) ? cart.items : [];
 }
 
 function rewriteSiteScopedApi(req, _res, next) {
