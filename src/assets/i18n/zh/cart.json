@@ -5,6 +5,12 @@
     "inStock": "有库存",
     "remove": "移除",
     "total": "您的总计",
+    "recommendedProducts": {
+      "title": "您可能也喜欢",
+      "previous": "上一组推荐",
+      "next": "下一组推荐",
+      "addToCart": "加入购物车"
+    },
     "voucher": {
       "label": "优惠券",
       "placeholder": "输入优惠券代码",

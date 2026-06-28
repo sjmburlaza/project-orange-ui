@@ -11,8 +11,11 @@ import {
   selectCartSummary,
   selectCartItemCount,
   selectCartTotal,
+  selectRecommendedProducts,
   selectLoading,
+  selectLoadingRecommendedProducts,
   selectError,
+  selectRecommendedProductsError,
   selectAppliedVouchers,
   selectVoucherError,
 } from './cart.selector';
@@ -28,8 +31,15 @@ export class CartFacade {
   readonly summary$ = this.store.select(selectCartSummary);
   readonly itemCount$ = this.store.select(selectCartItemCount);
   readonly total$ = this.store.select(selectCartTotal);
+  readonly recommendedProducts$ = this.store.select(selectRecommendedProducts);
   readonly loading$ = this.store.select(selectLoading);
+  readonly loadingRecommendedProducts$ = this.store.select(
+    selectLoadingRecommendedProducts,
+  );
   readonly error$ = this.store.select(selectError);
+  readonly recommendedProductsError$ = this.store.select(
+    selectRecommendedProductsError,
+  );
   readonly appliedVouchers$ = this.store.select(selectAppliedVouchers);
   readonly voucherError$ = this.store.select(selectVoucherError);
 
@@ -39,6 +49,10 @@ export class CartFacade {
 
   loadCart(): void {
     this.store.dispatch(CartActions.loadCart());
+  }
+
+  loadRecommendedProducts(): void {
+    this.store.dispatch(CartActions.loadRecommendedProducts());
   }
 
   addToCart(request: AddToCartRequest): void {

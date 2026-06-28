@@ -4,8 +4,11 @@ import { cartFeature } from './cart.reducer';
 export const {
   selectCartState,
   selectCart,
+  selectRecommendedProducts,
   selectLoading,
+  selectLoadingRecommendedProducts,
   selectError,
+  selectRecommendedProductsError,
   selectVoucherError,
 } = cartFeature;
 

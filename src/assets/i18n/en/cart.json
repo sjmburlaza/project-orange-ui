@@ -5,6 +5,12 @@
     "inStock": "In Stock",
     "remove": "Remove",
     "total": "Your Total",
+    "recommendedProducts": {
+      "title": "You may also like",
+      "previous": "Previous recommendations",
+      "next": "Next recommendations",
+      "addToCart": "Add to cart"
+    },
     "voucher": {
       "label": "Vouchers",
       "placeholder": "Enter Voucher Code",

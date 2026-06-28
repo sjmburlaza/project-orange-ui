@@ -5,6 +5,7 @@ import {
   Cart,
   UpdateCartItemAddonRequest,
 } from 'src/app/core/models/cart.model';
+import { ProductConfigure } from 'src/app/core/models/product.model';
 
 export const CartActions = createActionGroup({
   source: 'Cart',
@@ -12,6 +13,12 @@ export const CartActions = createActionGroup({
     'Load Cart': emptyProps(),
     'Load Cart Success': props<{ cart: Cart | null }>(),
     'Load Cart Failure': props<{ error: string }>(),
+
+    'Load Recommended Products': emptyProps(),
+    'Load Recommended Products Success': props<{
+      products: ProductConfigure[];
+    }>(),
+    'Load Recommended Products Failure': props<{ error: string }>(),
 
     'Add To Cart': props<{ request: AddToCartRequest }>(),
     'Add To Cart Success': props<{ cart: Cart }>(),

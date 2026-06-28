@@ -1,4 +1,5 @@
 import { Cart } from 'src/app/core/models/cart.model';
+import { ProductConfigure } from 'src/app/core/models/product.model';
 import { CartActions } from './cart.actions';
 import { cartFeature, initialCartState } from './cart.reducer';
 
@@ -28,6 +29,32 @@ describe('cart reducer', () => {
     expect(state.cart).toEqual(cart);
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
+  });
+
+  it('stores recommended products without changing cart loading state', () => {
+    const products = [createProduct()];
+
+    const loadingState = cartFeature.reducer(
+      {
+        ...initialCartState,
+        loading: true,
+      },
+      CartActions.loadRecommendedProducts(),
+    );
+
+    expect(loadingState.loading).toBe(true);
+    expect(loadingState.loadingRecommendedProducts).toBe(true);
+    expect(loadingState.recommendedProductsError).toBeNull();
+
+    const successState = cartFeature.reducer(
+      loadingState,
+      CartActions.loadRecommendedProductsSuccess({ products }),
+    );
+
+    expect(successState.loading).toBe(true);
+    expect(successState.recommendedProducts).toEqual(products);
+    expect(successState.loadingRecommendedProducts).toBe(false);
+    expect(successState.recommendedProductsError).toBeNull();
   });
 
   it('keeps voucher errors separate from general cart errors', () => {
@@ -69,6 +96,7 @@ describe('cart reducer', () => {
   it('clears all cart state when the cart is cleared', () => {
     const state = cartFeature.reducer(
       {
+        ...initialCartState,
         cart,
         loading: true,
         error: 'Failed',
@@ -107,6 +135,33 @@ function createCart(): Cart {
     cartSummary: [
       { name: 'Subtotal', amount: 79998 },
       { name: 'Total', amount: 75998 },
+    ],
+  };
+}
+
+function createProduct(): ProductConfigure {
+  return {
+    id: 2,
+    name: 'Orange Watch',
+    description: 'A compact wearable',
+    price: 12999,
+    stockQuantity: 6,
+    imageUrl: '/assets/watch.png',
+    categoryId: 3,
+    categoryName: 'Accessories',
+    features: [],
+    whatsInTheBox: [],
+    optionGroups: [],
+    variants: [
+      {
+        id: 2001,
+        sku: 'orange-watch-2001',
+        price: 12999,
+        stockQuantity: 6,
+        stockStatus: 'inStock',
+        imageUrl: '/assets/watch.png',
+        options: {},
+      },
     ],
   };
 }

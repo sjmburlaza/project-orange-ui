@@ -5,6 +5,12 @@
     "inStock": "En stock",
     "remove": "Supprimer",
     "total": "Votre total",
+    "recommendedProducts": {
+      "title": "Vous aimerez peut-être aussi",
+      "previous": "Recommandations précédentes",
+      "next": "Recommandations suivantes",
+      "addToCart": "Ajouter au panier"
+    },
     "voucher": {
       "label": "Bons de réduction",
       "placeholder": "Saisir le code du bon",

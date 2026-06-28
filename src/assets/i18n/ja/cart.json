@@ -5,6 +5,12 @@
     "inStock": "在庫あり",
     "remove": "削除",
     "total": "合計",
+    "recommendedProducts": {
+      "title": "こちらもおすすめ",
+      "previous": "前のおすすめ",
+      "next": "次のおすすめ",
+      "addToCart": "カートに追加"
+    },
     "voucher": {
       "label": "クーポン",
       "placeholder": "クーポンコードを入力",

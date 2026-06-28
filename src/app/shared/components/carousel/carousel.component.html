@@ -1,0 +1,52 @@
+<section class="carousel" [attr.aria-labelledby]="ariaLabelledBy">
+  <div class="carousel__header">
+    <div class="carousel__title">
+      <ng-content select="[carouselTitle]"></ng-content>
+    </div>
+  </div>
+
+  <div
+    class="carousel__stage"
+    [class.carousel__stage--with-controls]="showControls"
+  >
+    @if (showControls) {
+      <button
+        type="button"
+        class="carousel__control"
+        [attr.aria-label]="previousLabel"
+        [disabled]="!canMovePrevious"
+        (click)="movePrevious()"
+      >
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+      </button>
+    }
+
+    <div class="carousel__viewport">
+      <div
+        class="carousel__track"
+        [style.--carousel-visible-item-count]="normalizedVisibleItemCount"
+      >
+        @if (itemTemplateRef; as templateRef) {
+          @for (item of visibleItems; track trackItem($index, item)) {
+            <ng-container
+              [ngTemplateOutlet]="templateRef"
+              [ngTemplateOutletContext]="getItemContext(item, $index)"
+            ></ng-container>
+          }
+        }
+      </div>
+    </div>
+
+    @if (showControls) {
+      <button
+        type="button"
+        class="carousel__control"
+        [attr.aria-label]="nextLabel"
+        [disabled]="!canMoveNext"
+        (click)="moveNext()"
+      >
+        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+      </button>
+    }
+  </div>
+</section>

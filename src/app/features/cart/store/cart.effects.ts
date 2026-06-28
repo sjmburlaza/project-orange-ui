@@ -45,6 +45,26 @@ export class CartEffects {
     ),
   );
 
+  loadRecommendedProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CartActions.loadRecommendedProducts),
+      switchMap(() =>
+        this.cartApi.getRecommendedProducts().pipe(
+          map((products) =>
+            CartActions.loadRecommendedProductsSuccess({ products }),
+          ),
+          catchError((error) =>
+            of(
+              CartActions.loadRecommendedProductsFailure({
+                error: this.getErrorMessage(error),
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   addToCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CartActions.addToCart),

@@ -2,6 +2,7 @@ import { CartItem, CartSummaryAttribute } from 'src/app/core/models/cart.model';
 import {
   selectCartItemCount,
   selectCartItems,
+  selectRecommendedProducts,
   selectCartTotal,
 } from './cart.selector';
 
@@ -33,6 +34,45 @@ describe('cart selectors', () => {
     expect(selectCartTotal.projector([{ name: 'Subtotal', amount: 1000 }])).toBe(
       0,
     );
+  });
+
+  it('exposes recommended products from cart state', () => {
+    const products = [
+      {
+        id: 2,
+        name: 'Orange Watch',
+        description: 'A compact wearable',
+        price: 12999,
+        stockQuantity: 6,
+        imageUrl: '/assets/watch.png',
+        categoryId: 3,
+        categoryName: 'Accessories',
+        features: [],
+        whatsInTheBox: [],
+        optionGroups: [],
+        variants: [
+          {
+            id: 2001,
+            sku: 'orange-watch-2001',
+            price: 12999,
+            stockQuantity: 6,
+            stockStatus: 'inStock' as const,
+            imageUrl: '/assets/watch.png',
+            options: {},
+          },
+        ],
+      },
+    ];
+
+    expect(selectRecommendedProducts.projector({
+      cart: null,
+      recommendedProducts: products,
+      loading: false,
+      loadingRecommendedProducts: false,
+      error: null,
+      recommendedProductsError: null,
+      voucherError: null,
+    })).toEqual(products);
   });
 });
 

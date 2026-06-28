@@ -58,3 +58,7 @@
 .main-content {
   min-width: 0;
 }
+
+.content > app-recommended-products {
+  grid-column: 1 / -1;
+}

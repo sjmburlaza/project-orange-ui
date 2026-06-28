@@ -1,4 +1,8 @@
 .cart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+
   .cart-items {
     display: flex;
     flex-direction: column;

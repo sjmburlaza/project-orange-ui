@@ -7,6 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
 import { CartApiService } from './cart-api.service';
 import { Cart } from 'src/app/core/models/cart.model';
+import { ProductConfigure } from 'src/app/core/models/product.model';
 
 describe('CartApiService', () => {
   let service: CartApiService;
@@ -101,6 +102,22 @@ describe('CartApiService', () => {
 
     request.flush(cart);
   });
+
+  it('loads recommended products from the active cart URL', () => {
+    const products = [createProduct()];
+
+    service.getRecommendedProducts().subscribe((response) => {
+      expect(response).toEqual(products);
+    });
+
+    const request = httpMock.expectOne(
+      '/api/carts/cart-123/recommended-products',
+    );
+
+    expect(request.request.method).toBe('GET');
+
+    request.flush(products);
+  });
 });
 
 function createCart(): Cart {
@@ -130,5 +147,32 @@ function createCart(): Cart {
     ],
     appliedVouchers: [],
     cartSummary: [{ name: 'Total', amount: 79998 }],
+  };
+}
+
+function createProduct(): ProductConfigure {
+  return {
+    id: 2,
+    name: 'Orange Watch',
+    description: 'A compact wearable',
+    price: 12999,
+    stockQuantity: 6,
+    imageUrl: '/assets/watch.png',
+    categoryId: 3,
+    categoryName: 'Accessories',
+    features: [],
+    whatsInTheBox: [],
+    optionGroups: [],
+    variants: [
+      {
+        id: 2001,
+        sku: 'orange-watch-2001',
+        price: 12999,
+        stockQuantity: 6,
+        stockStatus: 'inStock',
+        imageUrl: '/assets/watch.png',
+        options: {},
+      },
+    ],
   };
 }
