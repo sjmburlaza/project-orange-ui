@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="item price">
-    <p>{{ item.price | currency: currency }}</p>
+    <p>{{ item.totalPrice | currency: currency }}</p>
   </div>
   <div class="item actions">
     <button class="actions__remove" (click)="onRemoveItem(item.variantId)">

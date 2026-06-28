@@ -243,6 +243,7 @@ export function createCartItem(
     productName: product.name,
     price: product.price,
     quantity,
+    totalPrice: product.price * quantity,
     stockQuantity: product.stockQuantity,
     imageUrl: product.imageUrl,
     categoryName: product.categoryName,

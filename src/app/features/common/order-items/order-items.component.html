@@ -37,8 +37,9 @@
           }
         </div>
         <div class="item__description-amount">
-          {{ item.price | currency: currency() }} x {{ item.quantity }}
+          {{ item.totalPrice | currency: currency() }}
         </div>
+        <div class="item__description-qty">Qty: {{ item.quantity }}</div>
       </div>
     </div>
     @if (!lastItem) {

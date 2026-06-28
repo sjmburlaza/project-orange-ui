@@ -20,6 +20,7 @@ describe('CartItemComponent', () => {
       productName: 'Orange Phone',
       price: 699,
       quantity: 1,
+      totalPrice: 699,
       stockQuantity: 5,
       imageUrl: '',
       categoryName: 'phones',
