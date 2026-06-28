@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { distinctUntilChanged, filter, map, tap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, filter, map } from 'rxjs';
 import { Cart } from 'src/app/core/models/cart.model';
 import {
   ProductConfigure,
@@ -24,9 +24,29 @@ import {
   CarouselItemDirective,
 } from 'src/app/shared/components/carousel/carousel.component';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
+import { VariantColorPipe } from 'src/app/shared/pipes/variant-color-pipe';
 
 interface RecommendedProductState {
   selectedOptions: Record<string, string>;
+}
+
+interface RecommendedProductOption extends ProductOption {
+  available: boolean;
+  selected: boolean;
+}
+
+interface RecommendedProductOptionGroup
+  extends Omit<ProductOptionGroup, 'options'> {
+  options: RecommendedProductOption[];
+}
+
+interface RecommendedProductCard {
+  product: ProductConfigure;
+  selectedOptions: Record<string, string>;
+  optionGroups: RecommendedProductOptionGroup[];
+  imageUrl: string;
+  price: number;
+  canAdd: boolean;
 }
 
 @Component({
@@ -38,6 +58,7 @@ interface RecommendedProductState {
     CurrencyPipe,
     IconPipe,
     MatButtonModule,
+    VariantColorPipe,
     TranslatePipe,
   ],
   templateUrl: './recommended-products.component.html',
@@ -47,15 +68,18 @@ interface RecommendedProductState {
 export class RecommendedProductsComponent implements OnInit {
   private readonly cartFacade = inject(CartFacade);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly recommendedProductCardsSubject = new BehaviorSubject<
+    RecommendedProductCard[]
+  >([]);
   private productStates: Record<number, RecommendedProductState> = {};
   private products: ProductConfigure[] = [];
   readonly visibleProductCount = 3;
   readonly siteService = inject(SiteService);
-  readonly recommendedProducts$ = this.cartFacade.recommendedProducts$.pipe(
-    tap((products) => this.setProducts(products)),
-  );
+  readonly recommendedProductCards$ =
+    this.recommendedProductCardsSubject.asObservable();
 
   ngOnInit(): void {
+    this.watchRecommendedProducts();
     this.watchRecommendedProductsRefresh();
   }
 
@@ -64,11 +88,18 @@ export class RecommendedProductsComponent implements OnInit {
     groupCode: string,
     option: ProductOption,
   ): void {
-    if (!this.isOptionAvailable(product, groupCode, option.code)) {
+    const state = this.getProductState(product);
+
+    if (
+      !this.isProductOptionAvailable(
+        product,
+        state.selectedOptions,
+        groupCode,
+        option.code,
+      )
+    ) {
       return;
     }
-
-    const state = this.getProductState(product);
 
     this.setProductState(product.id, {
       selectedOptions: {
@@ -76,31 +107,7 @@ export class RecommendedProductsComponent implements OnInit {
         [groupCode]: option.code,
       },
     });
-  }
-
-  isOptionSelected(
-    product: ProductConfigure,
-    groupCode: string,
-    optionCode: string,
-  ): boolean {
-    return this.getProductState(product).selectedOptions[groupCode] === optionCode;
-  }
-
-  isOptionAvailable(
-    product: ProductConfigure,
-    groupCode: string,
-    optionCode: string,
-  ): boolean {
-    const selectedOptions = {
-      ...this.getProductState(product).selectedOptions,
-      [groupCode]: optionCode,
-    };
-
-    return this.getProductVariants(product).some(
-      (variant) =>
-        variant.stockQuantity > 0 &&
-        this.variantMatches(variant, selectedOptions),
-    );
+    this.updateRecommendedProductCards();
   }
 
   addProduct(product: ProductConfigure): void {
@@ -117,36 +124,18 @@ export class RecommendedProductsComponent implements OnInit {
     });
   }
 
-  getProductOptionGroups(product: ProductConfigure): ProductOptionGroup[] {
-    return product.optionGroups ?? [];
-  }
-
-  getProductImageUrl(product: ProductConfigure): string {
-    return this.getSelectedVariant(product)?.imageUrl || product.imageUrl;
-  }
-
-  getProductPrice(product: ProductConfigure): number {
-    return this.getSelectedVariant(product)?.price ?? product.price;
-  }
-
-  canAddProduct(product: ProductConfigure): boolean {
-    const variant = this.getSelectedVariant(product);
-
-    return variant !== null && variant.stockQuantity > 0;
-  }
-
-  getSelectedColorHex(product: ProductConfigure): string | null {
-    const selectedColor = this.getProductState(product).selectedOptions['color'];
-    const colorOption = this.getProductOptionGroups(product)
-      .find((group) => group.code === 'color')
-      ?.options.find((option) => option.code === selectedColor);
-
-    return colorOption?.hex ?? null;
-  }
-
   private setProducts(value: ProductConfigure[] | null): void {
     this.products = value ?? [];
     this.initializeProductStates();
+    this.updateRecommendedProductCards();
+  }
+
+  private watchRecommendedProducts(): void {
+    this.cartFacade.recommendedProducts$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((products) => {
+        this.setProducts(products);
+      });
   }
 
   private watchRecommendedProductsRefresh(): void {
@@ -185,6 +174,49 @@ export class RecommendedProductsComponent implements OnInit {
     }, {});
 
     this.productStates = nextStates;
+  }
+
+  private updateRecommendedProductCards(): void {
+    this.recommendedProductCardsSubject.next(
+      this.products.map((product) => this.createProductCard(product)),
+    );
+  }
+
+  private createProductCard(product: ProductConfigure): RecommendedProductCard {
+    const selectedOptions = this.getProductState(product).selectedOptions;
+    const selectedVariant = this.getSelectedVariant(product, selectedOptions);
+
+    return {
+      product,
+      selectedOptions,
+      optionGroups: this.getOptionGroupViews(product, selectedOptions),
+      imageUrl: selectedVariant?.imageUrl || product.imageUrl,
+      price: selectedVariant?.price ?? product.price,
+      canAdd: selectedVariant !== null && selectedVariant.stockQuantity > 0,
+    };
+  }
+
+  private getProductOptionGroups(product: ProductConfigure): ProductOptionGroup[] {
+    return product.optionGroups ?? [];
+  }
+
+  private getOptionGroupViews(
+    product: ProductConfigure,
+    selectedOptions: Record<string, string>,
+  ): RecommendedProductOptionGroup[] {
+    return this.getProductOptionGroups(product).map((group) => ({
+      ...group,
+      options: group.options.map((option) => ({
+        ...option,
+        available: this.isProductOptionAvailable(
+          product,
+          selectedOptions,
+          group.code,
+          option.code,
+        ),
+        selected: selectedOptions[group.code] === option.code,
+      })),
+    }));
   }
 
   private createInitialState(
@@ -245,9 +277,10 @@ export class RecommendedProductsComponent implements OnInit {
     return product.variants ?? [];
   }
 
-  private getSelectedVariant(product: ProductConfigure): ProductVariant | null {
-    const selectedOptions = this.getProductState(product).selectedOptions;
-
+  private getSelectedVariant(
+    product: ProductConfigure,
+    selectedOptions = this.getProductState(product).selectedOptions,
+  ): ProductVariant | null {
     return (
       this.getProductVariants(product).find(
         (variant) =>
@@ -258,6 +291,24 @@ export class RecommendedProductsComponent implements OnInit {
         this.variantMatches(variant, selectedOptions),
       ) ??
       null
+    );
+  }
+
+  private isProductOptionAvailable(
+    product: ProductConfigure,
+    selectedOptions: Record<string, string>,
+    groupCode: string,
+    optionCode: string,
+  ): boolean {
+    const nextSelectedOptions = {
+      ...selectedOptions,
+      [groupCode]: optionCode,
+    };
+
+    return this.getProductVariants(product).some(
+      (variant) =>
+        variant.stockQuantity > 0 &&
+        this.variantMatches(variant, nextSelectedOptions),
     );
   }
 

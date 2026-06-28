@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import providers from 'src/test-providers';
 
 import { ProductConfiguratorComponent } from './product-configurator.component';
-import providers from 'src/test-providers';
 
 describe('ProductConfiguratorComponent', () => {
   let component: ProductConfiguratorComponent;

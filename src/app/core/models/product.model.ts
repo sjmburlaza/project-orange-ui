@@ -13,6 +13,7 @@ export interface Product {
   imageUrl: string;
   categoryId: number;
   categoryName?: string;
+  subcategoryName?: string;
   availableColors?: ProductOption[];
 }
 

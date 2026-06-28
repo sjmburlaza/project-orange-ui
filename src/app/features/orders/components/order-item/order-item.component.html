@@ -70,7 +70,9 @@
               <img [src]="row.item.imageUrl" [alt]="row.item.productName" />
             } @else {
               <i
-                [class]="row.item.categoryName | icon"
+                [class]="
+                  row.item.subcategoryName || row.item.categoryName | icon
+                "
                 [style.color]="row.item.itemSpecs | iconColor"
                 aria-hidden="true"
               ></i>
@@ -122,7 +124,7 @@
           </div>
 
           <strong class="product-row__price">
-            {{ row.item.price | currency: currency() }}
+            {{ row.item.totalPrice | currency: currency() }}
           </strong>
         </article>
       }

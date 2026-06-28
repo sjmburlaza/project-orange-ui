@@ -20,6 +20,7 @@ describe('OrderItemComponent', () => {
         productId: 1,
         productName: 'Galaxy S25 Ultra',
         price: 84990,
+        totalPrice: 84990,
         quantity: 1,
         imageUrl: '',
         categoryName: 'Phones',

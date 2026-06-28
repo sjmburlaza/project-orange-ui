@@ -16,8 +16,12 @@
           />
         } @else {
           <i
-            [class]="product.categoryName | icon"
-            [style.color]="selectedOptions['color'] || 'gray'"
+            [class]="product.subcategoryName || product.categoryName | icon"
+            [style.color]="
+              (selectedOptions | variantColor: product.optionGroups) ||
+              'currentColor'
+            "
+            aria-hidden="true"
           ></i>
         }
       </div>

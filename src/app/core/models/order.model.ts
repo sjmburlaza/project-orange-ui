@@ -25,9 +25,11 @@ export interface OrderProductItem {
   productId: number;
   productName: string;
   price: number;
+  totalPrice: number;
   quantity: number;
   imageUrl: string;
   categoryName?: string;
+  subcategoryName?: string;
   itemSpecs: ItemSpec[];
   addons?: Addon[];
 }

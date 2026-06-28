@@ -77,7 +77,7 @@
         "one": "{{ count }} 件商品",
         "other": "{{ count }} 件商品"
       },
-      "quantity": "数量 {{ quantity }}",
+      "quantity": "数量: {{ quantity }}",
       "shippingAddress": "收货地址",
       "nextSteps": "后续步骤",
       "continueShopping": "继续购物",

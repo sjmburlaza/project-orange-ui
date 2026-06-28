@@ -19,6 +19,7 @@ import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { QuantitySelectorComponent } from 'src/app/shared/components/quantity-selector/quantity-selector.component';
 import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
+import { VariantColorPipe } from 'src/app/shared/pipes/variant-color-pipe';
 
 @Component({
   selector: 'app-product-configurator',
@@ -29,6 +30,7 @@ import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
     MatButtonModule,
     QuantitySelectorComponent,
     RouterLink,
+    VariantColorPipe,
     TranslatePipe,
   ],
   templateUrl: './product-configurator.component.html',
