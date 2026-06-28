@@ -9,7 +9,9 @@
       "header": "Summary"
     },
     "cta": {
-      "continueToCheckout": "Continue to checkout"
+      "continueToCheckout": "Continue to checkout",
+      "login": "Login",
+      "checkoutAsGuest": "Checkout as guest"
     },
     "exitDialog": {
       "title": "Leave this page?",

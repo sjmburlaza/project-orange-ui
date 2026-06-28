@@ -1,5 +1,14 @@
 <div class="cta-container">
-  <button matButton="filled" (click)="onCheckout()">
-    {{ "common.cta.continueToCheckout" | translate }}
-  </button>
+  @if (isAuthenticated$ | async) {
+    <button matButton="filled" (click)="onCheckout()">
+      {{ "common.cta.continueToCheckout" | translate }}
+    </button>
+  } @else {
+    <button matButton="outlined" (click)="onLogin()">
+      {{ "common.cta.login" | translate }}
+    </button>
+    <button matButton="filled" (click)="onCheckout()">
+      {{ "common.cta.checkoutAsGuest" | translate }}
+    </button>
+  }
 </div>

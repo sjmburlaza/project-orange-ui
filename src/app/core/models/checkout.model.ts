@@ -21,6 +21,7 @@ export interface DynamicField {
   dependsOn?: string;
 
   defaultValue?: DynamicFormValue;
+  disabled?: boolean;
 
   visibleIf?: {
     field: string;

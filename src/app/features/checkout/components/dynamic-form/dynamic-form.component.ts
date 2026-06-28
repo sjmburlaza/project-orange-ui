@@ -131,7 +131,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         default:
           group[f.name] = new FormControl<DynamicFormValue>(
-            f.defaultValue ?? null,
+            {
+              value: f.defaultValue ?? null,
+              disabled: f.disabled === true,
+            },
             {
               validators,
               asyncValidators,
@@ -184,19 +187,33 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.applyVisibility(
         control,
         dependentControl.value === field.visibleIf.value,
+        field.disabled === true,
       );
 
       dependentControl.valueChanges
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((value) => {
-          this.applyVisibility(control, value === field.visibleIf?.value);
+          this.applyVisibility(
+            control,
+            value === field.visibleIf?.value,
+            field.disabled === true,
+          );
         });
     });
   }
 
-  private applyVisibility(control: AbstractControl, visible: boolean): void {
-    if (visible) {
+  private applyVisibility(
+    control: AbstractControl,
+    visible: boolean,
+    disabled = false,
+  ): void {
+    if (visible && !disabled) {
       control.enable({ emitEvent: false });
+      return;
+    }
+
+    if (visible) {
+      control.disable({ emitEvent: false });
     } else {
       control.disable({ emitEvent: false });
       control.reset(null, { emitEvent: false });
