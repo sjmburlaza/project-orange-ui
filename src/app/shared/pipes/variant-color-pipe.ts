@@ -1,0 +1,29 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { ProductOptionGroup } from 'src/app/core/models/product.model';
+
+@Pipe({
+  name: 'variantColor',
+})
+export class VariantColorPipe implements PipeTransform {
+  transform(
+    selectedOptions: Record<string, string> | null | undefined,
+    optionGroups: ProductOptionGroup[] | null | undefined,
+    groupCode = 'color',
+  ): string | null {
+    const selectedOptionCode = selectedOptions?.[groupCode];
+
+    if (!selectedOptionCode || !optionGroups) {
+      return null;
+    }
+
+    const normalizedGroupCode = groupCode.toLowerCase();
+    const normalizedOptionCode = selectedOptionCode.toLowerCase();
+    const colorOption = optionGroups
+      .find((group) => group.code.toLowerCase() === normalizedGroupCode)
+      ?.options.find(
+        (option) => option.code.toLowerCase() === normalizedOptionCode,
+      );
+
+    return colorOption?.hex ?? null;
+  }
+}

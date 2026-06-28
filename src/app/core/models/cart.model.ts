@@ -15,6 +15,7 @@ export interface CartItem {
   stockQuantity: number;
   imageUrl: string;
   categoryName?: string;
+  subcategoryName?: string;
   itemSpecs: ItemSpec[];
   addons: Addon[];
 }

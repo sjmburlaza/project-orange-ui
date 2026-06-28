@@ -1,9 +1,10 @@
-@let products = (recommendedProducts$ | async) ?? [];
+@let currencyCode = siteService.currency();
+@let cards = (recommendedProductCards$ | async) ?? [];
 
-@if (products.length > 0) {
+@if (cards.length > 0) {
   <app-carousel
     class="recommended-products"
-    [items]="products"
+    [items]="cards"
     [visibleItemCount]="visibleProductCount"
     [previousLabel]="'cart.recommendedProducts.previous' | translate"
     [nextLabel]="'cart.recommendedProducts.next' | translate"
@@ -17,15 +18,20 @@
       {{ "cart.recommendedProducts.title" | translate }}
     </h2>
 
-    <ng-template appCarouselItem let-product>
+    <ng-template appCarouselItem let-card>
+      @let product = card.product;
+
       <article class="recommended-product-card">
         <div class="recommended-product-card__media">
-          @if (getProductImageUrl(product)) {
-            <img [src]="getProductImageUrl(product)" [alt]="product.name" />
+          @if (card.imageUrl) {
+            <img [src]="card.imageUrl" [alt]="product.name" />
           } @else {
             <i
-              [class]="product.categoryName | icon"
-              [style.color]="getSelectedColorHex(product) || 'currentColor'"
+              [class]="product.subcategoryName || product.categoryName | icon"
+              [style.color]="
+                (card.selectedOptions | variantColor: card.optionGroups) ||
+                'currentColor'
+              "
               aria-hidden="true"
             ></i>
           }
@@ -35,13 +41,13 @@
           <h3>{{ product.name }}</h3>
           <p>{{ product.description }}</p>
           <div class="recommended-product-card__price">
-            {{ getProductPrice(product) | currency: siteService.currency() }}
+            {{ card.price | currency: currencyCode }}
           </div>
         </div>
 
-        @if (getProductOptionGroups(product).length > 0) {
+        @if (card.optionGroups.length > 0) {
           <div class="recommended-product-card__options">
-            @for (group of getProductOptionGroups(product); track group.code) {
+            @for (group of card.optionGroups; track group.code) {
               <div class="recommended-option-group">
                 <div class="recommended-option-group__label">
                   {{ group.label }}
@@ -52,14 +58,12 @@
                       type="button"
                       class="recommended-option"
                       [class.recommended-option--selected]="
-                        isOptionSelected(product, group.code, option.code)
+                        option.selected
                       "
                       [class.recommended-option--unavailable]="
-                        !isOptionAvailable(product, group.code, option.code)
+                        !option.available
                       "
-                      [disabled]="
-                        !isOptionAvailable(product, group.code, option.code)
-                      "
+                      [disabled]="!option.available"
                       (click)="selectOption(product, group.code, option)"
                     >
                       @if (option.hex) {
@@ -81,7 +85,7 @@
           <button
             matButton="filled"
             type="button"
-            [disabled]="!canAddProduct(product)"
+            [disabled]="!card.canAdd"
             (click)="addProduct(product)"
           >
             {{ "cart.recommendedProducts.addToCart" | translate }}

@@ -77,7 +77,7 @@
         "one": "{{ count }} item",
         "other": "{{ count }} items"
       },
-      "quantity": "Qty {{ quantity }}",
+      "quantity": "Qty: {{ quantity }}",
       "shippingAddress": "Shipping address",
       "nextSteps": "Next steps",
       "continueShopping": "Continue shopping",
