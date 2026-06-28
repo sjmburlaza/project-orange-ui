@@ -1,19 +1,27 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AuthStore } from 'src/app/core/auth/auth.store';
 import { SiteService } from 'src/app/core/services/site.services';
 
 @Component({
   selector: 'app-cta',
-  imports: [MatButtonModule, TranslatePipe],
+  imports: [AsyncPipe, MatButtonModule, TranslatePipe],
   templateUrl: './cta.component.html',
   styleUrl: './cta.component.scss',
 })
 export class CtaComponent {
   private readonly router = inject(Router);
+  private readonly authStore = inject(AuthStore);
   readonly siteService = inject(SiteService);
   readonly site = this.siteService.currentSite();
+  readonly isAuthenticated$ = this.authStore.isAuthenticated$;
+
+  onLogin(): void {
+    this.router.navigate([`/${this.site}/auth/login`]);
+  }
 
   onCheckout(): void {
     this.router.navigate([`/${this.site}/checkout`]);

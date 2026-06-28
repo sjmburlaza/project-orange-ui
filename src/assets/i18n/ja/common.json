@@ -9,7 +9,9 @@
       "header": "概要"
     },
     "cta": {
-      "continueToCheckout": "チェックアウトへ進む"
+      "continueToCheckout": "チェックアウトへ進む",
+      "login": "ログイン",
+      "checkoutAsGuest": "ゲストとしてチェックアウト"
     },
     "exitDialog": {
       "title": "このページを離れますか？",

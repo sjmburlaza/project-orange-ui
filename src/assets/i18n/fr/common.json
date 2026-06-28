@@ -9,7 +9,9 @@
       "header": "Résumé"
     },
     "cta": {
-      "continueToCheckout": "Continuer vers le paiement"
+      "continueToCheckout": "Continuer vers le paiement",
+      "login": "Connexion",
+      "checkoutAsGuest": "Paiement en invité"
     },
     "exitDialog": {
       "title": "Quitter cette page ?",

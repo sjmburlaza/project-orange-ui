@@ -9,7 +9,9 @@
       "header": "摘要"
     },
     "cta": {
-      "continueToCheckout": "继续结账"
+      "continueToCheckout": "继续结账",
+      "login": "登录",
+      "checkoutAsGuest": "游客结账"
     },
     "exitDialog": {
       "title": "离开此页面？",

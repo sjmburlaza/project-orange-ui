@@ -17,6 +17,7 @@ import { catchError, EMPTY, from, switchMap, take, tap } from 'rxjs';
 import { CheckoutApiService } from '../services/checkout-api.service';
 import {
   CheckoutStep,
+  DynamicField,
   DynamicFormObject,
 } from 'src/app/core/models/checkout.model';
 import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.component';
@@ -29,6 +30,7 @@ import { SiteService } from 'src/app/core/services/site.services';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
 import { Cart } from 'src/app/core/models/cart.model';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AuthStore } from 'src/app/core/auth/auth.store';
 
 type CheckoutStepComponent =
   | DynamicFormComponent
@@ -62,6 +64,7 @@ export class CheckoutComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
   private readonly injector = inject(Injector);
   private readonly viewportScroller = inject(ViewportScroller);
+  private readonly authStore = inject(AuthStore);
 
   @ViewChild('activeStep')
   activeStep?: CheckoutStepComponent;
@@ -81,7 +84,7 @@ export class CheckoutComponent implements OnInit {
 
     this.checkoutApiService.getCheckoutForm().subscribe({
       next: (config) => {
-        this.steps.set(config.steps);
+        this.steps.set(this.applyAuthenticatedCustomerEmail(config.steps));
       },
       error: (error) => {
         console.error('Failed to load checkout form config:', error);
@@ -143,8 +146,22 @@ export class CheckoutComponent implements OnInit {
 
   getDynamicFormInitialValue(stepId: string): DynamicFormObject | null {
     const value = this.checkoutData()[stepId];
+    const initialValue = this.isDynamicFormObject(value) ? value : null;
 
-    return this.isDynamicFormObject(value) ? value : null;
+    if (stepId !== 'customer') {
+      return initialValue;
+    }
+
+    const email = this.getAuthenticatedUserEmail();
+
+    if (!email) {
+      return initialValue;
+    }
+
+    return {
+      ...(initialValue ?? {}),
+      email,
+    };
   }
 
   private saveCurrentStep(validate: boolean): CheckoutStepValue | null {
@@ -259,6 +276,48 @@ export class CheckoutComponent implements OnInit {
 
   private isDynamicFormObject(value: unknown): value is DynamicFormObject {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
+  }
+
+  private applyAuthenticatedCustomerEmail(
+    steps: CheckoutStep[],
+  ): CheckoutStep[] {
+    const email = this.getAuthenticatedUserEmail();
+
+    if (!email) {
+      return steps;
+    }
+
+    return steps.map((step) => {
+      if (step.id !== 'customer' || !step.fields) {
+        return step;
+      }
+
+      return {
+        ...step,
+        fields: this.applyAuthenticatedEmailField(step.fields, email),
+      };
+    });
+  }
+
+  private applyAuthenticatedEmailField(
+    fields: DynamicField[],
+    email: string,
+  ): DynamicField[] {
+    return fields.map((field) => {
+      if (field.name !== 'email' || field.type !== 'email') {
+        return field;
+      }
+
+      return {
+        ...field,
+        defaultValue: email,
+        disabled: true,
+      };
+    });
+  }
+
+  private getAuthenticatedUserEmail(): string {
+    return this.authStore.getSessionSnapshot()?.user.email.trim() ?? '';
   }
 
   private getPaymentFailureReason(error: unknown): string {

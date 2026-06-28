@@ -51,6 +51,25 @@ describe('DynamicFormComponent', () => {
     expect(component.form.get('email')?.touched).toBe(true);
   });
 
+  it('includes disabled fields in the submitted raw value', () => {
+    component.fields = [
+      {
+        type: 'email',
+        name: 'email',
+        label: 'Email',
+        defaultValue: 'ada@example.com',
+        disabled: true,
+        validators: [{ name: 'required' }, { name: 'email' }],
+      },
+    ];
+    fixture.detectChanges();
+
+    expect(component.form.get('email')?.disabled).toBe(true);
+    expect(component.validateAndGetValue()).toEqual({
+      email: 'ada@example.com',
+    });
+  });
+
   it('copies delivery address values into billing address when requested', () => {
     component.fields = createAddressFields();
     fixture.detectChanges();
