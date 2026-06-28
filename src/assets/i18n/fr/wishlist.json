@@ -1,0 +1,29 @@
+{
+  "wishlist": {
+    "eyebrow": "Compte",
+    "title": "Vos favoris",
+    "count": "{{ count }} article(s) enregistré(s)",
+    "loading": "Chargement de votre liste d'envies...",
+    "product": "Produit",
+    "added": "Ajouté le",
+    "error": {
+      "load": "Impossible de charger votre liste d'envies. Veuillez réessayer.",
+      "add": "Impossible d'enregistrer ce produit. Veuillez réessayer.",
+      "remove": "Impossible de retirer ce produit. Veuillez réessayer."
+    },
+    "stock": {
+      "inStock": "{{ count }} en stock",
+      "lowStock": "Plus que {{ count }}",
+      "outOfStock": "Rupture de stock"
+    },
+    "empty": {
+      "title": "Aucun produit enregistré",
+      "message": "Enregistrez des produits depuis la boutique pour les retrouver ici."
+    },
+    "actions": {
+      "retry": "Réessayer",
+      "remove": "Retirer de la liste d'envies",
+      "shop": "Voir les produits"
+    }
+  }
+}

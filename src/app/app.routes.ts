@@ -56,6 +56,14 @@ export const routes: Routes = [
                 (m) => m.SupportComponent,
               ),
           },
+          {
+            path: 'profile',
+            canActivate: [AuthGuard],
+            loadChildren: () =>
+              import('./features/profile/profile.routes').then(
+                (m) => m.PROFILE_ROUTES,
+              ),
+          },
         ],
       },
       {
@@ -86,14 +94,6 @@ export const routes: Routes = [
               import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
           },
         ],
-      },
-      {
-        path: 'profile',
-        canActivate: [AuthGuard],
-        loadChildren: () =>
-          import('./features/profile/profile.routes').then(
-            (m) => m.PROFILE_ROUTES,
-          ),
       },
     ],
   },

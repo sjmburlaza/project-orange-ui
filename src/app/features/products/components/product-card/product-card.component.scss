@@ -1,6 +1,7 @@
 @use "tokens/tokens" as *;
 
 .product {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -8,7 +9,45 @@
   border-radius: 16px;
   padding: 36px 24px;
   max-width: 400px;
-  height: 582px;
+  height: 600px;
+
+  &__wishlist {
+    position: absolute;
+    top: token(spacing, 4);
+    right: token(spacing, 4);
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    background: transparent;
+    color: token(color, text-secondary);
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover,
+    &:focus-visible,
+    &--active {
+      color: token(color, primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid token(color, primary);
+      outline-offset: 3px;
+    }
+
+    &:disabled {
+      color: token(color, disabled-text);
+      cursor: wait;
+      opacity: 0.7;
+    }
+
+    i {
+      font-size: 20px;
+    }
+  }
 
   &__image {
     height: token(spacing, 30);
@@ -71,7 +110,7 @@
     gap: 12px;
   }
 
-  i {
+  &__image i {
     font-size: 180px;
     color: black;
     filter: opacity(0.7);

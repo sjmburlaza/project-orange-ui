@@ -12,11 +12,19 @@
     },
     "actions": {
       "buy": "Buy",
-      "learnMore": "Learn more"
+      "learnMore": "Learn more",
+      "addToWishlist": "Save product",
+      "removeFromWishlist": "Remove from wishlist"
     },
     "card": {
       "from": "From",
       "availableColors": "Available colors:"
+    },
+    "wishlistAuth": {
+      "title": "Sign in to save products",
+      "message": "Create or sign in to your account to save products to your wishlist.",
+      "cancel": "Keep browsing",
+      "proceed": "Sign in"
     },
     "configurator": {
       "back": "Back to products",

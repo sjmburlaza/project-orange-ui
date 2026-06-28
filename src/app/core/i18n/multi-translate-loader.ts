@@ -12,6 +12,7 @@ export const I18N_RESOURCES = new InjectionToken<readonly string[]>(
       'home',
       'products',
       'cart',
+      'wishlist',
       'orders',
       'checkout',
       'support',

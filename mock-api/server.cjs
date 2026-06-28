@@ -98,6 +98,7 @@ const router = jsonServer.router({
   fulfillmentOptions:
     baseDb.fulfillmentOptions ?? DEFAULT_FULFILLMENT_OPTIONS,
   analyticsEvents: baseDb.analyticsEvents ?? createSeedEvents(),
+  wishlistItems: baseDb.wishlistItems ?? [],
 });
 
 server.use(jsonServer.defaults());
@@ -131,6 +132,14 @@ server.get('/api/fulfillment/options', sendFulfillmentOptions);
 server.get('/api/:site/fulfillment/options', sendFulfillmentOptions);
 server.get('/api/options/:kind', sendOptions);
 server.get('/api/:site/options/:kind', sendOptions);
+server.get('/api/wishlist', sendWishlist);
+server.get('/api/:site/wishlist', sendWishlist);
+server.post('/api/wishlist/items', addWishlistItem);
+server.post('/api/:site/wishlist/items', addWishlistItem);
+server.get('/api/wishlist/items/:productId', sendWishlistStatus);
+server.get('/api/:site/wishlist/items/:productId', sendWishlistStatus);
+server.delete('/api/wishlist/items/:productId', removeWishlistItem);
+server.delete('/api/:site/wishlist/items/:productId', removeWishlistItem);
 server.get('/api/carts/:cartCode/recommended-products', sendRecommendedProducts);
 server.get(
   '/api/:site/carts/:cartCode/recommended-products',
@@ -195,6 +204,139 @@ function sendOptions(req, res) {
   const collection = router.db.get(req.params.kind).value();
 
   res.jsonp(Array.isArray(collection) ? collection : []);
+}
+
+function sendWishlist(req, res) {
+  res.jsonp(buildWishlistResponse(req.params.site));
+}
+
+function addWishlistItem(req, res) {
+  const productId = Number(req.body?.productId);
+  const product = findProductById(productId);
+
+  if (!product) {
+    res.status(404).jsonp({ message: 'Product not found' });
+    return;
+  }
+
+  const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
+  const wishlistItems = getWishlistItemsCollection();
+  const existing = wishlistItems.find(
+    (item) =>
+      Number(item.productId) === productId &&
+      normalizeSite(item.site ?? DEFAULT_SITE) === site,
+  );
+
+  if (!existing) {
+    router.db
+      .get('wishlistItems')
+      .push({
+        id: getNextWishlistItemId(),
+        productId,
+        site,
+        addedAtUtc: new Date().toISOString(),
+      })
+      .write();
+  }
+
+  res.status(201).jsonp(buildWishlistResponse(site));
+}
+
+function sendWishlistStatus(req, res) {
+  const productId = Number(req.params.productId);
+  const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
+  const isWishlisted = getWishlistItemsCollection().some(
+    (item) =>
+      Number(item.productId) === productId &&
+      normalizeSite(item.site ?? DEFAULT_SITE) === site,
+  );
+
+  res.jsonp({ productId, isWishlisted });
+}
+
+function removeWishlistItem(req, res) {
+  const productId = Number(req.params.productId);
+  const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
+  const wishlistItems = getWishlistItemsCollection();
+  const nextItems = wishlistItems.filter(
+    (item) =>
+      !(
+        Number(item.productId) === productId &&
+        normalizeSite(item.site ?? DEFAULT_SITE) === site
+      ),
+  );
+
+  router.db.set('wishlistItems', nextItems).write();
+
+  res.jsonp(buildWishlistResponse(site));
+}
+
+function buildWishlistResponse(site) {
+  const normalizedSite = normalizeSite(site) ?? DEFAULT_SITE;
+  const items = getWishlistItemsCollection()
+    .filter(
+      (item) => normalizeSite(item.site ?? DEFAULT_SITE) === normalizedSite,
+    )
+    .map((item) => {
+      const product = findProductById(item.productId);
+
+      return product
+        ? {
+            id: Number(item.id),
+            productId: Number(item.productId),
+            addedAtUtc: item.addedAtUtc,
+            product: toWishlistProductSummary(product),
+          }
+        : null;
+    })
+    .filter(Boolean);
+
+  return {
+    count: items.length,
+    items,
+  };
+}
+
+function getWishlistItemsCollection() {
+  const wishlistItems = router.db.get('wishlistItems').value();
+
+  return Array.isArray(wishlistItems) ? wishlistItems : [];
+}
+
+function getNextWishlistItemId() {
+  return (
+    getWishlistItemsCollection().reduce(
+      (max, item) => Math.max(max, Number(item.id) || 0),
+      0,
+    ) + 1
+  );
+}
+
+function findProductById(productId) {
+  const products = router.db.get('products').value();
+
+  return Array.isArray(products)
+    ? products.find((product) => Number(product.id) === Number(productId))
+    : null;
+}
+
+function toWishlistProductSummary(product) {
+  const stockQuantity = Number(product.stockQuantity ?? 0);
+
+  return {
+    id: Number(product.id),
+    name: product.name,
+    description: product.description,
+    price: Number(product.price ?? 0),
+    stockStatus: product.stockStatus ?? getStockStatus(stockQuantity),
+    stockQuantity,
+    imageUrl: product.imageUrl,
+    categoryId: Number(product.categoryId),
+    categoryName: product.categoryName,
+    subcategoryName: product.subcategoryName,
+    itemSpecs: product.itemSpecs ?? [],
+    availableColors: product.availableColors ?? [],
+  };
 }
 
 function sendRecommendedProducts(req, res) {

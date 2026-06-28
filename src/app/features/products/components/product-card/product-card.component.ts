@@ -21,8 +21,11 @@ import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
 export class ProductCardComponent {
   @Input() product!: Product;
   @Input() currency!: string;
+  @Input() wishlisted = false;
+  @Input() wishlistBusy = false;
   @Output() configureProduct = new EventEmitter<Product>();
   @Output() viewProductDetail = new EventEmitter<Product>();
+  @Output() toggleWishlist = new EventEmitter<Product>();
 
   onConfigureProduct(value: Product): void {
     if (value) {
@@ -33,6 +36,12 @@ export class ProductCardComponent {
   onViewProductDetail(value: Product): void {
     if (value) {
       this.viewProductDetail.emit(value);
+    }
+  }
+
+  onToggleWishlist(value: Product): void {
+    if (value && !this.wishlistBusy) {
+      this.toggleWishlist.emit(value);
     }
   }
 }

@@ -9,7 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ROLES } from 'src/app/core/auth/auth.constants';
 import { AuthSession } from 'src/app/core/auth/auth.models';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -33,9 +33,11 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly authStore = inject(AuthStore);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly siteService = inject(SiteService);
   private readonly site = this.siteService.currentSite();
+  private readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
   readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required]],
@@ -62,7 +64,7 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
           this.authStore.setSession(response);
-          this.router.navigate([this.getPostLoginUrl(response)]);
+          this.router.navigateByUrl(this.getPostLoginUrl(response));
         },
         error: (error) => {
           console.error('Login failed:', error);
@@ -83,8 +85,18 @@ export class LoginComponent {
   }
 
   private getPostLoginUrl(response: AuthSession): string {
-    return response.user.roles.includes(ROLES.ADMIN)
-      ? `/${this.site}/admin/analytics-dashboard`
-      : `/${this.site}/cart`;
+    if (response.user.roles.includes(ROLES.ADMIN)) {
+      return `/${this.site}/admin/analytics-dashboard`;
+    }
+
+    return this.getSafeReturnUrl() ?? `/${this.site}/cart`;
+  }
+
+  private getSafeReturnUrl(): string | null {
+    if (!this.returnUrl?.startsWith(`/${this.site}/`)) {
+      return null;
+    }
+
+    return this.returnUrl.startsWith(`//`) ? null : this.returnUrl;
   }
 }

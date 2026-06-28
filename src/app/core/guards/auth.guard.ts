@@ -1,5 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { AuthStore } from 'src/app/core/auth/auth.store';
@@ -12,7 +18,10 @@ export class AuthGuard implements CanActivate {
   private readonly router = inject(Router);
   private readonly siteService = inject(SiteService);
 
-  canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> {
+  canActivate(
+    _route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ): boolean | UrlTree | Observable<boolean | UrlTree> {
     const session = this.authStore.getSessionSnapshot();
 
     if (session) {
@@ -20,7 +29,7 @@ export class AuthGuard implements CanActivate {
     }
 
     if (session === null) {
-      return this.loginUrlTree();
+      return this.loginUrlTree(state.url);
     }
 
     return this.authService.getSession().pipe(
@@ -28,14 +37,17 @@ export class AuthGuard implements CanActivate {
       map(() => true),
       catchError(() => {
         this.authStore.clearSession();
-        return of(this.loginUrlTree());
+        return of(this.loginUrlTree(state.url));
       }),
     );
   }
 
-  private loginUrlTree(): UrlTree {
-    return this.router.createUrlTree([
-      `/${this.siteService.getCurrentSite()}/auth/login`,
-    ]);
+  private loginUrlTree(returnUrl: string): UrlTree {
+    return this.router.createUrlTree(
+      [`/${this.siteService.getCurrentSite()}/auth/login`],
+      {
+        queryParams: { returnUrl },
+      },
+    );
   }
 }

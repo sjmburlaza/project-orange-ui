@@ -12,11 +12,19 @@
     },
     "actions": {
       "buy": "Acheter",
-      "learnMore": "En savoir plus"
+      "learnMore": "En savoir plus",
+      "addToWishlist": "Enregistrer le produit",
+      "removeFromWishlist": "Retirer de la liste d'envies"
     },
     "card": {
       "from": "À partir de",
       "availableColors": "Couleurs disponibles :"
+    },
+    "wishlistAuth": {
+      "title": "Connectez-vous pour enregistrer des produits",
+      "message": "Créez un compte ou connectez-vous pour enregistrer des produits dans votre liste d'envies.",
+      "cancel": "Continuer vos achats",
+      "proceed": "Connexion"
     },
     "configurator": {
       "back": "Retour aux produits",
