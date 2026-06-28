@@ -83,6 +83,7 @@ function createCartItem(overrides: Partial<CartItem>): CartItem {
     productName: 'Orange Phone',
     price: 39999,
     quantity: 1,
+    totalPrice: 39999,
     stockQuantity: 8,
     imageUrl: '/assets/phone.png',
     itemSpecs: [],

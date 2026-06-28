@@ -130,6 +130,7 @@ function createCart(): Cart {
         productName: 'Orange Phone',
         price: 39999,
         quantity: 2,
+        totalPrice: 79998,
         stockQuantity: 8,
         imageUrl: '/assets/phone.png',
         itemSpecs: [],

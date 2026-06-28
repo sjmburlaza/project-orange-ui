@@ -157,6 +157,7 @@ function createCart(overrides: { quantity: number }): Cart {
         productName: 'Orange Watch',
         price: 12999,
         quantity: overrides.quantity,
+        totalPrice: 12999 * overrides.quantity,
         stockQuantity: 6,
         imageUrl: '',
         itemSpecs: [],

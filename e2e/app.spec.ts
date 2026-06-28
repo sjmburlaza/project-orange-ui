@@ -1153,7 +1153,9 @@ function updateCartItemQuantity(
 ): Cart {
   return createCart(
     cart.entries.map((entry) =>
-      entry.variantId === variantId ? { ...entry, quantity } : entry,
+      entry.variantId === variantId
+        ? { ...entry, quantity, totalPrice: entry.price * quantity }
+        : entry,
     ),
     cart.appliedVouchers,
   );
@@ -1173,6 +1175,7 @@ function upsertCartItem(entries: CartItem[], item: CartItem): CartItem[] {
       ? {
           ...entry,
           quantity: entry.quantity + item.quantity,
+          totalPrice: entry.price * (entry.quantity + item.quantity),
         }
       : entry,
   );

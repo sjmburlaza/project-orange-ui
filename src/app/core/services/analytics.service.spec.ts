@@ -209,6 +209,7 @@ function createCart(product: Product): Cart {
         productName: product.name,
         price: product.price,
         quantity: 1,
+        totalPrice: product.price,
         stockQuantity: product.stockQuantity,
         imageUrl: product.imageUrl,
         categoryName: product.categoryName,
