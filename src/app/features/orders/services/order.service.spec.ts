@@ -24,6 +24,7 @@ describe('OrderService', () => {
         productId: 1,
         productName: 'iPhone 15',
         price: 59999,
+        totalPrice: 59999,
         quantity: 1,
         imageUrl: '',
         categoryName: 'Phones',

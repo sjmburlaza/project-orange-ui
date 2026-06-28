@@ -232,6 +232,7 @@ function createOrder(product: Product): OrderConfirmation {
         productId: product.id,
         productName: product.name,
         price: product.price,
+        totalPrice: product.price,
         quantity: 1,
         imageUrl: product.imageUrl,
         categoryName: product.categoryName,
