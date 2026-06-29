@@ -1,9 +1,12 @@
 import { AsyncPipe, getCurrencySymbol } from '@angular/common';
 import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthStore } from 'src/app/core/auth/auth.store';
 import { Category } from 'src/app/core/models/category.model';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
+import { WishlistService } from 'src/app/core/services/wishlist.service';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
@@ -22,6 +25,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-product-list',
@@ -39,12 +43,25 @@ export class ProductListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
   private readonly analytics = inject(AnalyticsService);
+  private readonly authStore = inject(AuthStore);
+  private readonly wishlistService = inject(WishlistService);
   readonly siteService = inject(SiteService);
 
   readonly products$ = this.productFacade.products$;
   readonly loading$ = this.productFacade.loadingProducts$;
   readonly error$ = this.productFacade.productsError$;
+  readonly wishlistVm$ = combineLatest([
+    this.wishlistService.productIds$,
+    this.wishlistService.mutatingProductIds$,
+  ]).pipe(
+    map(([productIds, mutatingProductIds]) => ({
+      productIds,
+      mutatingProductIds,
+    })),
+    shareReplay({ bufferSize: 1, refCount: true }),
+  );
 
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
 
@@ -115,6 +132,7 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.initializeProductList();
     this.watchCategoryRouteParam();
+    this.watchWishlistSession();
     this.trackProductViews();
 
     this.priceRangeChange$
@@ -186,6 +204,15 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/', site, 'products', product.id]);
   }
 
+  toggleWishlist(product: Product, isWishlisted: boolean): void {
+    if (!this.authStore.isAuthenticated()) {
+      this.promptForSignIn();
+      return;
+    }
+
+    this.wishlistService.toggleProduct(product.id, isWishlisted);
+  }
+
   private trackProductViews(): void {
     this.products$
       .pipe(
@@ -199,6 +226,46 @@ export class ProductListComponent implements OnInit {
       )
       .subscribe((products) => {
         this.analytics.trackProductViews(products);
+      });
+  }
+
+  private watchWishlistSession(): void {
+    this.authStore.isAuthenticated$
+      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+      .subscribe((isAuthenticated) => {
+        if (isAuthenticated) {
+          this.wishlistService.loadWishlist();
+        } else {
+          this.wishlistService.clear();
+        }
+      });
+  }
+
+  private promptForSignIn(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '520px',
+      maxWidth: '90vw',
+      data: {
+        title: 'products.wishlistAuth.title',
+        message: 'products.wishlistAuth.message',
+        cancel: 'products.wishlistAuth.cancel',
+        proceed: 'products.wishlistAuth.proceed',
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((result) => result === 'proceed'),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
+        this.router.navigate(
+          ['/', this.siteService.currentSite(), 'auth', 'login'],
+          {
+            queryParams: { returnUrl: this.router.url },
+          },
+        );
       });
   }
 

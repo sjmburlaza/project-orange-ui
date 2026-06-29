@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductCardComponent } from './product-card.component';
+import providers from 'src/test-providers';
 
 describe('ProductCardComponent', () => {
   let component: ProductCardComponent;
@@ -9,6 +10,7 @@ describe('ProductCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProductCardComponent],
+      providers,
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductCardComponent);
@@ -44,6 +46,18 @@ describe('ProductCardComponent', () => {
     expect(colors?.textContent).toContain('Blue');
     expect(content.indexOf('A compact storefront test product.')).toBeLessThan(
       content.indexOf('Black'),
+    );
+  });
+
+  it('emits when the wishlist button is clicked', () => {
+    vi.spyOn(component.toggleWishlist, 'emit');
+
+    fixture.nativeElement
+      .querySelector('.product__wishlist')
+      ?.dispatchEvent(new Event('click'));
+
+    expect(component.toggleWishlist.emit).toHaveBeenCalledWith(
+      component.product,
     );
   });
 });

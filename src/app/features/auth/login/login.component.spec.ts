@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ROLES, Role } from 'src/app/core/auth/auth.constants';
 import { AuthSession } from 'src/app/core/auth/auth.models';
@@ -14,12 +14,17 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let authService: { login: ReturnType<typeof vi.fn> };
   let authStore: { setSession: ReturnType<typeof vi.fn> };
-  let router: { navigate: ReturnType<typeof vi.fn> };
+  let router: {
+    navigate: ReturnType<typeof vi.fn>;
+    navigateByUrl: ReturnType<typeof vi.fn>;
+  };
+  let queryParams: Record<string, string>;
 
   beforeEach(async () => {
     authService = { login: vi.fn() };
     authStore = { setSession: vi.fn() };
-    router = { navigate: vi.fn() };
+    router = { navigate: vi.fn(), navigateByUrl: vi.fn() };
+    queryParams = {};
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
@@ -28,6 +33,16 @@ describe('LoginComponent', () => {
         { provide: AuthStore, useValue: authStore },
         { provide: Router, useValue: router },
         { provide: SiteService, useValue: { currentSite: () => 'ph' } },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              queryParamMap: {
+                get: (key: string) => queryParams[key] ?? null,
+              },
+            },
+          },
+        },
       ],
     }).compileComponents();
 
@@ -47,9 +62,9 @@ describe('LoginComponent', () => {
     submitLoginForm();
 
     expect(authStore.setSession).toHaveBeenCalledWith(session);
-    expect(router.navigate).toHaveBeenCalledWith([
+    expect(router.navigateByUrl).toHaveBeenCalledWith(
       '/ph/admin/analytics-dashboard',
-    ]);
+    );
   });
 
   it('redirects non-admin users to the cart after login', () => {
@@ -59,7 +74,20 @@ describe('LoginComponent', () => {
     submitLoginForm();
 
     expect(authStore.setSession).toHaveBeenCalledWith(session);
-    expect(router.navigate).toHaveBeenCalledWith(['/ph/cart']);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/ph/cart');
+  });
+
+  it('redirects non-admin users to a safe return URL after login', () => {
+    queryParams['returnUrl'] = '/ph/profile/wishlist';
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    const session = createSession([ROLES.CUSTOMER]);
+    authService.login.mockReturnValue(of(session));
+
+    submitLoginForm();
+
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/ph/profile/wishlist');
   });
 
   function submitLoginForm(): void {

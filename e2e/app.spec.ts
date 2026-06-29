@@ -801,6 +801,7 @@ async function mockOrangeApi(
 ): Promise<void> {
   const state = {
     cart: createCart(),
+    wishlistProductIds: new Set<number>(),
     orderSequence: 1,
     orders: new Map(
       (options.orders ?? []).map((order) => [order.orderNumber, order]),
@@ -856,6 +857,10 @@ async function mockOrangeApi(
 
   await page.route(/\/api\/(?:[a-z]{2}\/)?carts(?:\/.*)?$/, async (route) => {
     await handleCartRoute(route, state);
+  });
+
+  await page.route(/\/api\/(?:[a-z]{2}\/)?wishlist(?:\/.*)?$/, async (route) => {
+    await handleWishlistRoute(route, state);
   });
 
   await page.route(/\/api\/(?:[a-z]{2}\/)?orders(?:\/.*)?$/, async (route) => {
@@ -1067,6 +1072,81 @@ async function handleCartRoute(
   }
 
   await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
+}
+
+async function handleWishlistRoute(
+  route: Route,
+  state: { wishlistProductIds: Set<number> },
+): Promise<void> {
+  const request = route.request();
+  const url = new URL(request.url());
+  const pathname = apiPathname(url);
+  const segments = pathname.split('/').filter(Boolean);
+  const method = request.method();
+
+  if (method === 'GET' && pathname === '/api/wishlist') {
+    await route.fulfill({ json: createWishlist(state.wishlistProductIds) });
+    return;
+  }
+
+  if (method === 'POST' && segments.at(-1) === 'items') {
+    const body = request.postDataJSON() as { productId: number };
+    const product = products.find((item) => item.id === body.productId);
+
+    if (!product) {
+      await route.fulfill({ status: 404, json: { message: 'Product not found' } });
+      return;
+    }
+
+    state.wishlistProductIds.add(body.productId);
+    await route.fulfill({ json: createWishlist(state.wishlistProductIds) });
+    return;
+  }
+
+  if (method === 'GET' && segments.at(-2) === 'items') {
+    const productId = Number(segments.at(-1));
+
+    await route.fulfill({
+      json: {
+        productId,
+        isWishlisted: state.wishlistProductIds.has(productId),
+      },
+    });
+    return;
+  }
+
+  if (method === 'DELETE' && segments.at(-2) === 'items') {
+    const productId = Number(segments.at(-1));
+
+    state.wishlistProductIds.delete(productId);
+    await route.fulfill({ json: createWishlist(state.wishlistProductIds) });
+    return;
+  }
+
+  await route.fulfill({ status: 404, json: { message: 'Not mocked' } });
+}
+
+function createWishlist(productIds: Set<number>) {
+  const items = [...productIds]
+    .map((productId) => products.find((product) => product.id === productId))
+    .filter((product): product is (typeof products)[number] =>
+      Boolean(product),
+    )
+    .map((product, index) => ({
+      id: index + 1,
+      productId: product.id,
+      addedAtUtc: '2026-06-28T23:01:03+00:00',
+      product: {
+        ...product,
+        itemSpecs: [],
+        availableColors: product.availableColors ?? [],
+      },
+    }));
+
+  return {
+    count: items.length,
+    items,
+  };
 }
 
 function findProductByVariantId(variantId: number) {

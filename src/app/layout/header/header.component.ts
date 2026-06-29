@@ -97,7 +97,7 @@ export class HeaderComponent implements OnInit {
   }
 
   goToSaves(): void {
-    this.router.navigate([`/${this.site()}/profile`]);
+    this.router.navigate([`/${this.site()}/profile/wishlist`]);
   }
 
   goToAccount(): void {

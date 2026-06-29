@@ -1,4 +1,29 @@
 <div class="product">
+  <button
+    class="product__wishlist"
+    type="button"
+    [class.product__wishlist--active]="wishlisted"
+    [disabled]="wishlistBusy"
+    [attr.aria-pressed]="wishlisted"
+    [attr.aria-label]="
+      (wishlisted
+        ? 'products.actions.removeFromWishlist'
+        : 'products.actions.addToWishlist'
+      ) | translate
+    "
+    [title]="
+      (wishlisted
+        ? 'products.actions.removeFromWishlist'
+        : 'products.actions.addToWishlist'
+      ) | translate
+    "
+    (click)="onToggleWishlist(product)"
+  >
+    <i
+      [class]="wishlisted ? 'bi bi-bookmark-fill' : 'bi bi-bookmark'"
+      aria-hidden="true"
+    ></i>
+  </button>
   <div class="product__image">
     @if (product.imageUrl) {
       <img [src]="product.imageUrl" [alt]="product.name" />

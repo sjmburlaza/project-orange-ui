@@ -12,11 +12,19 @@
     },
     "actions": {
       "buy": "購入",
-      "learnMore": "詳細を見る"
+      "learnMore": "詳細を見る",
+      "addToWishlist": "商品を保存",
+      "removeFromWishlist": "ウィッシュリストから削除"
     },
     "card": {
       "from": "最低価格",
       "availableColors": "利用可能なカラー:"
+    },
+    "wishlistAuth": {
+      "title": "ログインして商品を保存",
+      "message": "アカウントを作成するかログインすると、商品をウィッシュリストに保存できます。",
+      "cancel": "買い物を続ける",
+      "proceed": "ログイン"
     },
     "configurator": {
       "back": "商品一覧に戻る",

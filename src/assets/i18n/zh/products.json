@@ -12,11 +12,19 @@
     },
     "actions": {
       "buy": "购买",
-      "learnMore": "了解更多"
+      "learnMore": "了解更多",
+      "addToWishlist": "收藏商品",
+      "removeFromWishlist": "从愿望清单移除"
     },
     "card": {
       "from": "起价",
       "availableColors": "可选颜色："
+    },
+    "wishlistAuth": {
+      "title": "登录后收藏商品",
+      "message": "创建账户或登录后，即可将商品保存到您的愿望清单。",
+      "cancel": "继续浏览",
+      "proceed": "登录"
     },
     "configurator": {
       "back": "返回商品列表",

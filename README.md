@@ -1,6 +1,6 @@
 # Project Orange UI
 
-Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
+Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
 
 ## Demos
 
@@ -98,8 +98,9 @@ Most app routes are scoped by site:
 
 | Route                                 | Purpose                                                             |
 | ------------------------------------- | ------------------------------------------------------------------- |
-| `/:site/products`                     | Product listing with category, sort, and price filters.             |
-| `/:site/products/detail`              | Product detail page.                                                |
+| `/:site/products`                     | Product listing with category, sort, price filters, and save toggles. |
+| `/:site/products/:productId`          | Product detail page.                                                |
+| `/:site/products/:productId/configure` | Product configurator and add-to-cart flow.                         |
 | `/:site/cart`                         | Cart review, quantity updates, vouchers, shipping, and add-ons.     |
 | `/:site/checkout`                     | Dynamic checkout form, shipping, payment, and order summary flow.   |
 | `/:site/auth/login`                   | Sign in.                                                            |
@@ -110,7 +111,8 @@ Most app routes are scoped by site:
 | `/:site/orders/my-orders`             | Orders route alias for lookup and history.                          |
 | `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                             |
 | `/:site/profile/account-settings`     | Customer account settings.                                          |
-| `/:site/admin/dashboard`              | Admin analytics dashboard. Requires an authenticated admin session. |
+| `/:site/profile/wishlist`             | Authenticated customer wishlist with saved products.                 |
+| `/:site/admin/analytics-dashboard`    | Admin analytics dashboard. Requires an authenticated admin session. |
 
 Unsupported site codes are redirected back to the country selector.
 
@@ -154,6 +156,7 @@ Primary API areas used by the UI:
 | Auth              | `POST /api/auth/login`, `POST /api/auth/register`, `POST /api/auth/forgot-password`, `POST /api/auth/reset-password`, `GET /api/auth/session`, `POST /api/auth/logout`                                                                               |
 | Catalog           | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories`                                                                                                                                                                                  |
 | Product add-ons   | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans`                                                                                                                                                                        |
+| Wishlist          | `GET /api/wishlist`, `POST /api/wishlist/items`, `GET /api/wishlist/items/:productId`, `DELETE /api/wishlist/items/:productId`                                                                                                                       |
 | Cart              | `GET /api/carts/:cartCode`, `GET /api/carts/:cartCode/recommended-products`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:variantId`, `DELETE /api/carts/:cartCode/items/:variantId`                                      |
 | Cart add-ons      | `PUT /api/carts/:cartCode/items/:variantId/addons/:addonId`, `DELETE /api/carts/:cartCode/items/:variantId/addons/:addonId`                                                                                                                          |
 | Vouchers          | `POST /api/carts/:cartCode/vouchers`, `DELETE /api/carts/:cartCode/vouchers/:code`                                                                                                                                                                   |
@@ -164,6 +167,8 @@ Primary API areas used by the UI:
 | Trade-in sessions | `POST /api/trade-in-sessions`, `GET /api/trade-in-sessions/:id`, `PATCH /api/trade-in-sessions/:id/step-one`, `PATCH /api/trade-in-sessions/:id/step-two`, `PATCH /api/trade-in-sessions/:id/step-three`, `PATCH /api/trade-in-sessions/:id/confirm` |
 
 Auth requests use credentials and XSRF support. `AuthInterceptor` adds `withCredentials` to API requests and redirects unauthenticated users to the site login page when protected requests return `401`.
+
+Wishlist routes require an authenticated session and are scoped to the active site by the site-prefix interceptor. Product cards expose a bookmark save toggle; unauthenticated users see the shared confirmation dialog before being sent to login with the current URL preserved as `returnUrl`.
 
 ## Mock Auth
 
@@ -196,7 +201,7 @@ Global feature state is registered in `src/app/app.config.ts`:
 - `cartFeature` and `CartEffects` for cart, vouchers, shipping, and add-ons
 - `tradeInFeature` and `TradeInEffects` for trade-in configuration and sessions
 
-Feature facades sit beside their stores and are the preferred integration point for components.
+Feature facades sit beside their stores and are the preferred integration point for components. Wishlist state is kept in `WishlistService` because it is a small authenticated user collection shared by product cards and the profile wishlist page.
 
 ## Localization and Sites
 
@@ -207,7 +212,10 @@ common.json
 home.json
 products.json
 cart.json
+wishlist.json
 orders.json
+checkout.json
+support.json
 ```
 
 `MultiTranslateLoader` loads and merges those resources for the active language. Current language folders are:
@@ -240,7 +248,7 @@ src/app/core
   i18n/             Site types and multi-file translation loader
   interceptors/     API site prefixing, auth, and mock auth
   models/           Shared API/domain models
-  services/         Site, storage, country detection, and postal code services
+  services/         Site, wishlist, storage, country detection, and postal code services
 
 src/app/features
   admin/            Site-scoped analytics dashboard plus reusable chart wrappers
@@ -251,8 +259,8 @@ src/app/features
   country-entry/    Country selector and detected-country entry flow
   home/             Home feature
   orders/           Guest lookup, signed-in history, confirmation, and order item card
-  products/         Product list, product detail, filters, product store
-  profile/          Account settings
+  products/         Product list, product detail/configurator, filters, product store
+  profile/          Account settings and wishlist
   trade-in/         Trade-in store and API
 
 src/app/layout

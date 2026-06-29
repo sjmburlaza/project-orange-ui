@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 
 import { Product } from 'src/app/core/models/product.model';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
@@ -11,16 +13,31 @@ describe('ProductListComponent', () => {
   let component: ProductListComponent;
   let fixture: ComponentFixture<ProductListComponent>;
   let store: Store;
+  let dialog: { open: ReturnType<typeof vi.fn> };
+  let router: Router;
 
   beforeEach(async () => {
+    dialog = {
+      open: vi.fn(() => ({
+        afterClosed: () => of('cancel'),
+      })),
+    };
+
     await TestBed.configureTestingModule({
       imports: [ProductListComponent],
-      providers,
+      providers: [
+        ...providers,
+        {
+          provide: MatDialog,
+          useValue: dialog,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(Store);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -71,6 +88,33 @@ describe('ProductListComponent', () => {
     store.dispatch(ProductActions.selectCategory({ categoryId: 3 }));
 
     expect(await firstValueFrom(component.hasActiveProductFilters$)).toBe(true);
+  });
+
+  it('prompts guests to sign in before saving a product', () => {
+    const navigate = vi.spyOn(router, 'navigate');
+    dialog.open.mockReturnValue({
+      afterClosed: () => of('proceed'),
+    });
+
+    component.toggleWishlist(createProduct(), false);
+
+    expect(dialog.open).toHaveBeenCalledWith(
+      expect.any(Function),
+      expect.objectContaining({
+        data: {
+          title: 'products.wishlistAuth.title',
+          message: 'products.wishlistAuth.message',
+          cancel: 'products.wishlistAuth.cancel',
+          proceed: 'products.wishlistAuth.proceed',
+        },
+      }),
+    );
+    expect(navigate).toHaveBeenCalledWith(
+      ['/', component.siteService.currentSite(), 'auth', 'login'],
+      {
+        queryParams: { returnUrl: router.url },
+      },
+    );
   });
 });
 

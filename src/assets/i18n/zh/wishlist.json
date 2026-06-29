@@ -1,0 +1,29 @@
+{
+  "wishlist": {
+    "eyebrow": "账户",
+    "title": "我的收藏",
+    "count": "已收藏 {{ count }} 件商品",
+    "loading": "正在加载愿望清单...",
+    "product": "商品",
+    "added": "添加于",
+    "error": {
+      "load": "无法加载愿望清单。请重试。",
+      "add": "无法收藏此商品。请重试。",
+      "remove": "无法移除此商品。请重试。"
+    },
+    "stock": {
+      "inStock": "库存 {{ count }} 件",
+      "lowStock": "仅剩 {{ count }} 件",
+      "outOfStock": "无库存"
+    },
+    "empty": {
+      "title": "还没有收藏商品",
+      "message": "在商店中收藏商品后，它们会显示在这里。"
+    },
+    "actions": {
+      "retry": "重试",
+      "remove": "从愿望清单移除",
+      "shop": "浏览商品"
+    }
+  }
+}

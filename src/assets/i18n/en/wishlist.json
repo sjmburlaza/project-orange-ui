@@ -1,0 +1,29 @@
+{
+  "wishlist": {
+    "eyebrow": "Account",
+    "title": "Your Saves",
+    "count": "{{ count }} saved item(s)",
+    "loading": "Loading your wishlist...",
+    "product": "Product",
+    "added": "Added",
+    "error": {
+      "load": "Unable to load your wishlist. Please try again.",
+      "add": "Unable to save this product. Please try again.",
+      "remove": "Unable to remove this product. Please try again."
+    },
+    "stock": {
+      "inStock": "{{ count }} in stock",
+      "lowStock": "Only {{ count }} left",
+      "outOfStock": "Out of stock"
+    },
+    "empty": {
+      "title": "No saved products yet",
+      "message": "Save products from the store and they will appear here."
+    },
+    "actions": {
+      "retry": "Retry",
+      "remove": "Remove from wishlist",
+      "shop": "Shop products"
+    }
+  }
+}
