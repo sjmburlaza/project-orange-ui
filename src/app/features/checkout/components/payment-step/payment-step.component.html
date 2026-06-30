@@ -1,20 +1,155 @@
-<section class="payment-methods">
-  <h3>{{ "checkout.payment.title" | translate }}</h3>
+<section class="payment-methods" [formGroup]="paymentForm">
+  <header class="payment-heading">
+    <div>
+      <h3>{{ "checkout.payment.title" | translate }}</h3>
+      <p>{{ "checkout.payment.subtitle" | translate }}</p>
+    </div>
+  </header>
 
-  <div class="payment-grid">
+  @if (isCreatingPaymentIntent) {
+    <div class="payment-status payment-status--info">
+      <mat-icon aria-hidden="true">sync</mat-icon>
+      <span>{{ "checkout.payment.intent.preparing" | translate }}</span>
+    </div>
+  } @else if (paymentIntent) {
+    <div class="payment-status payment-status--ready">
+      <mat-icon aria-hidden="true">lock</mat-icon>
+      <span>{{ "checkout.payment.intent.ready" | translate }}</span>
+    </div>
+  }
+
+  @if (confirmationResult) {
+    <div
+      class="payment-status"
+      [class.payment-status--success]="confirmationResult.status === 'success'"
+      [class.payment-status--warning]="confirmationResult.status === 'pending'"
+      [class.payment-status--error]="confirmationResult.status === 'failed'"
+    >
+      <mat-icon aria-hidden="true">
+        {{
+          confirmationResult.status === "success"
+            ? "check_circle"
+            : confirmationResult.status === "pending"
+              ? "schedule"
+              : "error"
+        }}
+      </mat-icon>
+      <span>
+        {{ "checkout.payment.status." + confirmationResult.status | translate }}
+      </span>
+    </div>
+  } @else if (paymentErrorMessage) {
+    <div class="payment-status payment-status--error">
+      <mat-icon aria-hidden="true">error</mat-icon>
+      <span>{{ paymentErrorMessage }}</span>
+    </div>
+  }
+
+  <mat-accordion class="payment-grid">
     @for (option of field?.options ?? []; track option.value) {
-      <button
-        type="button"
-        class="payment-card"
-        [class.selected]="paymentMethod.value === option.value"
-        (click)="selectPayment(option.value)"
-      >
-        @if (option.icon) {
-          <mat-icon>{{ option.icon }}</mat-icon>
-        }
+      @if (option.value === "cod") {
+        <app-cod-payment-method
+          [label]="option.label"
+          [icon]="option.icon"
+          [detailKey]="getMethodDetailKey(option.value)"
+          [selected]="selectedPaymentMethod === option.value"
+          (methodSelected)="selectPayment(option.value)"
+        />
+      } @else {
+        <mat-expansion-panel
+          class="payment-option"
+          [class.selected]="selectedPaymentMethod === option.value"
+          [expanded]="selectedPaymentMethod === option.value"
+          (opened)="selectPayment(option.value)"
+          (closed)="collapsePayment(option.value)"
+        >
+          <mat-expansion-panel-header class="payment-card">
+            <div class="payment-card__layout">
+              <span class="payment-card__icon">
+                @if (option.icon) {
+                  <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
+                }
+              </span>
 
-        <span>{{ option.label }}</span>
-      </button>
+              <span class="payment-card__content">
+                <strong>{{ option.label }}</strong>
+                <small>{{ getMethodDetailKey(option.value) | translate }}</small>
+              </span>
+            </div>
+          </mat-expansion-panel-header>
+
+          @if (selectedPaymentMethod === option.value) {
+            <div class="payment-panel" [id]="'payment-panel-' + option.value">
+              @if (option.value === "card") {
+                @defer (when selectedPaymentMethod === option.value) {
+                  <app-card-payment-method
+                    #activeMethod
+                    [initialValue]="methodValue"
+                    (valueChanged)="onMethodValueChanged($event)"
+                  />
+                } @placeholder {
+                  <div class="payment-panel__loading"></div>
+                }
+              }
+
+              @if (option.value === "unionpay") {
+                @defer (when selectedPaymentMethod === option.value) {
+                  <app-unionpay-payment-method
+                    #activeMethod
+                    [initialValue]="methodValue"
+                    (valueChanged)="onMethodValueChanged($event)"
+                  />
+                } @placeholder {
+                  <div class="payment-panel__loading"></div>
+                }
+              }
+
+              @if (option.value === "gcash") {
+                @defer (when selectedPaymentMethod === option.value) {
+                  <app-gcash-payment-method
+                    #activeMethod
+                    [initialValue]="methodValue"
+                    (valueChanged)="onMethodValueChanged($event)"
+                  />
+                } @placeholder {
+                  <div class="payment-panel__loading"></div>
+                }
+              }
+
+              @if (option.value === "alipay") {
+                @defer (when selectedPaymentMethod === option.value) {
+                  <app-alipay-payment-method #activeMethod />
+                } @placeholder {
+                  <div class="payment-panel__loading"></div>
+                }
+              }
+
+              @if (option.value === "wechat-pay") {
+                @defer (when selectedPaymentMethod === option.value) {
+                  <app-wechat-pay-payment-method #activeMethod />
+                } @placeholder {
+                  <div class="payment-panel__loading"></div>
+                }
+              }
+            </div>
+          }
+        </mat-expansion-panel>
+      }
+    }
+  </mat-accordion>
+
+  <div class="payment-terms">
+    <mat-checkbox formControlName="termsAccepted">
+      {{ "checkout.payment.terms.label" | translate }}
+    </mat-checkbox>
+
+    @if (
+      paymentForm.controls.termsAccepted.touched &&
+      paymentForm.controls.termsAccepted.hasError("required")
+    ) {
+      <small class="error payment-terms__error">
+        {{ "checkout.payment.validation.termsRequired" | translate }}
+      </small>
     }
   </div>
 

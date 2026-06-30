@@ -1,0 +1,17 @@
+<button
+  type="button"
+  class="cod-payment-method"
+  [class.selected]="selected"
+  (click)="methodSelected.emit()"
+>
+  <span class="cod-payment-method__icon">
+    @if (icon) {
+      <mat-icon aria-hidden="true">{{ icon }}</mat-icon>
+    }
+  </span>
+
+  <span class="cod-payment-method__content">
+    <strong>{{ label }}</strong>
+    <small>{{ detailKey | translate }}</small>
+  </span>
+</button>

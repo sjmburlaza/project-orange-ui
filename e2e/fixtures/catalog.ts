@@ -161,7 +161,7 @@ export const checkoutForm: CheckoutFormConfig = {
           type: 'select',
           label: 'Payment Method',
           options: [
-            { label: 'Credit Card', value: 'credit-card', icon: 'credit_card' },
+            { label: 'Credit Card', value: 'card', icon: 'credit_card' },
             { label: 'Cash on Delivery', value: 'cod', icon: 'payments' },
           ],
         },

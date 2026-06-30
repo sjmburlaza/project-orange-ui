@@ -27,8 +27,85 @@
     },
     "payment": {
       "title": "支払い方法を選択",
+      "subtitle": "カード、ウォレット、代金引換で安全にお支払いできます。",
+      "totalDue": "本日のお支払い合計",
+      "intent": {
+        "preparing": "安全な支払いを準備中...",
+        "ready": "安全な支払いの準備ができました"
+      },
+      "methods": {
+        "default": "支払い方法",
+        "card": {
+          "detail": "カード、分割払い、保存済み決済"
+        },
+        "gcash": {
+          "detail": "ウォレット認証"
+        },
+        "cod": {
+          "detail": "配達時に現金でお支払い"
+        },
+        "unionpay": {
+          "detail": "銀行カードまたはUnionPay認証"
+        },
+        "alipay": {
+          "detail": "Alipay認証"
+        },
+        "wechatPay": {
+          "detail": "WeChat Pay QR認証"
+        }
+      },
+      "card": {
+        "nameLabel": "カード名義",
+        "numberLabel": "カード番号",
+        "expiryLabel": "MM/YY",
+        "cvvLabel": "CVV",
+        "savePaymentMethod": "次回のためにカードを保存",
+        "installments": {
+          "full": "一括払い",
+          "threeMonths": "3か月",
+          "sixMonths": "6か月"
+        }
+      },
+      "wallet": {
+        "mobileLabel": "GCash携帯番号"
+      },
+      "cod": {
+        "title": "代金引換",
+        "detail": "商品のお届け時にお支払いを受け取ります。"
+      },
+      "alipay": {
+        "title": "Alipay",
+        "detail": "Alipayで支払いを確認して、この注文を承認します。"
+      },
+      "wechatPay": {
+        "title": "WeChat Pay",
+        "detail": "WeChat Payでスキャンまたは確認して、この注文を承認します。"
+      },
+      "terms": {
+        "label": "利用規約を読み、理解し、同意します。また、Orange Shop が私のメールアドレス宛にメールと請求書を送信することに同意します。"
+      },
+      "assurance": {
+        "secure": "安全な認証",
+        "receipt": "即時レシート",
+        "support": "注文サポート"
+      },
+      "status": {
+        "success": "支払いが承認されました。",
+        "failed": "支払いに失敗しました。別の方法を選ぶか、もう一度お試しください。",
+        "pending": "支払いは保留中です。注文は続行されます。"
+      },
       "validation": {
-        "required": "支払い方法を選択してください。"
+        "required": "支払い方法を選択してください。",
+        "cardholderNameRequired": "カード名義を入力してください。",
+        "cardNumberRequired": "カード番号を入力してください。",
+        "cardNumberInvalid": "有効なカード番号を入力してください。",
+        "expiryDateRequired": "有効期限を入力してください。",
+        "expiryDateInvalid": "MM/YY形式で入力してください。",
+        "securityCodeRequired": "CVVを入力してください。",
+        "securityCodeInvalid": "有効なCVVを入力してください。",
+        "walletMobileRequired": "ウォレットの携帯番号を入力してください。",
+        "walletMobileInvalid": "有効なフィリピンの携帯番号を入力してください。",
+        "termsRequired": "続行するには利用規約に同意してください。"
       }
     },
     "selectSearch": {

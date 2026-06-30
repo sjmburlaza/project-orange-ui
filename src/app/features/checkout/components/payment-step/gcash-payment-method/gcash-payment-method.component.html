@@ -1,0 +1,20 @@
+<mat-icon aria-hidden="true">account_balance_wallet</mat-icon>
+<mat-form-field appearance="outline">
+  <mat-label>{{ "checkout.payment.wallet.mobileLabel" | translate }}</mat-label>
+  <input
+    matInput
+    type="tel"
+    inputmode="tel"
+    autocomplete="tel"
+    [formControl]="form.controls.walletMobileNumber"
+  />
+  @if (form.controls.walletMobileNumber.hasError("required")) {
+    <mat-error>
+      {{ "checkout.payment.validation.walletMobileRequired" | translate }}
+    </mat-error>
+  } @else if (form.controls.walletMobileNumber.hasError("pattern")) {
+    <mat-error>
+      {{ "checkout.payment.validation.walletMobileInvalid" | translate }}
+    </mat-error>
+  }
+</mat-form-field>

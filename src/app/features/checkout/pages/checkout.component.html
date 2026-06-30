@@ -19,6 +19,13 @@
                 #activeStep
                 [fields]="step.fields ?? []"
                 [initialValue]="checkoutData()[step.id]"
+                [paymentIntent]="paymentIntent()"
+                [paymentAmount]="paymentAmount()"
+                [paymentCurrency]="paymentCurrency()"
+                [isCreatingPaymentIntent]="isCreatingPaymentIntent()"
+                [isConfirmingPayment]="isPlacingOrder()"
+                [confirmationResult]="paymentConfirmation()"
+                [paymentErrorMessage]="paymentErrorMessage()"
                 (valueChanged)="onStepValueChanged(step.id, $event)"
               />
             }
@@ -42,7 +49,10 @@
             <button
               matButton="filled"
               type="button"
-              [disabled]="isPlacingOrder()"
+              [disabled]="
+                isPlacingOrder() ||
+                (step.id === 'payment' && isCreatingPaymentIntent())
+              "
               (click)="next()"
             >
               @if (i === steps().length - 1 && isPlacingOrder()) {

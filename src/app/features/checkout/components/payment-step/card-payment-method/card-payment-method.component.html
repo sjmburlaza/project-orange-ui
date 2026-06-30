@@ -1,0 +1,98 @@
+<div class="accepted-payments" aria-hidden="true">
+  @for (payment of acceptedPayments; track payment) {
+    <span>{{ payment }}</span>
+  }
+</div>
+
+<div class="card-form" [formGroup]="form">
+  <mat-form-field appearance="outline" class="field-full">
+    <mat-label>{{ "checkout.payment.card.nameLabel" | translate }}</mat-label>
+    <input matInput type="text" formControlName="cardholderName" />
+    @if (form.controls.cardholderName.hasError("required")) {
+      <mat-error>
+        {{ "checkout.payment.validation.cardholderNameRequired" | translate }}
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field-full">
+    <mat-label>
+      {{ "checkout.payment.card.numberLabel" | translate }}
+    </mat-label>
+    <input
+      matInput
+      type="text"
+      inputmode="numeric"
+      autocomplete="cc-number"
+      formControlName="cardNumber"
+    />
+    @if (form.controls.cardNumber.hasError("required")) {
+      <mat-error>
+        {{ "checkout.payment.validation.cardNumberRequired" | translate }}
+      </mat-error>
+    } @else if (form.controls.cardNumber.hasError("pattern")) {
+      <mat-error>
+        {{ "checkout.payment.validation.cardNumberInvalid" | translate }}
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>
+      {{ "checkout.payment.card.expiryLabel" | translate }}
+    </mat-label>
+    <input
+      matInput
+      type="text"
+      inputmode="numeric"
+      autocomplete="cc-exp"
+      formControlName="expiryDate"
+    />
+    @if (form.controls.expiryDate.hasError("required")) {
+      <mat-error>
+        {{ "checkout.payment.validation.expiryDateRequired" | translate }}
+      </mat-error>
+    } @else if (form.controls.expiryDate.hasError("pattern")) {
+      <mat-error>
+        {{ "checkout.payment.validation.expiryDateInvalid" | translate }}
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>{{ "checkout.payment.card.cvvLabel" | translate }}</mat-label>
+    <input
+      matInput
+      type="password"
+      inputmode="numeric"
+      autocomplete="cc-csc"
+      formControlName="securityCode"
+    />
+    @if (form.controls.securityCode.hasError("required")) {
+      <mat-error>
+        {{ "checkout.payment.validation.securityCodeRequired" | translate }}
+      </mat-error>
+    } @else if (form.controls.securityCode.hasError("pattern")) {
+      <mat-error>
+        {{ "checkout.payment.validation.securityCodeInvalid" | translate }}
+      </mat-error>
+    }
+  </mat-form-field>
+</div>
+
+<div class="installment-options">
+  @for (plan of installments; track plan.value) {
+    <button
+      type="button"
+      class="installment-option"
+      [class.selected]="form.controls.installmentPlan.value === plan.value"
+      (click)="selectInstallment(plan.value)"
+    >
+      {{ plan.labelKey | translate }}
+    </button>
+  }
+</div>
+
+<mat-checkbox [formControl]="form.controls.savePaymentMethod">
+  {{ "checkout.payment.card.savePaymentMethod" | translate }}
+</mat-checkbox>

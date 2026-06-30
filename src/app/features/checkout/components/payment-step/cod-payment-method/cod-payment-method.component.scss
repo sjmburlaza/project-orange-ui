@@ -1,0 +1,65 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: block;
+}
+
+.cod-payment-method {
+  width: 100%;
+  min-height: 96px;
+  border: 1px solid token(color, border-strong);
+  border-radius: 8px;
+  background: #fff;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+
+  &:hover,
+  &.selected {
+    background: token(color, surface);
+  }
+
+  &.selected {
+    border-color: token(color, primary);
+    box-shadow: 0 0 0 2px token(color, primary) inset;
+  }
+
+  &__icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: token(color, surface-secondary);
+  }
+
+  mat-icon {
+    flex: 0 0 auto;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  &__content {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__content strong,
+  &__content small {
+    overflow-wrap: anywhere;
+  }
+
+  &__content small {
+    color: token(color, text-secondary);
+  }
+}

@@ -550,6 +550,16 @@ test.describe('checkout journey', () => {
       page.getByRole('heading', { name: 'Choose payment method' }),
     ).toBeVisible();
     await page.getByRole('button', { name: /Credit Card/ }).click();
+    await expect(page.getByLabel('Name on card')).toBeVisible();
+    await page.getByLabel('Name on card').fill('Ada Lovelace');
+    await page.getByLabel('Card number').fill('4242 4242 4242 1111');
+    await page.getByLabel('MM/YY').fill('12/30');
+    await page.getByLabel('CVV').fill('123');
+    await page
+      .getByRole('checkbox', {
+        name: /I have read, understand and agree to the Terms of Service/,
+      })
+      .check();
     await page.getByRole('button', { name: 'Place Order' }).click();
 
     await expect(page).toHaveURL(/\/ph\/orders\/confirmation\/OR-\d{8}-\d{4}$/);
@@ -1294,7 +1304,7 @@ function createOrderConfirmation(
   const orderNumber = `OR-20260618-${String(sequence).padStart(4, '0')}`;
   const payment = asRecord(request.checkoutData['payment']);
   const shipping = asRecord(request.checkoutData['shipping']);
-  const paymentMethod = readString(payment, 'paymentMethod', 'credit-card');
+  const paymentMethod = readString(payment, 'paymentMethod', 'card');
   const shippingMethod = readString(shipping, 'shippingMethod', 'standard');
   const fulfillmentOption = fulfillmentOptions.find(
     (option) => option.code === shippingMethod,
