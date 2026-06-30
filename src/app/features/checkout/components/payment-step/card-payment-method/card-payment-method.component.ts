@@ -121,15 +121,20 @@ export class CardPaymentMethodComponent
       return null;
     }
 
-    return this.getValue();
+    return this.getValue({ trimCardholderName: true });
   }
 
-  getValue(): Partial<PaymentStepValue> {
+  getValue(
+    options: { trimCardholderName?: boolean } = {},
+  ): Partial<PaymentStepValue> {
     const value = this.form.getRawValue();
     const cardNumber = this.getDigits(value.cardNumber);
+    const cardholderName = options.trimCardholderName
+      ? value.cardholderName.trim()
+      : value.cardholderName;
 
     return {
-      cardholderName: value.cardholderName.trim(),
+      cardholderName,
       cardLast4: cardNumber.slice(-4),
       expiryDate: value.expiryDate.trim(),
       installmentPlan: value.installmentPlan,
