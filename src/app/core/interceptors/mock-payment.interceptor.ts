@@ -15,6 +15,10 @@ import {
   PaymentConfirmationStatus,
   PaymentIntent,
 } from 'src/app/core/models/payment.model';
+import {
+  HYPHEN_PATTERN,
+  PAYMENT_ENDPOINT_PATTERN,
+} from 'src/app/shared/constants/regex.constants';
 
 @Injectable()
 export class MockPaymentInterceptor implements HttpInterceptor {
@@ -116,7 +120,7 @@ export class MockPaymentInterceptor implements HttpInterceptor {
     }
 
     const [path] = req.url.split('?');
-    const match = path.match(/^\/api\/(?:(?:ph|fr|cn|jp)\/)?payments\/(.+)$/);
+    const match = path.match(PAYMENT_ENDPOINT_PATTERN);
     const endpoint = match?.[1];
 
     return endpoint === 'intents' || endpoint === 'confirm' ? endpoint : null;
@@ -185,7 +189,7 @@ export class MockPaymentInterceptor implements HttpInterceptor {
   private createId(prefix: string): string {
     const random =
       typeof crypto !== 'undefined' && 'randomUUID' in crypto
-        ? crypto.randomUUID().replace(/-/g, '').slice(0, 12)
+        ? crypto.randomUUID().replace(HYPHEN_PATTERN, '').slice(0, 12)
         : Math.random().toString(36).slice(2, 14);
 
     return `${prefix}_${random}`;

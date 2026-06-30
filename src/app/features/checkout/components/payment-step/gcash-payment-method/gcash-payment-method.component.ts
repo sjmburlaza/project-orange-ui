@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PaymentStepValue } from 'src/app/core/models/payment.model';
+import { GCASH_MOBILE_NUMBER_PATTERN } from 'src/app/shared/constants/regex.constants';
 import {
   PaymentMethodFormComponent,
   WalletPaymentFormGroup,
@@ -49,7 +50,7 @@ export class GcashPaymentMethodComponent
   readonly form: WalletPaymentFormGroup = this.fb.nonNullable.group({
     walletMobileNumber: [
       '',
-      [Validators.required, Validators.pattern(/^(?:\+?63|0)?9\d{9}$/)],
+      [Validators.required, Validators.pattern(GCASH_MOBILE_NUMBER_PATTERN)],
     ],
   });
 

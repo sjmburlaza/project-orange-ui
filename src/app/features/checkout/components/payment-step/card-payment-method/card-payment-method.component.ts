@@ -20,6 +20,12 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PaymentStepValue } from 'src/app/core/models/payment.model';
 import {
+  CARD_EXPIRY_DATE_PATTERN,
+  CARD_NUMBER_PATTERN,
+  CARD_SECURITY_CODE_PATTERN,
+  NON_DIGIT_PATTERN,
+} from 'src/app/shared/constants/regex.constants';
+import {
   CardPaymentFormGroup,
   PaymentMethodFormComponent,
 } from '../payment-form.model';
@@ -66,15 +72,15 @@ export class CardPaymentMethodComponent
     cardholderName: ['', [Validators.required]],
     cardNumber: [
       '',
-      [Validators.required, Validators.pattern(/^(?:\d[\s-]?){13,19}$/)],
+      [Validators.required, Validators.pattern(CARD_NUMBER_PATTERN)],
     ],
     expiryDate: [
       '',
-      [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)],
+      [Validators.required, Validators.pattern(CARD_EXPIRY_DATE_PATTERN)],
     ],
     securityCode: [
       '',
-      [Validators.required, Validators.pattern(/^\d{3,4}$/)],
+      [Validators.required, Validators.pattern(CARD_SECURITY_CODE_PATTERN)],
     ],
     installmentPlan: ['full'],
     savePaymentMethod: [false],
@@ -128,6 +134,6 @@ export class CardPaymentMethodComponent
   }
 
   private getDigits(value: string): string {
-    return value.replace(/\D/g, '');
+    return value.replace(NON_DIGIT_PATTERN, '');
   }
 }

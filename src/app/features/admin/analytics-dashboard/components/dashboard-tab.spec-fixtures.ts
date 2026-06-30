@@ -5,6 +5,7 @@ import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
+import { WHITESPACE_PATTERN } from 'src/app/shared/constants/regex.constants';
 
 export async function renderTab<T>(
   component: Type<T>,
@@ -26,7 +27,9 @@ export async function renderTab<T>(
 }
 
 export function textContent<T>(fixture: ComponentFixture<T>): string {
-  return fixture.nativeElement.textContent.replace(/\s+/g, ' ').trim();
+  return fixture.nativeElement.textContent
+    .replace(WHITESPACE_PATTERN, ' ')
+    .trim();
 }
 
 export function firstBarWidth<T>(fixture: ComponentFixture<T>): string {

@@ -12,6 +12,11 @@ import { emailValidator } from 'src/app/shared/validators/email.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { SiteService } from 'src/app/core/services/site.services';
+import {
+  PASSWORD_NUMBER_PATTERN,
+  PASSWORD_SPECIAL_CHARACTER_PATTERN,
+  PASSWORD_UPPERCASE_PATTERN,
+} from 'src/app/shared/constants/regex.constants';
 
 @Component({
   selector: 'app-register',
@@ -48,15 +53,15 @@ export class RegisterComponent {
     },
     {
       labelKey: 'auth.passwordRules.special',
-      valid: () => /[^a-zA-Z0-9]/.test(this.passwordValue),
+      valid: () => PASSWORD_SPECIAL_CHARACTER_PATTERN.test(this.passwordValue),
     },
     {
       labelKey: 'auth.passwordRules.number',
-      valid: () => /\d/.test(this.passwordValue),
+      valid: () => PASSWORD_NUMBER_PATTERN.test(this.passwordValue),
     },
     {
       labelKey: 'auth.passwordRules.uppercase',
-      valid: () => /[A-Z]/.test(this.passwordValue),
+      valid: () => PASSWORD_UPPERCASE_PATTERN.test(this.passwordValue),
     },
   ];
 

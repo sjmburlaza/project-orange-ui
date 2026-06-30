@@ -13,6 +13,11 @@ import { ProductListToolbarComponent } from 'src/app/features/products/component
 import { RangeValue } from 'src/app/shared/components/range-slider/range-slider.component';
 import { SelectOption } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
 import {
+  DIACRITICS_PATTERN,
+  LEADING_OR_TRAILING_HYPHENS_PATTERN,
+  NON_ALPHANUMERIC_PATTERN,
+} from 'src/app/shared/constants/regex.constants';
+import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
@@ -299,11 +304,11 @@ export class ProductListComponent implements OnInit {
   ): string | null {
     const slug = category
       ?.normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
+      .replace(DIACRITICS_PATTERN, '')
       .trim()
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .replace(NON_ALPHANUMERIC_PATTERN, '-')
+      .replace(LEADING_OR_TRAILING_HYPHENS_PATTERN, '');
 
     return slug || null;
   }

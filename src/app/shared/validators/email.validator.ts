@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { EMAIL_ADDRESS_PATTERN } from 'src/app/shared/constants/regex.constants';
 
 export function emailValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -10,10 +11,7 @@ export function emailValidator(): ValidatorFn {
 
     const email = String(value).trim();
 
-    const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_ADDRESS_PATTERN.test(email)) {
       return {
         email: true,
       };
