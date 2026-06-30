@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { SiteService } from 'src/app/core/services/site.services';
@@ -17,6 +18,7 @@ import { emailValidator } from 'src/app/shared/validators/email.validator';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    TranslatePipe,
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
@@ -36,7 +38,7 @@ export class ForgotPasswordComponent {
   isLoading = false;
   isSubmitted = false;
   submittedEmail: string | null = null;
-  errorMessage: string | null = null;
+  errorMessageKey: string | null = null;
   resetToken: string | null = null;
   resetUrl: string | null = null;
 
@@ -49,7 +51,7 @@ export class ForgotPasswordComponent {
   }
 
   onSubmit(): void {
-    this.errorMessage = null;
+    this.errorMessageKey = null;
     this.isSubmitted = false;
     this.submittedEmail = null;
     this.resetToken = null;
@@ -81,8 +83,7 @@ export class ForgotPasswordComponent {
         error: (error) => {
           console.error('Password reset request failed:', error);
 
-          this.errorMessage =
-            'We could not send reset instructions right now. Please try again.';
+          this.errorMessageKey = 'auth.forgotPassword.errors.sendFailed';
         },
       });
   }

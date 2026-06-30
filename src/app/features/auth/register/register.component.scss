@@ -21,6 +21,18 @@ mat-form-field {
   width: 100%;
 }
 
+.status {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: token(radius, md);
+  line-height: 1.4;
+}
+
+.error {
+  color: token(color, error);
+  background: #fef2f2;
+}
+
 .password-rules {
   display: grid;
   gap: 8px;

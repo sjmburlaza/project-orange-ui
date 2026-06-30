@@ -15,6 +15,7 @@ export const I18N_RESOURCES = new InjectionToken<readonly string[]>(
       'wishlist',
       'orders',
       'checkout',
+      'auth',
       'support',
     ],
   },
