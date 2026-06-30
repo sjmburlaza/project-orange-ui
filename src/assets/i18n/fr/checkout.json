@@ -44,6 +44,15 @@
         "cod": {
           "detail": "Espèces à la livraison"
         },
+        "konbini": {
+          "detail": "Paiement en point de vente"
+        },
+        "paypal": {
+          "detail": "Autorisation PayPal"
+        },
+        "bankTransfer": {
+          "detail": "Instructions de virement bancaire"
+        },
         "unionpay": {
           "detail": "Autorisation par carte bancaire ou UnionPay"
         },

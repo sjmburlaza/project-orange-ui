@@ -40,6 +40,17 @@ describe('PaymentStepComponent', () => {
             icon: 'account_balance_wallet',
           },
           { label: '微信支付', value: 'wechat-pay', icon: 'qr_code' },
+          { label: 'コンビニ払い', value: 'konbini', icon: 'store' },
+          {
+            label: 'PayPal',
+            value: 'paypal',
+            icon: 'account_balance_wallet',
+          },
+          {
+            label: 'Virement bancaire',
+            value: 'bank-transfer',
+            icon: 'account_balance',
+          },
         ],
       },
     ]);
@@ -123,6 +134,47 @@ describe('PaymentStepComponent', () => {
 
     expect(component.validateAndGetValue()).toEqual({
       paymentMethod: 'alipay',
+      termsAccepted: true,
+    });
+  });
+
+  it('renders generic instructions for simple payment methods', () => {
+    component.selectPayment('bank-transfer');
+    component.paymentForm.patchValue({
+      termsAccepted: true,
+    });
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('.payment-instructions')?.textContent,
+    ).toContain('Virement bancaire');
+    expect(component.validateAndGetValue()).toEqual({
+      paymentMethod: 'bank-transfer',
+      termsAccepted: true,
+    });
+  });
+
+  it('clears smart payment details when switching to a simple method', async () => {
+    component.selectPayment('card');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const cardMethod = getCardMethod();
+
+    cardMethod.form.patchValue({
+      cardholderName: 'Ada Lovelace',
+      cardNumber: '4242 4242 4242 1111',
+      expiryDate: '12/30',
+      securityCode: '123',
+    });
+    component.paymentForm.patchValue({
+      termsAccepted: true,
+    });
+
+    component.selectPayment('paypal');
+
+    expect(component.getValue()).toEqual({
+      paymentMethod: 'paypal',
       termsAccepted: true,
     });
   });

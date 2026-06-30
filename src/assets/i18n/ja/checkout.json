@@ -44,6 +44,15 @@
         "cod": {
           "detail": "配達時に現金でお支払い"
         },
+        "konbini": {
+          "detail": "コンビニでのお支払い"
+        },
+        "paypal": {
+          "detail": "PayPal 認証"
+        },
+        "bankTransfer": {
+          "detail": "銀行振込の案内"
+        },
         "unionpay": {
           "detail": "銀行カードまたはUnionPay認証"
         },

@@ -46,12 +46,12 @@
   }
 
   <mat-accordion class="payment-grid">
-    @for (option of field?.options ?? []; track option.value) {
+    @for (option of paymentOptions; track option.value) {
       @if (option.value === "cod") {
         <app-cod-payment-method
           [label]="option.label"
           [icon]="option.icon"
-          [detailKey]="getMethodDetailKey(option.value)"
+          [detailKey]="option.detailKey"
           [selected]="selectedPaymentMethod === option.value"
           (methodSelected)="selectPayment(option.value)"
         />
@@ -73,7 +73,7 @@
 
               <span class="payment-card__content">
                 <strong>{{ option.label }}</strong>
-                <small>{{ getMethodDetailKey(option.value) | translate }}</small>
+                <small>{{ option.detailKey | translate }}</small>
               </span>
             </div>
           </mat-expansion-panel-header>
@@ -131,6 +131,21 @@
                   <div class="payment-panel__loading"></div>
                 }
               }
+
+              @if (option.showInstructionPanel) {
+                <div class="payment-instructions">
+                  <span class="payment-instructions__icon">
+                    @if (option.icon) {
+                      <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
+                    }
+                  </span>
+
+                  <span class="payment-instructions__content">
+                    <strong>{{ option.label }}</strong>
+                    <small>{{ option.detailKey | translate }}</small>
+                  </span>
+                </div>
+              }
             </div>
           }
         </mat-expansion-panel>
@@ -153,7 +168,10 @@
     }
   </div>
 
-  @if (paymentMethod.touched && paymentMethod.hasError("required")) {
+  @if (
+    paymentMethodControl.touched &&
+    paymentMethodControl.hasError("required")
+  ) {
     <small class="error">
       {{ "checkout.payment.validation.required" | translate }}
     </small>

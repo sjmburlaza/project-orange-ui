@@ -25,6 +25,7 @@
       inputmode="numeric"
       autocomplete="cc-number"
       formControlName="cardNumber"
+      appCardNumberSpacing
     />
     @if (form.controls.cardNumber.hasError("required")) {
       <mat-error>
@@ -47,6 +48,7 @@
       inputmode="numeric"
       autocomplete="cc-exp"
       formControlName="expiryDate"
+      appCardExpiryFormat
     />
     @if (form.controls.expiryDate.hasError("required")) {
       <mat-error>

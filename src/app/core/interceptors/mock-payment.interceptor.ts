@@ -60,7 +60,7 @@ export class MockPaymentInterceptor implements HttpInterceptor {
       expiresAtUtc: expiresAt.toISOString(),
       paymentMethods: paymentMethods.map((code) => ({
         code,
-        label: this.toPaymentMethodLabel(code),
+        label: this.toPaymentMethodLabel(code, request.currency),
       })),
     };
 
@@ -135,6 +135,10 @@ export class MockPaymentInterceptor implements HttpInterceptor {
       return 'pending';
     }
 
+    if (method === 'konbini' || method === 'bank-transfer') {
+      return 'pending';
+    }
+
     if (method === 'gcash') {
       const mobile = request.paymentDetails.walletMobileNumber ?? '';
 
@@ -145,7 +149,7 @@ export class MockPaymentInterceptor implements HttpInterceptor {
       return mobile.endsWith('9999') ? 'pending' : 'success';
     }
 
-    if (method === 'alipay' || method === 'wechat-pay') {
+    if (method === 'alipay' || method === 'wechat-pay' || method === 'paypal') {
       return 'success';
     }
 
@@ -162,7 +166,8 @@ export class MockPaymentInterceptor implements HttpInterceptor {
     if (
       paymentMethod === 'gcash' ||
       paymentMethod === 'alipay' ||
-      paymentMethod === 'wechat-pay'
+      paymentMethod === 'wechat-pay' ||
+      paymentMethod === 'paypal'
     ) {
       return 'Wallet authorization was declined.';
     }
@@ -175,10 +180,19 @@ export class MockPaymentInterceptor implements HttpInterceptor {
       return 'Collect payment when the order is delivered.';
     }
 
+    if (paymentMethod === 'konbini') {
+      return 'Complete payment at a convenience store using the instructions sent with this order.';
+    }
+
+    if (paymentMethod === 'bank-transfer') {
+      return 'Complete the bank transfer using the instructions sent with this order.';
+    }
+
     if (
       paymentMethod === 'gcash' ||
       paymentMethod === 'alipay' ||
-      paymentMethod === 'wechat-pay'
+      paymentMethod === 'wechat-pay' ||
+      paymentMethod === 'paypal'
     ) {
       return 'Wallet authorization is still pending.';
     }
@@ -199,16 +213,36 @@ export class MockPaymentInterceptor implements HttpInterceptor {
     return Number.isFinite(amount) && amount > 0 ? amount : 0;
   }
 
-  private toPaymentMethodLabel(code: string): string {
-    const labels: Record<string, string> = {
+  private toPaymentMethodLabel(code: string, currency: string): string {
+    const labelsByCurrency: Record<string, Record<string, string>> = {
+      JPY: {
+        card: 'クレジット / デビットカード',
+        konbini: 'コンビニ払い',
+        cod: '代金引換',
+      },
+      EUR: {
+        card: 'Carte bancaire',
+        paypal: 'PayPal',
+        'bank-transfer': 'Virement bancaire',
+      },
+      CNY: {
+        unionpay: '银行卡 / 银联',
+        alipay: '支付宝',
+        'wechat-pay': '微信支付',
+      },
+    };
+    const defaultLabels: Record<string, string> = {
       card: 'Credit / Debit Card',
       gcash: 'GCash',
       cod: 'Cash on Delivery',
+      konbini: 'コンビニ払い',
+      paypal: 'PayPal',
+      'bank-transfer': 'Virement bancaire',
       unionpay: '银行卡 / 银联',
       alipay: '支付宝',
       'wechat-pay': '微信支付',
     };
 
-    return labels[code] ?? code;
+    return labelsByCurrency[currency]?.[code] ?? defaultLabels[code] ?? code;
   }
 }
