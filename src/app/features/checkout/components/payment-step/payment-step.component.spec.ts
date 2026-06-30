@@ -104,7 +104,7 @@ describe('PaymentStepComponent', () => {
     const cardMethod = getCardMethod();
 
     cardMethod.form.patchValue({
-      cardholderName: 'Ada Lovelace',
+      cardholderName: ' Ada Lovelace ',
       cardNumber: '4242 4242 4242 1111',
       expiryDate: '12/30',
       securityCode: '123',
@@ -124,6 +124,20 @@ describe('PaymentStepComponent', () => {
       installmentPlan: 'three_months',
       savePaymentMethod: true,
     });
+  });
+
+  it('preserves a trailing cardholder name space while typing', async () => {
+    component.selectPayment('card');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const cardMethod = getCardMethod();
+
+    cardMethod.form.controls.cardholderName.setValue('Ada ');
+    fixture.detectChanges();
+
+    expect(cardMethod.form.controls.cardholderName.value).toBe('Ada ');
+    expect(component.getValue().cardholderName).toBe('Ada ');
   });
 
   it('returns Alipay payment details after terms acceptance', () => {

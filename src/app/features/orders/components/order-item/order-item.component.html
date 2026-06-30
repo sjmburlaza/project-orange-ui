@@ -131,18 +131,24 @@
     </section>
 
     <section class="payment-summary">
-      <div>
-        <span>{{ "orders.lookup.subtotal" | translate }}</span>
-        <strong>{{ subtotal() | currency: currency() }}</strong>
-      </div>
-      <div>
-        <span>{{ "orders.lookup.shipping" | translate }}</span>
-        <strong>{{ shippingAmount() | currency: currency() }}</strong>
-      </div>
-      <div>
-        <span>{{ "orders.lookup.discount" | translate }}</span>
-        <strong>-{{ discountAmount() | currency: currency() }}</strong>
-      </div>
+      @if (currentOrder.subtotalAmount != null) {
+        <div>
+          <span>{{ "orders.lookup.subtotal" | translate }}</span>
+          <strong>{{ currentOrder.subtotalAmount | currency: currency() }}</strong>
+        </div>
+      }
+      @if (currentOrder.shippingAmount != null) {
+        <div>
+          <span>{{ "orders.lookup.shipping" | translate }}</span>
+          <strong>{{ currentOrder.shippingAmount | currency: currency() }}</strong>
+        </div>
+      }
+      @if (currentOrder.discountAmount != null) {
+        <div>
+          <span>{{ "orders.lookup.discount" | translate }}</span>
+          <strong>-{{ currentOrder.discountAmount | currency: currency() }}</strong>
+        </div>
+      }
       <div class="payment-total">
         <span>{{ "orders.lookup.total" | translate }}</span>
         <strong>{{ currentOrder.totalAmount | currency: currency() }}</strong>

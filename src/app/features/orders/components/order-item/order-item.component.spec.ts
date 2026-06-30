@@ -63,6 +63,7 @@ describe('OrderItemComponent', () => {
     trackingNumber: 'ABC123456',
     courier: 'Orange Express',
     invoiceUrl: '/invoice.pdf',
+    subtotalAmount: 84990,
     totalAmount: 79990,
     discountAmount: 5000,
     shippingAmount: 0,
@@ -103,10 +104,39 @@ describe('OrderItemComponent', () => {
     expect(component.isExpanded()).toBe(true);
   });
 
-  it('computes the expanded payment summary', () => {
-    expect(component.subtotal()).toBe(84990);
-    expect(component.shippingAmount()).toBe(0);
-    expect(component.discountAmount()).toBe(5000);
+  it('renders the backend-provided payment summary', () => {
+    component.setExpanded(true);
+    fixture.detectChanges();
+
+    const summaryText = fixture.nativeElement.querySelector(
+      '.payment-summary',
+    )?.textContent;
+
+    expect(summaryText).toContain('84,990.00');
+    expect(summaryText).toContain('0.00');
+    expect(summaryText).toContain('-');
+    expect(summaryText).toContain('5,000.00');
+  });
+
+  it('omits optional payment summary rows when amounts are unavailable', () => {
+    fixture.componentRef.setInput('order', {
+      ...order,
+      subtotalAmount: undefined,
+      shippingAmount: undefined,
+      discountAmount: undefined,
+    });
+    component.setExpanded(true);
+    fixture.detectChanges();
+
+    const summaryText = fixture.nativeElement.querySelector(
+      '.payment-summary',
+    )?.textContent;
+
+    expect(summaryText).not.toContain('orders.lookup.subtotal');
+    expect(summaryText).not.toContain('orders.lookup.shipping');
+    expect(summaryText).not.toContain('orders.lookup.discount');
+    expect(summaryText).toContain('orders.lookup.total');
+    expect(summaryText).toContain('79,990.00');
   });
 
   it('displays added add-ons for each product row', () => {
