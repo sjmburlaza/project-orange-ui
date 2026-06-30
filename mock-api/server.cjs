@@ -5,6 +5,7 @@ const jsonServer = require('json-server');
 const PORT = Number(process.env.PORT ?? 5176);
 const DEFAULT_SITE = 'ph';
 const DEFAULT_ANALYTICS_PERIOD = 'last-7-days';
+const CHECKOUT_FORMS_DIR = path.join(__dirname, 'checkout-forms');
 const ANALYTICS_TYPES = new Set([
   'visitor',
   'product_view',
@@ -185,8 +186,10 @@ function readBaseDb() {
   return db;
 }
 
-function sendCheckoutForm(_req, res) {
-  const checkoutForm = router.db.get('checkoutForm').value();
+function sendCheckoutForm(req, res) {
+  const checkoutForm =
+    readCheckoutFormFixture(req.params.site) ??
+    readCheckoutFormFixture(DEFAULT_SITE);
 
   if (!checkoutForm) {
     res.status(404).jsonp({ message: 'Checkout form not found' });
@@ -194,6 +197,25 @@ function sendCheckoutForm(_req, res) {
   }
 
   res.jsonp(checkoutForm);
+}
+
+function readCheckoutFormFixture(site) {
+  const normalizedSite = normalizeSite(site);
+
+  if (!normalizedSite || !/^[a-z0-9-]+$/.test(normalizedSite)) {
+    return null;
+  }
+
+  const checkoutFormPath = path.join(
+    CHECKOUT_FORMS_DIR,
+    `${normalizedSite}.json`,
+  );
+
+  if (!fs.existsSync(checkoutFormPath)) {
+    return null;
+  }
+
+  return JSON.parse(fs.readFileSync(checkoutFormPath, 'utf8'));
 }
 
 function sendFulfillmentOptions(_req, res) {

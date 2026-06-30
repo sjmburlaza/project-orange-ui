@@ -27,8 +27,85 @@
     },
     "payment": {
       "title": "Choose payment method",
+      "subtitle": "Pay securely with card, wallet, or cash on delivery.",
+      "totalDue": "Total due today",
+      "intent": {
+        "preparing": "Preparing secure payment...",
+        "ready": "Secure payment ready"
+      },
+      "methods": {
+        "default": "Payment method",
+        "card": {
+          "detail": "Cards, installments, saved checkout"
+        },
+        "gcash": {
+          "detail": "Wallet authorization"
+        },
+        "cod": {
+          "detail": "Cash collected on delivery"
+        },
+        "unionpay": {
+          "detail": "Bank card or UnionPay authorization"
+        },
+        "alipay": {
+          "detail": "Alipay authorization"
+        },
+        "wechatPay": {
+          "detail": "WeChat Pay QR authorization"
+        }
+      },
+      "card": {
+        "nameLabel": "Name on card",
+        "numberLabel": "Card number",
+        "expiryLabel": "MM/YY",
+        "cvvLabel": "CVV",
+        "savePaymentMethod": "Save card for faster checkout",
+        "installments": {
+          "full": "Pay in full",
+          "threeMonths": "3 months",
+          "sixMonths": "6 months"
+        }
+      },
+      "wallet": {
+        "mobileLabel": "GCash mobile number"
+      },
+      "cod": {
+        "title": "Cash on delivery",
+        "detail": "Payment will be collected when your order arrives."
+      },
+      "alipay": {
+        "title": "Alipay",
+        "detail": "Confirm the payment with Alipay to authorize this order."
+      },
+      "wechatPay": {
+        "title": "WeChat Pay",
+        "detail": "Scan or confirm with WeChat Pay to authorize this order."
+      },
+      "terms": {
+        "label": "I have read, understand and agree to the Terms of Service and agree that Orange Shop will send an email and invoice to my email address."
+      },
+      "assurance": {
+        "secure": "Secure authorization",
+        "receipt": "Instant receipt",
+        "support": "Order support"
+      },
+      "status": {
+        "success": "Payment authorized.",
+        "failed": "Payment failed. Choose another method or try again.",
+        "pending": "Payment is pending. Your order will continue."
+      },
       "validation": {
-        "required": "Please select a payment method."
+        "required": "Please select a payment method.",
+        "cardholderNameRequired": "Enter the name on the card.",
+        "cardNumberRequired": "Enter the card number.",
+        "cardNumberInvalid": "Enter a valid card number.",
+        "expiryDateRequired": "Enter the expiration date.",
+        "expiryDateInvalid": "Use MM/YY.",
+        "securityCodeRequired": "Enter the CVV.",
+        "securityCodeInvalid": "Enter a valid CVV.",
+        "walletMobileRequired": "Enter the wallet mobile number.",
+        "walletMobileInvalid": "Enter a valid Philippine mobile number.",
+        "termsRequired": "Please accept the terms and conditions to continue."
       }
     },
     "selectSearch": {

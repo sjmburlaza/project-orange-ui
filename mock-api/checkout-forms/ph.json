@@ -1,0 +1,203 @@
+{
+  "version": "ph-1.0",
+  "steps": [
+    {
+      "id": "customer",
+      "label": "Customer Details",
+      "fields": [
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email",
+          "validators": [{ "name": "required" }, { "name": "email" }],
+          "grid": { "mobile": 12, "desktop": 12 }
+        },
+        {
+          "name": "firstName",
+          "type": "text",
+          "label": "First Name",
+          "validators": [{ "name": "required" }],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "lastName",
+          "type": "text",
+          "label": "Last Name",
+          "validators": [{ "name": "required" }],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "mobileNumber",
+          "type": "text",
+          "label": "Mobile Number",
+          "validators": [{ "name": "required" }],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "altMobileNumber",
+          "type": "text",
+          "label": "Alternate Number",
+          "validators": [],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "marketing",
+          "type": "checkbox",
+          "label": "Keep me updated on promos, products and services from ORANGE and its partners.",
+          "validators": [],
+          "grid": { "mobile": 12, "desktop": 12 }
+        },
+        {
+          "name": "deliveryAddress",
+          "type": "group",
+          "label": "Delivery Address",
+          "fields": [
+            {
+              "name": "addressLine1",
+              "type": "text",
+              "label": "Address Line 1",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "addressLine2",
+              "type": "text",
+              "label": "Address Line 2",
+              "validators": [],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "region",
+              "type": "select-search",
+              "label": "Region",
+              "optionsApi": "/api/options/regions",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "city",
+              "type": "select-search",
+              "label": "City",
+              "optionsApi": "/api/options/cities",
+              "dependsOn": "region",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "barangay",
+              "type": "select-search",
+              "label": "Barangay",
+              "optionsApi": "/api/options/barangays",
+              "dependsOn": "city",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "postalCode",
+              "type": "number",
+              "label": "Postal Code",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "deliveryEmail",
+              "type": "email",
+              "label": "Email",
+              "validators": [{ "name": "required" }, { "name": "email" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            }
+          ],
+          "grid": { "mobile": 12, "desktop": 12 }
+        },
+        {
+          "name": "billingAddress",
+          "type": "group",
+          "label": "Billing Address",
+          "fields": [
+            {
+              "name": "sameAsDeliveryAddress",
+              "type": "checkbox",
+              "label": "Same as delivery address",
+              "defaultValue": true,
+              "validators": [],
+              "grid": { "mobile": 12, "desktop": 12 }
+            },
+            {
+              "name": "taxId",
+              "type": "text",
+              "label": "Tax ID No.",
+              "validators": [],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "addressLine1",
+              "type": "text",
+              "label": "Address Line 1",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "postalCode",
+              "type": "number",
+              "label": "Postal Code",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            }
+          ],
+          "grid": { "mobile": 12, "desktop": 12 }
+        }
+      ]
+    },
+    {
+      "id": "shipping",
+      "label": "Shipping Options",
+      "component": "shipping-options",
+      "fields": [
+        {
+          "name": "shippingMethod",
+          "type": "radio-card",
+          "label": "Shipping Method",
+          "validators": [{ "name": "required" }],
+          "options": [
+            { "label": "Free Delivery", "value": "free", "price": 0 },
+            { "label": "Standard Delivery", "value": "standard", "price": 100 },
+            { "label": "Express Delivery", "value": "express", "price": 250 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "payment",
+      "label": "Payment",
+      "component": "payment-methods",
+      "fields": [
+        {
+          "name": "paymentMethod",
+          "type": "payment-card",
+          "label": "Payment Method",
+          "validators": [{ "name": "required" }],
+          "options": [
+            {
+              "label": "Credit / Debit Card",
+              "value": "card",
+              "icon": "credit_card"
+            },
+            {
+              "label": "GCash",
+              "value": "gcash",
+              "icon": "account_balance_wallet"
+            },
+            {
+              "label": "Cash on Delivery",
+              "value": "cod",
+              "icon": "payments"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

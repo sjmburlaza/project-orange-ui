@@ -27,8 +27,85 @@
     },
     "payment": {
       "title": "选择付款方式",
+      "subtitle": "可使用银行卡、钱包或货到付款安全支付。",
+      "totalDue": "今日应付总额",
+      "intent": {
+        "preparing": "正在准备安全付款...",
+        "ready": "安全付款已就绪"
+      },
+      "methods": {
+        "default": "付款方式",
+        "card": {
+          "detail": "银行卡、分期、保存付款"
+        },
+        "gcash": {
+          "detail": "钱包授权"
+        },
+        "cod": {
+          "detail": "送达时收取现金"
+        },
+        "unionpay": {
+          "detail": "银行卡或银联授权"
+        },
+        "alipay": {
+          "detail": "支付宝授权"
+        },
+        "wechatPay": {
+          "detail": "微信支付二维码授权"
+        }
+      },
+      "card": {
+        "nameLabel": "持卡人姓名",
+        "numberLabel": "卡号",
+        "expiryLabel": "MM/YY",
+        "cvvLabel": "CVV",
+        "savePaymentMethod": "保存银行卡以便快速结账",
+        "installments": {
+          "full": "全额支付",
+          "threeMonths": "3 个月",
+          "sixMonths": "6 个月"
+        }
+      },
+      "wallet": {
+        "mobileLabel": "GCash 手机号码"
+      },
+      "cod": {
+        "title": "货到付款",
+        "detail": "订单送达时收取付款。"
+      },
+      "alipay": {
+        "title": "支付宝",
+        "detail": "使用支付宝确认付款以授权此订单。"
+      },
+      "wechatPay": {
+        "title": "微信支付",
+        "detail": "使用微信支付扫码或确认以授权此订单。"
+      },
+      "terms": {
+        "label": "我已阅读、理解并同意服务条款，并同意 Orange Shop 向我的电子邮件地址发送电子邮件和发票。"
+      },
+      "assurance": {
+        "secure": "安全授权",
+        "receipt": "即时收据",
+        "support": "订单支持"
+      },
+      "status": {
+        "success": "付款已授权。",
+        "failed": "付款失败。请选择其他方式或重试。",
+        "pending": "付款待处理。订单将继续。"
+      },
       "validation": {
-        "required": "请选择付款方式。"
+        "required": "请选择付款方式。",
+        "cardholderNameRequired": "请输入持卡人姓名。",
+        "cardNumberRequired": "请输入卡号。",
+        "cardNumberInvalid": "请输入有效的卡号。",
+        "expiryDateRequired": "请输入有效期。",
+        "expiryDateInvalid": "请使用 MM/YY。",
+        "securityCodeRequired": "请输入 CVV。",
+        "securityCodeInvalid": "请输入有效的 CVV。",
+        "walletMobileRequired": "请输入钱包手机号码。",
+        "walletMobileInvalid": "请输入有效的菲律宾手机号码。",
+        "termsRequired": "请接受条款和条件以继续。"
       }
     },
     "selectSearch": {

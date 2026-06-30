@@ -27,8 +27,85 @@
     },
     "payment": {
       "title": "Choisissez un mode de paiement",
+      "subtitle": "Payez par carte, portefeuille ou à la livraison.",
+      "totalDue": "Total dû aujourd'hui",
+      "intent": {
+        "preparing": "Préparation du paiement sécurisé...",
+        "ready": "Paiement sécurisé prêt"
+      },
+      "methods": {
+        "default": "Mode de paiement",
+        "card": {
+          "detail": "Cartes, mensualités, paiement enregistré"
+        },
+        "gcash": {
+          "detail": "Autorisation du portefeuille"
+        },
+        "cod": {
+          "detail": "Espèces à la livraison"
+        },
+        "unionpay": {
+          "detail": "Autorisation par carte bancaire ou UnionPay"
+        },
+        "alipay": {
+          "detail": "Autorisation Alipay"
+        },
+        "wechatPay": {
+          "detail": "Autorisation QR WeChat Pay"
+        }
+      },
+      "card": {
+        "nameLabel": "Nom sur la carte",
+        "numberLabel": "Numéro de carte",
+        "expiryLabel": "MM/AA",
+        "cvvLabel": "CVV",
+        "savePaymentMethod": "Enregistrer la carte pour payer plus vite",
+        "installments": {
+          "full": "Payer en une fois",
+          "threeMonths": "3 mois",
+          "sixMonths": "6 mois"
+        }
+      },
+      "wallet": {
+        "mobileLabel": "Numéro mobile GCash"
+      },
+      "cod": {
+        "title": "Paiement à la livraison",
+        "detail": "Le paiement sera collecté à l'arrivée de votre commande."
+      },
+      "alipay": {
+        "title": "Alipay",
+        "detail": "Confirmez le paiement avec Alipay pour autoriser cette commande."
+      },
+      "wechatPay": {
+        "title": "WeChat Pay",
+        "detail": "Scannez ou confirmez avec WeChat Pay pour autoriser cette commande."
+      },
+      "terms": {
+        "label": "J'ai lu, je comprends et j'accepte les Conditions d'utilisation, et j'accepte qu'Orange Shop envoie un e-mail et une facture à mon adresse e-mail."
+      },
+      "assurance": {
+        "secure": "Autorisation sécurisée",
+        "receipt": "Reçu instantané",
+        "support": "Assistance commande"
+      },
+      "status": {
+        "success": "Paiement autorisé.",
+        "failed": "Le paiement a échoué. Choisissez un autre mode ou réessayez.",
+        "pending": "Le paiement est en attente. Votre commande continue."
+      },
       "validation": {
-        "required": "Veuillez sélectionner un mode de paiement."
+        "required": "Veuillez sélectionner un mode de paiement.",
+        "cardholderNameRequired": "Saisissez le nom sur la carte.",
+        "cardNumberRequired": "Saisissez le numéro de carte.",
+        "cardNumberInvalid": "Saisissez un numéro de carte valide.",
+        "expiryDateRequired": "Saisissez la date d'expiration.",
+        "expiryDateInvalid": "Utilisez MM/AA.",
+        "securityCodeRequired": "Saisissez le CVV.",
+        "securityCodeInvalid": "Saisissez un CVV valide.",
+        "walletMobileRequired": "Saisissez le numéro mobile du portefeuille.",
+        "walletMobileInvalid": "Saisissez un numéro mobile philippin valide.",
+        "termsRequired": "Veuillez accepter les conditions générales pour continuer."
       }
     },
     "selectSearch": {

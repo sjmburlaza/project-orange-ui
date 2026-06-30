@@ -1,0 +1,258 @@
+{
+  "version": "cn-1.1",
+  "steps": [
+    {
+      "id": "customer",
+      "label": "客户信息",
+      "fields": [
+        {
+          "name": "email",
+          "type": "email",
+          "label": "电子邮箱",
+          "validators": [{ "name": "required" }, { "name": "email" }],
+          "grid": { "mobile": 12, "desktop": 12 }
+        },
+        {
+          "name": "fullName",
+          "type": "text",
+          "label": "姓名",
+          "validators": [{ "name": "required" }],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "mobileNumber",
+          "type": "text",
+          "label": "手机号码",
+          "validators": [{ "name": "required" }],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "altMobileNumber",
+          "type": "text",
+          "label": "备用电话",
+          "validators": [],
+          "grid": { "mobile": 12, "desktop": 6 }
+        },
+        {
+          "name": "marketing",
+          "type": "checkbox",
+          "label": "我同意接收 ORANGE 及其合作伙伴的促销、产品和服务信息。",
+          "validators": [],
+          "grid": { "mobile": 12, "desktop": 12 }
+        },
+        {
+          "name": "deliveryAddress",
+          "type": "group",
+          "label": "收货地址",
+          "fields": [
+            {
+              "name": "recipientName",
+              "type": "text",
+              "label": "收货人姓名",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "region",
+              "type": "text",
+              "label": "省 / 自治区 / 直辖市",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "city",
+              "type": "text",
+              "label": "城市",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "district",
+              "type": "text",
+              "label": "区 / 县",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "street",
+              "type": "text",
+              "label": "街道 / 乡镇",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "addressLine1",
+              "type": "text",
+              "label": "小区、楼栋、单元及门牌号",
+              "validators": [{ "name": "required" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "addressLine2",
+              "type": "text",
+              "label": "公司名称或收货备注",
+              "validators": [],
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "postalCode",
+              "type": "text",
+              "label": "邮政编码",
+              "validators": [
+                { "name": "required" },
+                { "name": "maxLength", "value": 6 }
+              ],
+              "asyncValidators": [{ "name": "serviceablePostalCode" }],
+              "grid": { "mobile": 12, "desktop": 6 }
+            }
+          ],
+          "grid": { "mobile": 12, "desktop": 12 }
+        },
+        {
+          "name": "billingAddress",
+          "type": "group",
+          "label": "账单地址",
+          "fields": [
+            {
+              "name": "sameAsDeliveryAddress",
+              "type": "checkbox",
+              "label": "与收货地址相同",
+              "defaultValue": true,
+              "validators": [],
+              "grid": { "mobile": 12, "desktop": 12 }
+            },
+            {
+              "name": "fullName",
+              "type": "text",
+              "label": "姓名",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "companyName",
+              "type": "text",
+              "label": "公司名称",
+              "validators": [],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "region",
+              "type": "text",
+              "label": "省 / 自治区 / 直辖市",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "city",
+              "type": "text",
+              "label": "城市",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "district",
+              "type": "text",
+              "label": "区 / 县",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "street",
+              "type": "text",
+              "label": "街道 / 乡镇",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "addressLine1",
+              "type": "text",
+              "label": "小区、楼栋、单元及门牌号",
+              "validators": [{ "name": "required" }],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "addressLine2",
+              "type": "text",
+              "label": "补充地址",
+              "validators": [],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "postalCode",
+              "type": "text",
+              "label": "邮政编码",
+              "validators": [
+                { "name": "required" },
+                { "name": "maxLength", "value": 6 }
+              ],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            },
+            {
+              "name": "taxId",
+              "type": "text",
+              "label": "纳税人识别号",
+              "validators": [],
+              "visibleIf": { "field": "sameAsDeliveryAddress", "value": false },
+              "grid": { "mobile": 12, "desktop": 6 }
+            }
+          ],
+          "grid": { "mobile": 12, "desktop": 12 }
+        }
+      ]
+    },
+    {
+      "id": "shipping",
+      "label": "配送方式",
+      "component": "shipping-options",
+      "fields": [
+        {
+          "name": "shippingMethod",
+          "type": "radio-card",
+          "label": "配送方式",
+          "optionsApi": "/api/fulfillment/options",
+          "dependsOn": "postalCode",
+          "validators": [{ "name": "required" }],
+          "options": [
+            { "label": "标准配送", "value": "sf-standard", "price": 30 },
+            { "label": "快速配送", "value": "jd-express", "price": 45 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "payment",
+      "label": "支付",
+      "component": "payment-methods",
+      "fields": [
+        {
+          "name": "paymentMethod",
+          "type": "payment-card",
+          "label": "支付方式",
+          "validators": [{ "name": "required" }],
+          "options": [
+            {
+              "label": "银行卡 / 银联",
+              "value": "unionpay",
+              "icon": "credit_card"
+            },
+            {
+              "label": "支付宝",
+              "value": "alipay",
+              "icon": "account_balance_wallet"
+            },
+            { "label": "微信支付", "value": "wechat-pay", "icon": "qr_code" }
+          ]
+        }
+      ]
+    }
+  ]
+}

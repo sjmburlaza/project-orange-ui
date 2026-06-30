@@ -1,0 +1,19 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+mat-icon {
+  width: 44px;
+  height: 44px;
+  font-size: 44px;
+  color: token(color, primary);
+}
+
+mat-form-field {
+  width: 100%;
+}

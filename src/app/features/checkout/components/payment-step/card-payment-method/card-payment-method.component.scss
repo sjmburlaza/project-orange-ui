@@ -1,0 +1,70 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: grid;
+  gap: 16px;
+}
+
+.accepted-payments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  span {
+    border: 1px solid token(color, border-strong);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+}
+
+.card-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+
+  @include respond-down(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.installment-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid token(color, border-strong);
+  border-radius: 8px;
+  overflow: hidden;
+
+  @include respond-down(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.installment-option {
+  border: 0;
+  background: #fff;
+  min-height: 46px;
+  padding: 10px 12px;
+  font-weight: 700;
+  cursor: pointer;
+
+  & + & {
+    border-left: 1px solid token(color, border-strong);
+
+    @include respond-down(sm) {
+      border-left: 0;
+      border-top: 1px solid token(color, border-strong);
+    }
+  }
+
+  &.selected {
+    background: token(color, text-primary);
+    color: token(color, text-inverse);
+  }
+}

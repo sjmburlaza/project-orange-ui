@@ -20,6 +20,7 @@ import {
 import { ApiSitePrefixInterceptor } from 'src/app/core/interceptors/api-site-prefix.interceptor';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
+import { MockPaymentInterceptor } from 'src/app/core/interceptors/mock-payment.interceptor';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { AuthStore } from 'src/app/core/auth/auth.store';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
@@ -63,6 +64,16 @@ const mockInterceptors = environment.useMockAuth
       {
         provide: HTTP_INTERCEPTORS,
         useClass: MockAuthInterceptor,
+        multi: true,
+      },
+    ]
+  : [];
+
+const mockPaymentInterceptors = environment.useMockPayments
+  ? [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: MockPaymentInterceptor,
         multi: true,
       },
     ]
@@ -120,6 +131,7 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     ...mockInterceptors,
+    ...mockPaymentInterceptors,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -2,44 +2,191 @@
 
 .payment-methods {
   display: grid;
-  gap: 16px;
-  margin-top: 24px;
+  gap: 18px;
+  margin-top: 12px;
   margin-bottom: 36px;
 
   h3 {
     margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: token(color, text-secondary);
+  }
+}
+
+.payment-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+
+  @include respond-down(sm) {
+    flex-direction: column;
+  }
+}
+
+.payment-status {
+  border: 1px solid token(color, border-strong);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: token(color, text-primary);
+  background: #fff;
+
+  mat-icon {
+    flex: 0 0 auto;
+  }
+
+  &--info,
+  &--ready {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  &--success {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: token(color, success-hover);
+  }
+
+  &--warning {
+    border-color: #fde68a;
+    background: #fffbeb;
+    color: #92400e;
+  }
+
+  &--error {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: token(color, error-hover);
   }
 }
 
 .payment-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
 
-.payment-card {
-  border: 1px solid #ddd;
-  border-radius: 18px;
+.payment-option {
+  position: relative;
+  border: 1px solid token(color, border-strong);
+  border-radius: 8px;
   background: #fff;
-  min-height: 120px;
-  padding: 20px;
-  display: grid;
-  place-items: center;
-  gap: 8px;
-  cursor: pointer;
-
-  mat-icon {
-    font-size: 32px;
-    width: 32px;
-    height: 32px;
-  }
+  box-shadow: none;
+  overflow: hidden;
 
   &.selected {
     border-color: token(color, primary);
-    box-shadow: 0 0 0 2px token(color, primary) inset;
+  }
+
+  &.selected::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border: 2px solid token(color, primary);
+    border-radius: inherit;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+}
+
+.payment-card {
+  border: 0;
+  background: transparent;
+  width: 100%;
+  min-height: 96px;
+  height: auto;
+  padding: 0 16px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+
+  mat-icon {
+    flex: 0 0 auto;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  &:hover {
+    background: token(color, surface);
+  }
+
+  &__layout {
+    width: 100%;
+    padding: 16px 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: token(color, surface-secondary);
+  }
+
+  &__content {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__content strong,
+  &__content small {
+    overflow-wrap: anywhere;
+  }
+
+  &__content small {
+    color: token(color, text-secondary);
+  }
+}
+
+.payment-option.selected .payment-card {
+  background: token(color, surface);
+}
+
+:host ::ng-deep .payment-option .mat-expansion-panel-body {
+  padding: 0;
+}
+
+.payment-panel {
+  border-top: 1px solid token(color, border-strong);
+  background: token(color, surface);
+  padding: 18px;
+  display: grid;
+  gap: 16px;
+
+  &__loading {
+    min-height: 88px;
+  }
+}
+
+.payment-terms {
+  display: grid;
+  gap: 4px;
+  padding: 2px 0;
+
+  &__error {
+    margin-left: 40px;
   }
 }
 
 .error {
-  color: #ba1a1a;
+  color: token(color, error-hover);
 }

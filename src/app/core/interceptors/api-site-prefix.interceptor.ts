@@ -15,7 +15,11 @@ export class ApiSitePrefixInterceptor implements HttpInterceptor {
   private readonly siteService = inject(SiteService);
   private readonly document = inject(DOCUMENT);
   private readonly apiPrefix = '/api/';
-  private readonly unscopedApiPathPrefixes = new Set(['geo', 'sites']);
+  private readonly unscopedApiPathPrefixes = new Set([
+    'geo',
+    'payments',
+    'sites',
+  ]);
 
   intercept(
     req: HttpRequest<unknown>,
