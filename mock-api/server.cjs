@@ -89,6 +89,64 @@ const DEFAULT_FULFILLMENT_OPTIONS = [
     estimatedAvailability: 'Ready in 1–2 days',
   },
 ];
+const CHECKOUT_PAYMENT_OPTIONS_BY_SITE = {
+  ph: [
+    {
+      label: 'Credit / Debit Card',
+      value: 'card',
+      icon: 'credit_card',
+    },
+    {
+      label: 'GCash',
+      value: 'gcash',
+      icon: 'account_balance_wallet',
+    },
+    {
+      label: 'Cash on Delivery',
+      value: 'cod',
+      icon: 'payments',
+    },
+  ],
+  fr: [
+    {
+      label: 'Carte bancaire',
+      value: 'card',
+      icon: 'credit_card',
+    },
+    {
+      label: 'PayPal',
+      value: 'paypal',
+      icon: 'account_balance_wallet',
+    },
+    {
+      label: 'Virement bancaire',
+      value: 'bank-transfer',
+      icon: 'account_balance',
+    },
+  ],
+  cn: [
+    {
+      label: '银行卡 / 银联',
+      value: 'unionpay',
+      icon: 'credit_card',
+    },
+    {
+      label: '支付宝',
+      value: 'alipay',
+      icon: 'account_balance_wallet',
+    },
+    { label: '微信支付', value: 'wechat-pay', icon: 'qr_code' },
+  ],
+  jp: [
+    {
+      label: 'クレジット / デビットカード',
+      value: 'card',
+      icon: 'credit_card',
+    },
+    { label: 'コンビニ払い', value: 'konbini', icon: 'store' },
+    { label: '代金引換', value: 'cod', icon: 'payments' },
+  ],
+};
 
 const server = jsonServer.create();
 const baseDb = readBaseDb();
@@ -187,8 +245,9 @@ function readBaseDb() {
 }
 
 function sendCheckoutForm(req, res) {
+  const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
   const checkoutForm =
-    readCheckoutFormFixture(req.params.site) ??
+    readCheckoutFormFixture(site) ??
     readCheckoutFormFixture(DEFAULT_SITE);
 
   if (!checkoutForm) {
@@ -196,7 +255,7 @@ function sendCheckoutForm(req, res) {
     return;
   }
 
-  res.jsonp(checkoutForm);
+  res.jsonp(applyCheckoutPaymentOptions(checkoutForm, site));
 }
 
 function readCheckoutFormFixture(site) {
@@ -216,6 +275,35 @@ function readCheckoutFormFixture(site) {
   }
 
   return JSON.parse(fs.readFileSync(checkoutFormPath, 'utf8'));
+}
+
+function applyCheckoutPaymentOptions(checkoutForm, site) {
+  const paymentOptions =
+    CHECKOUT_PAYMENT_OPTIONS_BY_SITE[site] ??
+    CHECKOUT_PAYMENT_OPTIONS_BY_SITE[DEFAULT_SITE];
+  const localizedForm = JSON.parse(JSON.stringify(checkoutForm));
+  const paymentStep = localizedForm.steps?.find((step) => step.id === 'payment');
+  const paymentField = paymentStep?.fields?.find(
+    (field) => field.name === 'paymentMethod',
+  );
+
+  if (!paymentField) {
+    return localizedForm;
+  }
+
+  localizedForm.version = resolveCheckoutFormVersion(
+    localizedForm.version,
+    site,
+  );
+  paymentField.options = paymentOptions;
+
+  return localizedForm;
+}
+
+function resolveCheckoutFormVersion(version, site) {
+  return typeof version === 'string' && version.startsWith(`${site}-`)
+    ? version
+    : `${site}-1.0`;
 }
 
 function sendFulfillmentOptions(_req, res) {

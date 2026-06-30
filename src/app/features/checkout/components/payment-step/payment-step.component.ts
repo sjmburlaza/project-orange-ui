@@ -8,19 +8,19 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
-  FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { DynamicField } from 'src/app/core/models/checkout.model';
+import { DynamicField, Option } from 'src/app/core/models/checkout.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   PaymentConfirmation,
@@ -38,6 +38,11 @@ import { GcashPaymentMethodComponent } from './gcash-payment-method/gcash-paymen
 import { AlipayPaymentMethodComponent } from './alipay-payment-method/alipay-payment-method.component';
 import { UnionpayPaymentMethodComponent } from './unionpay-payment-method/unionpay-payment-method.component';
 import { WechatPayPaymentMethodComponent } from './wechat-pay-payment-method/wechat-pay-payment-method.component';
+
+interface PaymentMethodOptionView extends Option {
+  detailKey: string;
+  showInstructionPanel: boolean;
+}
 
 @Component({
   selector: 'app-payment-step',
@@ -62,6 +67,15 @@ export class PaymentStepComponent implements OnInit, OnChanges {
   private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly siteService = inject(SiteService);
+  private readonly smartPaymentMethods = new Set([
+    'card',
+    'unionpay',
+    'gcash',
+  ]);
+  private readonly customPanelPaymentMethods = new Set([
+    'alipay',
+    'wechat-pay',
+  ]);
 
   @ViewChild('activeMethod')
   private activeMethod?: PaymentMethodFormComponent;
@@ -83,6 +97,7 @@ export class PaymentStepComponent implements OnInit, OnChanges {
     paymentMethod: ['', [Validators.required]],
     termsAccepted: [false, [Validators.requiredTrue]],
   });
+  readonly paymentMethodControl = this.paymentForm.controls.paymentMethod;
 
   readonly methodContent: Record<string, { detailKey: string }> = {
     card: {
@@ -94,6 +109,15 @@ export class PaymentStepComponent implements OnInit, OnChanges {
     cod: {
       detailKey: 'checkout.payment.methods.cod.detail',
     },
+    konbini: {
+      detailKey: 'checkout.payment.methods.konbini.detail',
+    },
+    paypal: {
+      detailKey: 'checkout.payment.methods.paypal.detail',
+    },
+    'bank-transfer': {
+      detailKey: 'checkout.payment.methods.bankTransfer.detail',
+    },
     unionpay: {
       detailKey: 'checkout.payment.methods.unionpay.detail',
     },
@@ -104,35 +128,31 @@ export class PaymentStepComponent implements OnInit, OnChanges {
       detailKey: 'checkout.payment.methods.wechatPay.detail',
     },
   };
+  paymentOptions: PaymentMethodOptionView[] = [];
+  selectedPaymentMethod = '';
   methodValue: Partial<PaymentStepValue> = {};
-
-  get field(): DynamicField | undefined {
-    return this.fields.find((field) => field.name === 'paymentMethod');
-  }
-
-  get paymentMethod(): FormControl<string> {
-    return this.paymentForm.controls.paymentMethod;
-  }
-
-  get selectedPaymentMethod(): string {
-    return this.paymentMethod.value;
-  }
 
   ngOnInit(): void {
     this.paymentForm.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
+      .subscribe((value) => {
+        this.selectedPaymentMethod = value.paymentMethod ?? '';
         this.valueChanged.emit(this.getValue());
       });
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['fields']) {
+      this.paymentOptions = this.createPaymentOptions();
+    }
+
     const value = this.initialValue as Partial<PaymentStepValue>;
 
-    if (value) {
+    if (changes['initialValue'] && value) {
+      this.selectedPaymentMethod = value.paymentMethod ?? '';
       this.paymentForm.patchValue(
         {
-          paymentMethod: value.paymentMethod ?? '',
+          paymentMethod: this.selectedPaymentMethod,
           termsAccepted: value.termsAccepted ?? false,
         },
         {
@@ -143,37 +163,35 @@ export class PaymentStepComponent implements OnInit, OnChanges {
     }
   }
 
-  getMethodDetailKey(value: string): string {
-    return (
-      this.methodContent[value]?.detailKey ?? 'checkout.payment.methods.default'
-    );
-  }
-
   selectPayment(value: string): void {
-    if (this.paymentMethod.value === value) {
+    if (this.paymentMethodControl.value === value) {
       return;
     }
 
+    this.methodValue = {};
+    this.selectedPaymentMethod = value;
     this.paymentForm.patchValue(
       {
         paymentMethod: value,
       },
       {
-        emitEvent: true,
+        emitEvent: false,
       },
     );
-    this.methodValue = {};
-    this.paymentMethod.markAsTouched();
+    this.paymentMethodControl.markAsTouched();
+    this.valueChanged.emit(this.getValue());
   }
 
   collapsePayment(value: string): void {
-    if (this.paymentMethod.value !== value) {
+    if (this.paymentMethodControl.value !== value) {
       return;
     }
 
-    this.paymentMethod.setValue('');
     this.methodValue = {};
-    this.paymentMethod.markAsTouched();
+    this.selectedPaymentMethod = '';
+    this.paymentMethodControl.setValue('', { emitEvent: false });
+    this.paymentMethodControl.markAsTouched();
+    this.valueChanged.emit(this.getValue());
   }
 
   onMethodValueChanged(value: Partial<PaymentStepValue>): void {
@@ -193,6 +211,10 @@ export class PaymentStepComponent implements OnInit, OnChanges {
   }
 
   getValue(): PaymentStepValue {
+    if (!this.requiresSmartMethodValidation(this.selectedPaymentMethod)) {
+      return this.buildValue(this.methodValue);
+    }
+
     return this.buildValue(this.activeMethod?.getValue() ?? this.methodValue);
   }
 
@@ -246,7 +268,28 @@ export class PaymentStepComponent implements OnInit, OnChanges {
     return methodValue;
   }
 
+  private createPaymentOptions(): PaymentMethodOptionView[] {
+    const paymentField = this.fields.find(
+      (field) => field.name === 'paymentMethod',
+    );
+
+    return (paymentField?.options ?? []).map((option) => ({
+      ...option,
+      detailKey:
+        this.methodContent[option.value]?.detailKey ??
+        'checkout.payment.methods.default',
+      showInstructionPanel: this.shouldShowInstructionPanel(option.value),
+    }));
+  }
+
+  private shouldShowInstructionPanel(value: string): boolean {
+    return (
+      !this.smartPaymentMethods.has(value) &&
+      !this.customPanelPaymentMethods.has(value)
+    );
+  }
+
   private requiresSmartMethodValidation(method: string): boolean {
-    return method === 'card' || method === 'unionpay' || method === 'gcash';
+    return this.smartPaymentMethods.has(method);
   }
 }

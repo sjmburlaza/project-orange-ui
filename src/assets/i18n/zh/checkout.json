@@ -44,6 +44,15 @@
         "cod": {
           "detail": "送达时收取现金"
         },
+        "konbini": {
+          "detail": "便利店付款"
+        },
+        "paypal": {
+          "detail": "PayPal 授权"
+        },
+        "bankTransfer": {
+          "detail": "银行转账说明"
+        },
         "unionpay": {
           "detail": "银行卡或银联授权"
         },

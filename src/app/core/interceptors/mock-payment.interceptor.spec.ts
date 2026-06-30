@@ -142,4 +142,89 @@ describe('MockPaymentInterceptor', () => {
       }),
     );
   });
+
+  it('supports Japan payment method labels and pending konbini confirmations', async () => {
+    const intent = await firstValueFrom(
+      http.post<PaymentIntent>('/api/jp/payments/intents', {
+        amount: 12000,
+        currency: 'JPY',
+        paymentMethods: ['card', 'konbini', 'cod'],
+      }),
+    );
+
+    const confirmation = await firstValueFrom(
+      http.post<PaymentConfirmation>('/api/jp/payments/confirm', {
+        intentId: intent.id,
+        paymentMethod: 'konbini',
+        paymentDetails: {
+          paymentMethod: 'konbini',
+        },
+      }),
+    );
+
+    expect(intent.paymentMethods).toEqual([
+      { code: 'card', label: 'クレジット / デビットカード' },
+      { code: 'konbini', label: 'コンビニ払い' },
+      { code: 'cod', label: '代金引換' },
+    ]);
+    expect(confirmation).toEqual(
+      expect.objectContaining({
+        status: 'pending',
+        currency: 'JPY',
+        paymentMethod: 'konbini',
+      }),
+    );
+    expect(confirmation.nextAction).toContain('convenience store');
+  });
+
+  it('supports France payment method labels and bank transfer confirmations', async () => {
+    const intent = await firstValueFrom(
+      http.post<PaymentIntent>('/api/fr/payments/intents', {
+        amount: 899,
+        currency: 'EUR',
+        paymentMethods: ['card', 'paypal', 'bank-transfer'],
+      }),
+    );
+
+    const paypalConfirmation = await firstValueFrom(
+      http.post<PaymentConfirmation>('/api/fr/payments/confirm', {
+        intentId: intent.id,
+        paymentMethod: 'paypal',
+        paymentDetails: {
+          paymentMethod: 'paypal',
+        },
+      }),
+    );
+
+    const transferConfirmation = await firstValueFrom(
+      http.post<PaymentConfirmation>('/api/fr/payments/confirm', {
+        intentId: intent.id,
+        paymentMethod: 'bank-transfer',
+        paymentDetails: {
+          paymentMethod: 'bank-transfer',
+        },
+      }),
+    );
+
+    expect(intent.paymentMethods).toEqual([
+      { code: 'card', label: 'Carte bancaire' },
+      { code: 'paypal', label: 'PayPal' },
+      { code: 'bank-transfer', label: 'Virement bancaire' },
+    ]);
+    expect(paypalConfirmation).toEqual(
+      expect.objectContaining({
+        status: 'success',
+        currency: 'EUR',
+        paymentMethod: 'paypal',
+      }),
+    );
+    expect(transferConfirmation).toEqual(
+      expect.objectContaining({
+        status: 'pending',
+        currency: 'EUR',
+        paymentMethod: 'bank-transfer',
+      }),
+    );
+    expect(transferConfirmation.nextAction).toContain('bank transfer');
+  });
 });

@@ -177,6 +177,45 @@
   }
 }
 
+.payment-instructions {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+
+  &__icon {
+    width: 52px;
+    height: 52px;
+    border: 1px solid token(color, border-strong);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: token(color, primary);
+  }
+
+  mat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
+
+  &__content {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__content strong,
+  &__content small {
+    overflow-wrap: anywhere;
+  }
+
+  &__content small {
+    color: token(color, text-secondary);
+  }
+}
+
 .payment-terms {
   display: grid;
   gap: 4px;

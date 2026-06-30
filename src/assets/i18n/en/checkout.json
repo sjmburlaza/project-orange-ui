@@ -44,6 +44,15 @@
         "cod": {
           "detail": "Cash collected on delivery"
         },
+        "konbini": {
+          "detail": "Pay at a convenience store"
+        },
+        "paypal": {
+          "detail": "PayPal authorization"
+        },
+        "bankTransfer": {
+          "detail": "Bank transfer instructions"
+        },
         "unionpay": {
           "detail": "Bank card or UnionPay authorization"
         },
