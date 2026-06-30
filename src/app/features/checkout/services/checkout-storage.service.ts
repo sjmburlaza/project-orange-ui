@@ -1,10 +1,12 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
 
 type CheckoutData = Record<string, Record<string, unknown>>;
 
 @Injectable({ providedIn: 'root' })
 export class CheckoutStorageService {
   private readonly key = 'checkoutData';
+  private readonly browserStorage = inject(BrowserStorageService);
 
   readonly checkoutData = signal<CheckoutData>(this.load());
 
@@ -19,7 +21,7 @@ export class CheckoutStorageService {
         [stepId]: value,
       };
 
-      localStorage.setItem(this.key, JSON.stringify(updatedData));
+      this.browserStorage.setItem(this.key, JSON.stringify(updatedData));
 
       return updatedData;
     });
@@ -27,18 +29,18 @@ export class CheckoutStorageService {
 
   clear(): void {
     this.checkoutData.set({});
-    localStorage.removeItem(this.key);
+    this.browserStorage.removeItem(this.key);
   }
 
   private load(): CheckoutData {
-    const raw = localStorage.getItem(this.key);
+    const raw = this.browserStorage.getItem(this.key);
 
     if (!raw) return {};
 
     try {
       return JSON.parse(raw) as CheckoutData;
     } catch {
-      localStorage.removeItem(this.key);
+      this.browserStorage.removeItem(this.key);
       return {};
     }
   }
