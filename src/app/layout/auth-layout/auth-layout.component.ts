@@ -6,11 +6,12 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-auth-layout',
-  imports: [AsyncPipe, RouterOutlet],
+  imports: [AsyncPipe, RouterOutlet, TranslatePipe],
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.scss',
 })
@@ -18,21 +19,21 @@ export class AuthLayoutComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  readonly title$ = this.router.events.pipe(
+  readonly titleKey$ = this.router.events.pipe(
     startWith(null),
     filter((event) => event === null || event instanceof NavigationEnd),
-    map(() => this.getActiveRouteTitle()),
+    map(() => this.getActiveRouteTitleKey()),
   );
 
-  private getActiveRouteTitle(): string {
+  private getActiveRouteTitleKey(): string {
     let route = this.route;
 
     while (route.firstChild) {
       route = route.firstChild;
     }
 
-    const title = route.snapshot.data['title'];
+    const titleKey = route.snapshot.data['titleKey'];
 
-    return typeof title === 'string' ? title : 'Account';
+    return typeof titleKey === 'string' ? titleKey : 'auth.titles.account';
   }
 }

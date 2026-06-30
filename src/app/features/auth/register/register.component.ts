@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { emailValidator } from 'src/app/shared/validators/email.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -21,6 +22,7 @@ import { SiteService } from 'src/app/core/services/site.services';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    TranslatePipe,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -41,25 +43,25 @@ export class RegisterComponent {
 
   readonly passwordRules = [
     {
-      label: 'At least 6 characters',
+      labelKey: 'auth.passwordRules.atLeast6',
       valid: () => this.passwordValue.length >= 6,
     },
     {
-      label: 'At least one special character',
+      labelKey: 'auth.passwordRules.special',
       valid: () => /[^a-zA-Z0-9]/.test(this.passwordValue),
     },
     {
-      label: 'At least one number',
+      labelKey: 'auth.passwordRules.number',
       valid: () => /\d/.test(this.passwordValue),
     },
     {
-      label: 'At least one uppercase letter',
+      labelKey: 'auth.passwordRules.uppercase',
       valid: () => /[A-Z]/.test(this.passwordValue),
     },
   ];
 
   submitted = false;
-  errorCode: string | null = null;
+  errorMessageKey: string | null = null;
   isLoading = false;
   hidePassword = true;
 
@@ -80,7 +82,7 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    this.errorCode = null;
+    this.errorMessageKey = null;
 
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
@@ -104,13 +106,20 @@ export class RegisterComponent {
         error: (error) => {
           console.error('Register failed:', error);
 
-          this.errorCode =
-            error.error?.code ?? 'Something went wrong. Please try again.';
+          this.errorMessageKey = this.getRegisterErrorKey(error.error?.code);
         },
       });
   }
 
   goToLogin(): void {
     this.router.navigate([`/${this.site}/auth/login`]);
+  }
+
+  private getRegisterErrorKey(code?: string): string {
+    if (code === 'EMAIL_ALREADY_EXISTS' || code === 'USER_ALREADY_EXISTS') {
+      return 'auth.register.errors.emailAlreadyExists';
+    }
+
+    return 'auth.register.errors.failed';
   }
 }

@@ -6,7 +6,7 @@ import { Category } from 'src/app/core/models/category.model';
 import { Product, ProductSort } from 'src/app/core/models/product.model';
 import { SiteService } from 'src/app/core/services/site.services';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
-import { WishlistService } from 'src/app/core/services/wishlist.service';
+import { WishlistService } from 'src/app/features/profile/services/wishlist.service';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';

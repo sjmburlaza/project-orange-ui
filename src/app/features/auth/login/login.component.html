@@ -1,32 +1,34 @@
 <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   @if (loginForm.hasError("loginFailed")) {
-    <p class="error">Invalid email or password.</p>
+    <p class="error">{{ "auth.login.errors.failed" | translate }}</p>
   }
   <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
+    <mat-label>{{ "auth.fields.email.label" | translate }}</mat-label>
     <input
       matInput
       type="email"
       formControlName="email"
-      placeholder="Enter your email"
+      [placeholder]="'auth.fields.email.placeholder' | translate"
     />
 
     @if (email.touched && email.hasError("required")) {
-      <mat-error>Email is required.</mat-error>
+      <mat-error>{{ "auth.validation.emailRequired" | translate }}</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
+    <mat-label>{{ "auth.fields.password.label" | translate }}</mat-label>
     <input
       matInput
       type="password"
       formControlName="password"
-      placeholder="Enter your password"
+      [placeholder]="'auth.fields.password.placeholder' | translate"
     />
 
     @if (password.touched && password.hasError("required")) {
-      <mat-error>Password is required.</mat-error>
+      <mat-error>
+        {{ "auth.validation.passwordRequired" | translate }}
+      </mat-error>
     }
   </mat-form-field>
 
@@ -36,13 +38,15 @@
     type="button"
     (click)="goToForgotPassword()"
   >
-    Forgot password?
+    {{ "auth.actions.forgotPassword" | translate }}
   </button>
 
   <div class="actions">
-    <button mat-flat-button color="primary" type="submit">Login</button>
+    <button mat-flat-button color="primary" type="submit">
+      {{ "auth.actions.login" | translate }}
+    </button>
     <button matButton="outlined" type="button" (click)="goToRegister()">
-      Create new account
+      {{ "auth.actions.createAccount" | translate }}
     </button>
   </div>
 </form>

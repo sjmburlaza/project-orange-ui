@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { WishlistService } from 'src/app/core/services/wishlist.service';
+import { WishlistService } from 'src/app/features/profile/services/wishlist.service';
 import providers from 'src/test-providers';
 
 import { WishlistComponent } from './wishlist.component';

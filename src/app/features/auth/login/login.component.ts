@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ROLES } from 'src/app/core/auth/auth.constants';
 import { AuthSession } from 'src/app/core/auth/auth.models';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -24,6 +25,7 @@ import { SiteService } from 'src/app/core/services/site.services';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
+    TranslatePipe,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

@@ -215,6 +215,7 @@ cart.json
 wishlist.json
 orders.json
 checkout.json
+auth.json
 support.json
 ```
 

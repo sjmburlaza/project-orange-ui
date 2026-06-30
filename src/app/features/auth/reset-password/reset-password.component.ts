@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { SiteService } from 'src/app/core/services/site.services';
@@ -19,6 +20,7 @@ import { emailValidator } from 'src/app/shared/validators/email.validator';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    TranslatePipe,
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
@@ -47,26 +49,26 @@ export class ResetPasswordComponent {
 
   readonly passwordRules = [
     {
-      label: 'At least 8 characters',
+      labelKey: 'auth.passwordRules.atLeast8',
       valid: () => this.newPasswordValue.length >= 8,
     },
     {
-      label: 'At least one uppercase letter',
+      labelKey: 'auth.passwordRules.uppercase',
       valid: () => /[A-Z]/.test(this.newPasswordValue),
     },
     {
-      label: 'At least one number',
+      labelKey: 'auth.passwordRules.number',
       valid: () => /\d/.test(this.newPasswordValue),
     },
     {
-      label: 'At least one special character',
+      labelKey: 'auth.passwordRules.special',
       valid: () => /[^a-zA-Z0-9]/.test(this.newPasswordValue),
     },
   ];
 
   isLoading = false;
   isComplete = false;
-  errorMessage: string | null = null;
+  errorMessageKey: string | null = null;
   hidePassword = true;
 
   constructor() {
@@ -94,7 +96,7 @@ export class ResetPasswordComponent {
   }
 
   onSubmit(): void {
-    this.errorMessage = null;
+    this.errorMessageKey = null;
 
     if (this.resetPasswordForm.invalid) {
       this.resetPasswordForm.markAllAsTouched();
@@ -118,8 +120,7 @@ export class ResetPasswordComponent {
         error: (error) => {
           console.error('Password reset failed:', error);
 
-          this.errorMessage =
-            'This reset link is invalid or expired. Request a new reset link and try again.';
+          this.errorMessageKey = 'auth.resetPassword.errors.invalidOrExpired';
         },
       });
   }

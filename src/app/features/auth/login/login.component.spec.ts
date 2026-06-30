@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { ROLES, Role } from 'src/app/core/auth/auth.constants';
 import { AuthSession } from 'src/app/core/auth/auth.models';
@@ -33,6 +34,7 @@ describe('LoginComponent', () => {
         { provide: AuthStore, useValue: authStore },
         { provide: Router, useValue: router },
         { provide: SiteService, useValue: { currentSite: () => 'ph' } },
+        provideTranslateService({ lang: 'en', fallbackLang: 'en' }),
         {
           provide: ActivatedRoute,
           useValue: {

@@ -1,42 +1,46 @@
 <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  @if (errorMessageKey) {
+    <p class="status error">{{ errorMessageKey | translate }}</p>
+  }
+
   <mat-form-field appearance="outline">
-    <mat-label>Full Name</mat-label>
+    <mat-label>{{ "auth.fields.fullName.label" | translate }}</mat-label>
     <input
       matInput
       type="text"
       formControlName="fullName"
-      placeholder="Enter your full name"
+      [placeholder]="'auth.fields.fullName.placeholder' | translate"
     />
 
     @if (fullName.touched && fullName.hasError("required")) {
-      <mat-error>Full name is required.</mat-error>
+      <mat-error>{{ "auth.validation.fullNameRequired" | translate }}</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
+    <mat-label>{{ "auth.fields.email.label" | translate }}</mat-label>
     <input
       matInput
       type="email"
       formControlName="email"
-      placeholder="Enter your email"
+      [placeholder]="'auth.fields.email.placeholder' | translate"
     />
 
     @if (email.touched && email.hasError("required")) {
-      <mat-error>Email is required.</mat-error>
+      <mat-error>{{ "auth.validation.emailRequired" | translate }}</mat-error>
     }
     @if (email.touched && email.hasError("email")) {
-      <mat-error>Please enter a valid email.</mat-error>
+      <mat-error>{{ "auth.validation.emailInvalid" | translate }}</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
+    <mat-label>{{ "auth.fields.password.label" | translate }}</mat-label>
     <input
       matInput
       [type]="hidePassword ? 'password' : 'text'"
       formControlName="password"
-      placeholder="Enter your password"
+      [placeholder]="'auth.fields.password.placeholder' | translate"
     />
 
     @if (password.value) {
@@ -53,22 +57,26 @@
     }
 
     @if (password.touched && password.hasError("required")) {
-      <mat-error>Password is required.</mat-error>
+      <mat-error>
+        {{ "auth.validation.passwordRequired" | translate }}
+      </mat-error>
     }
     @if (password.touched && password.hasError("minlength")) {
-      <mat-error> Password must be at least 8 characters. </mat-error>
+      <mat-error>
+        {{ "auth.validation.passwordMinLength" | translate: { count: 6 } }}
+      </mat-error>
     }
   </mat-form-field>
 
   <div class="password-rules">
-    @for (rule of passwordRules; track rule.label) {
+    @for (rule of passwordRules; track rule.labelKey) {
       <div class="rule" [class.valid]="rule.valid()">
         <span class="icon">
           {{ rule.valid() ? "✓" : "✕" }}
         </span>
 
         <span>
-          {{ rule.label }}
+          {{ rule.labelKey | translate }}
         </span>
       </div>
     }
@@ -76,10 +84,10 @@
 
   <div class="actions">
     <button class="register-btn" mat-flat-button color="primary" type="submit">
-      Register
+      {{ "auth.actions.register" | translate }}
     </button>
-    <button matButton="outlined" (click)="goToLogin()">
-      I already have an account.
+    <button matButton="outlined" type="button" (click)="goToLogin()">
+      {{ "auth.actions.alreadyHaveAccount" | translate }}
     </button>
   </div>
 </form>
