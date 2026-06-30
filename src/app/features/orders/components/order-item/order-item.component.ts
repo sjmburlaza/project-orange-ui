@@ -96,28 +96,6 @@ export class OrderItemComponent {
     };
   });
 
-  readonly subtotal = computed(
-    () =>
-      this.order().subtotalAmount ??
-      this.order().items.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0,
-      ),
-  );
-  readonly shippingAmount = computed(() => this.order().shippingAmount ?? 0);
-  readonly discountAmount = computed(() => {
-    const explicitDiscount = this.order().discountAmount;
-
-    if (explicitDiscount !== undefined) {
-      return explicitDiscount;
-    }
-
-    return Math.max(
-      this.subtotal() + this.shippingAmount() - this.order().totalAmount,
-      0,
-    );
-  });
-
   setExpanded(isExpanded: boolean): void {
     this.isExpanded.set(isExpanded);
   }
