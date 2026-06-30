@@ -10,6 +10,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { SiteService } from 'src/app/core/services/site.services';
+import {
+  PASSWORD_NUMBER_PATTERN,
+  PASSWORD_SPECIAL_CHARACTER_PATTERN,
+  PASSWORD_UPPERCASE_PATTERN,
+  STRONG_PASSWORD_PATTERN,
+} from 'src/app/shared/constants/regex.constants';
 import { emailValidator } from 'src/app/shared/validators/email.validator';
 
 @Component({
@@ -42,7 +48,7 @@ export class ResetPasswordComponent {
       [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/),
+        Validators.pattern(STRONG_PASSWORD_PATTERN),
       ],
     ],
   });
@@ -54,15 +60,16 @@ export class ResetPasswordComponent {
     },
     {
       labelKey: 'auth.passwordRules.uppercase',
-      valid: () => /[A-Z]/.test(this.newPasswordValue),
+      valid: () => PASSWORD_UPPERCASE_PATTERN.test(this.newPasswordValue),
     },
     {
       labelKey: 'auth.passwordRules.number',
-      valid: () => /\d/.test(this.newPasswordValue),
+      valid: () => PASSWORD_NUMBER_PATTERN.test(this.newPasswordValue),
     },
     {
       labelKey: 'auth.passwordRules.special',
-      valid: () => /[^a-zA-Z0-9]/.test(this.newPasswordValue),
+      valid: () =>
+        PASSWORD_SPECIAL_CHARACTER_PATTERN.test(this.newPasswordValue),
     },
   ];
 
