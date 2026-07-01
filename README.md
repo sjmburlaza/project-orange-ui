@@ -1,6 +1,6 @@
 # Project Orange UI
 
-Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
+Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows with localized payment methods, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
 
 ## Demos
 
@@ -8,7 +8,7 @@ Project Orange UI is an Angular storefront and admin workspace for a multi-count
 
 Configure product to checkout flow
 
-![Configure product to checkout flow](src/assets/demos/checkout-flow.gif)
+![Configure product to checkout flow](src/assets/demos/checkout-flow-v2.gif)
 
 Analytics Dashboard
 
@@ -96,23 +96,23 @@ For detailed analytics dashboard documentation, see [Dashboard Analytics](src/ap
 
 Most app routes are scoped by site:
 
-| Route                                 | Purpose                                                             |
-| ------------------------------------- | ------------------------------------------------------------------- |
-| `/:site/products`                     | Product listing with category, sort, price filters, and save toggles. |
-| `/:site/products/:productId`          | Product detail page.                                                |
-| `/:site/products/:productId/configure` | Product configurator and add-to-cart flow.                         |
-| `/:site/cart`                         | Cart review, quantity updates, vouchers, shipping, and add-ons.     |
-| `/:site/checkout`                     | Dynamic checkout form, shipping, payment, and order summary flow.   |
-| `/:site/auth/login`                   | Sign in.                                                            |
-| `/:site/auth/register`                | Account registration.                                               |
-| `/:site/auth/forgot-password`         | Password reset entry point.                                         |
-| `/:site/auth/reset-password`          | Complete password reset with email and token.                       |
-| `/:site/orders`                       | Guest order lookup or signed-in order history.                      |
-| `/:site/orders/my-orders`             | Orders route alias for lookup and history.                          |
-| `/:site/orders/confirmation/:orderId` | Order confirmation page after checkout.                             |
-| `/:site/profile/account-settings`     | Customer account settings.                                          |
-| `/:site/profile/wishlist`             | Authenticated customer wishlist with saved products.                 |
-| `/:site/admin/analytics-dashboard`    | Admin analytics dashboard. Requires an authenticated admin session. |
+| Route                                  | Purpose                                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `/:site/products`                      | Product listing with category, sort, price filters, and save toggles.                            |
+| `/:site/products/:productId`           | Product detail page.                                                                             |
+| `/:site/products/:productId/configure` | Product configurator and add-to-cart flow.                                                       |
+| `/:site/cart`                          | Cart review, quantity updates, vouchers, shipping, and add-ons.                                  |
+| `/:site/checkout`                      | Dynamic checkout form, shipping, site-aware payments, draft persistence, and order summary flow. |
+| `/:site/auth/login`                    | Sign in.                                                                                         |
+| `/:site/auth/register`                 | Account registration.                                                                            |
+| `/:site/auth/forgot-password`          | Password reset entry point.                                                                      |
+| `/:site/auth/reset-password`           | Complete password reset with email and token.                                                    |
+| `/:site/orders`                        | Guest order lookup or signed-in order history.                                                   |
+| `/:site/orders/my-orders`              | Orders route alias for lookup and history.                                                       |
+| `/:site/orders/confirmation/:orderId`  | Order confirmation page after checkout.                                                          |
+| `/:site/profile/account-settings`      | Customer account settings.                                                                       |
+| `/:site/profile/wishlist`              | Authenticated customer wishlist with saved products.                                             |
+| `/:site/admin/analytics-dashboard`     | Admin analytics dashboard. Requires an authenticated admin session.                              |
 
 Unsupported site codes are redirected back to the country selector.
 
@@ -145,6 +145,8 @@ The interceptor leaves these unscoped endpoints unchanged:
 /api/sites
 /api/sites/:site
 /api/geo/country
+/api/payments/intents
+/api/payments/confirm
 ```
 
 Primary API areas used by the UI:
@@ -157,10 +159,11 @@ Primary API areas used by the UI:
 | Catalog           | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories`                                                                                                                                                                                  |
 | Product add-ons   | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans`                                                                                                                                                                        |
 | Wishlist          | `GET /api/wishlist`, `POST /api/wishlist/items`, `GET /api/wishlist/items/:productId`, `DELETE /api/wishlist/items/:productId`                                                                                                                       |
-| Cart              | `GET /api/carts/:cartCode`, `GET /api/carts/:cartCode/recommended-products`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:variantId`, `DELETE /api/carts/:cartCode/items/:variantId`                                      |
+| Cart              | `GET /api/carts/:cartCode`, `GET /api/carts/:cartCode/recommended-products`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:variantId`, `DELETE /api/carts/:cartCode/items/:variantId`                 |
 | Cart add-ons      | `PUT /api/carts/:cartCode/items/:variantId/addons/:addonId`, `DELETE /api/carts/:cartCode/items/:variantId/addons/:addonId`                                                                                                                          |
 | Vouchers          | `POST /api/carts/:cartCode/vouchers`, `DELETE /api/carts/:cartCode/vouchers/:code`                                                                                                                                                                   |
 | Checkout          | `GET /api/checkout/form`                                                                                                                                                                                                                             |
+| Payments          | `POST /api/payments/intents`, `POST /api/payments/confirm`                                                                                                                                                                                           |
 | Orders            | `POST /api/orders`, `GET /api/orders`, `GET /api/orders/:orderNumber`, `GET /api/orders/lookup?orderNumber=...&email=...`                                                                                                                            |
 | Fulfillment       | `GET /api/fulfillment/options?postalCode=...`, `PUT /api/carts/:cartCode/shipping`                                                                                                                                                                   |
 | Trade-in          | `GET /api/trade-ins/config`, `GET /api/trade-ins/categories`, `GET /api/trade-ins/brands`, `GET /api/trade-ins/devices`, `GET /api/trade-ins/storages`                                                                                               |
@@ -169,6 +172,10 @@ Primary API areas used by the UI:
 Auth requests use credentials and XSRF support. `AuthInterceptor` adds `withCredentials` to API requests and redirects unauthenticated users to the site login page when protected requests return `401`.
 
 Wishlist routes require an authenticated session and are scoped to the active site by the site-prefix interceptor. Product cards expose a bookmark save toggle; unauthenticated users see the shared confirmation dialog before being sent to login with the current URL preserved as `returnUrl`.
+
+## Checkout and Payments
+
+Checkout uses `/api/checkout/form` for dynamic steps, saves drafts under `checkoutData`, and supports schema-provided payment methods through unscoped `/api/payments/intents` and `/api/payments/confirm` endpoints.
 
 ## Mock Auth
 
@@ -192,6 +199,10 @@ The mock interceptor handles:
 - `POST /api/auth/logout`
 
 The default mock user is an admin user with broad product, inventory, order, and user permissions.
+
+## Mock Payments
+
+`MockPaymentInterceptor` is enabled locally and in staging; card and GCash values ending in `0000` fail, `9999` stays pending, and offline methods return pending instructions.
 
 ## State Management
 
@@ -255,11 +266,11 @@ src/app/features
   admin/            Site-scoped analytics dashboard plus reusable chart wrappers
   auth/             Login, register, forgot password, reset password
   cart/             Cart page, cart store, cart API, cart item add-ons
-  checkout/         Dynamic checkout form, shipping, payment
-  common/           Reusable commerce UI such as order summary, voucher, CTA
+  checkout/         Dynamic checkout form, shipping, payment methods, draft storage
+  common/           Reusable commerce UI such as order summary, order items, voucher, CTA
   country-entry/    Country selector and detected-country entry flow
   home/             Home feature
-  orders/           Guest lookup, signed-in history, confirmation, and order item card
+  orders/           Guest lookup, signed-in history, confirmation, and expandable order items
   products/         Product list, product detail/configurator, filters, product store
   profile/          Account settings and wishlist
   trade-in/         Trade-in store and API
