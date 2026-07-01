@@ -200,7 +200,7 @@
 .item {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: 10px 16px;
   align-items: start;
   padding: 14px 0;
   border-top: 1px solid token(color, border);
@@ -219,7 +219,7 @@
 
     .item__amount {
       grid-column: 2;
-      justify-self: start;
+      justify-self: end;
     }
   }
 }
@@ -277,9 +277,10 @@
 }
 
 .item__addons {
+  grid-column: 2 / -1;
   display: grid;
   gap: 6px;
-  margin-top: 10px;
+  min-width: 0;
 }
 
 .item__addons-label {
@@ -287,29 +288,32 @@
 }
 
 .item__addon {
-  display: inline-flex;
+  display: grid;
   gap: 6px;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
   align-items: center;
   width: 100%;
   border-radius: 8px;
-  padding: 6px 8px;
-  background: token(color, surface-secondary);
   line-height: 1.2;
   white-space: nowrap;
 
   .item__addon-title,
-  strong,
-  small {
+  .item__addon-amount,
+  .item__addon-amount small {
     display: inline-flex;
     align-items: center;
     color: token(color, text-secondary);
     line-height: 1.2;
   }
 
-  strong {
-    flex: 0 0 auto;
+  .item__addon-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item__addon-amount {
     justify-content: flex-end;
-    margin-left: auto;
     text-align: right;
   }
 }

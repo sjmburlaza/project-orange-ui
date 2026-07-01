@@ -151,7 +151,7 @@
 .product-row {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: 10px 16px;
   align-items: start;
   min-width: 0;
   padding-top: 16px;
@@ -167,7 +167,7 @@
 
     .product-row__price {
       grid-column: 2;
-      justify-self: start;
+      justify-self: end;
     }
   }
 }
@@ -225,9 +225,9 @@
 }
 
 .product-row__addons {
+  grid-column: 2 / -1;
   display: grid;
-  gap: 6px;
-  margin-top: 24px;
+  min-width: 0;
 }
 
 .product-row__addons-label {
@@ -235,19 +235,19 @@
 }
 
 .product-row__addon {
-  display: flex;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
-  flex-wrap: nowrap;
   width: 100%;
   border-radius: 8px;
-  padding: 6px 8px;
-  background: token(color, surface-secondary);
+  padding: 6px 0 6px 8px;
   line-height: 1.2;
   white-space: nowrap;
+  font-size: 14px;
 
   .product-row__addon-title,
-  strong {
+  .product-row__addon-amount {
     display: inline-flex;
     align-items: center;
     color: token(color, text-secondary);
@@ -260,10 +260,8 @@
     text-overflow: ellipsis;
   }
 
-  strong {
-    flex: 0 0 auto;
+  .product-row__addon-amount {
     justify-content: flex-end;
-    margin-left: auto;
     text-align: right;
   }
 }
