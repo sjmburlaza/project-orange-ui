@@ -19,7 +19,7 @@
           <img [src]="item.imageUrl" [alt]="item.productName" />
         } @else {
           <i
-            [class]="item.categoryName | icon"
+            [class]="item.subcategoryName || item.categoryName | icon"
             [style.color]="item.itemSpecs | iconColor"
           ></i>
         }

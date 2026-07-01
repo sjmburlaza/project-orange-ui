@@ -100,42 +100,46 @@
                     | translate: { quantity: row.item.quantity }
                 }}
               </span>
-
-              @if (row.addedAddons.length) {
-                <div class="item__addons">
-                  <span class="item__addons-label">
-                    {{ "orders.lookup.addons" | translate }}
-                  </span>
-
-                  @for (addon of row.addedAddons; track addon.id) {
-                    <span class="item__addon">
-                      <span class="item__addon-icon">
-                        @if (addon.imageUrl) {
-                          <img [src]="addon.imageUrl" [alt]="addon.name" />
-                        } @else {
-                          <i [class]="addon.id | icon" aria-hidden="true"></i>
-                        }
-                      </span>
-                      <span class="item__addon-title">
-                        {{ addon.title || addon.name }}
-                      </span>
-                      @if (addon.amount !== undefined) {
-                        <strong>{{
-                          addon.amount | currency: currency()
-                        }}</strong>
-                      }
-                      @if (addon.billingFrequency) {
-                        <small>/ {{ addon.billingFrequency }}</small>
-                      }
-                    </span>
-                  }
-                </div>
-              }
             </div>
 
             <strong class="item__amount">
               {{ row.item.totalPrice | currency: currency() }}
             </strong>
+
+            @if (row.addedAddons.length) {
+              <div class="item__addons">
+                <span class="item__addons-label">
+                  {{ "orders.lookup.addons" | translate }}
+                </span>
+
+                @for (addon of row.addedAddons; track addon.id) {
+                  <span class="item__addon">
+                    <span class="item__addon-icon">
+                      @if (addon.imageUrl) {
+                        <img [src]="addon.imageUrl" [alt]="addon.name" />
+                      } @else {
+                        <i [class]="addon.id | icon" aria-hidden="true"></i>
+                      }
+                    </span>
+                    <span class="item__addon-title">
+                      {{ addon.title || addon.name }}
+                    </span>
+                    @if (
+                      addon.amount !== undefined || addon.billingFrequency
+                    ) {
+                      <strong class="item__addon-amount">
+                        @if (addon.amount !== undefined) {
+                          {{ addon.amount | currency: currency() }}
+                        }
+                        @if (addon.billingFrequency) {
+                          <small>/ {{ addon.billingFrequency }}</small>
+                        }
+                      </strong>
+                    }
+                  </span>
+                }
+              </div>
+            }
           </article>
         }
       </div>
