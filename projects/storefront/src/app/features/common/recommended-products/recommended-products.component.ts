@@ -22,7 +22,7 @@ import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import {
   CarouselComponent,
   CarouselItemDirective,
-} from 'libs/shared/components/carousel/carousel.component';
+} from 'libs/ui/carousel/carousel.component';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 import { VariantColorPipe } from 'libs/shared/pipes/variant-color-pipe';
 

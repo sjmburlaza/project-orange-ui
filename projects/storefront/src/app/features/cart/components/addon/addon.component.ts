@@ -18,7 +18,7 @@ import { AddonMobilePlanComponent } from '../addon-mobile-plan/addon-mobile-plan
 import { AddonDialogData } from './addon-dialog-data.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CurrencyPipe } from '@angular/common';
-import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
 
 interface UpsertAddonEvent {
   variantId: number;

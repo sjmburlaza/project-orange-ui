@@ -9,7 +9,7 @@ import {
   AnalyticsDashboard,
   AnalyticsDashboardPeriod,
 } from 'libs/models/analytics.model';
-import { SelectDropdownComponent } from 'libs/shared/components/select-dropdown/select-dropdown.component';
+import { SelectDropdownComponent } from 'libs/ui/select-dropdown/select-dropdown.component';
 
 import { AnalyticsDashboardComponent } from './dashboard.component';
 

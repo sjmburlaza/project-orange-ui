@@ -10,8 +10,8 @@ import { WishlistService } from 'src/app/features/profile/services/wishlist.serv
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
-import { RangeValue } from 'libs/shared/components/range-slider/range-slider.component';
-import { SelectOption } from 'libs/shared/components/select-dropdown/select-dropdown.component';
+import { RangeValue } from 'libs/ui/range-slider/range-slider.component';
+import { SelectOption } from 'libs/ui/select-dropdown/select-dropdown.component';
 import {
   DIACRITICS_PATTERN,
   LEADING_OR_TRAILING_HYPHENS_PATTERN,
@@ -30,7 +30,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-product-list',

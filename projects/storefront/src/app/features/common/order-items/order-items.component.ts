@@ -5,7 +5,7 @@ import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';
-import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 

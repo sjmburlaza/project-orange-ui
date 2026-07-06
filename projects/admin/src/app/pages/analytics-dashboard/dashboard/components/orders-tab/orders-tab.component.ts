@@ -4,7 +4,7 @@ import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
 } from 'libs/models/analytics.model';
-import { InfoTooltipComponent } from 'libs/shared/components/info-tooltip/info-tooltip.component';
+import { InfoTooltipComponent } from 'libs/ui/info-tooltip/info-tooltip.component';
 
 @Component({
   selector: 'app-orders-tab',

@@ -9,12 +9,12 @@ import { ProductSort } from 'libs/models/product.model';
 import {
   RangeSliderComponent,
   RangeValue,
-} from 'libs/shared/components/range-slider/range-slider.component';
+} from 'libs/ui/range-slider/range-slider.component';
 
 import {
   SelectDropdownComponent,
   SelectOption,
-} from 'libs/shared/components/select-dropdown/select-dropdown.component';
+} from 'libs/ui/select-dropdown/select-dropdown.component';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 

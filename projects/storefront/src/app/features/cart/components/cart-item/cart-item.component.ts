@@ -10,8 +10,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem } from 'libs/models/cart.model';
-import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
-import { QuantitySelectorComponent } from 'libs/shared/components/quantity-selector/quantity-selector.component';
+import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
+import { QuantitySelectorComponent } from 'libs/ui/quantity-selector/quantity-selector.component';
 import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 
