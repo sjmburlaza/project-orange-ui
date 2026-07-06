@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Product } from 'libs/core/models/product.model';
+import { Product } from 'libs/models/product.model';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 
 @Component({

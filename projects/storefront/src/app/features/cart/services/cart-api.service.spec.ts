@@ -6,8 +6,8 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { BrowserStorageService } from 'libs/core/services/browser-storage.service';
 import { CartApiService } from './cart-api.service';
-import { Cart } from 'libs/core/models/cart.model';
-import { ProductConfigure } from 'libs/core/models/product.model';
+import { Cart } from 'libs/models/cart.model';
+import { ProductConfigure } from 'libs/models/product.model';
 
 describe('CartApiService', () => {
   let service: CartApiService;

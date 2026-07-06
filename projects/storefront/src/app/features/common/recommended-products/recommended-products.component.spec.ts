@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
-import { Cart } from 'libs/core/models/cart.model';
+import { Cart } from 'libs/models/cart.model';
 import {
   ProductConfigure,
   ProductVariant,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { vi } from 'vitest';

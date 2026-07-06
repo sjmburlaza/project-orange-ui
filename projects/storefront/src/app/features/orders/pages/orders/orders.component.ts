@@ -17,7 +17,7 @@ import {
   AuthSessionState,
   AuthStore,
 } from 'libs/core/auth/auth.store';
-import { OrderItem } from 'libs/core/models/order.model';
+import { OrderItem } from 'libs/models/order.model';
 import { OrderItemComponent } from 'src/app/features/orders/components/order-item/order-item.component';
 import { OrdersHistoryComponent } from 'src/app/features/orders/components/orders-history/orders-history.component';
 import { OrderService } from 'src/app/features/orders/services/order.service';

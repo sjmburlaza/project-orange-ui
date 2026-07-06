@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import {
   Addon,
   UpdateCartItemAddonRequest,
-} from 'libs/core/models/cart.model';
+} from 'libs/models/cart.model';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 import { AddonInsuranceComponent } from '../addon-insurance/addon-insurance.component';
 import { AddonTradeinComponent } from '../addon-tradein/addon-tradein.component';

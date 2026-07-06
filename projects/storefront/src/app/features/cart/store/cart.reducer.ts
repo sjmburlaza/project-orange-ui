@@ -1,8 +1,8 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Cart } from 'libs/core/models/cart.model';
+import { Cart } from 'libs/models/cart.model';
 import { CartActions } from './cart.actions';
-import { CartUiMessage } from 'libs/core/models/cart-message.model';
-import { ProductConfigure } from 'libs/core/models/product.model';
+import { CartUiMessage } from 'libs/models/cart-message.model';
+import { ProductConfigure } from 'libs/models/product.model';
 
 export interface CartState {
   cart: Cart | null;

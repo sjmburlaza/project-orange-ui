@@ -8,8 +8,8 @@ import {
   UpdateCartShippingRequest,
   UpdateCartItemAddonRequest,
   UpdateQuantityRequest,
-} from 'libs/core/models/cart.model';
-import { ProductConfigure } from 'libs/core/models/product.model';
+} from 'libs/models/cart.model';
+import { ProductConfigure } from 'libs/models/product.model';
 import { BrowserStorageService } from 'libs/core/services/browser-storage.service';
 
 @Injectable({ providedIn: 'root' })

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
-import { FieldValidator } from 'libs/core/models/checkout.model';
+import { FieldValidator } from 'libs/models/checkout.model';
 
 @Injectable({ providedIn: 'root' })
 export class ValidatorMapperService {

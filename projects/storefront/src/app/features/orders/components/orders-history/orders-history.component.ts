@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
-import { OrderItem } from 'libs/core/models/order.model';
+import { OrderItem } from 'libs/models/order.model';
 import { OrderItemComponent } from 'src/app/features/orders/components/order-item/order-item.component';
 
 @Component({

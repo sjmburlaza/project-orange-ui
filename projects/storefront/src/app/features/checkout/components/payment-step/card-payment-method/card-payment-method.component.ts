@@ -18,7 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PaymentStepValue } from 'libs/core/models/payment.model';
+import { PaymentStepValue } from 'libs/models/payment.model';
 import { CardExpiryFormatDirective } from 'libs/shared/directives/card-expiry-format.directive';
 import { CardNumberSpacingDirective } from 'libs/shared/directives/card-number-spacing.directive';
 import {

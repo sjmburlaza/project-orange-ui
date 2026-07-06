@@ -11,7 +11,7 @@ import {
   ProductOption,
   ProductVariant,
   StockStatus,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 import { AnalyticsService } from 'libs/core/services/analytics.service';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';

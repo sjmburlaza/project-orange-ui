@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import {
   PaymentConfirmation,
   PaymentIntent,
-} from 'libs/core/models/payment.model';
+} from 'libs/models/payment.model';
 import { MockPaymentInterceptor } from './mock-payment.interceptor';
 
 describe('MockPaymentInterceptor', () => {

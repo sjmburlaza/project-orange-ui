@@ -12,7 +12,7 @@ import {
   UpdateTradeInStepOneRequest,
   UpdateTradeInStepThreeRequest,
   UpdateTradeInStepTwoRequest,
-} from 'libs/core/models/trade-in.model';
+} from 'libs/models/trade-in.model';
 
 @Injectable({ providedIn: 'root' })
 export class TradeInApiService {

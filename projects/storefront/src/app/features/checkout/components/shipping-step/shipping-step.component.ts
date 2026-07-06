@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { DynamicField } from 'libs/core/models/checkout.model';
+import { DynamicField } from 'libs/models/checkout.model';
 import {
   FulfillmentService,
   FulfillmentOption,

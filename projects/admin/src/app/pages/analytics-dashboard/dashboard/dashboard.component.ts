@@ -10,7 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import {
   AnalyticsDashboardPeriod,
   AnalyticsMetricCard,
-} from 'libs/core/models/analytics.model';
+} from 'libs/models/analytics.model';
 import {
   ArcElement,
   BarController,

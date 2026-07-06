@@ -6,7 +6,7 @@ import {
   CreatePaymentIntentRequest,
   PaymentConfirmation,
   PaymentIntent,
-} from 'libs/core/models/payment.model';
+} from 'libs/models/payment.model';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentApiService {

@@ -16,7 +16,7 @@ import {
   TradeInSession,
   TradeInStepThreeField,
   TradeInStorage,
-} from 'libs/core/models/trade-in.model';
+} from 'libs/models/trade-in.model';
 import { TradeInFacade } from 'src/app/features/trade-in/store/trade-in.facade';
 import { AddonDialogData } from '../addon/addon-dialog-data.model';
 import { SiteService } from 'libs/core/services/site.services';

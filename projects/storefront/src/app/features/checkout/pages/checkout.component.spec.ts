@@ -6,12 +6,12 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AuthSession } from 'libs/core/auth/auth.models';
 import { AuthStore } from 'libs/core/auth/auth.store';
-import { Cart } from 'libs/core/models/cart.model';
-import { CheckoutFormConfig } from 'libs/core/models/checkout.model';
+import { Cart } from 'libs/models/cart.model';
+import { CheckoutFormConfig } from 'libs/models/checkout.model';
 import {
   PaymentConfirmation,
   PaymentIntent,
-} from 'libs/core/models/payment.model';
+} from 'libs/models/payment.model';
 import { AnalyticsService } from 'libs/core/services/analytics.service';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';

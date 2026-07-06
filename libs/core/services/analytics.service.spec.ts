@@ -4,10 +4,10 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AnalyticsDashboard } from 'libs/core/models/analytics.model';
-import { Cart } from 'libs/core/models/cart.model';
-import { OrderConfirmation } from 'libs/core/models/order.model';
-import { Product } from 'libs/core/models/product.model';
+import { AnalyticsDashboard } from 'libs/models/analytics.model';
+import { Cart } from 'libs/models/cart.model';
+import { OrderConfirmation } from 'libs/models/order.model';
+import { Product } from 'libs/models/product.model';
 import { AnalyticsService } from './analytics.service';
 
 describe('AnalyticsService', () => {

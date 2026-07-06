@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CartItem } from 'libs/core/models/cart.model';
+import { CartItem } from 'libs/models/cart.model';
 import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
 import { QuantitySelectorComponent } from 'libs/shared/components/quantity-selector/quantity-selector.component';
 import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';

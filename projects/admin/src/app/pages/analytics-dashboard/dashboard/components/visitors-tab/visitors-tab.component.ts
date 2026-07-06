@@ -10,7 +10,7 @@ import {
   AnalyticsDashboard,
   AnalyticsDailyPoint,
   AnalyticsMetricCard,
-} from 'libs/core/models/analytics.model';
+} from 'libs/models/analytics.model';
 import { LineChartComponent } from '../../../charts/line-chart/line-chart.component';
 import { InfoTooltipComponent } from 'libs/shared/components/info-tooltip/info-tooltip.component';
 import {

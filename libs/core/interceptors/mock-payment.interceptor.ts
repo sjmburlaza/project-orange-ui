@@ -14,7 +14,7 @@ import {
   PaymentConfirmation,
   PaymentConfirmationStatus,
   PaymentIntent,
-} from 'libs/core/models/payment.model';
+} from 'libs/models/payment.model';
 import {
   HYPHEN_PATTERN,
   PAYMENT_ENDPOINT_PATTERN,

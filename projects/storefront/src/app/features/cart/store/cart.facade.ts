@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import {
   AddToCartRequest,
   UpdateCartItemAddonRequest,
-} from 'libs/core/models/cart.model';
+} from 'libs/models/cart.model';
 import { CartActions } from './cart.actions';
 import {
   selectCart,

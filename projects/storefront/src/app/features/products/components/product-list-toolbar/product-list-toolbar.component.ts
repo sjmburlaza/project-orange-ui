@@ -5,7 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ProductSort } from 'libs/core/models/product.model';
+import { ProductSort } from 'libs/models/product.model';
 import {
   RangeSliderComponent,
   RangeValue,
