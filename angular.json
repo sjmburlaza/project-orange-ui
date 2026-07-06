@@ -27,7 +27,12 @@
                 "glob": "**/*",
                 "input": "projects/storefront/public"
               },
-              "projects/storefront/src/assets"
+              "projects/storefront/src/assets",
+              {
+                "glob": "**/*",
+                "input": "libs/styles/fonts",
+                "output": "assets/fonts"
+              }
             ],
             "styles": [
               "projects/storefront/src/styles.scss",
@@ -161,6 +166,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/admin/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "libs/styles/fonts",
+                "output": "assets/fonts"
               }
             ],
             "styles": [

@@ -7,6 +7,58 @@
 @use "tokens/tokens" as *;
 @use "utilities/spacing-utils";
 
+@mixin roboto-face($weight, $style: normal) {
+  @font-face {
+    font-family: "Roboto";
+    font-style: $style;
+    font-weight: $weight;
+    font-display: swap;
+    src:
+      url("/assets/fonts/roboto-latin-#{$weight}-#{$style}.woff2")
+        format("woff2"),
+      url("/assets/fonts/roboto-latin-#{$weight}-#{$style}.woff")
+        format("woff");
+  }
+}
+
+@include roboto-face(300);
+@include roboto-face(400);
+@include roboto-face(400, italic);
+@include roboto-face(500);
+@include roboto-face(600);
+@include roboto-face(700);
+@include roboto-face(800);
+
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src:
+    url("/assets/fonts/material-icons.woff2") format("woff2"),
+    url("/assets/fonts/material-icons.woff") format("woff");
+}
+
+.material-icons,
+.mat-icon.material-icons,
+.mat-icon.mat-ligature-font {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga";
+}
+
 html {
   @include mat.theme(
     (
