@@ -3,7 +3,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { InputFieldComponent } from './input-field.component';
-import { DynamicField } from 'src/app/core/models/checkout.model';
+import { DynamicField } from 'libs/core/models/checkout.model';
 
 describe('InputFieldComponent', () => {
   let component: InputFieldComponent;

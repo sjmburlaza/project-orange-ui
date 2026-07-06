@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFieldComponent } from '../dynamic-field.component';
-import { DynamicField } from 'src/app/core/models/checkout.model';
+import { DynamicField } from 'libs/core/models/checkout.model';
 
 @Component({
   selector: 'app-array-field',

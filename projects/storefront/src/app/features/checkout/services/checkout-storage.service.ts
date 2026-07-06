@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { BrowserStorageService } from 'src/app/core/services/browser-storage.service';
+import { BrowserStorageService } from 'libs/core/services/browser-storage.service';
 
 type CheckoutData = Record<string, Record<string, unknown>>;
 

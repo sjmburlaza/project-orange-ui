@@ -1,21 +1,21 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
-import { PERMISSIONS, ROLES } from '../projects/storefront/src/app/core/auth/auth.constants';
-import type { AuthSession } from '../projects/storefront/src/app/core/auth/auth.models';
-import type { AnalyticsDashboard } from '../projects/storefront/src/app/core/models/analytics.model';
+import { PERMISSIONS, ROLES } from '../libs/core/auth/auth.constants';
+import type { AuthSession } from '../libs/core/auth/auth.models';
+import type { AnalyticsDashboard } from '../libs/core/models/analytics.model';
 import type {
   AddToCartRequest,
   ApplyVoucherRequest,
   Cart,
   CartItem,
   UpdateQuantityRequest,
-} from '../projects/storefront/src/app/core/models/cart.model';
+} from '../libs/core/models/cart.model';
 import type {
   OrderConfirmation,
   PaymentStatus,
   PlaceOrderRequest,
-} from '../projects/storefront/src/app/core/models/order.model';
-import type { SiteConfig } from '../projects/storefront/src/app/core/i18n/sites';
-import type { ProductSort } from '../projects/storefront/src/app/core/models/product.model';
+} from '../libs/core/models/order.model';
+import type { SiteConfig } from '../libs/core/i18n/sites';
+import type { ProductSort } from '../libs/core/models/product.model';
 import {
   categories,
   checkoutForm,

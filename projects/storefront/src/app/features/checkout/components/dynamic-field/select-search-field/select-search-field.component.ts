@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { distinctUntilChanged, Subject, switchMap } from 'rxjs';
-import { DynamicField, Option } from 'src/app/core/models/checkout.model';
+import { DynamicField, Option } from 'libs/core/models/checkout.model';
 import { OptionsService } from 'src/app/features/checkout/services/options.service';
 import { TranslatePipe } from '@ngx-translate/core';
 

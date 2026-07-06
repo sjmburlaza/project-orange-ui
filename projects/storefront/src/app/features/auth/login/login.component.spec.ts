@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ROLES, Role } from 'src/app/core/auth/auth.constants';
-import { AuthSession } from 'src/app/core/auth/auth.models';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { AuthStore } from 'src/app/core/auth/auth.store';
-import { SiteService } from 'src/app/core/services/site.services';
+import { ROLES, Role } from 'libs/core/auth/auth.constants';
+import { AuthSession } from 'libs/core/auth/auth.models';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { AuthStore } from 'libs/core/auth/auth.store';
+import { SiteService } from 'libs/core/services/site.services';
 
 import { LoginComponent } from './login.component';
 

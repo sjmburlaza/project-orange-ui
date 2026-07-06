@@ -8,12 +8,12 @@ import {
   OrderShippingAddress,
   OrderStatus,
   PaymentStatus,
-} from 'src/app/core/models/order.model';
+} from 'libs/core/models/order.model';
 import { OrderService } from 'src/app/features/orders/services/order.service';
-import { SiteService } from 'src/app/core/services/site.services';
+import { SiteService } from 'libs/core/services/site.services';
 import { TranslatePipe } from '@ngx-translate/core';
-import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
-import { IconColorPipe } from 'src/app/shared/pipes/icon-color-pipe';
+import { IconPipe } from 'libs/shared/pipes/icon-pipe';
+import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
 

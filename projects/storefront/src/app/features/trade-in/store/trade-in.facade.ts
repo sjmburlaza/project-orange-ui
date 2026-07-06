@@ -5,7 +5,7 @@ import {
   UpdateTradeInStepOneRequest,
   UpdateTradeInStepThreeRequest,
   UpdateTradeInStepTwoRequest,
-} from 'src/app/core/models/trade-in.model';
+} from 'libs/core/models/trade-in.model';
 import { TradeInActions } from './trade-in.actions';
 import {
   selectBrands,

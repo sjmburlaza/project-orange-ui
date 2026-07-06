@@ -8,8 +8,8 @@ import { By } from '@angular/platform-browser';
 import {
   AnalyticsDashboard,
   AnalyticsDashboardPeriod,
-} from 'src/app/core/models/analytics.model';
-import { SelectDropdownComponent } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
+} from 'libs/core/models/analytics.model';
+import { SelectDropdownComponent } from 'libs/shared/components/select-dropdown/select-dropdown.component';
 
 import { AnalyticsDashboardComponent } from './dashboard.component';
 

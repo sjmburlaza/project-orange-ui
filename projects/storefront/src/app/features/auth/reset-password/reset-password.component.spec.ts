@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { SiteService } from 'src/app/core/services/site.services';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { SiteService } from 'libs/core/services/site.services';
 
 import { ResetPasswordComponent } from './reset-password.component';
 

@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { ProductFilters } from 'src/app/core/models/product.model';
+import { ProductFilters } from 'libs/core/models/product.model';
 import { productFeature } from 'src/app/features/products/store/products.reducer';
 
 export const {

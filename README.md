@@ -255,7 +255,7 @@ Feature flags currently affect add-ons such as insurance, trade-in, and vouchers
 ## Project Structure
 
 ```text
-projects/storefront/src/app/core
+libs/core
   auth/             Session models, auth service, auth store, roles, permissions
   guards/           Auth, role, and site route guards
   i18n/             Site types and multi-file translation loader
@@ -263,8 +263,14 @@ projects/storefront/src/app/core
   models/           Shared API/domain models
   services/         Site, wishlist, storage, country detection, and postal code services
 
+libs/shared
+  components/       Shared controls such as buttons, dropdowns, sliders, spinners
+  constants/        Shared regex and validation constants
+  directives/       Shared input-formatting directives
+  pipes/            Shared pipes
+  validators/       Shared validators
+
 projects/storefront/src/app/features
-  admin/            Site-scoped analytics dashboard plus reusable chart wrappers
   auth/             Login, register, forgot password, reset password
   cart/             Cart page, cart store, cart API, cart item add-ons
   checkout/         Dynamic checkout form, shipping, payment methods, draft storage
@@ -281,11 +287,6 @@ projects/storefront/src/app/layout
   checkout-layout/  Layout for cart and checkout
   main-layout/      Storefront shell
   header/ footer/ sidebar/
-
-projects/storefront/src/app/shared
-  components/       Shared controls such as buttons, dropdowns, sliders, spinners
-  pipes/            Shared pipes
-  validators/       Shared validators
 
 projects/admin/src/app
   app.routes.ts     Standalone admin app routes
@@ -339,7 +340,7 @@ npx playwright install chromium
 
 1. Add or update the feature service in `projects/storefront/src/app/features/**/services/`.
 2. Use `/api/...` as the base path. The site prefix interceptor will add the active site when needed.
-3. Add model types under `projects/storefront/src/app/core/models/` if the payload is shared.
+3. Add model types under `libs/core/models/` if the payload is shared.
 4. Add focused unit tests for service or store behavior, and extend e2e mocks when the flow is user-facing.
 
 ### Add a New Feature Route

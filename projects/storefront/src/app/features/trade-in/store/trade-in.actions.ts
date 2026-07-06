@@ -10,7 +10,7 @@ import {
   UpdateTradeInStepOneRequest,
   UpdateTradeInStepThreeRequest,
   UpdateTradeInStepTwoRequest,
-} from 'src/app/core/models/trade-in.model';
+} from 'libs/core/models/trade-in.model';
 
 export const TradeInActions = createActionGroup({
   source: 'Trade In',

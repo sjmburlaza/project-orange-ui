@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { firstValueFrom, of } from 'rxjs';
 
-import { Product } from 'src/app/core/models/product.model';
+import { Product } from 'libs/core/models/product.model';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
 import { ProductListComponent } from './product-list.component';
 import providers from 'src/test-providers';

@@ -7,16 +7,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { emailValidator } from 'src/app/shared/validators/email.validator';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { emailValidator } from 'libs/shared/validators/email.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
-import { SiteService } from 'src/app/core/services/site.services';
+import { SiteService } from 'libs/core/services/site.services';
 import {
   PASSWORD_NUMBER_PATTERN,
   PASSWORD_SPECIAL_CHARACTER_PATTERN,
   PASSWORD_UPPERCASE_PATTERN,
-} from 'src/app/shared/constants/regex.constants';
+} from 'libs/shared/constants/regex.constants';
 
 @Component({
   selector: 'app-register',

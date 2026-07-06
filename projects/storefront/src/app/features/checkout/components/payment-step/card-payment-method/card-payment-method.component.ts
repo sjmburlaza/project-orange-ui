@@ -18,15 +18,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PaymentStepValue } from 'src/app/core/models/payment.model';
-import { CardExpiryFormatDirective } from 'src/app/shared/directives/card-expiry-format.directive';
-import { CardNumberSpacingDirective } from 'src/app/shared/directives/card-number-spacing.directive';
+import { PaymentStepValue } from 'libs/core/models/payment.model';
+import { CardExpiryFormatDirective } from 'libs/shared/directives/card-expiry-format.directive';
+import { CardNumberSpacingDirective } from 'libs/shared/directives/card-number-spacing.directive';
 import {
   CARD_EXPIRY_DATE_PATTERN,
   CARD_NUMBER_PATTERN,
   CARD_SECURITY_CODE_PATTERN,
   NON_DIGIT_PATTERN,
-} from 'src/app/shared/constants/regex.constants';
+} from 'libs/shared/constants/regex.constants';
 import {
   CardPaymentFormGroup,
   PaymentMethodFormComponent,

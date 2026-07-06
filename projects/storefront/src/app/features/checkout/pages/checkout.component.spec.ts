@@ -4,16 +4,16 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { AuthSession } from 'src/app/core/auth/auth.models';
-import { AuthStore } from 'src/app/core/auth/auth.store';
-import { Cart } from 'src/app/core/models/cart.model';
-import { CheckoutFormConfig } from 'src/app/core/models/checkout.model';
+import { AuthSession } from 'libs/core/auth/auth.models';
+import { AuthStore } from 'libs/core/auth/auth.store';
+import { Cart } from 'libs/core/models/cart.model';
+import { CheckoutFormConfig } from 'libs/core/models/checkout.model';
 import {
   PaymentConfirmation,
   PaymentIntent,
-} from 'src/app/core/models/payment.model';
-import { AnalyticsService } from 'src/app/core/services/analytics.service';
-import { SiteService } from 'src/app/core/services/site.services';
+} from 'libs/core/models/payment.model';
+import { AnalyticsService } from 'libs/core/services/analytics.service';
+import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { CardPaymentMethodComponent } from '../components/payment-step/card-payment-method/card-payment-method.component';

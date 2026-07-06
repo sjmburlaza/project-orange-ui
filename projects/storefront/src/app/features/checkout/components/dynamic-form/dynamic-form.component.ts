@@ -23,7 +23,7 @@ import {
   DynamicField,
   DynamicFormObject,
   DynamicFormValue,
-} from 'src/app/core/models/checkout.model';
+} from 'libs/core/models/checkout.model';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { ValidatorMapperService } from '../../services/validator-mapper.service';
 import { AsyncValidatorMapperService } from '../../services/async-validator-mapper.service';

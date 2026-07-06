@@ -1,11 +1,11 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { CartUiMessage } from 'src/app/core/models/cart-message.model';
+import { CartUiMessage } from 'libs/core/models/cart-message.model';
 import {
   AddToCartRequest,
   Cart,
   UpdateCartItemAddonRequest,
-} from 'src/app/core/models/cart.model';
-import { ProductConfigure } from 'src/app/core/models/product.model';
+} from 'libs/core/models/cart.model';
+import { ProductConfigure } from 'libs/core/models/product.model';
 
 export const CartActions = createActionGroup({
   source: 'Cart',

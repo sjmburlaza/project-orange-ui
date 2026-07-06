@@ -1,4 +1,4 @@
-import { Addon } from 'src/app/core/models/cart.model';
+import { Addon } from 'libs/core/models/cart.model';
 
 export interface AddonDialogData {
   productId: number;

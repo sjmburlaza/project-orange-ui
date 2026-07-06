@@ -4,8 +4,8 @@ import type { ComponentFixture } from '@angular/core/testing';
 import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
-} from 'src/app/core/models/analytics.model';
-import { WHITESPACE_PATTERN } from 'src/app/shared/constants/regex.constants';
+} from 'libs/core/models/analytics.model';
+import { WHITESPACE_PATTERN } from 'libs/shared/constants/regex.constants';
 
 export async function renderTab<T>(
   component: Type<T>,

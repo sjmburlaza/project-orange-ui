@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaymentStepValue } from 'src/app/core/models/payment.model';
+import { PaymentStepValue } from 'libs/core/models/payment.model';
 
 export interface PaymentShellFormControls {
   paymentMethod: FormControl<string>;

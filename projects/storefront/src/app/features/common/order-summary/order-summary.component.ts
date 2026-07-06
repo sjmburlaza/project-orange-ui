@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CartFacade } from '../../cart/store/cart.facade';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
-import { SiteService } from 'src/app/core/services/site.services';
+import { SiteService } from 'libs/core/services/site.services';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

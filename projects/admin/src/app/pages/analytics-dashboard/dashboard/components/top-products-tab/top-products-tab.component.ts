@@ -1,6 +1,6 @@
 import { CurrencyPipe, DecimalPipe, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { AnalyticsDashboard } from 'src/app/core/models/analytics.model';
+import { AnalyticsDashboard } from 'libs/core/models/analytics.model';
 import { barWidth } from '../dashboard-tab.utils';
 
 @Component({
