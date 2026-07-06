@@ -1,16 +1,16 @@
-import type { Category } from '../../projects/storefront/src/app/core/models/category.model';
+import type { Category } from '../../libs/core/models/category.model';
 import type {
   Cart,
   CartItem,
   Voucher,
-} from '../../projects/storefront/src/app/core/models/cart.model';
-import type { CheckoutFormConfig } from '../../projects/storefront/src/app/core/models/checkout.model';
+} from '../../libs/core/models/cart.model';
+import type { CheckoutFormConfig } from '../../libs/core/models/checkout.model';
 import type {
   Product,
   ProductConfigure,
   ProductVariant,
   StockStatus,
-} from '../../projects/storefront/src/app/core/models/product.model';
+} from '../../libs/core/models/product.model';
 import type { FulfillmentOption } from '../../projects/storefront/src/app/features/checkout/services/fulfillment.service';
 
 export const categories: Category[] = [

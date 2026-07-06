@@ -41,9 +41,9 @@ Primary implementation files:
 | Shared tab math | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.utils.ts` |
 | Shared chart options | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-chart.utils.ts` |
 | Reusable chart wrappers | `projects/admin/src/app/pages/analytics-dashboard/charts/` |
-| Analytics models | `projects/storefront/src/app/core/models/analytics.model.ts` |
-| Analytics client service | `projects/storefront/src/app/core/services/analytics.service.ts` |
-| Empty dashboard helpers | `projects/storefront/src/app/core/services/analytics.helpers.ts` |
+| Analytics models | `libs/core/models/analytics.model.ts` |
+| Analytics client service | `libs/core/services/analytics.service.ts` |
+| Empty dashboard helpers | `libs/core/services/analytics.helpers.ts` |
 | Local mock API | `mock-api/server.cjs` |
 | Tab unit test fixtures | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.spec-fixtures.ts` |
 | E2E coverage | `e2e/app.spec.ts` |

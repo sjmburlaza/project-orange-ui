@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
-} from 'src/app/core/models/analytics.model';
-import { InfoTooltipComponent } from 'src/app/shared/components/info-tooltip/info-tooltip.component';
+} from 'libs/core/models/analytics.model';
+import { InfoTooltipComponent } from 'libs/shared/components/info-tooltip/info-tooltip.component';
 import { barWidth } from '../dashboard-tab.utils';
 
 @Component({
