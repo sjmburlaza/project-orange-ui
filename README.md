@@ -8,11 +8,11 @@ Project Orange UI is an Angular storefront and admin workspace for a multi-count
 
 Configure product to checkout flow
 
-![Configure product to checkout flow](src/assets/demos/checkout-flow-v2.gif)
+![Configure product to checkout flow](projects/storefront/src/assets/demos/checkout-flow-v2.gif)
 
 Analytics Dashboard
 
-![Analytics Dashboard](src/assets/demos/analytics-dashboard.gif)
+![Analytics Dashboard](projects/storefront/src/assets/demos/analytics-dashboard.gif)
 
 ## Tech Stack
 
@@ -73,11 +73,11 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 | Command                               | Description                                                                  |
 | ------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm start`                           | Runs `ng serve` with `proxy.conf.cjs`.                                       |
+| `npm start`                           | Runs `ng serve project-orange-v2` with `proxy.conf.cjs`.                    |
 | `npm run mock:api`                    | Runs the local json-server analytics mock on port `5176`.                    |
 | `npm run start:e2e`                   | Runs the Angular dev server with the e2e build configuration.                |
 | `npm run build`                       | Builds the default storefront app for production into `dist/`.               |
-| `npm run build -- admin`              | Builds the standalone admin app into `dist/admin`.                           |
+| `npm run ng -- build admin`           | Builds the standalone admin app into `dist/admin`.                           |
 | `npm run watch`                       | Builds in watch mode with the development configuration.                     |
 | `npm test`                            | Runs unit tests.                                                             |
 | `npm run test:watch`                  | Runs unit tests in watch mode.                                               |
@@ -207,7 +207,7 @@ The default mock user is an admin user with broad product, inventory, order, and
 
 ## State Management
 
-Global feature state is registered in `src/app/app.config.ts`:
+Global feature state is registered in `projects/storefront/src/app/app.config.ts`:
 
 - `productFeature` and `ProductEffects` for catalog loading and filters
 - `cartFeature` and `CartEffects` for cart, vouchers, shipping, and add-ons
@@ -217,7 +217,7 @@ Feature facades sit beside their stores and are the preferred integration point 
 
 ## Localization and Sites
 
-Translations live in `src/assets/i18n/<language>/`. The current resources are:
+Translations live in `projects/storefront/src/assets/i18n/<language>/`. The current resources are:
 
 ```text
 common.json
@@ -255,7 +255,7 @@ Feature flags currently affect add-ons such as insurance, trade-in, and vouchers
 ## Project Structure
 
 ```text
-src/app/core
+projects/storefront/src/app/core
   auth/             Session models, auth service, auth store, roles, permissions
   guards/           Auth, role, and site route guards
   i18n/             Site types and multi-file translation loader
@@ -263,7 +263,7 @@ src/app/core
   models/           Shared API/domain models
   services/         Site, wishlist, storage, country detection, and postal code services
 
-src/app/features
+projects/storefront/src/app/features
   admin/            Site-scoped analytics dashboard plus reusable chart wrappers
   auth/             Login, register, forgot password, reset password
   cart/             Cart page, cart store, cart API, cart item add-ons
@@ -276,13 +276,13 @@ src/app/features
   profile/          Account settings and wishlist
   trade-in/         Trade-in store and API
 
-src/app/layout
+projects/storefront/src/app/layout
   auth-layout/      Layout for auth pages
   checkout-layout/  Layout for cart and checkout
   main-layout/      Storefront shell
   header/ footer/ sidebar/
 
-src/app/shared
+projects/storefront/src/app/shared
   components/       Shared controls such as buttons, dropdowns, sliders, spinners
   pipes/            Shared pipes
   validators/       Shared validators
@@ -324,27 +324,27 @@ npx playwright install chromium
 
 ### Add a New Translation Key
 
-1. Add the key to each language resource under `src/assets/i18n/<language>/`.
+1. Add the key to each language resource under `projects/storefront/src/assets/i18n/<language>/`.
 2. Keep keys in the resource that matches the feature area, such as `products.json` or `cart.json`.
 3. Use ngx-translate in the component template or TypeScript code.
 
 ### Add a New Site
 
 1. Add the site in the backend response for `/api/sites`.
-2. Make sure the site has a matching language folder in `src/assets/i18n/` for its default language.
+2. Make sure the site has a matching language folder in `projects/storefront/src/assets/i18n/` for its default language.
 3. Confirm the site `features` map enables the expected add-ons and checkout behavior.
 4. Visit `/<site-code>/products` locally and verify API calls are prefixed correctly.
 
 ### Add a New API Call
 
-1. Add or update the feature service in `src/app/features/**/services/`.
+1. Add or update the feature service in `projects/storefront/src/app/features/**/services/`.
 2. Use `/api/...` as the base path. The site prefix interceptor will add the active site when needed.
-3. Add model types under `src/app/core/models/` if the payload is shared.
+3. Add model types under `projects/storefront/src/app/core/models/` if the payload is shared.
 4. Add focused unit tests for service or store behavior, and extend e2e mocks when the flow is user-facing.
 
 ### Add a New Feature Route
 
-1. Add the lazy route to the feature route file or `src/app/app.routes.ts`.
+1. Add the lazy route to the feature route file or `projects/storefront/src/app/app.routes.ts`.
 2. Choose the correct layout: main, checkout, auth, or standalone.
 3. Add guards and role metadata when the route is protected.
 4. Add route coverage to Playwright if the flow is part of the customer or admin journey.

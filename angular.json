@@ -11,38 +11,38 @@
           "type": "component"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/storefront",
+      "sourceRoot": "projects/storefront/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/main.ts",
+            "browser": "projects/storefront/src/main.ts",
             "polyfills": ["zone.js"],
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "projects/storefront/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/storefront/public"
               },
-              "src/assets"
+              "projects/storefront/src/assets"
             ],
             "styles": [
-              "src/styles.scss",
+              "projects/storefront/src/styles.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles"]
+              "includePaths": ["projects/storefront/src/styles"]
             },
-            "server": "src/main.server.ts",
+            "server": "projects/storefront/src/main.server.ts",
             "outputMode": "server",
             "security": {
               "allowedHosts": []
             },
             "ssr": {
-              "entry": "src/server.ts"
+              "entry": "projects/storefront/src/server.ts"
             }
           },
           "configurations": {
@@ -62,16 +62,16 @@
               "outputHashing": "all",
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/storefront/src/environments/environment.ts",
+                  "with": "projects/storefront/src/environments/environment.prod.ts"
                 }
               ]
             },
             "staging": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "replace": "projects/storefront/src/environments/environment.ts",
+                  "with": "projects/storefront/src/environments/environment.staging.ts"
                 }
               ]
             },
@@ -116,15 +116,18 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "buildTarget": "project-orange-v2:build:development",
-            "tsConfig": "tsconfig.spec.json",
-            "providersFile": "src/test-providers.ts",
+            "tsConfig": "projects/storefront/tsconfig.spec.json",
+            "providersFile": "projects/storefront/src/test-providers.ts",
             "runner": "vitest"
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "projects/storefront/src/**/*.ts",
+              "projects/storefront/src/**/*.html"
+            ]
           }
         }
       }
@@ -160,7 +163,7 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles"]
+              "includePaths": ["projects/storefront/src/styles"]
             }
           },
           "configurations": {

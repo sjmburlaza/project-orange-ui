@@ -41,9 +41,9 @@ Primary implementation files:
 | Shared tab math | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.utils.ts` |
 | Shared chart options | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-chart.utils.ts` |
 | Reusable chart wrappers | `projects/admin/src/app/pages/analytics-dashboard/charts/` |
-| Analytics models | `src/app/core/models/analytics.model.ts` |
-| Analytics client service | `src/app/core/services/analytics.service.ts` |
-| Empty dashboard helpers | `src/app/core/services/analytics.helpers.ts` |
+| Analytics models | `projects/storefront/src/app/core/models/analytics.model.ts` |
+| Analytics client service | `projects/storefront/src/app/core/services/analytics.service.ts` |
+| Empty dashboard helpers | `projects/storefront/src/app/core/services/analytics.helpers.ts` |
 | Local mock API | `mock-api/server.cjs` |
 | Tab unit test fixtures | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.spec-fixtures.ts` |
 | E2E coverage | `e2e/app.spec.ts` |
@@ -494,8 +494,8 @@ npm run test:ci
 Useful compiler-only checks:
 
 ```bash
-npx tsc -p tsconfig.spec.json --noEmit
-npx ngc -p tsconfig.spec.json --noEmit
+npx tsc -p projects/storefront/tsconfig.spec.json --noEmit
+npx ngc -p projects/storefront/tsconfig.spec.json --noEmit
 ```
 
 ### End-to-end tests
