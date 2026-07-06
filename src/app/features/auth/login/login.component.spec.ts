@@ -57,16 +57,14 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('redirects admin users to the admin dashboard after login', () => {
+  it('keeps admin users in the storefront after login', () => {
     const session = createSession([ROLES.ADMIN]);
     authService.login.mockReturnValue(of(session));
 
     submitLoginForm();
 
     expect(authStore.setSession).toHaveBeenCalledWith(session);
-    expect(router.navigateByUrl).toHaveBeenCalledWith(
-      '/ph/admin/analytics-dashboard',
-    );
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/ph/products');
   });
 
   it('redirects non-admin users to the cart after login', () => {

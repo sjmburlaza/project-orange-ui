@@ -30,10 +30,6 @@ export const serverRoutes: ServerRoute[] = [
 
   // authenticated/private
   {
-    path: ':site/admin/**',
-    renderMode: RenderMode.Client,
-  },
-  {
     path: ':site/cart/**',
     renderMode: RenderMode.Client,
   },

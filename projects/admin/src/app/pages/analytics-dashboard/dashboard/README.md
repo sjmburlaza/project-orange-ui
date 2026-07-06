@@ -7,19 +7,16 @@ This document describes the Project Orange admin analytics dashboard: what it me
 The analytics dashboard is the admin view at:
 
 ```text
-/:site/admin/dashboard
+/analytics-dashboard
 ```
 
-Examples:
+Local example:
 
 ```text
-/ph/admin/dashboard
-/fr/admin/dashboard
-/cn/admin/dashboard
-/jp/admin/dashboard
+http://localhost:4200/analytics-dashboard
 ```
 
-The route is protected by both `AuthGuard` and `RoleGuard`. A user must have an authenticated session and the `admin` role to open it. Unauthenticated users are redirected to the site-scoped login page. Authenticated users without the required role are redirected to the site storefront.
+The dashboard is owned by the standalone admin app under `projects/admin`. Storefront pages continue to record analytics events through the shared analytics service.
 
 The dashboard summarizes storefront behavior using event-style analytics. It is designed to answer:
 
@@ -37,18 +34,18 @@ Primary implementation files:
 
 | Area | File |
 | --- | --- |
-| Dashboard route | `src/app/features/admin/admin.routes.ts` |
-| Dashboard container | `src/app/features/admin/analytics-dashboard/dashboard.component.ts` |
-| Dashboard layout | `src/app/features/admin/analytics-dashboard/dashboard.component.html` |
-| Dashboard styling | `src/app/features/admin/analytics-dashboard/dashboard.component.scss` |
-| Shared tab math | `src/app/features/admin/analytics-dashboard/components/dashboard-tab.utils.ts` |
-| Shared chart options | `src/app/features/admin/analytics-dashboard/components/dashboard-chart.utils.ts` |
-| Reusable chart wrappers | `src/app/features/admin/charts/` |
+| Dashboard route | `projects/admin/src/app/app.routes.ts` |
+| Dashboard container | `projects/admin/src/app/pages/analytics-dashboard/dashboard/dashboard.component.ts` |
+| Dashboard layout | `projects/admin/src/app/pages/analytics-dashboard/dashboard/dashboard.component.html` |
+| Dashboard styling | `projects/admin/src/app/pages/analytics-dashboard/dashboard/dashboard.component.scss` |
+| Shared tab math | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.utils.ts` |
+| Shared chart options | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-chart.utils.ts` |
+| Reusable chart wrappers | `projects/admin/src/app/pages/analytics-dashboard/charts/` |
 | Analytics models | `src/app/core/models/analytics.model.ts` |
 | Analytics client service | `src/app/core/services/analytics.service.ts` |
 | Empty dashboard helpers | `src/app/core/services/analytics.helpers.ts` |
 | Local mock API | `mock-api/server.cjs` |
-| Tab unit test fixtures | `src/app/features/admin/analytics-dashboard/components/dashboard-tab.spec-fixtures.ts` |
+| Tab unit test fixtures | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.spec-fixtures.ts` |
 | E2E coverage | `e2e/app.spec.ts` |
 
 Dashboard tab components:
@@ -77,21 +74,15 @@ flowchart TD
   H --> J["Dashboard tab components"]
 ```
 
-The client records events while users move through storefront flows. The dashboard loads an aggregated `AnalyticsDashboard` object for the selected reporting period.
+The storefront client records events while users move through shopping flows. The admin dashboard loads an aggregated `AnalyticsDashboard` object for the selected reporting period.
 
-The app uses the `ApiSitePrefixInterceptor`, so site-scoped requests are automatically prefixed with the active site. For example, from `/ph/admin/dashboard`:
+In the standalone admin app, the dashboard requests:
 
 ```text
 /api/admin/analytics/dashboard
 ```
 
-is sent as:
-
-```text
-/api/ph/admin/analytics/dashboard
-```
-
-The analytics mock API supports both scoped and unscoped forms.
+The analytics mock API still supports both scoped and unscoped forms.
 
 ## Analytics Events
 
@@ -461,10 +452,10 @@ Events without a site are treated as available to all sites in the mock. In prod
 
 ## Running Locally
 
-Start the Angular app:
+Start the standalone admin app:
 
 ```bash
-npm start
+npm run ng -- serve admin
 ```
 
 For dashboard data, start the mock API in another terminal:
@@ -473,22 +464,11 @@ For dashboard data, start the mock API in another terminal:
 npm run mock:api
 ```
 
-Then sign in as an admin user or enable mock auth for local work. The admin route is:
+Then open the admin route:
 
 ```text
-http://localhost:4200/ph/admin/dashboard
+http://localhost:4200/analytics-dashboard
 ```
-
-Mock auth is controlled by the active environment file:
-
-```ts
-export const environment = {
-  production: false,
-  useMockAuth: true,
-};
-```
-
-When mock auth is enabled, the `MockAuthInterceptor` provides an admin session with broad admin permissions.
 
 ## Testing
 
@@ -502,7 +482,7 @@ The dashboard has two levels of unit coverage:
 The tab specs share fixtures from:
 
 ```text
-src/app/features/admin/analytics-dashboard/components/dashboard-tab.spec-fixtures.ts
+projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.spec-fixtures.ts
 ```
 
 Run unit tests with:
@@ -557,7 +537,7 @@ Use this checklist when adding a dashboard metric:
 
 Use this checklist when adding a dashboard tab:
 
-1. Create a standalone component under `src/app/features/admin/analytics-dashboard/components/<tab-name>-tab/`.
+1. Create a standalone component under `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/<tab-name>-tab/`.
 2. Add the tab component to `AnalyticsDashboardComponent.imports`.
 3. Add a `<mat-tab>` entry in `dashboard.component.html`.
 4. Pass only the inputs the tab needs.

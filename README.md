@@ -1,6 +1,6 @@
 # Project Orange UI
 
-Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows with localized payment methods, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, a site-scoped admin analytics dashboard, and a standalone admin app for order and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
+Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows with localized payment methods, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, and a standalone admin app for analytics, order management, and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
 
 ## Demos
 
@@ -55,7 +55,7 @@ http://localhost:4200/cn/products
 http://localhost:4200/jp/products
 ```
 
-Run the standalone admin app when working on order or product management:
+Run the standalone admin app when working on analytics, order management, or product management:
 
 ```bash
 npm run ng -- serve admin
@@ -64,6 +64,7 @@ npm run ng -- serve admin
 The admin app runs from `projects/admin/src/app` and currently owns:
 
 ```text
+/analytics-dashboard
 /manage-orders
 /manage-products
 ```
@@ -92,7 +93,7 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 The root route (`/`) loads the country entry screen. It uses `/api/sites` and `/api/geo/country` to list supported sites and suggest a country when possible. The selected site is saved in local storage under `orange.sitePreference`.
 
-For detailed analytics dashboard documentation, see [Dashboard Analytics](src/app/features/admin/analytics-dashboard/README.md). The site-scoped dashboard now lives under `src/app/features/admin/analytics-dashboard`, its tab components live in `analytics-dashboard/components`, and reusable chart wrappers live under `src/app/features/admin/charts`.
+For detailed analytics dashboard documentation, see [Dashboard Analytics](projects/admin/src/app/pages/analytics-dashboard/dashboard/README.md). The dashboard now lives in the standalone admin app under `projects/admin/src/app/pages/analytics-dashboard`.
 
 Most app routes are scoped by site:
 
@@ -112,16 +113,16 @@ Most app routes are scoped by site:
 | `/:site/orders/confirmation/:orderId`  | Order confirmation page after checkout.                                                          |
 | `/:site/profile/account-settings`      | Customer account settings.                                                                       |
 | `/:site/profile/wishlist`              | Authenticated customer wishlist with saved products.                                             |
-| `/:site/admin/analytics-dashboard`     | Admin analytics dashboard. Requires an authenticated admin session.                              |
 
 Unsupported site codes are redirected back to the country selector.
 
-The standalone admin app owns management pages outside the site-scoped storefront route tree:
+The standalone admin app owns admin pages outside the site-scoped storefront route tree:
 
-| Route              | Purpose                   |
-| ------------------ | ------------------------- |
-| `/manage-orders`   | Admin order management.   |
-| `/manage-products` | Admin product management. |
+| Route                  | Purpose                    |
+| ---------------------- | -------------------------- |
+| `/analytics-dashboard` | Admin analytics dashboard. |
+| `/manage-orders`       | Admin order management.    |
+| `/manage-products`     | Admin product management.  |
 
 ## API Behavior
 

@@ -1,7 +1,14 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'manage-orders', pathMatch: 'full' },
+  { path: '', redirectTo: 'analytics-dashboard', pathMatch: 'full' },
+  {
+    path: 'analytics-dashboard',
+    loadComponent: () =>
+      import(
+        './pages/analytics-dashboard/dashboard/dashboard.component'
+      ).then((m) => m.AnalyticsDashboardComponent),
+  },
   {
     path: 'manage-orders',
     loadComponent: () =>

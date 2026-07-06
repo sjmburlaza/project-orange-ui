@@ -88,7 +88,7 @@ export class LoginComponent {
 
   private getPostLoginUrl(response: AuthSession): string {
     if (response.user.roles.includes(ROLES.ADMIN)) {
-      return `/${this.site}/admin/analytics-dashboard`;
+      return `/${this.site}/products`;
     }
 
     return this.getSafeReturnUrl() ?? `/${this.site}/cart`;
