@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-import { ROLES } from 'src/app/core/auth/auth.constants';
 import { AuthGuard } from './core/guards/auth.guard';
-import { RoleGuard } from './core/guards/role.guard';
 // import { HomeComponent } from 'src/app/features/home/home.component';
 import { MainLayoutComponent } from 'src/app/layout/main-layout/main-layout.component';
 import { AuthLayoutComponent } from 'src/app/layout/auth-layout/auth-layout.component';
@@ -25,15 +23,6 @@ export const routes: Routes = [
             path: '',
             pathMatch: 'full',
             redirectTo: 'products',
-          },
-          {
-            path: 'admin',
-            canActivate: [AuthGuard, RoleGuard],
-            data: { roles: [ROLES.ADMIN] },
-            loadChildren: () =>
-              import('./features/admin/admin.routes').then(
-                (m) => m.ADMIN_ROUTES,
-              ),
           },
           {
             path: 'products',

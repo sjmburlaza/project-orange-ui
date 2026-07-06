@@ -11,6 +11,21 @@ import {
   AnalyticsDashboardPeriod,
   AnalyticsMetricCard,
 } from 'src/app/core/models/analytics.model';
+import {
+  ArcElement,
+  BarController,
+  BarElement,
+  CategoryScale,
+  Filler,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PieController,
+  PointElement,
+  Tooltip,
+} from 'chart.js';
+import { provideCharts } from 'ng2-charts';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
 import { SiteService } from 'src/app/core/services/site.services';
 import {
@@ -41,6 +56,24 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    provideCharts({
+      registerables: [
+        ArcElement,
+        BarController,
+        BarElement,
+        CategoryScale,
+        Filler,
+        Legend,
+        LinearScale,
+        LineController,
+        LineElement,
+        PieController,
+        PointElement,
+        Tooltip,
+      ],
+    }),
+  ],
 })
 export class AnalyticsDashboardComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);

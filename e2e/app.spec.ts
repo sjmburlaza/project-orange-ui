@@ -26,6 +26,8 @@ import {
   save10Voucher,
 } from './fixtures/catalog';
 
+const adminBaseUrl =
+  process.env['E2E_ADMIN_BASE_URL'] ?? 'http://localhost:4301';
 const sitePreferenceKey = 'orange.sitePreference';
 const siteConfigs: SiteConfig[] = [
   {
@@ -459,14 +461,16 @@ test.describe('admin dashboard', () => {
   test('loads admin analytics and refreshes the selected period', async ({
     page,
   }) => {
-    await page.goto('/ph/admin/analytics-dashboard');
+    await page.goto(`${adminBaseUrl}/analytics-dashboard`);
 
     await expect(
       page.getByRole('heading', { name: 'Analytics Dashboard' }),
     ).toBeVisible();
     const metrics = page.getByLabel('Analytics metrics');
 
-    await expect(page.getByText('Admin Analytics')).toBeVisible();
+    await expect(
+      page.getByText('Admin Analytics', { exact: true }),
+    ).toBeVisible();
     await expect(metrics.getByText('1,200')).toBeVisible();
     await expect(metrics.getByText('3,400')).toBeVisible();
     await expect(metrics.getByText('84 completed orders')).toBeVisible();

@@ -4,6 +4,9 @@ const isCI = !!process.env['CI'];
 const e2eHost = 'localhost';
 const e2ePort = Number(process.env['E2E_PORT'] ?? 4300);
 const e2eBaseUrl = `http://${e2eHost}:${e2ePort}`;
+const e2eAdminPort = Number(process.env['E2E_ADMIN_PORT'] ?? 4301);
+const e2eAdminBaseUrl =
+  process.env['E2E_ADMIN_BASE_URL'] ?? `http://${e2eHost}:${e2eAdminPort}`;
 
 export default defineConfig({
   testDir: './e2e',
@@ -18,13 +21,21 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  webServer: {
-    command:
-      `npm run start:e2e -- --host ${e2eHost} --port ${e2ePort}`,
-    url: e2eBaseUrl,
-    reuseExistingServer: !isCI,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command: `npm run start:e2e -- --host ${e2eHost} --port ${e2ePort}`,
+      url: e2eBaseUrl,
+      reuseExistingServer: !isCI,
+      timeout: 120_000,
+    },
+    {
+      command:
+        `npm run ng -- serve admin --host ${e2eHost} --port ${e2eAdminPort}`,
+      url: e2eAdminBaseUrl,
+      reuseExistingServer: !isCI,
+      timeout: 120_000,
+    },
+  ],
   projects: [
     {
       name: 'chromium',
