@@ -1,20 +1,21 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
-import { PERMISSIONS, ROLES } from '../src/app/core/auth/auth.constants';
-import type { AuthSession } from '../src/app/core/auth/auth.models';
-import type { AnalyticsDashboard } from '../src/app/core/models/analytics.model';
+import { PERMISSIONS, ROLES } from '../projects/storefront/src/app/core/auth/auth.constants';
+import type { AuthSession } from '../projects/storefront/src/app/core/auth/auth.models';
+import type { AnalyticsDashboard } from '../projects/storefront/src/app/core/models/analytics.model';
 import type {
   AddToCartRequest,
   ApplyVoucherRequest,
   Cart,
+  CartItem,
   UpdateQuantityRequest,
-} from '../src/app/core/models/cart.model';
+} from '../projects/storefront/src/app/core/models/cart.model';
 import type {
   OrderConfirmation,
   PaymentStatus,
   PlaceOrderRequest,
-} from '../src/app/core/models/order.model';
-import type { SiteConfig } from '../src/app/core/i18n/sites';
-import type { ProductSort } from '../src/app/core/models/product.model';
+} from '../projects/storefront/src/app/core/models/order.model';
+import type { SiteConfig } from '../projects/storefront/src/app/core/i18n/sites';
+import type { ProductSort } from '../projects/storefront/src/app/core/models/product.model';
 import {
   categories,
   checkoutForm,
@@ -1326,6 +1327,7 @@ function createOrderConfirmation(
       productId: item.productId,
       productName: item.productName,
       price: item.price,
+      totalPrice: item.totalPrice,
       quantity: item.quantity,
       imageUrl: item.imageUrl,
       categoryName: item.categoryName,

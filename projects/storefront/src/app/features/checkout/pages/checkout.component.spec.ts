@@ -21,7 +21,7 @@ import { PaymentStepComponent } from '../components/payment-step/payment-step.co
 import { CheckoutApiService } from '../services/checkout-api.service';
 import { CheckoutStorageService } from '../services/checkout-storage.service';
 import { PaymentApiService } from '../services/payment-api.service';
-import chinaCheckoutFormFixture from '../../../../../mock-api/checkout-forms/cn.json';
+import chinaCheckoutFormFixture from '../../../../../../../mock-api/checkout-forms/cn.json';
 
 import { CheckoutComponent } from './checkout.component';
 

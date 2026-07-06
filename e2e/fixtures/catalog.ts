@@ -1,17 +1,17 @@
-import type { Category } from '../../src/app/core/models/category.model';
+import type { Category } from '../../projects/storefront/src/app/core/models/category.model';
 import type {
   Cart,
   CartItem,
   Voucher,
-} from '../../src/app/core/models/cart.model';
-import type { CheckoutFormConfig } from '../../src/app/core/models/checkout.model';
+} from '../../projects/storefront/src/app/core/models/cart.model';
+import type { CheckoutFormConfig } from '../../projects/storefront/src/app/core/models/checkout.model';
 import type {
   Product,
   ProductConfigure,
   ProductVariant,
   StockStatus,
-} from '../../src/app/core/models/product.model';
-import type { FulfillmentOption } from '../../src/app/features/checkout/services/fulfillment.service';
+} from '../../projects/storefront/src/app/core/models/product.model';
+import type { FulfillmentOption } from '../../projects/storefront/src/app/features/checkout/services/fulfillment.service';
 
 export const categories: Category[] = [
   { id: 1, name: 'Phones' },
@@ -294,10 +294,6 @@ function createProductConfigure(product: Product): ProductConfigure {
     return {
       ...product,
       category: { id: product.categoryId, name: product.categoryName ?? '' },
-      itemSpecs: [
-        { name: 'Display', value: '6.1-inch' },
-        { name: 'Chip', value: 'A16 Bionic' },
-      ],
       features: [
         'iPhone 15 with unlocked connectivity',
         'All-day battery for everyday use',
@@ -313,7 +309,6 @@ function createProductConfigure(product: Product): ProductConfigure {
   return {
     ...product,
     category: { id: product.categoryId, name: product.categoryName ?? '' },
-    itemSpecs: [],
     features: [],
     whatsInTheBox: [],
     optionGroups: [],

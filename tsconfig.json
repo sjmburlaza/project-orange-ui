@@ -5,7 +5,7 @@
   "compilerOptions": {
     "paths": {
       "src/*": [
-        "./src/*"
+        "./projects/storefront/src/*"
       ]
     },
     "strict": true,
@@ -31,10 +31,10 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.app.json"
+      "path": "./projects/storefront/tsconfig.app.json"
     },
     {
-      "path": "./tsconfig.spec.json"
+      "path": "./projects/storefront/tsconfig.spec.json"
     },
     {
       "path": "./tsconfig.e2e.json"
