@@ -1,0 +1,114 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use "@angular/material" as mat;
+@use "tokens/tokens" as *;
+@use "utilities/spacing-utils";
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$orange-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  @include mat.theme-overrides(
+    (
+      primary: token(color, primary),
+      on-primary: token(color, text-inverse),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-color: token(color, primary),
+      filled-label-text-color: token(color, text-inverse),
+      filled-state-layer-color: token(color, text-inverse),
+      filled-ripple-color: color-mix(
+          in srgb,
+          token(color, text-inverse) 18%,
+          transparent
+        ),
+      outlined-label-text-color: token(color, primary),
+      outlined-outline-color: token(color, primary),
+      outlined-state-layer-color: token(color, primary),
+      text-label-text-color: token(color, primary),
+      text-state-layer-color: token(color, primary),
+      protected-label-text-color: token(color, primary),
+      protected-state-layer-color: token(color, primary),
+    )
+  );
+
+  @include mat.badge-overrides(
+    (
+      background-color: token(color, primary),
+      text-color: token(color, text-inverse),
+    )
+  );
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mdc-slider__track--active {
+  background-color: gray;
+}
+
+.mat-step-text-label {
+  height: 32px;
+  padding-top: 6px;
+}
+
+.cdk-global-overlay-wrapper:has(.trade-in-dialog-panel) {
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.trade-in-dialog-panel {
+  .mat-mdc-dialog-surface {
+    max-height: none;
+    overflow: visible;
+  }
+}

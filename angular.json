@@ -34,7 +34,7 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/storefront/src/styles"]
+              "includePaths": ["libs/styles"]
             },
             "server": "projects/storefront/src/main.server.ts",
             "outputMode": "server",
@@ -168,7 +168,7 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/storefront/src/styles"]
+              "includePaths": ["libs/styles"]
             }
           },
           "configurations": {
