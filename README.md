@@ -8,11 +8,11 @@ Project Orange UI is an Angular storefront and admin workspace for a multi-count
 
 Configure product to checkout flow
 
-![Configure product to checkout flow](projects/storefront/src/assets/demos/checkout-flow-v2.gif)
+![Configure product to checkout flow](demos/checkout-flow-v2.gif)
 
 Analytics Dashboard
 
-![Analytics Dashboard](projects/storefront/src/assets/demos/analytics-dashboard.gif)
+![Analytics Dashboard](demos/analytics-dashboard.gif)
 
 ## Tech Stack
 
@@ -73,7 +73,7 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 | Command                               | Description                                                                  |
 | ------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm start`                           | Runs `ng serve project-orange-v2` with `proxy.conf.cjs`.                    |
+| `npm start`                           | Runs `ng serve project-orange-v2` with `proxy.conf.cjs`.                     |
 | `npm run mock:api`                    | Runs the local json-server analytics mock on port `5176`.                    |
 | `npm run start:e2e`                   | Runs the Angular dev server with the e2e build configuration.                |
 | `npm run build`                       | Builds the default storefront app for production into `dist/`.               |
