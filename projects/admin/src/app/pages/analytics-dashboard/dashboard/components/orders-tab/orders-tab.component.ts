@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
-} from 'libs/core/models/analytics.model';
-import { InfoTooltipComponent } from 'libs/shared/components/info-tooltip/info-tooltip.component';
+} from 'libs/models/analytics.model';
+import { InfoTooltipComponent } from 'libs/ui/info-tooltip/info-tooltip.component';
 
 @Component({
   selector: 'app-orders-tab',

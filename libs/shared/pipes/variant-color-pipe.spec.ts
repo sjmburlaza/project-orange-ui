@@ -1,4 +1,4 @@
-import { ProductOptionGroup } from 'libs/core/models/product.model';
+import { ProductOptionGroup } from 'libs/models/product.model';
 
 import { VariantColorPipe } from './variant-color-pipe';
 

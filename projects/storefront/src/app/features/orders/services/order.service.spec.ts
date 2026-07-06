@@ -7,7 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import {
   OrderConfirmation,
   PlaceOrderRequest,
-} from 'libs/core/models/order.model';
+} from 'libs/models/order.model';
 import { OrderService } from './order.service';
 
 describe('OrderService', () => {

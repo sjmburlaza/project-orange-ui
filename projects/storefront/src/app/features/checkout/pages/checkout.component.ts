@@ -30,7 +30,7 @@ import {
   CheckoutStep,
   DynamicField,
   DynamicFormObject,
-} from 'libs/core/models/checkout.model';
+} from 'libs/models/checkout.model';
 import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.component';
 import { ShippingStepComponent } from '../components/shipping-step/shipping-step.component';
 import { PaymentStepComponent } from '../components/payment-step/payment-step.component';
@@ -39,15 +39,15 @@ import { CartFacade } from '../../cart/store/cart.facade';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'libs/core/services/site.services';
 import { AnalyticsService } from 'libs/core/services/analytics.service';
-import { Cart } from 'libs/core/models/cart.model';
+import { Cart } from 'libs/models/cart.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthStore } from 'libs/core/auth/auth.store';
 import {
   PaymentConfirmation,
   PaymentIntent,
   PaymentStepValue,
-} from 'libs/core/models/payment.model';
-import { OrderConfirmation } from 'libs/core/models/order.model';
+} from 'libs/models/payment.model';
+import { OrderConfirmation } from 'libs/models/order.model';
 
 type CheckoutStepComponent =
   | DynamicFormComponent

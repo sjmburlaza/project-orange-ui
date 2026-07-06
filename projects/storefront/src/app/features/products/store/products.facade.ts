@@ -7,7 +7,7 @@ import {
   InsurancePlan,
   MobilePlan,
   ProductSort,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 
 import {
   selectProducts,

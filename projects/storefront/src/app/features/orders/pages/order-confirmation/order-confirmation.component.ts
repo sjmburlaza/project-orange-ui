@@ -8,7 +8,7 @@ import {
   OrderShippingAddress,
   OrderStatus,
   PaymentStatus,
-} from 'libs/core/models/order.model';
+} from 'libs/models/order.model';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { SiteService } from 'libs/core/services/site.services';
 import { TranslatePipe } from '@ngx-translate/core';

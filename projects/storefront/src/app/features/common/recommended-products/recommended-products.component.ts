@@ -10,19 +10,19 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, distinctUntilChanged, filter, map } from 'rxjs';
-import { Cart } from 'libs/core/models/cart.model';
+import { Cart } from 'libs/models/cart.model';
 import {
   ProductConfigure,
   ProductOption,
   ProductOptionGroup,
   ProductVariant,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import {
   CarouselComponent,
   CarouselItemDirective,
-} from 'libs/shared/components/carousel/carousel.component';
+} from 'libs/ui/carousel/carousel.component';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 import { VariantColorPipe } from 'libs/shared/pipes/variant-color-pipe';
 

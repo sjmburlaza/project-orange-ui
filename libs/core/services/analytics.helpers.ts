@@ -2,9 +2,9 @@ import {
   AnalyticsDailyPoint,
   AnalyticsDashboard,
   AnalyticsItem,
-} from 'libs/core/models/analytics.model';
-import { Cart, CartItem } from 'libs/core/models/cart.model';
-import { OrderProductItem } from 'libs/core/models/order.model';
+} from 'libs/models/analytics.model';
+import { Cart, CartItem } from 'libs/models/cart.model';
+import { OrderProductItem } from 'libs/models/order.model';
 
 export function createEmptyDashboard(): AnalyticsDashboard {
   const daily = buildEmptyDailyPoints();

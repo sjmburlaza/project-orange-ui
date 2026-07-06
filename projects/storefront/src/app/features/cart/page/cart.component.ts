@@ -7,7 +7,7 @@ import { SiteService } from 'libs/core/services/site.services';
 import {
   Addon,
   UpdateCartItemAddonRequest,
-} from 'libs/core/models/cart.model';
+} from 'libs/models/cart.model';
 
 @Component({
   selector: 'app-cart',

@@ -8,7 +8,7 @@ import {
   OrderItem,
   OrderStatus,
   PaymentStatus,
-} from 'libs/core/models/order.model';
+} from 'libs/models/order.model';
 import { SiteService } from 'libs/core/services/site.services';
 import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';

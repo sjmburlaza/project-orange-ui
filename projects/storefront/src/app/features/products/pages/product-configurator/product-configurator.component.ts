@@ -11,13 +11,13 @@ import {
   ProductOption,
   ProductVariant,
   StockStatus,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 import { AnalyticsService } from 'libs/core/services/analytics.service';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
-import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
-import { QuantitySelectorComponent } from 'libs/shared/components/quantity-selector/quantity-selector.component';
+import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
+import { QuantitySelectorComponent } from 'libs/ui/quantity-selector/quantity-selector.component';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 import { VariantColorPipe } from 'libs/shared/pipes/variant-color-pipe';
 

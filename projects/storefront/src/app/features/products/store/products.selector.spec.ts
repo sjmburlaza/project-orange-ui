@@ -4,7 +4,7 @@ import {
   Product,
   ProductConfigure,
   ProductVariant,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 import {
   selectInsurancePlansForProduct,
   selectMobilePlansForProduct,

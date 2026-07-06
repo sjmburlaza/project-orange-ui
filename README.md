@@ -340,7 +340,7 @@ npx playwright install chromium
 
 1. Add or update the feature service in `projects/storefront/src/app/features/**/services/`.
 2. Use `/api/...` as the base path. The site prefix interceptor will add the active site when needed.
-3. Add model types under `libs/core/models/` if the payload is shared.
+3. Add model types under `libs/models/` if the payload is shared.
 4. Add focused unit tests for service or store behavior, and extend e2e mocks when the flow is user-facing.
 
 ### Add a New Feature Route

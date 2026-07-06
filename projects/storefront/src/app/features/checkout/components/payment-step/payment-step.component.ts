@@ -20,13 +20,13 @@ import {
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { DynamicField, Option } from 'libs/core/models/checkout.model';
+import { DynamicField, Option } from 'libs/models/checkout.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   PaymentConfirmation,
   PaymentIntent,
   PaymentStepValue,
-} from 'libs/core/models/payment.model';
+} from 'libs/models/payment.model';
 import { SiteService } from 'libs/core/services/site.services';
 import {
   PaymentMethodFormComponent,

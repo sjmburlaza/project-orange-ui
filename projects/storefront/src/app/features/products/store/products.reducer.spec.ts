@@ -3,7 +3,7 @@ import {
   Product,
   ProductConfigure,
   ProductVariant,
-} from 'libs/core/models/product.model';
+} from 'libs/models/product.model';
 import { ProductActions } from './products.actions';
 import { initialState, productFeature } from './products.reducer';
 

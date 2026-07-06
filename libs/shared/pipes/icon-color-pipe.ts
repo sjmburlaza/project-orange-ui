@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ItemSpec } from 'libs/core/models/cart.model';
+import { ItemSpec } from 'libs/models/cart.model';
 
 @Pipe({
   name: 'iconColor',
