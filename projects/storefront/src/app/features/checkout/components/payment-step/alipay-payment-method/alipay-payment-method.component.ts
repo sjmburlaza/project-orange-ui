@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PaymentStepValue } from 'src/app/core/models/payment.model';
+import { PaymentStepValue } from 'libs/core/models/payment.model';
 import { PaymentMethodFormComponent } from '../payment-form.model';
 
 @Component({

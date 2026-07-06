@@ -17,14 +17,14 @@ import {
   withInterceptorsFromDi,
   withXsrfConfiguration,
 } from '@angular/common/http';
-import { ApiSitePrefixInterceptor } from 'src/app/core/interceptors/api-site-prefix.interceptor';
-import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
-import { MockAuthInterceptor } from 'src/app/core/interceptors/mock-auth.interceptor';
-import { MockPaymentInterceptor } from 'src/app/core/interceptors/mock-payment.interceptor';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { AuthStore } from 'src/app/core/auth/auth.store';
+import { ApiSitePrefixInterceptor } from 'libs/core/interceptors/api-site-prefix.interceptor';
+import { AuthInterceptor } from 'libs/core/interceptors/auth.interceptor';
+import { MockAuthInterceptor } from 'libs/core/interceptors/mock-auth.interceptor';
+import { MockPaymentInterceptor } from 'libs/core/interceptors/mock-payment.interceptor';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { AuthStore } from 'libs/core/auth/auth.store';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
-import { MultiTranslateLoader } from 'src/app/core/i18n/multi-translate-loader';
+import { MultiTranslateLoader } from 'libs/core/i18n/multi-translate-loader';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -41,8 +41,8 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { SiteService } from 'src/app/core/services/site.services';
-import { normalizeSiteCode, SiteConfig } from 'src/app/core/i18n/sites';
+import { SiteService } from 'libs/core/services/site.services';
+import { normalizeSiteCode, SiteConfig } from 'libs/core/i18n/sites';
 import {
   ArcElement,
   BarController,

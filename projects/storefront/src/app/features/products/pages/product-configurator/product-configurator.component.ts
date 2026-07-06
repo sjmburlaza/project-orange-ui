@@ -11,15 +11,15 @@ import {
   ProductOption,
   ProductVariant,
   StockStatus,
-} from 'src/app/core/models/product.model';
-import { AnalyticsService } from 'src/app/core/services/analytics.service';
-import { SiteService } from 'src/app/core/services/site.services';
+} from 'libs/core/models/product.model';
+import { AnalyticsService } from 'libs/core/services/analytics.service';
+import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
-import { QuantitySelectorComponent } from 'src/app/shared/components/quantity-selector/quantity-selector.component';
-import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
-import { VariantColorPipe } from 'src/app/shared/pipes/variant-color-pipe';
+import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
+import { QuantitySelectorComponent } from 'libs/shared/components/quantity-selector/quantity-selector.component';
+import { IconPipe } from 'libs/shared/pipes/icon-pipe';
+import { VariantColorPipe } from 'libs/shared/pipes/variant-color-pipe';
 
 @Component({
   selector: 'app-product-configurator',

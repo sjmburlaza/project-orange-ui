@@ -4,6 +4,9 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
+      "libs/*": [
+        "./libs/*"
+      ],
       "src/*": [
         "./projects/storefront/src/*"
       ]

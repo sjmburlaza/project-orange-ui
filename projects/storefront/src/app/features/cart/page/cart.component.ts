@@ -3,11 +3,11 @@ import { CartItemComponent } from '../components/cart-item/cart-item.component';
 import { CartFacade } from '../store/cart.facade';
 import { AsyncPipe } from '@angular/common';
 import { AddonComponent } from '../components/addon/addon.component';
-import { SiteService } from 'src/app/core/services/site.services';
+import { SiteService } from 'libs/core/services/site.services';
 import {
   Addon,
   UpdateCartItemAddonRequest,
-} from 'src/app/core/models/cart.model';
+} from 'libs/core/models/cart.model';
 
 @Component({
   selector: 'app-cart',

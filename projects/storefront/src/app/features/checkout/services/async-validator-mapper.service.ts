@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { AsyncValidatorFn, AbstractControl } from '@angular/forms';
 import { of, map, catchError } from 'rxjs';
-import { PostalCodeService } from 'src/app/core/services/postal-code.service';
+import { PostalCodeService } from 'libs/core/services/postal-code.service';
 
 @Injectable({ providedIn: 'root' })
 export class AsyncValidatorMapperService {

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CtaComponent } from 'src/app/features/common/cta/cta.component';
 import { OrderSummaryComponent } from 'src/app/features/common/order-summary/order-summary.component';
 import { VoucherComponent } from 'src/app/features/common/voucher/voucher.component';
-import { SiteService } from 'src/app/core/services/site.services';
+import { SiteService } from 'libs/core/services/site.services';
 import { OrderItemsComponent } from 'src/app/features/common/order-items/order-items.component';
 
 @Component({

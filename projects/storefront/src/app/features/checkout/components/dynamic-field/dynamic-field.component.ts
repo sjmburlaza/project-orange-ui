@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynamicField } from 'src/app/core/models/checkout.model';
+import { DynamicField } from 'libs/core/models/checkout.model';
 import { GroupFieldComponent } from './group-field/group-field.component';
 import { InputFieldComponent } from './input-field/input-field.component';
 import { ArrayFieldComponent } from './array-field/array-field.component';

@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Product } from 'src/app/core/models/product.model';
-import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
+import { Product } from 'libs/core/models/product.model';
+import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 
 @Component({
   selector: 'app-product-card',

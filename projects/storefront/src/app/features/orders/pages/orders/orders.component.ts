@@ -16,8 +16,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import {
   AuthSessionState,
   AuthStore,
-} from 'src/app/core/auth/auth.store';
-import { OrderItem } from 'src/app/core/models/order.model';
+} from 'libs/core/auth/auth.store';
+import { OrderItem } from 'libs/core/models/order.model';
 import { OrderItemComponent } from 'src/app/features/orders/components/order-item/order-item.component';
 import { OrdersHistoryComponent } from 'src/app/features/orders/components/orders-history/orders-history.component';
 import { OrderService } from 'src/app/features/orders/services/order.service';

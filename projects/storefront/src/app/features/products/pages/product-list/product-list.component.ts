@@ -1,22 +1,22 @@
 import { AsyncPipe, getCurrencySymbol } from '@angular/common';
 import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthStore } from 'src/app/core/auth/auth.store';
-import { Category } from 'src/app/core/models/category.model';
-import { Product, ProductSort } from 'src/app/core/models/product.model';
-import { SiteService } from 'src/app/core/services/site.services';
-import { AnalyticsService } from 'src/app/core/services/analytics.service';
+import { AuthStore } from 'libs/core/auth/auth.store';
+import { Category } from 'libs/core/models/category.model';
+import { Product, ProductSort } from 'libs/core/models/product.model';
+import { SiteService } from 'libs/core/services/site.services';
+import { AnalyticsService } from 'libs/core/services/analytics.service';
 import { WishlistService } from 'src/app/features/profile/services/wishlist.service';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
-import { RangeValue } from 'src/app/shared/components/range-slider/range-slider.component';
-import { SelectOption } from 'src/app/shared/components/select-dropdown/select-dropdown.component';
+import { RangeValue } from 'libs/shared/components/range-slider/range-slider.component';
+import { SelectOption } from 'libs/shared/components/select-dropdown/select-dropdown.component';
 import {
   DIACRITICS_PATTERN,
   LEADING_OR_TRAILING_HYPHENS_PATTERN,
   NON_ALPHANUMERIC_PATTERN,
-} from 'src/app/shared/constants/regex.constants';
+} from 'libs/shared/constants/regex.constants';
 import {
   combineLatest,
   debounceTime,
@@ -30,7 +30,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'libs/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-product-list',

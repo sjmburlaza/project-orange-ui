@@ -5,16 +5,16 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ProductSort } from 'src/app/core/models/product.model';
+import { ProductSort } from 'libs/core/models/product.model';
 import {
   RangeSliderComponent,
   RangeValue,
-} from 'src/app/shared/components/range-slider/range-slider.component';
+} from 'libs/shared/components/range-slider/range-slider.component';
 
 import {
   SelectDropdownComponent,
   SelectOption,
-} from 'src/app/shared/components/select-dropdown/select-dropdown.component';
+} from 'libs/shared/components/select-dropdown/select-dropdown.component';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 

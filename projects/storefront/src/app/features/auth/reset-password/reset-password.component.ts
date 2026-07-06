@@ -8,15 +8,15 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { SiteService } from 'src/app/core/services/site.services';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { SiteService } from 'libs/core/services/site.services';
 import {
   PASSWORD_NUMBER_PATTERN,
   PASSWORD_SPECIAL_CHARACTER_PATTERN,
   PASSWORD_UPPERCASE_PATTERN,
   STRONG_PASSWORD_PATTERN,
-} from 'src/app/shared/constants/regex.constants';
-import { emailValidator } from 'src/app/shared/validators/email.validator';
+} from 'libs/shared/constants/regex.constants';
+import { emailValidator } from 'libs/shared/validators/email.validator';
 
 @Component({
   selector: 'app-reset-password',

@@ -6,7 +6,7 @@ import {
   TradeInDevice,
   TradeInSession,
   TradeInStorage,
-} from 'src/app/core/models/trade-in.model';
+} from 'libs/core/models/trade-in.model';
 import { TradeInActions } from './trade-in.actions';
 
 export interface TradeInState {

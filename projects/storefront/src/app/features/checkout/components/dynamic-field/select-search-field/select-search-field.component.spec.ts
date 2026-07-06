@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { SelectSearchFieldComponent } from './select-search-field.component';
-import { DynamicField } from 'src/app/core/models/checkout.model';
+import { DynamicField } from 'libs/core/models/checkout.model';
 import { OptionsService } from 'src/app/features/checkout/services/options.service';
 
 describe('SelectSearchFieldComponent', () => {

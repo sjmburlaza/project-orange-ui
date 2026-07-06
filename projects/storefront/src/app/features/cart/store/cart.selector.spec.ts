@@ -1,4 +1,4 @@
-import { CartItem, CartSummaryAttribute } from 'src/app/core/models/cart.model';
+import { CartItem, CartSummaryAttribute } from 'libs/core/models/cart.model';
 import {
   selectCartItemCount,
   selectCartItems,

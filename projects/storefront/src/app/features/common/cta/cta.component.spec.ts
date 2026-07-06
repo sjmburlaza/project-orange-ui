@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
-import { AuthSession } from 'src/app/core/auth/auth.models';
-import { AuthStore } from 'src/app/core/auth/auth.store';
-import { SiteService } from 'src/app/core/services/site.services';
+import { AuthSession } from 'libs/core/auth/auth.models';
+import { AuthStore } from 'libs/core/auth/auth.store';
+import { SiteService } from 'libs/core/services/site.services';
 
 import { CtaComponent } from './cta.component';
 

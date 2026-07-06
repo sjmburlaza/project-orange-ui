@@ -8,10 +8,10 @@ import {
   OrderItem,
   OrderStatus,
   PaymentStatus,
-} from 'src/app/core/models/order.model';
-import { SiteService } from 'src/app/core/services/site.services';
-import { IconColorPipe } from 'src/app/shared/pipes/icon-color-pipe';
-import { IconPipe } from 'src/app/shared/pipes/icon-pipe';
+} from 'libs/core/models/order.model';
+import { SiteService } from 'libs/core/services/site.services';
+import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';
+import { IconPipe } from 'libs/shared/pipes/icon-pipe';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
 

@@ -9,7 +9,7 @@ import {
   ProductConfigure,
   ProductFilters,
   ProductOptionsResponse,
-} from 'src/app/core/models/product.model';
+} from 'libs/core/models/product.model';
 
 @Injectable({
   providedIn: 'root',

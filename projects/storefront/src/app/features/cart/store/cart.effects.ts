@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CartApiService } from '../services/cart-api.service';
 import { CartActions } from './cart.actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { CartUiMessage } from 'src/app/core/models/cart-message.model';
+import { CartUiMessage } from 'libs/core/models/cart-message.model';
 
 interface ApiErrorResponse {
   code?: string;

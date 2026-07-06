@@ -11,11 +11,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ROLES } from 'src/app/core/auth/auth.constants';
-import { AuthSession } from 'src/app/core/auth/auth.models';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { AuthStore } from 'src/app/core/auth/auth.store';
-import { SiteService } from 'src/app/core/services/site.services';
+import { ROLES } from 'libs/core/auth/auth.constants';
+import { AuthSession } from 'libs/core/auth/auth.models';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { AuthStore } from 'libs/core/auth/auth.store';
+import { SiteService } from 'libs/core/services/site.services';
 
 @Component({
   selector: 'app-login',

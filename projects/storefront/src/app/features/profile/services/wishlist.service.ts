@@ -6,7 +6,7 @@ import {
   AddWishlistItemRequest,
   WishlistResponse,
   WishlistStatus,
-} from 'src/app/core/models/wishlist.model';
+} from 'libs/core/models/wishlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistService {

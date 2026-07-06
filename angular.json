@@ -118,6 +118,10 @@
             "buildTarget": "project-orange-v2:build:development",
             "tsConfig": "projects/storefront/tsconfig.spec.json",
             "providersFile": "projects/storefront/src/test-providers.ts",
+            "include": [
+              "**/*.spec.ts",
+              "../../../libs/**/*.spec.ts"
+            ],
             "runner": "vitest"
           }
         },
@@ -126,7 +130,8 @@
           "options": {
             "lintFilePatterns": [
               "projects/storefront/src/**/*.ts",
-              "projects/storefront/src/**/*.html"
+              "projects/storefront/src/**/*.html",
+              "libs/**/*.ts"
             ]
           }
         }
