@@ -462,8 +462,9 @@ test.describe('admin dashboard', () => {
   test('loads admin analytics and refreshes the selected period', async ({
     page,
   }) => {
-    await page.goto(`${adminBaseUrl}/analytics-dashboard`);
+    await page.goto(`${adminBaseUrl}/admin/analytics`);
 
+    await expect(page).toHaveURL(/\/admin\/analytics$/);
     await expect(
       page.getByRole('heading', { name: 'Analytics Dashboard' }),
     ).toBeVisible();

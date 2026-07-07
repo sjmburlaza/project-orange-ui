@@ -41,7 +41,7 @@ import { TopProductsTabComponent } from './components/top-products-tab/top-produ
 import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-analytics',
   imports: [
     FunnelTabComponent,
     MatTabsModule,
@@ -53,8 +53,8 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
     TopProductsTabComponent,
     VisitorsTabComponent,
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  templateUrl: './analytics.component.html',
+  styleUrl: './analytics.component.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [
     provideCharts({
@@ -75,7 +75,7 @@ import { VisitorsTabComponent } from './components/visitors-tab/visitors-tab.com
     }),
   ],
 })
-export class AnalyticsDashboardComponent implements OnInit {
+export class AnalyticsComponent implements OnInit {
   private readonly analytics = inject(AnalyticsService);
   private readonly siteService = inject(SiteService);
 

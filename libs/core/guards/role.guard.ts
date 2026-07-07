@@ -3,22 +3,24 @@ import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
+  RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AuthService } from 'libs/core/auth/auth.service';
 import { AuthStore } from 'libs/core/auth/auth.store';
-import { SiteService } from 'libs/core/services/site.services';
+import { AUTH_GUARD_REDIRECTS } from './auth-guard-redirects';
 
 @Injectable({ providedIn: 'root' })
 export class RoleGuard implements CanActivate {
   private readonly authStore = inject(AuthStore);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly siteService = inject(SiteService);
+  private readonly redirects = inject(AUTH_GUARD_REDIRECTS);
 
   canActivate(
     route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
   ): boolean | UrlTree | Observable<boolean | UrlTree> {
     const requiredRoles = this.readStringArray(route.data['roles']);
     const requiredRole = this.readString(route.data['role']);
@@ -31,19 +33,19 @@ export class RoleGuard implements CanActivate {
     const session = this.authStore.getSessionSnapshot();
 
     if (session) {
-      return this.canAccess(requiredRoles, requiredPermissions);
+      return this.canAccess(requiredRoles, requiredPermissions, state.url);
     }
 
     if (session === null) {
-      return this.loginUrlTree();
+      return this.loginUrlTree(state.url);
     }
 
     return this.authService.getSession().pipe(
       tap((currentSession) => this.authStore.setSession(currentSession)),
-      map(() => this.canAccess(requiredRoles, requiredPermissions)),
+      map(() => this.canAccess(requiredRoles, requiredPermissions, state.url)),
       catchError(() => {
         this.authStore.clearSession();
-        return of(this.loginUrlTree());
+        return of(this.loginUrlTree(state.url));
       }),
     );
   }
@@ -51,6 +53,7 @@ export class RoleGuard implements CanActivate {
   private canAccess(
     requiredRoles: readonly string[],
     requiredPermissions: readonly string[],
+    returnUrl: string,
   ): boolean | UrlTree {
     const hasRequiredRole =
       requiredRoles.length === 0 || this.authStore.hasAnyRole(requiredRoles);
@@ -60,19 +63,15 @@ export class RoleGuard implements CanActivate {
 
     return hasRequiredRole && hasRequiredPermissions
       ? true
-      : this.unauthorizedUrlTree();
+      : this.unauthorizedUrlTree(returnUrl);
   }
 
-  private loginUrlTree(): UrlTree {
-    return this.router.createUrlTree([
-      `/${this.siteService.getCurrentSite()}/auth/login`,
-    ]);
+  private loginUrlTree(returnUrl: string): UrlTree {
+    return this.redirects.loginUrlTree(this.router, returnUrl);
   }
 
-  private unauthorizedUrlTree(): UrlTree {
-    return this.router.createUrlTree([
-      `/${this.siteService.getCurrentSite()}/products`,
-    ]);
+  private unauthorizedUrlTree(returnUrl: string): UrlTree {
+    return this.redirects.unauthorizedUrlTree(this.router, returnUrl);
   }
 
   private readString(value: unknown): string | null {

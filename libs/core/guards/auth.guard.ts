@@ -9,14 +9,14 @@ import {
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AuthService } from 'libs/core/auth/auth.service';
 import { AuthStore } from 'libs/core/auth/auth.store';
-import { SiteService } from '../services/site.services';
+import { AUTH_GUARD_REDIRECTS } from './auth-guard-redirects';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   private readonly authStore = inject(AuthStore);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly siteService = inject(SiteService);
+  private readonly redirects = inject(AUTH_GUARD_REDIRECTS);
 
   canActivate(
     _route: ActivatedRouteSnapshot,
@@ -43,11 +43,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private loginUrlTree(returnUrl: string): UrlTree {
-    return this.router.createUrlTree(
-      [`/${this.siteService.getCurrentSite()}/auth/login`],
-      {
-        queryParams: { returnUrl },
-      },
-    );
+    return this.redirects.loginUrlTree(this.router, returnUrl);
   }
 }
