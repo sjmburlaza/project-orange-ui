@@ -1,31 +1,31 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'analytics-dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'analytics', pathMatch: 'full' },
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.component').then((m) => m.LoginComponent),
   },
   {
-    path: 'analytics-dashboard',
+    path: 'analytics',
     loadComponent: () =>
-      import(
-        './pages/analytics-dashboard/dashboard/dashboard.component'
-      ).then((m) => m.AnalyticsDashboardComponent),
-  },
-  {
-    path: 'manage-orders',
-    loadComponent: () =>
-      import('./pages/manage-orders/manage-orders.component').then(
-        (m) => m.ManageOrdersComponent,
+      import('./pages/analytics/analytics.component').then(
+        (m) => m.AnalyticsComponent,
       ),
   },
   {
-    path: 'manage-products',
+    path: 'orders',
     loadComponent: () =>
-      import('./pages/manage-products/manage-products.component').then(
-        (m) => m.ManageProductsComponent,
+      import('./pages/orders/orders.component').then(
+        (m) => m.OrdersComponent,
+      ),
+  },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./pages/products/products.component').then(
+        (m) => m.ProductsComponent,
       ),
   },
 ];

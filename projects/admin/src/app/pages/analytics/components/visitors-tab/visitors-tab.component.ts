@@ -11,7 +11,7 @@ import {
   AnalyticsDailyPoint,
   AnalyticsMetricCard,
 } from 'libs/models/analytics.model';
-import { LineChartComponent } from '../../../charts/line-chart/line-chart.component';
+import { LineChartComponent } from '../../charts/line-chart/line-chart.component';
 import { InfoTooltipComponent } from 'libs/ui/info-tooltip/info-tooltip.component';
 import {
   chartColors,

@@ -67,11 +67,11 @@ describe('LoginComponent', () => {
       password: 'password',
     });
     expect(authStore.setSession).toHaveBeenCalledWith(session);
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/analytics-dashboard');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/analytics');
   });
 
   it('uses a safe admin return URL after login', () => {
-    queryParams['returnUrl'] = '/manage-orders';
+    queryParams['returnUrl'] = '/orders';
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -79,7 +79,7 @@ describe('LoginComponent', () => {
 
     submitLoginForm();
 
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/manage-orders');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/orders');
   });
 
   it('rejects non-admin accounts', () => {

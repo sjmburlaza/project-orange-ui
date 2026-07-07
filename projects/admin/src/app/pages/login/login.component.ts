@@ -95,7 +95,7 @@ export class LoginComponent {
   }
 
   private getPostLoginUrl(): string {
-    return this.getSafeReturnUrl() ?? '/analytics-dashboard';
+    return this.getSafeReturnUrl() ?? '/analytics';
   }
 
   private getSafeReturnUrl(): string | null {

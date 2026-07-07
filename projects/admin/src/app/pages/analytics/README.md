@@ -7,13 +7,13 @@ This document describes the Project Orange admin analytics dashboard: what it me
 The analytics dashboard is the admin view at:
 
 ```text
-/analytics-dashboard
+/analytics
 ```
 
 Local example:
 
 ```text
-http://localhost:4200/analytics-dashboard
+http://localhost:4200/analytics
 ```
 
 The dashboard is owned by the standalone admin app under `projects/admin`. Storefront pages continue to record analytics events through the shared analytics service.
@@ -35,17 +35,17 @@ Primary implementation files:
 | Area | File |
 | --- | --- |
 | Dashboard route | `projects/admin/src/app/app.routes.ts` |
-| Dashboard container | `projects/admin/src/app/pages/analytics-dashboard/dashboard/dashboard.component.ts` |
-| Dashboard layout | `projects/admin/src/app/pages/analytics-dashboard/dashboard/dashboard.component.html` |
-| Dashboard styling | `projects/admin/src/app/pages/analytics-dashboard/dashboard/dashboard.component.scss` |
-| Shared tab math | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.utils.ts` |
-| Shared chart options | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-chart.utils.ts` |
-| Reusable chart wrappers | `projects/admin/src/app/pages/analytics-dashboard/charts/` |
+| Dashboard container | `projects/admin/src/app/pages/analytics/analytics.component.ts` |
+| Dashboard layout | `projects/admin/src/app/pages/analytics/analytics.component.html` |
+| Dashboard styling | `projects/admin/src/app/pages/analytics/analytics.component.scss` |
+| Shared tab math | `projects/admin/src/app/pages/analytics/components/dashboard-tab.utils.ts` |
+| Shared chart options | `projects/admin/src/app/pages/analytics/components/dashboard-chart.utils.ts` |
+| Reusable chart wrappers | `projects/admin/src/app/pages/analytics/charts/` |
 | Analytics models | `libs/models/analytics.model.ts` |
 | Analytics client service | `libs/core/services/analytics.service.ts` |
 | Empty dashboard helpers | `libs/core/services/analytics.helpers.ts` |
 | Local mock API | `mock-api/server.cjs` |
-| Tab unit test fixtures | `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.spec-fixtures.ts` |
+| Tab unit test fixtures | `projects/admin/src/app/pages/analytics/components/dashboard-tab.spec-fixtures.ts` |
 | E2E coverage | `e2e/app.spec.ts` |
 
 Dashboard tab components:
@@ -67,7 +67,7 @@ flowchart TD
   A["Storefront UI"] --> B["AnalyticsService"]
   B --> C["POST /api/analytics/events"]
   C --> D["Analytics event store"]
-  E["Admin dashboard route"] --> F["AnalyticsDashboardComponent"]
+  E["Admin analytics route"] --> F["AnalyticsComponent"]
   F --> G["GET /api/admin/analytics/dashboard?period=..."]
   G --> H["AnalyticsDashboard response"]
   H --> I["Dashboard metric cards"]
@@ -357,7 +357,7 @@ Payment authorization failed
 
 ## Dashboard Container Behavior
 
-`AnalyticsDashboardComponent` owns the period selector and high-level metric-card construction.
+`AnalyticsComponent` owns the period selector and high-level metric-card construction.
 
 Important state:
 
@@ -467,7 +467,7 @@ npm run mock:api
 Then open the admin route:
 
 ```text
-http://localhost:4200/analytics-dashboard
+http://localhost:4200/analytics
 ```
 
 ## Testing
@@ -476,13 +476,13 @@ http://localhost:4200/analytics-dashboard
 
 The dashboard has two levels of unit coverage:
 
-- `dashboard.component.spec.ts` covers the container, period options, and reload behavior.
+- `analytics.component.spec.ts` covers the container, period options, and reload behavior.
 - Each tab component has a colocated `*.component.spec.ts` file.
 
 The tab specs share fixtures from:
 
 ```text
-projects/admin/src/app/pages/analytics-dashboard/dashboard/components/dashboard-tab.spec-fixtures.ts
+projects/admin/src/app/pages/analytics/components/dashboard-tab.spec-fixtures.ts
 ```
 
 Run unit tests with:
@@ -528,7 +528,7 @@ Use this checklist when adding a dashboard metric:
 2. Update `AnalyticsEvent` or related item models if the event needs new fields.
 3. Update the backend or mock aggregation in `mock-api/server.cjs`.
 4. Add the field to `AnalyticsDashboard` if it is a top-level metric.
-5. Add a metric card in `AnalyticsDashboardComponent` or render the value in a tab.
+5. Add a metric card in `AnalyticsComponent` or render the value in a tab.
 6. Add or update the relevant tab unit test.
 7. Update the dashboard e2e test if the new metric is user-critical.
 8. Update this README with the metric definition and formula.
@@ -537,9 +537,9 @@ Use this checklist when adding a dashboard metric:
 
 Use this checklist when adding a dashboard tab:
 
-1. Create a standalone component under `projects/admin/src/app/pages/analytics-dashboard/dashboard/components/<tab-name>-tab/`.
-2. Add the tab component to `AnalyticsDashboardComponent.imports`.
-3. Add a `<mat-tab>` entry in `dashboard.component.html`.
+1. Create a standalone component under `projects/admin/src/app/pages/analytics/components/<tab-name>-tab/`.
+2. Add the tab component to `AnalyticsComponent.imports`.
+3. Add a `<mat-tab>` entry in `analytics.component.html`.
 4. Pass only the inputs the tab needs.
 5. Keep tab-specific computation local when it only affects that tab.
 6. Put shared display helpers in `dashboard-tab.utils.ts`.

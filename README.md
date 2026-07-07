@@ -64,9 +64,9 @@ npm run ng -- serve admin
 The admin app runs from `projects/admin/src/app` and currently owns:
 
 ```text
-/analytics-dashboard
-/manage-orders
-/manage-products
+/analytics
+/orders
+/products
 ```
 
 ## Available Scripts
@@ -93,7 +93,7 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 The root route (`/`) loads the country entry screen. It uses `/api/sites` and `/api/geo/country` to list supported sites and suggest a country when possible. The selected site is saved in local storage under `orange.sitePreference`.
 
-For detailed analytics dashboard documentation, see [Dashboard Analytics](projects/admin/src/app/pages/analytics-dashboard/dashboard/README.md). The dashboard now lives in the standalone admin app under `projects/admin/src/app/pages/analytics-dashboard`.
+For detailed analytics dashboard documentation, see [Dashboard Analytics](projects/admin/src/app/pages/analytics/README.md). The dashboard now lives in the standalone admin app under `projects/admin/src/app/pages/analytics`.
 
 Most app routes are scoped by site:
 
@@ -118,11 +118,11 @@ Unsupported site codes are redirected back to the country selector.
 
 The standalone admin app owns admin pages outside the site-scoped storefront route tree:
 
-| Route                  | Purpose                    |
-| ---------------------- | -------------------------- |
-| `/analytics-dashboard` | Admin analytics dashboard. |
-| `/manage-orders`       | Admin order management.    |
-| `/manage-products`     | Admin product management.  |
+| Route        | Purpose                    |
+| ------------ | -------------------------- |
+| `/analytics` | Admin analytics dashboard. |
+| `/orders`    | Admin order management.    |
+| `/products`  | Admin product management.  |
 
 ## API Behavior
 
