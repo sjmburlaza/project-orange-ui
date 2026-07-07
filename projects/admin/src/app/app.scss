@@ -15,7 +15,11 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+  height: 100vh;
+  overflow-y: auto;
   padding: 28px 24px;
+  position: sticky;
+  top: 0;
   background: #161a22;
   color: #ffffff;
 }
@@ -87,7 +91,10 @@
 
   .admin-shell__nav {
     gap: 16px;
+    height: auto;
+    overflow: visible;
     padding: 18px 16px;
+    position: static;
   }
 
   .admin-shell__links {
