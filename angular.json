@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "project-orange-v2": {
+    "project-orange-storefront": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -103,13 +103,13 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "project-orange-v2:build:production"
+              "buildTarget": "project-orange-storefront:build:production"
             },
             "development": {
-              "buildTarget": "project-orange-v2:build:development"
+              "buildTarget": "project-orange-storefront:build:development"
             },
             "e2e": {
-              "buildTarget": "project-orange-v2:build:e2e"
+              "buildTarget": "project-orange-storefront:build:e2e"
             }
           },
           "defaultConfiguration": "development"
@@ -120,7 +120,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "buildTarget": "project-orange-v2:build:development",
+            "buildTarget": "project-orange-storefront:build:development",
             "tsConfig": "projects/storefront/tsconfig.spec.json",
             "providersFile": "projects/storefront/src/test-providers.ts",
             "include": [
@@ -142,7 +142,7 @@
         }
       }
     },
-    "admin": {
+    "project-orange-admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -212,10 +212,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "admin:build:production"
+              "buildTarget": "project-orange-admin:build:production"
             },
             "development": {
-              "buildTarget": "admin:build:development"
+              "buildTarget": "project-orange-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -226,9 +226,19 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "buildTarget": "admin:build:development",
+            "buildTarget": "project-orange-admin:build:development",
             "tsConfig": "projects/admin/tsconfig.spec.json",
             "runner": "vitest"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/admin/src/**/*.ts",
+              "projects/admin/src/**/*.html",
+              "libs/**/*.ts"
+            ]
           }
         }
       }

@@ -455,7 +455,7 @@ Events without a site are treated as available to all sites in the mock. In prod
 Start the standalone admin app:
 
 ```bash
-npm run ng -- serve admin
+npm run ng -- serve project-orange-admin
 ```
 
 For dashboard data, start the mock API in another terminal:

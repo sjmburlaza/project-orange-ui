@@ -30,7 +30,7 @@ export default defineConfig({
     },
     {
       command:
-        `npm run ng -- serve admin --host ${e2eHost} --port ${e2eAdminPort}`,
+        `npm run ng -- serve project-orange-admin --host ${e2eHost} --port ${e2eAdminPort}`,
       url: e2eAdminBaseUrl,
       reuseExistingServer: !isCI,
       timeout: 120_000,

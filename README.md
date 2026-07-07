@@ -58,7 +58,7 @@ http://localhost:4200/jp/products
 Run the standalone admin app when working on analytics, order management, or product management:
 
 ```bash
-npm run ng -- serve admin
+npm run ng -- serve project-orange-admin
 ```
 
 The admin app runs from `projects/admin/src/app` and currently owns:
@@ -73,11 +73,11 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 | Command                               | Description                                                                  |
 | ------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm start`                           | Runs `ng serve project-orange-v2` with `proxy.conf.cjs`.                     |
+| `npm start`                           | Runs `ng serve project-orange-storefront` with `proxy.conf.cjs`.             |
 | `npm run mock:api`                    | Runs the local json-server analytics mock on port `5176`.                    |
 | `npm run start:e2e`                   | Runs the Angular dev server with the e2e build configuration.                |
 | `npm run build`                       | Builds the default storefront app for production into `dist/`.               |
-| `npm run ng -- build admin`           | Builds the standalone admin app into `dist/admin`.                           |
+| `npm run ng -- build project-orange-admin` | Builds the standalone admin app into `dist/project-orange-admin`.       |
 | `npm run watch`                       | Builds in watch mode with the development configuration.                     |
 | `npm test`                            | Runs unit tests.                                                             |
 | `npm run test:watch`                  | Runs unit tests in watch mode.                                               |
@@ -87,7 +87,7 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 | `npm run e2e:headed`                  | Runs Playwright tests in headed mode.                                        |
 | `npm run lint`                        | Runs Angular ESLint over TypeScript and templates.                           |
 | `npm run build:ssr`                   | Builds the server-output application.                                        |
-| `npm run serve:ssr:project-orange-v2` | Serves the built SSR bundle from `dist/project-orange-v2/server/server.mjs`. |
+| `npm run serve:ssr:project-orange-storefront` | Serves the built SSR bundle from `dist/project-orange-storefront/server/server.mjs`. |
 
 ## Application Flow
 
@@ -361,5 +361,5 @@ npm run build:ssr
 Serve the built bundle:
 
 ```bash
-npm run serve:ssr:project-orange-v2
+npm run serve:ssr:project-orange-storefront
 ```
