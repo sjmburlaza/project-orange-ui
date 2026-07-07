@@ -10,13 +10,29 @@ import {
 } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
+import {
+  AUTH_GUARD_REDIRECTS,
+  AuthGuardRedirects,
+} from 'libs/core/guards/auth-guard-redirects';
 
 import { routes } from './app.routes';
+
+const adminAuthGuardRedirects: AuthGuardRedirects = {
+  loginUrlTree: (router, returnUrl) =>
+    router.createUrlTree(['/admin/login'], {
+      queryParams: { returnUrl },
+    }),
+  unauthorizedUrlTree: (router, returnUrl) =>
+    router.createUrlTree(['/admin/login'], {
+      queryParams: { returnUrl },
+    }),
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    { provide: AUTH_GUARD_REDIRECTS, useValue: adminAuthGuardRedirects },
     provideRouter(routes),
     provideHttpClient(
       withFetch(),

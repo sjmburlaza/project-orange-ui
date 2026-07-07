@@ -95,7 +95,7 @@ export class LoginComponent {
   }
 
   private getPostLoginUrl(): string {
-    return this.getSafeReturnUrl() ?? '/analytics';
+    return this.getSafeReturnUrl() ?? '/admin/analytics';
   }
 
   private getSafeReturnUrl(): string | null {
@@ -104,7 +104,9 @@ export class LoginComponent {
     }
 
     const returnPath = this.returnUrl.split(/[?#]/)[0];
+    const isAdminPath =
+      returnPath === '/admin' || returnPath.startsWith('/admin/');
 
-    return returnPath === '/login' ? null : this.returnUrl;
+    return isAdminPath && returnPath !== '/admin/login' ? this.returnUrl : null;
   }
 }

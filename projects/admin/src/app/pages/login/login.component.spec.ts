@@ -67,10 +67,22 @@ describe('LoginComponent', () => {
       password: 'password',
     });
     expect(authStore.setSession).toHaveBeenCalledWith(session);
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/analytics');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/admin/analytics');
   });
 
   it('uses a safe admin return URL after login', () => {
+    queryParams['returnUrl'] = '/admin/orders';
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    authService.login.mockReturnValue(of(createSession([ROLES.ADMIN])));
+
+    submitLoginForm();
+
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/admin/orders');
+  });
+
+  it('ignores return URLs outside the admin route prefix', () => {
     queryParams['returnUrl'] = '/orders';
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
@@ -79,7 +91,7 @@ describe('LoginComponent', () => {
 
     submitLoginForm();
 
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/orders');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/admin/analytics');
   });
 
   it('rejects non-admin accounts', () => {

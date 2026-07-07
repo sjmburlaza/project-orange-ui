@@ -3,19 +3,29 @@
 } @else {
   <div class="admin-shell">
     <aside class="admin-shell__nav" aria-label="Admin navigation">
-      <a class="admin-shell__brand" routerLink="/analytics">
+      <a class="admin-shell__brand" routerLink="/admin/analytics">
         Project Orange Admin
       </a>
 
       <nav class="admin-shell__links">
-        <a routerLink="/analytics" routerLinkActive="is-active">
+        <a routerLink="/admin/analytics" routerLinkActive="is-active">
           Analytics
         </a>
-        <a routerLink="/orders" routerLinkActive="is-active">Orders</a>
-        <a routerLink="/products" routerLinkActive="is-active">
+        <a routerLink="/admin/orders" routerLinkActive="is-active">Orders</a>
+        <a routerLink="/admin/products" routerLinkActive="is-active">
           Products
         </a>
       </nav>
+
+      <button
+        class="admin-shell__logout"
+        type="button"
+        [disabled]="isLoggingOut"
+        (click)="logout()"
+      >
+        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+        {{ isLoggingOut ? 'Signing out...' : 'Sign out' }}
+      </button>
     </aside>
 
     <main class="admin-shell__content">

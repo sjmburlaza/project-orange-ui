@@ -7,7 +7,9 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { filter, finalize, map } from 'rxjs';
+import { AuthService } from 'libs/core/auth/auth.service';
+import { AuthStore } from 'libs/core/auth/auth.store';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,8 @@ import { filter, map } from 'rxjs';
 })
 export class App {
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly authStore = inject(AuthStore);
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -26,6 +30,31 @@ export class App {
   );
 
   readonly isLoginRoute = computed(
-    () => this.currentUrl().split('?')[0] === '/login',
+    () => this.currentUrl().split('?')[0] === '/admin/login',
   );
+
+  isLoggingOut = false;
+
+  logout(): void {
+    if (this.isLoggingOut) {
+      return;
+    }
+
+    this.isLoggingOut = true;
+
+    this.authService
+      .logout()
+      .pipe(
+        finalize(() => {
+          this.isLoggingOut = false;
+          this.authStore.clearSession();
+          void this.router.navigateByUrl('/admin/login');
+        }),
+      )
+      .subscribe({
+        error: (error) => {
+          console.error('Admin logout failed:', error);
+        },
+      });
+  }
 }
