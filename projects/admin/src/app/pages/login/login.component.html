@@ -1,0 +1,88 @@
+<section class="admin-login" aria-labelledby="admin-login-title">
+  <div class="admin-login__content">
+    <div class="admin-login__intro">
+      <div class="admin-login__brand" aria-label="Project Orange Admin">
+        <span class="admin-login__mark" aria-hidden="true">O</span>
+        <span>Project Orange Admin</span>
+      </div>
+
+      <div class="admin-login__copy">
+        <p class="admin-login__eyebrow">Staff access</p>
+        <h1 id="admin-login-title">Sign in to admin</h1>
+        <p>Manage the Orange workspace with your authorized account.</p>
+      </div>
+    </div>
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      @if (loginForm.hasError("loginFailed")) {
+        <p class="login-form__error" role="alert">
+          We could not sign you in. Check your email and password.
+        </p>
+      }
+
+      @if (loginForm.hasError("unauthorized")) {
+        <p class="login-form__error" role="alert">
+          This workspace only accepts admin accounts.
+        </p>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="admin@example.com"
+        />
+
+        @if (email.touched && email.hasError("required")) {
+          <mat-error>Email is required.</mat-error>
+        }
+        @if (email.touched && email.hasError("email")) {
+          <mat-error>Enter a valid email address.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          autocomplete="current-password"
+          placeholder="Enter your password"
+        />
+
+        @if (password.value) {
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+            (click)="hidePassword = !hidePassword"
+          >
+            <mat-icon>
+              {{ hidePassword ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+        }
+
+        @if (password.touched && password.hasError("required")) {
+          <mat-error>Password is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <button
+        class="login-form__submit"
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="isLoading"
+      >
+        <mat-icon aria-hidden="true">login</mat-icon>
+        {{ isLoading ? "Signing in..." : "Sign in" }}
+      </button>
+    </form>
+  </div>
+</section>

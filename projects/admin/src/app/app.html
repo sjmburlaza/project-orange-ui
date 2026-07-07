@@ -1,21 +1,25 @@
-<div class="admin-shell">
-  <aside class="admin-shell__nav" aria-label="Admin navigation">
-    <a class="admin-shell__brand" routerLink="/analytics-dashboard">
-      Project Orange Admin
-    </a>
-
-    <nav class="admin-shell__links">
-      <a routerLink="/analytics-dashboard" routerLinkActive="is-active">
-        Analytics
+@if (isLoginRoute()) {
+  <router-outlet />
+} @else {
+  <div class="admin-shell">
+    <aside class="admin-shell__nav" aria-label="Admin navigation">
+      <a class="admin-shell__brand" routerLink="/analytics-dashboard">
+        Project Orange Admin
       </a>
-      <a routerLink="/manage-orders" routerLinkActive="is-active">Orders</a>
-      <a routerLink="/manage-products" routerLinkActive="is-active">
-        Products
-      </a>
-    </nav>
-  </aside>
 
-  <main class="admin-shell__content">
-    <router-outlet />
-  </main>
-</div>
+      <nav class="admin-shell__links">
+        <a routerLink="/analytics-dashboard" routerLinkActive="is-active">
+          Analytics
+        </a>
+        <a routerLink="/manage-orders" routerLinkActive="is-active">Orders</a>
+        <a routerLink="/manage-products" routerLinkActive="is-active">
+          Products
+        </a>
+      </nav>
+    </aside>
+
+    <main class="admin-shell__content">
+      <router-outlet />
+    </main>
+  </div>
+}
