@@ -12,7 +12,7 @@ Configure product to checkout flow
 
 Analytics Dashboard
 
-![Analytics Dashboard](demos/admin-app.gif)
+![Analytics Dashboard](demos/admin-app-v2.gif)
 
 ## Tech Stack
 
