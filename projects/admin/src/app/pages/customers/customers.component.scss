@@ -1,0 +1,12 @@
+@use "../../styles/admin-feature-page";
+
+.customers-table {
+  --admin-table-min-width: 860px;
+  --admin-table-template:
+    minmax(190px, 1.25fr)
+    minmax(140px, 0.8fr)
+    minmax(130px, 0.75fr)
+    80px
+    minmax(130px, 0.8fr)
+    108px;
+}
