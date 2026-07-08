@@ -12,7 +12,7 @@ Configure product to checkout flow
 
 Analytics Dashboard
 
-![Analytics Dashboard](demos/analytics-dashboard-v1.gif)
+![Analytics Dashboard](demos/admin-app.gif)
 
 ## Tech Stack
 
@@ -71,22 +71,22 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 
 ## Available Scripts
 
-| Command                               | Description                                                                  |
-| ------------------------------------- | ---------------------------------------------------------------------------- |
-| `npm start`                           | Runs `ng serve project-orange-storefront` with `proxy.conf.cjs`.             |
-| `npm run mock:api`                    | Runs the local json-server analytics mock on port `5176`.                    |
-| `npm run start:e2e`                   | Runs the Angular dev server with the e2e build configuration.                |
-| `npm run build`                       | Builds the default storefront app for production into `dist/`.               |
-| `npm run ng -- build project-orange-admin` | Builds the standalone admin app into `dist/project-orange-admin`.       |
-| `npm run watch`                       | Builds in watch mode with the development configuration.                     |
-| `npm test`                            | Runs unit tests.                                                             |
-| `npm run test:watch`                  | Runs unit tests in watch mode.                                               |
-| `npm run test:ci`                     | Runs unit tests once for CI.                                                 |
-| `npm run e2e`                         | Runs Playwright tests.                                                       |
-| `npm run e2e:ui`                      | Opens the Playwright UI runner.                                              |
-| `npm run e2e:headed`                  | Runs Playwright tests in headed mode.                                        |
-| `npm run lint`                        | Runs Angular ESLint over TypeScript and templates.                           |
-| `npm run build:ssr`                   | Builds the server-output application.                                        |
+| Command                                       | Description                                                                          |
+| --------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `npm start`                                   | Runs `ng serve project-orange-storefront` with `proxy.conf.cjs`.                     |
+| `npm run mock:api`                            | Runs the local json-server analytics mock on port `5176`.                            |
+| `npm run start:e2e`                           | Runs the Angular dev server with the e2e build configuration.                        |
+| `npm run build`                               | Builds the default storefront app for production into `dist/`.                       |
+| `npm run ng -- build project-orange-admin`    | Builds the standalone admin app into `dist/project-orange-admin`.                    |
+| `npm run watch`                               | Builds in watch mode with the development configuration.                             |
+| `npm test`                                    | Runs unit tests.                                                                     |
+| `npm run test:watch`                          | Runs unit tests in watch mode.                                                       |
+| `npm run test:ci`                             | Runs unit tests once for CI.                                                         |
+| `npm run e2e`                                 | Runs Playwright tests.                                                               |
+| `npm run e2e:ui`                              | Opens the Playwright UI runner.                                                      |
+| `npm run e2e:headed`                          | Runs Playwright tests in headed mode.                                                |
+| `npm run lint`                                | Runs Angular ESLint over TypeScript and templates.                                   |
+| `npm run build:ssr`                           | Builds the server-output application.                                                |
 | `npm run serve:ssr:project-orange-storefront` | Serves the built SSR bundle from `dist/project-orange-storefront/server/server.mjs`. |
 
 ## Application Flow
