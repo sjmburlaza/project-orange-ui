@@ -1,0 +1,187 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: block;
+}
+
+.admin-feature {
+  display: grid;
+  gap: token(spacing, 5);
+  width: min(1180px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: token(spacing, 6) 0 token(spacing, 10);
+}
+
+.admin-feature__header,
+.panel__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: token(spacing, 4);
+}
+
+.admin-feature__header h1 {
+  margin-top: token(spacing, 1);
+  color: token(color, text-primary);
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.05;
+}
+
+.admin-feature__eyebrow,
+.metric-card__label,
+.data-table__head {
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.admin-feature__eyebrow {
+  color: token(color, primary);
+  font-size: 13px;
+}
+
+.admin-feature__summary {
+  max-width: 380px;
+  color: token(color, text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: token(spacing, 3);
+}
+
+.metric-card,
+.panel {
+  border: 1px solid token(color, border);
+  border-radius: token(radius, md);
+  background: token(color, background);
+}
+
+.metric-card {
+  display: grid;
+  gap: token(spacing, 2);
+  min-height: 128px;
+  padding: token(spacing, 4);
+}
+
+.metric-card__label,
+.metric-card span,
+.panel__header span,
+.data-table__row {
+  color: token(color, text-secondary);
+}
+
+.metric-card__label,
+.metric-card span {
+  font-size: 13px;
+}
+
+.metric-card strong {
+  color: token(color, text-primary);
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1;
+}
+
+.panel {
+  display: grid;
+  gap: token(spacing, 4);
+  padding: token(spacing, 5);
+}
+
+.panel__header h2 {
+  color: token(color, text-primary);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.panel__header span {
+  font-weight: 700;
+}
+
+.data-table {
+  overflow-x: auto;
+}
+
+.data-table__head,
+.data-table__row {
+  display: grid;
+  grid-template-columns: var(--admin-table-template, 1fr);
+  align-items: center;
+  gap: token(spacing, 3);
+  min-width: var(--admin-table-min-width, 780px);
+  padding: token(spacing, 3) 0;
+  border-bottom: 1px solid token(color, border);
+}
+
+.data-table__head {
+  color: token(color, text-secondary);
+  font-size: 12px;
+}
+
+.data-table__row:last-child {
+  border-bottom: 0;
+}
+
+.data-table__row strong {
+  color: token(color, text-primary);
+}
+
+.data-table__row div {
+  display: grid;
+  gap: token(spacing, 1);
+  min-width: 0;
+}
+
+.data-table__row div span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-pill {
+  justify-self: start;
+  min-width: 96px;
+  border-radius: token(radius, sm);
+  background: token(color, surface-secondary);
+  color: token(color, text-secondary);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.status-pill--success {
+  background: color-mix(in srgb, token(color, success) 12%, white);
+  color: token(color, success-hover);
+}
+
+.status-pill--warning {
+  background: color-mix(in srgb, token(color, warning) 18%, white);
+  color: #8a5a00;
+}
+
+.status-pill--danger {
+  background: color-mix(in srgb, token(color, error) 12%, white);
+  color: token(color, error-hover);
+}
+
+.status-pill--info {
+  background: color-mix(in srgb, token(color, info) 10%, white);
+  color: token(color, info-hover);
+}
+
+@media (max-width: 900px) {
+  .admin-feature__header,
+  .panel__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-feature__summary {
+    max-width: none;
+  }
+}

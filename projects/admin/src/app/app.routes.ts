@@ -44,6 +44,27 @@ export const routes: Routes = [
                 (m) => m.ProductsComponent,
               ),
           },
+          {
+            path: 'inventory',
+            loadComponent: () =>
+              import('./pages/inventory/inventory.component').then(
+                (m) => m.InventoryComponent,
+              ),
+          },
+          {
+            path: 'promotions',
+            loadComponent: () =>
+              import('./pages/promotions/promotions.component').then(
+                (m) => m.PromotionsComponent,
+              ),
+          },
+          {
+            path: 'customers',
+            loadComponent: () =>
+              import('./pages/customers/customers.component').then(
+                (m) => m.CustomersComponent,
+              ),
+          },
         ],
       },
     ],

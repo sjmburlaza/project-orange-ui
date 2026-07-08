@@ -1,0 +1,11 @@
+@use "../../styles/admin-feature-page";
+
+.inventory-table {
+  --admin-table-template:
+    minmax(190px, 1.3fr)
+    minmax(120px, 0.7fr)
+    80px
+    120px
+    minmax(120px, 0.8fr)
+    118px;
+}

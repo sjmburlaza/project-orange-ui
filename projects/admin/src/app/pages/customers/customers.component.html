@@ -1,0 +1,62 @@
+<section class="admin-feature customers">
+  <header class="admin-feature__header">
+    <div>
+      <p class="admin-feature__eyebrow">CRM</p>
+      <h1>Customers</h1>
+    </div>
+    <p class="admin-feature__summary">
+      Review customer segments, order activity, and retention signals for
+      high-value accounts.
+    </p>
+  </header>
+
+  <div class="summary-grid" aria-label="Customers summary">
+    @for (metric of metrics; track metric.label) {
+      <article class="metric-card">
+        <span class="metric-card__label">{{ metric.label }}</span>
+        <strong>{{ metric.value }}</strong>
+        <span>{{ metric.helper }}</span>
+      </article>
+    }
+  </div>
+
+  <section class="panel">
+    <header class="panel__header">
+      <h2>Customer Segments</h2>
+      <span>{{ customers.length }} profiles</span>
+    </header>
+
+    <div class="data-table customers-table" role="table" aria-label="Customer profiles">
+      <div class="data-table__head" role="row">
+        <span role="columnheader">Customer</span>
+        <span role="columnheader">Segment</span>
+        <span role="columnheader">Last order</span>
+        <span role="columnheader">Orders</span>
+        <span role="columnheader">Lifetime value</span>
+        <span role="columnheader">Status</span>
+      </div>
+
+      @for (customer of customers; track customer.email) {
+        <div class="data-table__row" role="row">
+          <div role="cell">
+            <strong>{{ customer.name }}</strong>
+            <span>{{ customer.email }}</span>
+          </div>
+          <span role="cell">{{ customer.segment }}</span>
+          <span role="cell">{{ customer.lastOrder }}</span>
+          <strong role="cell">{{ customer.orders }}</strong>
+          <span role="cell">{{ customer.lifetimeValue }}</span>
+          <span
+            class="status-pill"
+            role="cell"
+            [class.status-pill--success]="customer.status === 'vip'"
+            [class.status-pill--info]="customer.status === 'active'"
+            [class.status-pill--warning]="customer.status === 'at-risk'"
+          >
+            {{ customer.statusLabel }}
+          </span>
+        </div>
+      }
+    </div>
+  </section>
+</section>

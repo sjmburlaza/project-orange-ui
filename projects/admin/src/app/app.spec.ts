@@ -41,7 +41,12 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('nav')?.textContent).toContain('Analytics');
+    const navigationText = compiled.querySelector('nav')?.textContent;
+
+    expect(navigationText).toContain('Analytics');
+    expect(navigationText).toContain('Inventory');
+    expect(navigationText).toContain('Promotions');
+    expect(navigationText).toContain('Customers');
   });
 
   it('logs out and returns to admin login', () => {
