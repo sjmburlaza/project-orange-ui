@@ -1,0 +1,13 @@
+<nav aria-label="Primary navigation">
+  @for (item of navItems(); track item.displayName) {
+    <a
+      class="nav-item"
+      [routerLink]="['/', site(), item.path ?? 'products']"
+      [queryParams]="item.queryParams"
+      routerLinkActive="nav-item--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      {{ item.displayName }}
+    </a>
+  }
+</nav>

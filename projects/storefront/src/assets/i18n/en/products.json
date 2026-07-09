@@ -5,7 +5,7 @@
     "filters": {
       "sortBy": "Sort by",
       "defaultSort": "Default",
-      "category": "Category:",
+      "category": "Category",
       "allCategories": "All Categories",
       "filterPrice": "Filter Price",
       "clearFilters": "Clear filters"

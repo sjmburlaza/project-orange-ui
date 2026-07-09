@@ -89,6 +89,7 @@ export interface MobilePlan {
 export type ProductSort = 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
 
 export interface ProductFilters {
+  search: string | null;
   categoryId: number | null;
   sortBy: ProductSort | null;
   minPrice: number | null;

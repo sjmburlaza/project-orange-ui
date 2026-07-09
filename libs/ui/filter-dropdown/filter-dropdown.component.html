@@ -1,0 +1,21 @@
+<div class="filter-dropdown">
+  <span class="filter-dropdown__label" aria-hidden="true">{{ label }}</span>
+
+  <mat-select
+    class="filter-dropdown__select"
+    [attr.aria-label]="label"
+    [disabled]="disabled"
+    panelClass="filter-dropdown__panel"
+    [placeholder]="emptyOptionLabel"
+    [value]="selectedValue"
+    (selectionChange)="onSelectionChange($event.value)"
+  >
+    @if (emptyOptionLabel) {
+      <mat-option [value]="null">{{ emptyOptionLabel }}</mat-option>
+    }
+
+    @for (option of options; track option.value) {
+      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+    }
+  </mat-select>
+</div>

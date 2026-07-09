@@ -57,11 +57,13 @@ describe('products reducer', () => {
   it('tracks selected filters and clears them together', () => {
     const filteredState = [
       ProductActions.selectCategory({ categoryId: 7 }),
+      ProductActions.selectSearch({ search: 'keyboard' }),
       ProductActions.selectSort({ sortBy: 'price-desc' }),
       ProductActions.setPriceFilter({ minPrice: 1000, maxPrice: 5000 }),
     ].reduce(productFeature.reducer, initialState);
 
     expect(filteredState.selectedCategoryId).toBe(7);
+    expect(filteredState.search).toBe('keyboard');
     expect(filteredState.selectedSort).toBe('price-desc');
     expect(filteredState.minPrice).toBe(1000);
     expect(filteredState.maxPrice).toBe(5000);
@@ -72,6 +74,7 @@ describe('products reducer', () => {
     );
 
     expect(clearedState.selectedCategoryId).toBeNull();
+    expect(clearedState.search).toBeNull();
     expect(clearedState.selectedSort).toBeNull();
     expect(clearedState.minPrice).toBeNull();
     expect(clearedState.maxPrice).toBeNull();

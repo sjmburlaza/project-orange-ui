@@ -20,6 +20,7 @@ export interface ProductState {
 
   categories: Category[];
 
+  search: string | null;
   selectedCategoryId: number | null;
   selectedSort: ProductSort | null;
   minPrice: number | null;
@@ -48,6 +49,7 @@ export const initialState: ProductState = {
 
   categories: [],
 
+  search: null,
   selectedCategoryId: null,
   selectedSort: null,
   minPrice: null,
@@ -119,6 +121,11 @@ const reducer = createReducer(
     selectedCategoryId: categoryId,
   })),
 
+  on(ProductActions.selectSearch, (state, { search }) => ({
+    ...state,
+    search,
+  })),
+
   on(ProductActions.selectSort, (state, { sortBy }) => ({
     ...state,
     selectedSort: sortBy,
@@ -132,6 +139,7 @@ const reducer = createReducer(
 
   on(ProductActions.clearProductFilters, (state) => ({
     ...state,
+    search: null,
     selectedCategoryId: null,
     selectedSort: null,
     minPrice: null,
@@ -278,12 +286,14 @@ export const productFeature = createFeature({
 
 function isBaseProductListRequest(
   filters?: Partial<{
+    search: string | null;
     categoryId: number | null;
     minPrice: number | null;
     maxPrice: number | null;
   }>,
 ): boolean {
   return (
+    !filters?.search &&
     !filters?.categoryId &&
     filters?.minPrice == null &&
     filters?.maxPrice == null

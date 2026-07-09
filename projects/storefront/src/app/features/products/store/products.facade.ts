@@ -25,6 +25,7 @@ import {
   selectMinPrice,
   selectMaxPrice,
   selectPriceFilterMax,
+  selectSearch,
   selectInsurancePlansForProduct,
   selectMobilePlansForProduct,
   selectLoadingInsurancePlansForProduct,
@@ -57,6 +58,7 @@ export class ProductFacade {
   );
 
   readonly categories$ = this.store.select(selectCategories);
+  readonly search$ = this.store.select(selectSearch);
   readonly selectedCategoryId$ = this.store.select(selectSelectedCategoryId);
   readonly loadingCategories$ = this.store.select(selectLoadingCategories);
   readonly categoriesError$ = this.store.select(selectCategoriesError);
@@ -77,6 +79,10 @@ export class ProductFacade {
 
   selectCategory(categoryId: number | null): void {
     this.store.dispatch(ProductActions.selectCategory({ categoryId }));
+  }
+
+  selectSearch(search: string | null): void {
+    this.store.dispatch(ProductActions.selectSearch({ search }));
   }
 
   selectSort(sortBy: ProductSort | null): void {

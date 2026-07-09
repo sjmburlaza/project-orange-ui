@@ -55,6 +55,7 @@ export class ProductEffects {
     this.actions$.pipe(
       ofType(
         ProductActions.selectCategory,
+        ProductActions.selectSearch,
         ProductActions.selectSort,
         ProductActions.setPriceFilter,
         ProductActions.clearProductFilters,

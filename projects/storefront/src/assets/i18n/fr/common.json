@@ -1,5 +1,14 @@
 {
   "common": {
+    "navigation": {
+      "home": "Accueil",
+      "shop": "Boutique"
+    },
+    "search": {
+      "label": "Rechercher des produits",
+      "placeholder": "Rechercher des produits",
+      "submit": "Rechercher"
+    },
     "orderItems": {
       "header": "Récapitulatif de la commande",
       "itemCount": "Vous avez {{ count }} article(s) dans votre panier.",

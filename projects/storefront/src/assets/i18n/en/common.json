@@ -1,5 +1,14 @@
 {
   "common": {
+    "navigation": {
+      "home": "Home",
+      "shop": "Shop"
+    },
+    "search": {
+      "label": "Search products",
+      "placeholder": "Search products",
+      "submit": "Search"
+    },
     "orderItems": {
       "header": "Order Summary",
       "itemCount": "You have {{ count }} item/s in your cart.",

@@ -11,7 +11,7 @@ import { ProductCardComponent } from 'src/app/features/products/components/produ
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
 import { RangeValue } from 'libs/ui/range-slider/range-slider.component';
-import { SelectOption } from 'libs/ui/select-dropdown/select-dropdown.component';
+import { FilterDropdownOption } from 'libs/ui/filter-dropdown/filter-dropdown.component';
 import {
   DIACRITICS_PATTERN,
   LEADING_OR_TRAILING_HYPHENS_PATTERN,
@@ -69,8 +69,16 @@ export class ProductListComponent implements OnInit {
   );
 
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
+  readonly categoryOptions$ = this.productFacade.categories$.pipe(
+    map(
+      (categories): FilterDropdownOption<number>[] =>
+        categories.map(({ id, name }) => ({ label: name, value: id })),
+    ),
+    shareReplay({ bufferSize: 1, refCount: true }),
+  );
+  readonly search$ = this.productFacade.search$;
 
-  readonly sortOptions: SelectOption<ProductSort>[] = [
+  readonly sortOptions: FilterDropdownOption<ProductSort>[] = [
     {
       label: 'Price: Low to High',
       value: 'price-asc',
@@ -115,13 +123,17 @@ export class ProductListComponent implements OnInit {
   );
 
   readonly hasActiveProductFilters$ = combineLatest([
+    this.search$,
     this.selectedCategoryId$,
     this.productFacade.minPrice$,
     this.productFacade.maxPrice$,
   ]).pipe(
     map(
-      ([categoryId, minPrice, maxPrice]) =>
-        categoryId !== null || minPrice !== null || maxPrice !== null,
+      ([search, categoryId, minPrice, maxPrice]) =>
+        search !== null ||
+        categoryId !== null ||
+        minPrice !== null ||
+        maxPrice !== null,
     ),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
@@ -132,13 +144,33 @@ export class ProductListComponent implements OnInit {
     return currency ? getCurrencySymbol(currency, 'narrow') : '';
   });
 
+  private readonly categoryChange$ = new Subject<number | null>();
   private readonly priceRangeChange$ = new Subject<RangeValue>();
 
   ngOnInit(): void {
     this.initializeProductList();
+    this.watchSearchRouteParam();
     this.watchCategoryRouteParam();
     this.watchWishlistSession();
     this.trackProductViews();
+
+    this.categoryChange$
+      .pipe(
+        withLatestFrom(this.productFacade.categories$),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([categoryId, categories]) => {
+        const category = categories.find(({ id }) => id === categoryId);
+
+        this.productFacade.selectCategory(categoryId);
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            category: this.normalizeCategorySlug(category?.name),
+          },
+          queryParamsHandling: 'merge',
+        });
+      });
 
     this.priceRangeChange$
       .pipe(
@@ -184,8 +216,26 @@ export class ProductListComponent implements OnInit {
       });
   }
 
+  private watchSearchRouteParam(): void {
+    this.route.queryParamMap
+      .pipe(
+        map((params) => this.normalizeSearch(params.get('search'))),
+        distinctUntilChanged(),
+        withLatestFrom(this.search$),
+        filter(([search, selectedSearch]) => search !== selectedSearch),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([search]) => {
+        this.productFacade.selectSearch(search);
+      });
+  }
+
   onSortChange(sortBy: ProductSort | null): void {
     this.productFacade.selectSort(sortBy);
+  }
+
+  onCategoryChange(categoryId: number | null): void {
+    this.categoryChange$.next(categoryId);
   }
 
   onApplyPriceFilter(value: RangeValue): void {
@@ -313,10 +363,14 @@ export class ProductListComponent implements OnInit {
     return slug || null;
   }
 
+  private normalizeSearch(search: string | null | undefined): string | null {
+    return search?.trim() || null;
+  }
+
   private clearCategoryQueryParam(): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { category: null },
+      queryParams: { category: null, search: null },
       queryParamsHandling: 'merge',
     });
   }
