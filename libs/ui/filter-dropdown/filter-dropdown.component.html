@@ -5,6 +5,7 @@
     class="filter-dropdown__select"
     [attr.aria-label]="label"
     [disabled]="disabled"
+    panelClass="filter-dropdown__panel"
     [placeholder]="emptyOptionLabel"
     [value]="selectedValue"
     (selectionChange)="onSelectionChange($event.value)"

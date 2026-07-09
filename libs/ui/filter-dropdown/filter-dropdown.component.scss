@@ -14,6 +14,7 @@
 
   &__label {
     flex: 0 0 auto;
+    width: var(--filter-dropdown-label-width, auto);
     font-size: token(font-size, md);
     font-weight: 600;
     white-space: nowrap;
@@ -22,11 +23,28 @@
   &__select {
     width: auto;
     min-width: 180px;
-    padding: token(spacing, 2) token(spacing, 3);
-    border: 1px solid token(color, border-strong);
-    border-radius: token(radius, md);
-    background: token(color, background);
-    font-size: token(font-size, md);
+    font-size: token(font-size, sm);
+  }
+}
+
+:host ::ng-deep .filter-dropdown__select .mat-mdc-select-trigger {
+  padding: token(spacing, 2) token(spacing, 3);
+  border: 1px solid token(color, border-strong);
+  border-radius: token(radius, md);
+  background: token(color, background);
+}
+
+::ng-deep .filter-dropdown__panel {
+  --mat-option-label-text-size: #{token(font-size, sm)};
+
+  .mat-mdc-option {
+    min-height: 40px;
+    padding: 0 token(spacing, 3);
+  }
+
+  .mat-pseudo-checkbox-minimal {
+    margin-left: token(spacing, 3);
+    transform: scale(0.75);
   }
 }
 

@@ -35,6 +35,10 @@
   .filter {
     flex-direction: column;
     align-items: stretch;
+
+    app-filter-dropdown {
+      --filter-dropdown-label-width: 65px;
+    }
   }
 
   .filter-price,
