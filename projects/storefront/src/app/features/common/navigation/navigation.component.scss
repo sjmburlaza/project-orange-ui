@@ -1,0 +1,57 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+nav {
+  display: flex;
+  gap: 56px;
+  min-width: 0;
+}
+
+.nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  color: token(color, text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 4px;
+    left: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: token(color, primary);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover,
+  &:focus-visible,
+  &.nav-item--active {
+    color: token(color, text-primary);
+  }
+
+  &:hover::after,
+  &.nav-item--active::after {
+    transform: scaleX(1);
+  }
+
+  &:focus-visible {
+    border-radius: 4px;
+    outline: 2px solid token(color, primary);
+    outline-offset: 4px;
+  }
+}
