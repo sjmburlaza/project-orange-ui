@@ -1,5 +1,9 @@
 {
   "common": {
+    "navigation": {
+      "home": "Accueil",
+      "shop": "Boutique"
+    },
     "search": {
       "label": "Rechercher des produits",
       "placeholder": "Rechercher des produits",

@@ -1,5 +1,9 @@
 {
   "common": {
+    "navigation": {
+      "home": "ホーム",
+      "shop": "ショップ"
+    },
     "search": {
       "label": "商品を検索",
       "placeholder": "商品を検索",

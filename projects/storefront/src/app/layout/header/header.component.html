@@ -17,7 +17,25 @@
         <h1>ORANGE</h1>
       </div>
     </a>
-    <app-search />
+    <div class="header__discovery">
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a
+          [routerLink]="['/', site()]"
+          routerLinkActive="primary-nav__link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ "common.navigation.home" | translate }}
+        </a>
+        <a
+          [routerLink]="['/', site(), 'products']"
+          routerLinkActive="primary-nav__link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ "common.navigation.shop" | translate }}
+        </a>
+      </nav>
+      <app-search />
+    </div>
     <div class="cta">
       <div class="cta__cart">
         <button

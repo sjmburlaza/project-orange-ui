@@ -2,7 +2,8 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, map } from 'rxjs';
 import { AuthService } from 'libs/core/auth/auth.service';
 import { AuthStore } from 'libs/core/auth/auth.store';
@@ -16,7 +17,9 @@ import { SearchComponent } from 'src/app/features/common/search/search.component
     MatBadgeModule,
     AsyncPipe,
     RouterLink,
+    RouterLinkActive,
     MatIconModule,
+    TranslatePipe,
     SearchComponent,
   ],
   templateUrl: './header.component.html',
