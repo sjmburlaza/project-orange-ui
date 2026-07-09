@@ -11,6 +11,11 @@ import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { SearchComponent } from 'src/app/features/common/search/search.component';
 
+interface PrimaryNavigationItem {
+  translationKey: string;
+  path: string | null;
+}
+
 @Component({
   selector: 'app-header',
   imports: [
@@ -33,6 +38,11 @@ export class HeaderComponent implements OnInit {
   readonly siteService = inject(SiteService);
   readonly itemCount$ = this.cartFacade.itemCount$;
   readonly site = this.siteService.currentSite;
+
+  readonly primaryNavigationItems: readonly PrimaryNavigationItem[] = [
+    { translationKey: 'common.navigation.home', path: null },
+    { translationKey: 'common.navigation.shop', path: 'products' },
+  ];
 
   readonly accountMenuItems$ = this.authStore.isAuthenticated$.pipe(
     map((isAuthenticated) => [
