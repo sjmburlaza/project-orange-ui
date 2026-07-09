@@ -24,6 +24,7 @@ export const ProductActions = createActionGroup({
     'Load Categories Failure': props<{ error: string }>(),
 
     'Select Category': props<{ categoryId: number | null }>(),
+    'Select Search': props<{ search: string | null }>(),
     'Select Sort': props<{ sortBy: ProductSort | null }>(),
     'Set Price Filter': props<{
       minPrice: number | null;

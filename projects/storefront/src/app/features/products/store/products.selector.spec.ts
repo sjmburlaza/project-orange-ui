@@ -15,8 +15,9 @@ import {
 describe('product selectors', () => {
   it('projects the selected product filters into an API-ready filter object', () => {
     expect(
-      selectProductFilters.projector(3, 'name-asc', 1000, 5000),
+      selectProductFilters.projector('keyboard', 3, 'name-asc', 1000, 5000),
     ).toEqual({
+      search: 'keyboard',
       categoryId: 3,
       sortBy: 'name-asc',
       minPrice: 1000,

@@ -1,5 +1,10 @@
 {
   "common": {
+    "search": {
+      "label": "商品を検索",
+      "placeholder": "商品を検索",
+      "submit": "検索"
+    },
     "orderItems": {
       "header": "注文概要",
       "itemCount": "カートに {{ count }} 点の商品があります。",

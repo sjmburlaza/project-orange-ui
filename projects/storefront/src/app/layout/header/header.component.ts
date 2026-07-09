@@ -1,27 +1,14 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { finalize, map } from 'rxjs';
 import { AuthService } from 'libs/core/auth/auth.service';
 import { AuthStore } from 'libs/core/auth/auth.store';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
-import headerCnMockData from 'src/assets/mock/header/header.cn.json';
-import headerFrMockData from 'src/assets/mock/header/header.fr.json';
-import headerJpMockData from 'src/assets/mock/header/header.jp.json';
-import headerMockData from 'src/assets/mock/header/header.json';
-
-interface HeaderNavItem {
-  displayName: string;
-  path?: string;
-  queryParams: { category: string } | null;
-}
-
-interface HeaderData {
-  navItems: HeaderNavItem[];
-}
+import { SearchComponent } from 'src/app/features/common/search/search.component';
 
 @Component({
   selector: 'app-header',
@@ -29,8 +16,8 @@ interface HeaderData {
     MatBadgeModule,
     AsyncPipe,
     RouterLink,
-    RouterLinkActive,
     MatIconModule,
+    SearchComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -43,17 +30,6 @@ export class HeaderComponent implements OnInit {
   readonly siteService = inject(SiteService);
   readonly itemCount$ = this.cartFacade.itemCount$;
   readonly site = this.siteService.currentSite;
-
-  private readonly headerBySite: Record<string, HeaderData> = {
-    ph: headerMockData as HeaderData,
-    fr: headerFrMockData as HeaderData,
-    cn: headerCnMockData as HeaderData,
-    jp: headerJpMockData as HeaderData,
-  };
-
-  readonly navItems = computed(
-    () => (this.headerBySite[this.site()] ?? this.headerBySite['ph']).navItems,
-  );
 
   readonly accountMenuItems$ = this.authStore.isAuthenticated$.pipe(
     map((isAuthenticated) => [

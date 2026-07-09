@@ -10,6 +10,7 @@ export const {
   selectSelectedProductId,
 
   selectCategories,
+  selectSearch,
   selectSelectedCategoryId,
 
   selectSelectedSort,
@@ -32,11 +33,13 @@ export const {
 } = productFeature;
 
 export const selectProductFilters = createSelector(
+  selectSearch,
   selectSelectedCategoryId,
   selectSelectedSort,
   selectMinPrice,
   selectMaxPrice,
-  (categoryId, sortBy, minPrice, maxPrice): ProductFilters => ({
+  (search, categoryId, sortBy, minPrice, maxPrice): ProductFilters => ({
+    search,
     categoryId,
     sortBy,
     minPrice,

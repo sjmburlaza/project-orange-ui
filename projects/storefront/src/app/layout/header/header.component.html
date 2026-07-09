@@ -13,27 +13,12 @@
       aria-label="Orange home"
     >
       <div class="brand">
-        <h1>ORANGE</h1>
         <mat-icon aria-hidden="true">shopping_bag</mat-icon>
+        <h1>ORANGE</h1>
       </div>
     </a>
-    <nav aria-label="Primary navigation">
-      @for (item of navItems(); track item.displayName) {
-        <a
-          class="nav-item"
-          [routerLink]="['/', site(), item.path ?? 'products']"
-          [queryParams]="item.queryParams"
-          routerLinkActive="nav-item--active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          {{ item.displayName }}
-        </a>
-      }
-    </nav>
+    <app-search />
     <div class="cta">
-      <div class="cta__search">
-        <i class="bi bi-search"></i>
-      </div>
       <div class="cta__cart">
         <button
           type="button"

@@ -21,6 +21,10 @@ export class ProductApiService {
   getProducts(filters?: Partial<ProductFilters>): Observable<Product[]> {
     let params = new HttpParams();
 
+    if (filters?.search) {
+      params = params.set('search', filters.search);
+    }
+
     if (filters?.categoryId != null) {
       params = params.set('categoryId', filters.categoryId);
     }
@@ -38,6 +42,14 @@ export class ProductApiService {
     }
 
     return this.http.get<Product[]>(this.baseUrl, { params });
+  }
+
+  getSearchSuggestions(query: string): Observable<string[]> {
+    const params = new HttpParams().set('query', query);
+
+    return this.http.get<string[]>(`${this.baseUrl}/search/suggestions`, {
+      params,
+    });
   }
 
   getProductConfigure(id: number): Observable<ProductConfigure> {

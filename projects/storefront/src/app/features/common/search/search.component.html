@@ -1,0 +1,56 @@
+<form
+  class="search"
+  role="search"
+  (ngSubmit)="submit()"
+  (focusout)="onFocusOut($event)"
+>
+  <i class="bi bi-search search__icon" aria-hidden="true"></i>
+  <input
+    type="search"
+    autocomplete="off"
+    [formControl]="searchControl"
+    [placeholder]="'common.search.placeholder' | translate"
+    [attr.aria-label]="'common.search.label' | translate"
+    aria-autocomplete="list"
+    aria-controls="product-search-suggestions"
+    [attr.aria-expanded]="suggestionsOpen()"
+    [attr.aria-activedescendant]="
+      activeSuggestionIndex() >= 0
+        ? 'product-search-suggestion-' + activeSuggestionIndex()
+        : null
+    "
+    role="combobox"
+    (focus)="onFocus()"
+    (keydown)="onKeydown($event)"
+  />
+  <button type="submit">
+    {{ "common.search.submit" | translate }}
+  </button>
+
+  @if (suggestionsOpen()) {
+    <ul
+      id="product-search-suggestions"
+      class="search__suggestions"
+      role="listbox"
+    >
+      @for (suggestion of suggestions(); track $index; let index = $index) {
+        <li
+          [id]="'product-search-suggestion-' + index"
+          role="option"
+          [attr.aria-selected]="activeSuggestionIndex() === index"
+        >
+          <button
+            type="button"
+            [class.search__suggestion--active]="
+              activeSuggestionIndex() === index
+            "
+            (click)="selectSuggestion(suggestion)"
+          >
+            <i class="bi bi-search" aria-hidden="true"></i>
+            {{ suggestion }}
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</form>

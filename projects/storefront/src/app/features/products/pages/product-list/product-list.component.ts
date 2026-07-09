@@ -69,6 +69,7 @@ export class ProductListComponent implements OnInit {
   );
 
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
+  readonly search$ = this.productFacade.search$;
 
   readonly sortOptions: SelectOption<ProductSort>[] = [
     {
@@ -115,13 +116,17 @@ export class ProductListComponent implements OnInit {
   );
 
   readonly hasActiveProductFilters$ = combineLatest([
+    this.search$,
     this.selectedCategoryId$,
     this.productFacade.minPrice$,
     this.productFacade.maxPrice$,
   ]).pipe(
     map(
-      ([categoryId, minPrice, maxPrice]) =>
-        categoryId !== null || minPrice !== null || maxPrice !== null,
+      ([search, categoryId, minPrice, maxPrice]) =>
+        search !== null ||
+        categoryId !== null ||
+        minPrice !== null ||
+        maxPrice !== null,
     ),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
@@ -136,6 +141,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeProductList();
+    this.watchSearchRouteParam();
     this.watchCategoryRouteParam();
     this.watchWishlistSession();
     this.trackProductViews();
@@ -181,6 +187,20 @@ export class ProductListComponent implements OnInit {
       )
       .subscribe(([categoryId]) => {
         this.productFacade.selectCategory(categoryId);
+      });
+  }
+
+  private watchSearchRouteParam(): void {
+    this.route.queryParamMap
+      .pipe(
+        map((params) => this.normalizeSearch(params.get('search'))),
+        distinctUntilChanged(),
+        withLatestFrom(this.search$),
+        filter(([search, selectedSearch]) => search !== selectedSearch),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([search]) => {
+        this.productFacade.selectSearch(search);
       });
   }
 
@@ -313,10 +333,14 @@ export class ProductListComponent implements OnInit {
     return slug || null;
   }
 
+  private normalizeSearch(search: string | null | undefined): string | null {
+    return search?.trim() || null;
+  }
+
   private clearCategoryQueryParam(): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { category: null },
+      queryParams: { category: null, search: null },
       queryParamsHandling: 'merge',
     });
   }

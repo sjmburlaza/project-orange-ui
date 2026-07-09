@@ -1,5 +1,10 @@
 {
   "common": {
+    "search": {
+      "label": "搜索商品",
+      "placeholder": "搜索商品",
+      "submit": "搜索"
+    },
     "orderItems": {
       "header": "订单摘要",
       "itemCount": "您的购物车中有 {{ count }} 件商品。",
