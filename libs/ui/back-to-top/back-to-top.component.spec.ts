@@ -64,7 +64,7 @@ describe('BackToTopComponent', () => {
   });
 
   it('smoothly scrolls to the top when clicked', () => {
-    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
     scrollY = 1;
     window.dispatchEvent(new Event('scroll'));
     fixture.detectChanges();
