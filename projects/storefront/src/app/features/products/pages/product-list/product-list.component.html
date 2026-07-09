@@ -4,7 +4,7 @@
       [sortOptions]="sortOptions"
       [selectedSort]="selectedSort$ | async"
       [defaultSortLabel]="'products.filters.defaultSort' | translate"
-      [categoryOptions]="categoryOptions()"
+      [categoryOptions]="(categoryOptions$ | async) ?? []"
       [selectedCategoryId]="selectedCategoryId$ | async"
       [allCategoriesLabel]="'products.filters.allCategories' | translate"
       [priceRange]="priceRange$ | async"

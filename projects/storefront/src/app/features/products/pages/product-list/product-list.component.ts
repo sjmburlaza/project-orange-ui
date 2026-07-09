@@ -27,7 +27,7 @@ import {
   Subject,
   withLatestFrom,
 } from 'rxjs';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
@@ -69,11 +69,12 @@ export class ProductListComponent implements OnInit {
   );
 
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
-  readonly categories = toSignal(this.productFacade.categories$, {
-    initialValue: [],
-  });
-  readonly categoryOptions = computed<FilterDropdownOption<number>[]>(() =>
-    this.categories().map(({ id, name }) => ({ label: name, value: id })),
+  readonly categoryOptions$ = this.productFacade.categories$.pipe(
+    map(
+      (categories): FilterDropdownOption<number>[] =>
+        categories.map(({ id, name }) => ({ label: name, value: id })),
+    ),
+    shareReplay({ bufferSize: 1, refCount: true }),
   );
   readonly search$ = this.productFacade.search$;
 
@@ -143,6 +144,7 @@ export class ProductListComponent implements OnInit {
     return currency ? getCurrencySymbol(currency, 'narrow') : '';
   });
 
+  private readonly categoryChange$ = new Subject<number | null>();
   private readonly priceRangeChange$ = new Subject<RangeValue>();
 
   ngOnInit(): void {
@@ -151,6 +153,24 @@ export class ProductListComponent implements OnInit {
     this.watchCategoryRouteParam();
     this.watchWishlistSession();
     this.trackProductViews();
+
+    this.categoryChange$
+      .pipe(
+        withLatestFrom(this.productFacade.categories$),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(([categoryId, categories]) => {
+        const category = categories.find(({ id }) => id === categoryId);
+
+        this.productFacade.selectCategory(categoryId);
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            category: this.normalizeCategorySlug(category?.name),
+          },
+          queryParamsHandling: 'merge',
+        });
+      });
 
     this.priceRangeChange$
       .pipe(
@@ -215,16 +235,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onCategoryChange(categoryId: number | null): void {
-    const category = this.categories().find(({ id }) => id === categoryId);
-
-    this.productFacade.selectCategory(categoryId);
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        category: this.normalizeCategorySlug(category?.name),
-      },
-      queryParamsHandling: 'merge',
-    });
+    this.categoryChange$.next(categoryId);
   }
 
   onApplyPriceFilter(value: RangeValue): void {

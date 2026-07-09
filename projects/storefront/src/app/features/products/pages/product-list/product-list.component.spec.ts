@@ -54,7 +54,7 @@ describe('ProductListComponent', () => {
     ]);
   });
 
-  it('builds category options for the product toolbar', () => {
+  it('builds category options for the product toolbar', async () => {
     store.dispatch(
       ProductActions.loadCategoriesSuccess({
         categories: [
@@ -64,7 +64,7 @@ describe('ProductListComponent', () => {
       }),
     );
 
-    expect(component.categoryOptions()).toEqual([
+    expect(await firstValueFrom(component.categoryOptions$)).toEqual([
       { label: 'Phones', value: 1 },
       { label: 'Laptops', value: 2 },
     ]);
