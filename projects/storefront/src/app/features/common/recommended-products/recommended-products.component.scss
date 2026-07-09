@@ -25,7 +25,7 @@
   gap: token(spacing, 4);
   border: 1px solid token(color, border);
   border-radius: token(radius, md);
-  padding: 32px;
+  padding: token(spacing, 8);
   background: token(color, background);
 
   &__media {

@@ -2,18 +2,18 @@
 
 :host {
   display: grid;
-  gap: 16px;
+  gap: token(spacing, 4);
 }
 
 .accepted-payments {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: token(spacing, 2);
 
   span {
     border: 1px solid token(color, border-strong);
     border-radius: 4px;
-    padding: 5px 8px;
+    padding: 5px token(spacing, 2);
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0;
@@ -23,7 +23,7 @@
 .card-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: token(spacing, 3);
 
   @include respond-down(sm) {
     grid-template-columns: 1fr;
@@ -48,9 +48,9 @@
 
 .installment-option {
   border: 0;
-  background: #fff;
+  background: token(color, surface-elevated);
   min-height: 46px;
-  padding: 10px 12px;
+  padding: 10px token(spacing, 3);
   font-weight: 700;
   cursor: pointer;
 

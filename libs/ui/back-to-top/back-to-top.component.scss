@@ -18,7 +18,7 @@
   border: 0;
   border-radius: 50%;
   background: token(color, primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px token(color, shadow-control);
   color: token(color, text-inverse);
   cursor: pointer;
   transition:
@@ -29,7 +29,7 @@
 
 .back-to-top:hover {
   background: token(color, primary-hover);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 16px token(color, shadow-control-hover);
   transform: translateY(-2px);
 }
 
@@ -42,7 +42,7 @@
   outline-offset: 2px;
   box-shadow:
     0 0 0 5px token(color, primary),
-    0 4px 12px rgba(0, 0, 0, 0.2);
+    0 4px 12px token(color, shadow-control);
 }
 
 .back-to-top svg {

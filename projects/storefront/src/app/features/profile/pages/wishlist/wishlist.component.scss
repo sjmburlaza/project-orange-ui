@@ -225,19 +225,19 @@
   width: 42px;
   border: 0;
   padding: 0;
-  background: transparent;
+  background: token(color, transparent);
   color: token(color, text-secondary);
 
   &:hover,
   &:focus-visible {
-    border-color: transparent;
-    background: transparent;
+    border-color: token(color, transparent);
+    background: token(color, transparent);
     color: token(color, primary);
   }
 
   &:disabled {
-    border-color: transparent;
-    background: transparent;
+    border-color: token(color, transparent);
+    background: token(color, transparent);
   }
 }
 

@@ -1,3 +1,5 @@
+@use "tokens/tokens" as *;
+
 :host ::ng-deep {
   .mat-step-header {
     pointer-events: none;
@@ -12,14 +14,14 @@
   .mat-step-header:focus,
   .mat-step-header.cdk-program-focused,
   .mat-step-header.cdk-keyboard-focused {
-    background-color: transparent !important;
+    background-color: token(color, transparent) !important;
   }
 }
 
 .step-actions {
   display: flex;
   justify-content: end;
-  gap: 12px;
+  gap: token(spacing, 3);
 }
 
 button {

@@ -1,7 +1,9 @@
+@use "tokens/tokens" as *;
+
 .order-items {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: token(spacing, 6);
 
   h3 {
     font-size: 24px;
@@ -37,7 +39,7 @@
   &__description {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: token(spacing, 1);
 
     &-name {
       font-size: 18px;
@@ -48,5 +50,5 @@
 
 .divider {
   height: 1px;
-  background: rgb(211, 211, 211);
+  background: token(color, divider);
 }

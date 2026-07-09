@@ -1,10 +1,12 @@
+@use "tokens/tokens" as *;
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  column-gap: 24px;
+  column-gap: token(spacing, 6);
 }
 
-@media (min-width: 1024px) {
+@include respond-up(lg) {
   .col-lg-12 {
     grid-column: span 12;
   }
@@ -27,5 +29,5 @@
 }
 
 app-dynamic-field {
-  padding-top: 8px;
+  padding-top: token(spacing, 2);
 }

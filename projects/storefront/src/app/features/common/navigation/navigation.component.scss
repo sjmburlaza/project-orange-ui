@@ -7,7 +7,7 @@
 
 nav {
   display: flex;
-  gap: 56px;
+  gap: token(spacing, 14);
   min-width: 0;
 }
 

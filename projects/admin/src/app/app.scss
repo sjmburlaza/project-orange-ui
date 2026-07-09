@@ -1,8 +1,10 @@
+@use "tokens/tokens" as *;
+
 :host {
   display: block;
   min-height: 100vh;
-  background: #f6f7f9;
-  color: #17202a;
+  background: token(color, admin-background);
+  color: token(color, admin-text);
 }
 
 .admin-shell {
@@ -14,15 +16,15 @@
 .admin-shell__nav {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: token(spacing, 8);
   height: 100vh;
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  padding: 28px 24px;
+  padding: token(spacing, 7) token(spacing, 6);
   position: sticky;
   top: 0;
-  background: #161a22;
-  color: #ffffff;
+  background: token(color, admin-sidebar);
+  color: token(color, text-inverse);
 }
 
 .admin-shell__brand {
@@ -35,29 +37,29 @@
 
 .admin-shell__links {
   display: grid;
-  gap: 8px;
+  gap: token(spacing, 2);
 }
 
 .admin-shell__links a {
   border-radius: 8px;
-  color: #cbd5e1;
+  color: token(color, admin-nav-text);
   font-weight: 700;
-  padding: 12px 14px;
+  padding: token(spacing, 3) 14px;
   text-decoration: none;
 }
 
 .admin-shell__links a:hover,
 .admin-shell__links a.is-active {
-  background: #ffffff;
-  color: #161a22;
+  background: token(color, surface-elevated);
+  color: token(color, admin-sidebar);
 }
 
 .admin-shell__logout {
   align-items: center;
-  background: transparent;
-  border: 1px solid #334155;
+  background: token(color, transparent);
+  border: 1px solid token(color, admin-nav-border);
   border-radius: 8px;
-  color: #cbd5e1;
+  color: token(color, admin-nav-text);
   cursor: pointer;
   display: flex;
   font: inherit;
@@ -65,13 +67,13 @@
   gap: 10px;
   justify-content: center;
   margin-top: auto;
-  padding: 12px 14px;
+  padding: token(spacing, 3) 14px;
 }
 
 .admin-shell__logout:hover:not(:disabled),
 .admin-shell__logout:focus-visible {
-  background: #ffffff;
-  color: #161a22;
+  background: token(color, surface-elevated);
+  color: token(color, admin-sidebar);
   outline: none;
 }
 
@@ -82,19 +84,19 @@
 
 .admin-shell__content {
   min-width: 0;
-  padding: 24px 0;
+  padding: token(spacing, 6) 0;
 }
 
-@media (max-width: 760px) {
+@include respond-down(md) {
   .admin-shell {
     grid-template-columns: 1fr;
   }
 
   .admin-shell__nav {
-    gap: 16px;
+    gap: token(spacing, 4);
     height: auto;
     overflow: visible;
-    padding: 18px 16px;
+    padding: 18px token(spacing, 4);
     position: static;
   }
 

@@ -3,7 +3,7 @@
 .trade-in-dialog {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: token(spacing, 5);
   padding: 30px;
   overflow: visible;
 }
@@ -12,7 +12,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: token(spacing, 4);
 
   h2,
   p {
@@ -25,7 +25,7 @@
   }
 
   p {
-    margin-top: 8px;
+    margin-top: token(spacing, 2);
     color: token(color, text-secondary);
     font-size: 16px;
   }
@@ -44,14 +44,14 @@
 .step-tabs {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: token(spacing, 2);
 }
 
 .step-tab {
   display: flex;
   align-items: center;
   min-height: 64px;
-  gap: 4px;
+  gap: token(spacing, 1);
   padding: 10px;
   border: 1px solid token(color, border);
   border-radius: 8px;
@@ -79,7 +79,7 @@
 .step-panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: token(spacing, 4);
 }
 
 .copy {
@@ -110,7 +110,7 @@ label {
   input,
   select {
     min-height: 42px;
-    padding: 8px 10px;
+    padding: token(spacing, 2) 10px;
     border: 1px solid token(color, border-strong);
     border-radius: 8px;
     background: token(color, background);
@@ -129,11 +129,11 @@ label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: token(spacing, 4);
 }
 
 .estimate {
-  padding: 14px 16px;
+  padding: 14px token(spacing, 4);
   border-radius: 8px;
   background: token(color, card-background);
 }
@@ -141,15 +141,15 @@ label {
 .condition-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: token(spacing, 3);
 }
 
 .condition {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  gap: token(spacing, 4);
   align-items: center;
-  padding: 16px;
+  padding: token(spacing, 4);
   border: 1px solid token(color, border);
   border-radius: 8px;
 
@@ -189,8 +189,8 @@ label {
 .summary {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: token(spacing, 3);
+  padding: token(spacing, 4);
   border: 1px solid token(color, border);
   border-radius: 8px;
 
@@ -234,11 +234,11 @@ label {
 footer {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: token(spacing, 3);
 
   button {
     min-width: 96px;
-    padding: 10px 16px;
+    padding: 10px token(spacing, 4);
     border: 1px solid token(color, primary);
     border-radius: 8px;
     background: token(color, primary);
@@ -251,13 +251,13 @@ footer {
     }
 
     &.secondary {
-      background: transparent;
+      background: token(color, transparent);
       color: token(color, primary);
     }
   }
 }
 
-@media (max-width: 620px) {
+@include respond-down(md) {
   .step-tabs,
   .condition {
     grid-template-columns: 1fr;

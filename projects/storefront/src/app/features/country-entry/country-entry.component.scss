@@ -6,7 +6,11 @@
   place-items: center;
   padding: token(spacing, 6);
   background:
-    linear-gradient(135deg, rgba(255, 165, 0, 0.12), transparent 34%),
+    linear-gradient(
+      135deg,
+      token(color, accent-glow),
+      token(color, transparent) 34%
+    ),
     token(color, surface-secondary);
 
   &__panel {
@@ -15,12 +19,12 @@
     border: 1px solid token(color, border-strong);
     border-radius: token(radius, md);
     background: token(color, background);
-    box-shadow: 0 24px 60px rgba(17, 17, 17, 0.08);
+    box-shadow: 0 24px 60px token(color, shadow-panel);
   }
 
   &__brand {
     display: flex;
-    gap: 8px;
+    gap: token(spacing, 2);
     line-height: 40px;
     color: token(color, primary);
 
@@ -119,7 +123,7 @@
   &__option:hover,
   &__option--suggested {
     border-color: token(color, primary);
-    background: rgba(255, 165, 0, 0.08);
+    background: token(color, accent-surface-subtle);
   }
 
   &__country-flag {
@@ -133,7 +137,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@include respond-down(md) {
   .country-entry {
     padding: token(spacing, 4);
   }

@@ -1,13 +1,15 @@
+@use "tokens/tokens" as *;
+
 .summary-container {
   h3 {
     font-size: 24px;
   }
 
   .items {
-    padding-top: 24px;
+    padding-top: token(spacing, 6);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: token(spacing, 2);
 
     .item {
       display: flex;
@@ -17,8 +19,8 @@
 
   .divider {
     height: 1px;
-    background: rgb(211, 211, 211);
-    margin: 24px 0;
+    background: token(color, divider);
+    margin: token(spacing, 6) 0;
   }
 
   .total {

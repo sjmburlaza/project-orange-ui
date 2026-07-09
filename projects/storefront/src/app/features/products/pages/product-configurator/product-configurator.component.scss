@@ -62,7 +62,7 @@
     }
 
     i {
-      color: black;
+      color: token(color, product-placeholder);
       font-size: 220px;
       filter: opacity(0.7);
     }

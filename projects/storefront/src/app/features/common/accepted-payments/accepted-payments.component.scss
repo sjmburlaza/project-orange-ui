@@ -6,8 +6,8 @@
 
 .accepted-payments {
   display: grid;
-  gap: 12px;
-  padding: 24px;
+  gap: token(spacing, 3);
+  padding: token(spacing, 6);
   border: 1px solid token(color, border-strong);
   border-radius: 24px;
 
@@ -21,7 +21,7 @@
   &__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: token(spacing, 2);
     margin: 0;
     padding: 0;
     list-style: none;

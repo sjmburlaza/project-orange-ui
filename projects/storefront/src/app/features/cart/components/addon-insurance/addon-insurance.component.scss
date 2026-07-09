@@ -3,7 +3,7 @@
 .addon-plan-dialog {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: token(spacing, 5);
   width: min(520px, 90vw);
   max-height: min(720px, 90vh);
   padding: 30px;
@@ -12,7 +12,7 @@
   header {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: token(spacing, 2);
 
     h2,
     p {
@@ -41,15 +41,15 @@
   .plan-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: token(spacing, 3);
   }
 
   .plan {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 8px 16px;
+    gap: token(spacing, 2) token(spacing, 4);
     width: 100%;
-    padding: 16px;
+    padding: token(spacing, 4);
     text-align: left;
     border: 1px solid token(color, border);
     border-radius: 8px;
@@ -59,7 +59,7 @@
     &:hover,
     &--selected {
       border-color: token(color, primary);
-      background: rgba(255, 165, 0, 0.08);
+      background: token(color, accent-surface-subtle);
     }
 
     &__name {
@@ -80,11 +80,11 @@
   footer {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: token(spacing, 3);
 
     button {
       min-width: 88px;
-      padding: 10px 16px;
+      padding: 10px token(spacing, 4);
       border: 1px solid token(color, primary);
       border-radius: 8px;
       background: token(color, primary);
@@ -97,7 +97,7 @@
       }
 
       &.secondary {
-        background: transparent;
+        background: token(color, transparent);
         color: token(color, primary);
       }
     }

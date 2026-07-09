@@ -2,9 +2,9 @@
 
 .shipping-options {
   display: grid;
-  gap: 16px;
-  margin-top: 12px;
-  margin-bottom: 36px;
+  gap: token(spacing, 4);
+  margin-top: token(spacing, 3);
+  margin-bottom: token(spacing, 9);
 
   h3 {
     margin: 0;
@@ -13,21 +13,21 @@
 
 .shipping-list {
   display: grid;
-  gap: 12px;
+  gap: token(spacing, 3);
 }
 
 .fulfillment-tabs {
   display: flex;
   width: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid token(color, border-control);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .fulfillment-tab {
   border: 0;
-  background: #fff;
-  padding: 16px 24px;
+  background: token(color, surface-elevated);
+  padding: token(spacing, 4) token(spacing, 6);
   min-height: 64px;
   flex: 1 1 0;
   display: inline-flex;
@@ -45,21 +45,21 @@
   }
 
   & + & {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid token(color, border-control);
   }
 
   &.active {
     background: token(color, secondary);
-    color: #fff;
+    color: token(color, text-inverse);
   }
 }
 
 .shipping-card {
   width: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid token(color, border-control);
   border-radius: 18px;
-  background: #fff;
-  padding: 20px;
+  background: token(color, surface-elevated);
+  padding: token(spacing, 5);
   display: flex;
   justify-content: space-between;
   text-align: left;
@@ -67,7 +67,7 @@
 
   p {
     margin: 6px 0 0;
-    color: #666;
+    color: token(color, text-body-muted);
   }
 
   &.selected {
@@ -77,5 +77,5 @@
 }
 
 .error {
-  color: #ba1a1a;
+  color: token(color, form-error);
 }

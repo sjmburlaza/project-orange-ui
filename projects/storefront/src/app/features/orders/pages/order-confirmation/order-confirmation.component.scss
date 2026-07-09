@@ -3,19 +3,19 @@
 :host {
   display: flex;
   justify-content: center;
-  margin-top: 36px;
+  margin-top: token(spacing, 9);
   width: 100%;
 }
 
 .confirmation {
   display: grid;
-  gap: 32px;
+  gap: token(spacing, 8);
   width: min(100%, 920px);
-  padding: 8px 16px 40px;
+  padding: token(spacing, 2) token(spacing, 4) token(spacing, 10);
   color: token(color, text-primary);
 
   @include respond-down(md) {
-    gap: 24px;
+    gap: token(spacing, 6);
     padding-inline: 0;
   }
 }
@@ -42,13 +42,13 @@
 .confirmation__header {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  gap: token(spacing, 6);
   align-items: center;
-  padding-bottom: 24px;
+  padding-bottom: token(spacing, 6);
   border-bottom: 1px solid token(color, border-strong);
 
   h1 {
-    margin: 4px 0 8px;
+    margin: token(spacing, 1) 0 token(spacing, 2);
     font-size: 40px;
     line-height: 1.1;
     letter-spacing: 0;
@@ -94,7 +94,7 @@
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: token(spacing, 4);
 
   @include respond-down(md) {
     grid-template-columns: 1fr;
@@ -106,7 +106,7 @@
   border: 1px solid token(color, border);
   border-radius: 8px;
   background: token(color, background);
-  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+  box-shadow: 0 8px 24px token(color, shadow-card);
 }
 
 .summary-panel {
@@ -131,7 +131,7 @@
   max-width: 100%;
   border: 1px solid;
   border-radius: 999px;
-  padding: 8px 16px;
+  padding: token(spacing, 2) token(spacing, 4);
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
@@ -139,26 +139,26 @@
 }
 
 .status-badge--success {
-  border-color: #bbf7d0;
-  background: #dcfce7;
+  border-color: token(color, success-border);
+  background: token(color, success-surface);
   color: token(color, success-hover);
 }
 
 .status-badge--warning {
-  border-color: #fde68a;
-  background: #fef3c7;
-  color: #92400e;
+  border-color: token(color, warning-border);
+  background: token(color, warning-surface);
+  color: token(color, warning-text-strong);
 }
 
 .status-badge--info {
-  border-color: #bfdbfe;
-  background: #dbeafe;
+  border-color: token(color, info-border);
+  background: token(color, info-surface);
   color: token(color, info-hover);
 }
 
 .status-badge--error {
-  border-color: #fecaca;
-  background: #fee2e2;
+  border-color: token(color, error-border);
+  background: token(color, error-surface);
   color: token(color, error-hover);
 }
 
@@ -182,7 +182,7 @@
 .section__header {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: token(spacing, 4);
   align-items: baseline;
   margin-bottom: 18px;
 
@@ -200,7 +200,7 @@
 .item {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr) auto;
-  gap: 10px 16px;
+  gap: 10px token(spacing, 4);
   align-items: start;
   padding: 14px 0;
   border-top: 1px solid token(color, border);
@@ -260,7 +260,7 @@
   min-width: 0;
 
   h3 {
-    margin: 0 0 4px;
+    margin: 0 0 token(spacing, 1);
     font-size: 17px;
     line-height: 1.25;
     letter-spacing: 0;
@@ -326,7 +326,7 @@
   width: 22px;
   height: 22px;
   overflow: hidden;
-  color: gray;
+  color: token(color, text-subtle);
   line-height: 1;
 
   img {
@@ -353,7 +353,7 @@
 .address {
   display: grid;
   gap: 6px;
-  margin-top: 16px;
+  margin-top: token(spacing, 4);
   color: token(color, text-secondary);
   font-style: normal;
   line-height: 1.45;
@@ -365,8 +365,8 @@
 
 .next-steps {
   display: grid;
-  gap: 12px;
-  margin: 16px 0 0;
+  gap: token(spacing, 3);
+  margin: token(spacing, 4) 0 0;
   padding-left: 22px;
   color: token(color, text-secondary);
   line-height: 1.45;
@@ -375,7 +375,7 @@
 .confirmation__actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: token(spacing, 3);
 
   a {
     min-width: 170px;

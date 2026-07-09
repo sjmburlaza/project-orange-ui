@@ -1,6 +1,8 @@
+@use "tokens/tokens" as *;
+
 .cta-container {
   display: grid;
-  gap: 12px;
+  gap: token(spacing, 3);
 
   button {
     width: 100%;

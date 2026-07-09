@@ -8,26 +8,26 @@
 
 .orders {
   display: grid;
-  gap: 24px;
+  gap: token(spacing, 6);
   width: min(100%, 960px);
-  padding: 40px 16px 56px;
+  padding: token(spacing, 10) token(spacing, 4) token(spacing, 14);
   color: token(color, text-primary);
 
   @include respond-down(md) {
-    padding: 28px 0 40px;
+    padding: token(spacing, 7) 0 token(spacing, 10);
   }
 }
 
 .orders__header {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  gap: token(spacing, 6);
   align-items: center;
   padding-bottom: 22px;
   border-bottom: 1px solid token(color, border-strong);
 
   h1 {
-    margin: 4px 0 8px;
+    margin: token(spacing, 1) 0 token(spacing, 2);
     font-size: 38px;
     line-height: 1.1;
     letter-spacing: 0;
@@ -97,7 +97,7 @@
   align-items: center;
   margin: 0;
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 14px token(spacing, 4);
   color: token(color, text-secondary);
 
   p {
@@ -106,8 +106,8 @@
 }
 
 .lookup-message--error {
-  border: 1px solid #fecaca;
-  background: #fee2e2;
+  border: 1px solid token(color, error-border);
+  background: token(color, error-surface);
   color: token(color, error-hover);
 }
 
