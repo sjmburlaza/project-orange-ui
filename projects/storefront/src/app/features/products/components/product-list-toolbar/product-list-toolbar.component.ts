@@ -12,9 +12,9 @@ import {
 } from 'libs/ui/range-slider/range-slider.component';
 
 import {
-  SelectDropdownComponent,
-  SelectOption,
-} from 'libs/ui/select-dropdown/select-dropdown.component';
+  FilterDropdownComponent,
+  FilterDropdownOption,
+} from 'libs/ui/filter-dropdown/filter-dropdown.component';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -22,7 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-product-list-toolbar',
   imports: [
     RangeSliderComponent,
-    SelectDropdownComponent,
+    FilterDropdownComponent,
     MatButtonModule,
     TranslatePipe,
   ],
@@ -31,11 +31,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListToolbarComponent {
-  @Input() sortOptions!: SelectOption<ProductSort>[] | null;
+  @Input() sortOptions: readonly FilterDropdownOption<ProductSort>[] = [];
   @Input() selectedSort: ProductSort | null = null;
+  @Input() defaultSortLabel = '';
+  @Input() categoryOptions: readonly FilterDropdownOption<number>[] = [];
+  @Input() selectedCategoryId: number | null = null;
+  @Input() allCategoriesLabel = '';
   @Input() productsCount = 0;
 
   @Output() sortChange = new EventEmitter<ProductSort | null>();
+  @Output() categoryChange = new EventEmitter<number | null>();
   @Output() priceRangeChange = new EventEmitter<RangeValue>();
   @Output() clearFilters = new EventEmitter();
 
@@ -54,5 +59,9 @@ export class ProductListToolbarComponent {
 
   onSortChange(value: ProductSort | null): void {
     this.sortChange.emit(value);
+  }
+
+  onCategoryChange(value: number | null): void {
+    this.categoryChange.emit(value);
   }
 }

@@ -3,11 +3,16 @@
     <app-product-list-toolbar
       [sortOptions]="sortOptions"
       [selectedSort]="selectedSort$ | async"
+      [defaultSortLabel]="'products.filters.defaultSort' | translate"
+      [categoryOptions]="categoryOptions()"
+      [selectedCategoryId]="selectedCategoryId$ | async"
+      [allCategoriesLabel]="'products.filters.allCategories' | translate"
       [priceRange]="priceRange$ | async"
       [priceMax]="(priceMax$ | async) ?? 0"
       [pricePrefix]="pricePrefix()"
       [productsCount]="products.length"
       (sortChange)="onSortChange($event)"
+      (categoryChange)="onCategoryChange($event)"
       (priceRangeChange)="onApplyPriceFilter($event)"
       (clearFilters)="onClearFilters()"
     ></app-product-list-toolbar>

@@ -54,6 +54,42 @@ describe('ProductListComponent', () => {
     ]);
   });
 
+  it('builds category options for the product toolbar', () => {
+    store.dispatch(
+      ProductActions.loadCategoriesSuccess({
+        categories: [
+          { id: 1, name: 'Phones' },
+          { id: 2, name: 'Laptops' },
+        ],
+      }),
+    );
+
+    expect(component.categoryOptions()).toEqual([
+      { label: 'Phones', value: 1 },
+      { label: 'Laptops', value: 2 },
+    ]);
+  });
+
+  it('selects a category and keeps it in the URL', async () => {
+    const navigate = vi.spyOn(router, 'navigate');
+    store.dispatch(
+      ProductActions.loadCategoriesSuccess({
+        categories: [{ id: 3, name: 'Mobile Phones' }],
+      }),
+    );
+
+    component.onCategoryChange(3);
+
+    expect(await firstValueFrom(component.selectedCategoryId$)).toBe(3);
+    expect(navigate).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { category: 'mobile-phones' },
+        queryParamsHandling: 'merge',
+      }),
+    );
+  });
+
   it('builds price slider state from product filter state', async () => {
     store.dispatch(
       ProductActions.loadProductsSuccess({

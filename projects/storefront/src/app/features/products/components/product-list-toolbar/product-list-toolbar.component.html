@@ -1,14 +1,25 @@
 <div class="filter-container">
-  @if (sortOptions) {
-    <div class="filter filter-sort">
-      <app-select-dropdown
-        [label]="'products.filters.sortBy' | translate"
-        [options]="sortOptions"
-        [selectedValue]="selectedSort"
-        (selectedValueChange)="onSortChange($event)"
-      />
-    </div>
-  }
+  <div class="filter filter-sort">
+    <app-filter-dropdown
+      [label]="'products.filters.sortBy' | translate"
+      [options]="sortOptions"
+      [selectedValue]="selectedSort"
+      [emptyOptionLabel]="defaultSortLabel"
+      (selectedValueChange)="onSortChange($event)"
+    />
+  </div>
+
+  <div class="filter filter-category">
+    <app-filter-dropdown
+      [label]="'products.filters.category' | translate"
+      [options]="categoryOptions"
+      [selectedValue]="selectedCategoryId"
+      [emptyOptionLabel]="allCategoriesLabel"
+      [disabled]="categoryOptions.length === 0"
+      (selectedValueChange)="onCategoryChange($event)"
+    />
+  </div>
+
   @if (priceRange) {
     <div class="filter-price">
       <app-range-slider

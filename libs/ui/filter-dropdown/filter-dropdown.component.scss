@@ -1,0 +1,38 @@
+@use "tokens/tokens" as *;
+
+:host {
+  display: inline-block;
+  min-width: 0;
+}
+
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  gap: token(spacing, 2);
+  min-width: 0;
+  color: token(color, text-primary);
+
+  &__label {
+    flex: 0 0 auto;
+    font-size: token(font-size, md);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__select {
+    width: auto;
+    min-width: 180px;
+    padding: token(spacing, 2) token(spacing, 3);
+    border: 1px solid token(color, border-strong);
+    border-radius: token(radius, md);
+    background: token(color, background);
+    font-size: token(font-size, md);
+  }
+}
+
+@include respond-down(md) {
+  :host,
+  .filter-dropdown__select {
+    width: 100%;
+  }
+}

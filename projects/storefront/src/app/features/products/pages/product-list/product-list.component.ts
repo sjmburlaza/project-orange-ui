@@ -11,7 +11,7 @@ import { ProductCardComponent } from 'src/app/features/products/components/produ
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
 import { RangeValue } from 'libs/ui/range-slider/range-slider.component';
-import { SelectOption } from 'libs/ui/select-dropdown/select-dropdown.component';
+import { FilterDropdownOption } from 'libs/ui/filter-dropdown/filter-dropdown.component';
 import {
   DIACRITICS_PATTERN,
   LEADING_OR_TRAILING_HYPHENS_PATTERN,
@@ -27,7 +27,7 @@ import {
   Subject,
   withLatestFrom,
 } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
@@ -69,9 +69,15 @@ export class ProductListComponent implements OnInit {
   );
 
   readonly selectedCategoryId$ = this.productFacade.selectedCategoryId$;
+  readonly categories = toSignal(this.productFacade.categories$, {
+    initialValue: [],
+  });
+  readonly categoryOptions = computed<FilterDropdownOption<number>[]>(() =>
+    this.categories().map(({ id, name }) => ({ label: name, value: id })),
+  );
   readonly search$ = this.productFacade.search$;
 
-  readonly sortOptions: SelectOption<ProductSort>[] = [
+  readonly sortOptions: FilterDropdownOption<ProductSort>[] = [
     {
       label: 'Price: Low to High',
       value: 'price-asc',
@@ -206,6 +212,19 @@ export class ProductListComponent implements OnInit {
 
   onSortChange(sortBy: ProductSort | null): void {
     this.productFacade.selectSort(sortBy);
+  }
+
+  onCategoryChange(categoryId: number | null): void {
+    const category = this.categories().find(({ id }) => id === categoryId);
+
+    this.productFacade.selectCategory(categoryId);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        category: this.normalizeCategorySlug(category?.name),
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onApplyPriceFilter(value: RangeValue): void {
