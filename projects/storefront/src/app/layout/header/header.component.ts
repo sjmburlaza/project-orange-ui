@@ -52,8 +52,8 @@ export class HeaderComponent implements OnInit {
         action: () => this.goToOrders(),
       },
       {
-        label: 'Your Saves',
-        icon: 'bi-bookmark',
+        label: 'Wishlist',
+        icon: 'bi-heart',
         action: () => this.goToSaves(),
       },
       {

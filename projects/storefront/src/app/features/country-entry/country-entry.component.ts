@@ -79,7 +79,7 @@ export class CountryEntryComponent implements OnInit {
 
   private redirectToSite(site: SiteCode): void {
     this.siteService.setCurrentSite(site);
-    void this.router.navigate(['/', site, 'products'], { replaceUrl: true });
+    void this.router.navigate(['/', site], { replaceUrl: true });
   }
 
   private ensureSiteOptions(): Observable<SiteConfig[]> {

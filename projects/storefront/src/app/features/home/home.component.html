@@ -1,1 +1,190 @@
-<p>home works!</p>
+<div class="home">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__copy">
+      <p class="eyebrow">{{ "home.hero.eyebrow" | translate }}</p>
+      <h1 id="hero-title">{{ "home.hero.title" | translate }}</h1>
+      <p class="hero__description">
+        {{ "home.hero.description" | translate }}
+      </p>
+
+      <div class="hero__actions">
+        <a class="button button--primary" [routerLink]="['/', site(), 'products']">
+          {{ "home.hero.shop" | translate }}
+          <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </a>
+        <a class="button button--ghost" href="#categories">
+          {{ "home.hero.explore" | translate }}
+        </a>
+      </div>
+
+      <ul class="hero__perks" aria-label="Shopping benefits">
+        <li><i class="bi bi-truck" aria-hidden="true"></i>{{ "home.hero.delivery" | translate }}</li>
+        <li><i class="bi bi-arrow-repeat" aria-hidden="true"></i>{{ "home.hero.returns" | translate }}</li>
+      </ul>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <span class="hero__orb hero__orb--one"></span>
+      <span class="hero__orb hero__orb--two"></span>
+      <div class="device device--laptop">
+        <div class="device__screen">
+          <span class="device__sun"></span>
+          <span class="device__hill"></span>
+        </div>
+        <span class="device__base"></span>
+      </div>
+      <div class="device device--phone">
+        <span class="device__speaker"></span>
+        <span class="device__glow"></span>
+        <span class="device__island"></span>
+      </div>
+      <div class="hero__badge">
+        <i class="bi bi-stars" aria-hidden="true"></i>
+        <span>{{ "home.hero.badge" | translate }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="categories" class="section categories" aria-labelledby="categories-title">
+    <div class="section__heading">
+      <div>
+        <p class="eyebrow">{{ "home.categories.eyebrow" | translate }}</p>
+        <h2 id="categories-title">{{ "home.categories.title" | translate }}</h2>
+      </div>
+      <a class="text-link" [routerLink]="['/', site(), 'products']">
+        {{ "home.categories.viewAll" | translate }}
+        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="category-grid">
+      @for (category of categories; track category.slug) {
+        <a
+          class="category-card category-card--{{ category.modifier }}"
+          [routerLink]="['/', site(), 'products']"
+          [queryParams]="{ category: category.slug }"
+        >
+          <span class="category-card__content">
+            <strong>{{ category.nameKey | translate }}</strong>
+            <span>{{ category.descriptionKey | translate }}</span>
+          </span>
+          <span class="category-card__art" aria-hidden="true">
+            <img [src]="category.icon" alt="" />
+          </span>
+          <i class="bi bi-arrow-up-right category-card__arrow" aria-hidden="true"></i>
+        </a>
+      }
+    </div>
+  </section>
+
+  <section class="section featured" aria-labelledby="featured-title">
+    <div class="section__heading">
+      <div>
+        <p class="eyebrow">{{ "home.featured.eyebrow" | translate }}</p>
+        <h2 id="featured-title">{{ "home.featured.title" | translate }}</h2>
+      </div>
+      <p class="section__intro">{{ "home.featured.description" | translate }}</p>
+    </div>
+
+    <div class="feature-grid">
+      <article class="feature-card feature-card--main">
+        <div class="feature-card__copy">
+          <span class="pill">{{ "home.featured.new" | translate }}</span>
+          <h3>{{ "home.featured.phone.title" | translate }}</h3>
+          <p>{{ "home.featured.phone.description" | translate }}</p>
+          <a
+            class="text-link text-link--light"
+            [routerLink]="['/', site(), 'products']"
+            [queryParams]="{ category: 'phones' }"
+          >
+            {{ "home.featured.discover" | translate }}
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="feature-phone" aria-hidden="true">
+          <span class="feature-phone__lens feature-phone__lens--one"></span>
+          <span class="feature-phone__lens feature-phone__lens--two"></span>
+          <span class="feature-phone__lens feature-phone__lens--three"></span>
+        </div>
+      </article>
+
+      <article class="feature-card feature-card--laptop">
+        <div class="feature-card__copy">
+          <span class="pill pill--dark">{{ "home.featured.popular" | translate }}</span>
+          <h3>{{ "home.featured.laptop.title" | translate }}</h3>
+          <p>{{ "home.featured.laptop.description" | translate }}</p>
+          <a
+            class="text-link"
+            [routerLink]="['/', site(), 'products']"
+            [queryParams]="{ category: 'laptops' }"
+          >
+            {{ "home.featured.shopNow" | translate }}
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="mini-laptop" aria-hidden="true">
+          <span></span>
+        </div>
+      </article>
+
+      <article class="feature-card feature-card--audio">
+        <div class="feature-card__copy">
+          <h3>{{ "home.featured.audio.title" | translate }}</h3>
+          <p>{{ "home.featured.audio.description" | translate }}</p>
+          <a
+            class="text-link"
+            [routerLink]="['/', site(), 'products']"
+            [queryParams]="{ category: 'accessories' }"
+            [attr.aria-label]="'home.featured.audio.title' | translate"
+          >
+            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+          </a>
+        </div>
+        <i class="bi bi-headphones feature-card__icon" aria-hidden="true"></i>
+      </article>
+    </div>
+  </section>
+
+  <section class="benefits" aria-label="Why shop Orange">
+    <article>
+      <span><i class="bi bi-truck" aria-hidden="true"></i></span>
+      <div>
+        <h3>{{ "home.benefits.delivery.title" | translate }}</h3>
+        <p>{{ "home.benefits.delivery.description" | translate }}</p>
+      </div>
+    </article>
+    <article>
+      <span><i class="bi bi-shield-check" aria-hidden="true"></i></span>
+      <div>
+        <h3>{{ "home.benefits.secure.title" | translate }}</h3>
+        <p>{{ "home.benefits.secure.description" | translate }}</p>
+      </div>
+    </article>
+    <article>
+      <span><i class="bi bi-chat-dots" aria-hidden="true"></i></span>
+      <div>
+        <h3>{{ "home.benefits.support.title" | translate }}</h3>
+        <p>{{ "home.benefits.support.description" | translate }}</p>
+      </div>
+    </article>
+    <article>
+      <span><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></span>
+      <div>
+        <h3>{{ "home.benefits.returns.title" | translate }}</h3>
+        <p>{{ "home.benefits.returns.description" | translate }}</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="help-banner" aria-labelledby="help-title">
+    <div>
+      <p class="eyebrow">{{ "home.help.eyebrow" | translate }}</p>
+      <h2 id="help-title">{{ "home.help.title" | translate }}</h2>
+      <p>{{ "home.help.description" | translate }}</p>
+    </div>
+    <a class="button button--dark" [routerLink]="['/', site(), 'support']">
+      {{ "home.help.action" | translate }}
+      <i class="bi bi-arrow-right" aria-hidden="true"></i>
+    </a>
+  </section>
+</div>
