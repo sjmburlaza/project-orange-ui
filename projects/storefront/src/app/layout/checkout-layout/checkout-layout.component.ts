@@ -5,6 +5,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SiteService } from 'libs/core/services/site.services';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
+import { AcceptedPaymentsComponent } from 'src/app/features/common/accepted-payments/accepted-payments.component';
 import { RecommendedProductsComponent } from 'src/app/features/common/recommended-products/recommended-products.component';
 import { FooterComponent } from 'src/app/layout/footer/footer.component';
 import { HeaderComponent } from 'src/app/layout/header/header.component';
@@ -23,6 +24,7 @@ import { IconPipe } from 'libs/shared/pipes/icon-pipe';
     IconPipe,
     MatAnchor,
     RouterLink,
+    AcceptedPaymentsComponent,
     RecommendedProductsComponent,
   ],
   templateUrl: './checkout-layout.component.html',

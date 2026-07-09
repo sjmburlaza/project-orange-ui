@@ -59,6 +59,13 @@
   min-width: 0;
 }
 
+.sidebar-content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .content > app-recommended-products {
   grid-column: 1 / -1;
 }
