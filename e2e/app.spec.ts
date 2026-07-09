@@ -149,7 +149,7 @@ test.describe('routing and catalog', () => {
 
     await expect(page).toHaveURL(/\/fr\/products$/);
     await expect(
-      page.locator('app-header').getByRole('link', { name: 'Moniteurs' }),
+      page.locator('app-header').getByRole('link', { name: 'Boutique' }),
     ).toBeVisible();
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
   });
@@ -205,30 +205,31 @@ test.describe('routing and catalog', () => {
     await expect(productCard(page, 'iPhone 15')).toBeVisible();
   });
 
-  test('filters products from the header navigation', async ({ page }) => {
-    const header = page.locator('app-header');
-
+  test('filters products by category', async ({ page }) => {
     await page.goto('/ph/products');
 
-    await header.getByRole('link', { name: 'Phones' }).click();
+    const categoryFilter = page.locator('.filter-category mat-select');
+
+    await categoryFilter.click();
+    await page.getByRole('option', { name: 'Phones' }).click();
 
     await expect(page).toHaveURL(/\/ph\/products\?category=phones$/);
     await expect(productNames(page)).toHaveText(['iPhone 15']);
-    await expect(header.getByRole('link', { name: 'Phones' })).toHaveClass(
-      /nav-item--active/,
-    );
 
-    await header.getByRole('link', { name: 'Accessories' }).click();
+    await categoryFilter.click();
+    await page.getByRole('option', { name: 'Accessories' }).click();
 
     await expect(page).toHaveURL(/\/ph\/products\?category=accessories$/);
     await expect(productNames(page)).toHaveText(['Mechanical Keyboard']);
 
-    await header.getByRole('link', { name: 'Monitors' }).click();
+    await categoryFilter.click();
+    await page.getByRole('option', { name: 'Monitors' }).click();
 
     await expect(page).toHaveURL(/\/ph\/products\?category=monitors$/);
     await expect(productNames(page)).toHaveText(['Orange Studio Monitor']);
 
-    await header.getByRole('link', { name: 'Store', exact: true }).click();
+    await categoryFilter.click();
+    await page.getByRole('option', { name: 'All Categories' }).click();
 
     await expect(page).toHaveURL(/\/ph\/products$/);
     await expect(productNames(page)).toHaveText([
@@ -237,16 +238,6 @@ test.describe('routing and catalog', () => {
       'Orange Studio Monitor',
       'Mechanical Keyboard',
     ]);
-
-    await header.getByRole('link', { name: 'Support' }).click();
-
-    await expect(page).toHaveURL(/\/ph\/support$/);
-    await expect(
-      page.getByRole('heading', { name: 'How can we help?' }),
-    ).toBeVisible();
-    await expect(header.getByRole('link', { name: 'Support' })).toHaveClass(
-      /nav-item--active/,
-    );
   });
 
   test('sorts products by price in both directions', async ({ page }) => {
