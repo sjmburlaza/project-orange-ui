@@ -18,7 +18,9 @@
     },
     "card": {
       "from": "From",
-      "availableColors": "Available colors:"
+      "availableColors": "Available colors:",
+      "reviewRating": "Rated {{rating}} out of {{maximum}}",
+      "reviews": "{{count}} reviews"
     },
     "wishlistAuth": {
       "title": "Sign in to save products",

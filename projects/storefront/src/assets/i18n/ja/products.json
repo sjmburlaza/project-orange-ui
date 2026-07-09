@@ -18,7 +18,9 @@
     },
     "card": {
       "from": "最低価格",
-      "availableColors": "利用可能なカラー:"
+      "availableColors": "利用可能なカラー:",
+      "reviewRating": "{{maximum}}点満点中{{rating}}点",
+      "reviews": "{{count}}件のレビュー"
     },
     "wishlistAuth": {
       "title": "ログインして商品を保存",

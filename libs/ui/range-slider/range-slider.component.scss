@@ -1,5 +1,7 @@
+@use "tokens/tokens" as *;
+
 .range-slider {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: token(spacing, 3);
 }

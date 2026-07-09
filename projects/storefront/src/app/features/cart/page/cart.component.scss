@@ -1,23 +1,25 @@
+@use "tokens/tokens" as *;
+
 .cart-container {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: token(spacing, 12);
 
   .cart-items {
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    gap: token(spacing, 9);
   }
 
   .addons {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: token(spacing, 6);
   }
 
   .divider {
     height: 1px;
-    background: rgb(211, 211, 211);
-    margin: 8px 0;
+    background: token(color, divider);
+    margin: token(spacing, 2) 0;
   }
 }

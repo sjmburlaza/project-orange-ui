@@ -2,13 +2,13 @@
 
 h3 {
   font-size: token(font-size, lg);
-  padding: 24px 0;
+  padding: token(spacing, 6) 0;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  column-gap: 24px;
+  column-gap: token(spacing, 6);
 }
 
 @include respond-up(lg) {

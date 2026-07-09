@@ -3,8 +3,8 @@
 .addon {
   display: grid;
   grid-template-columns: 60px auto 120px;
-  gap: 12px;
-  padding: 24px;
+  gap: token(spacing, 3);
+  padding: token(spacing, 6);
   border-radius: 12px;
   background-color: token(color, card-background);
 
@@ -20,7 +20,7 @@
   &__body {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: token(spacing, 3);
 
     &__title {
       font-size: 20px;

@@ -1,6 +1,80 @@
 {
   "home": {
-    "title": "Welcome",
-    "description": "This is the home page"
+    "hero": {
+      "eyebrow": "Technology, thoughtfully chosen",
+      "title": "Upgrade your everyday.",
+      "description": "Explore beautifully designed tech that works harder, lasts longer, and fits naturally into your life.",
+      "shop": "Shop new arrivals",
+      "explore": "Explore categories",
+      "delivery": "Free delivery on select orders",
+      "returns": "Easy 14-day returns",
+      "badge": "Curated tech, ready for you"
+    },
+    "categories": {
+      "eyebrow": "Find your next favorite",
+      "title": "Shop by category",
+      "viewAll": "View all products",
+      "phones": {
+        "name": "Phones",
+        "description": "Power in your pocket"
+      },
+      "laptops": {
+        "name": "Laptops",
+        "description": "Made to move with you"
+      },
+      "monitors": {
+        "name": "Monitors",
+        "description": "A better view of everything"
+      },
+      "accessories": {
+        "name": "Accessories",
+        "description": "The perfect finishing touch"
+      }
+    },
+    "featured": {
+      "eyebrow": "Worth a closer look",
+      "title": "Featured this week",
+      "description": "Fresh releases and customer favorites, selected to make choosing your next device wonderfully simple.",
+      "new": "Just in",
+      "popular": "Popular",
+      "discover": "Discover phones",
+      "shopNow": "Shop laptops",
+      "phone": {
+        "title": "A new perspective on mobile.",
+        "description": "Brilliant cameras, all-day power, and effortless performance."
+      },
+      "laptop": {
+        "title": "Light work. Big ideas.",
+        "description": "Thin, capable laptops ready for wherever inspiration finds you."
+      },
+      "audio": {
+        "title": "Hear every detail",
+        "description": "Immersive audio for work, travel, and everything between."
+      }
+    },
+    "benefits": {
+      "delivery": {
+        "title": "Fast, flexible delivery",
+        "description": "Get it where and when it suits you."
+      },
+      "secure": {
+        "title": "Secure payments",
+        "description": "Your information is always protected."
+      },
+      "support": {
+        "title": "Real human support",
+        "description": "Helpful answers from people who know tech."
+      },
+      "returns": {
+        "title": "Simple returns",
+        "description": "Changed your mind? No hard feelings."
+      }
+    },
+    "help": {
+      "eyebrow": "Here when you need us",
+      "title": "Not sure what fits?",
+      "description": "Our team can help you compare, choose, and get set up.",
+      "action": "Visit support"
+    }
   }
 }

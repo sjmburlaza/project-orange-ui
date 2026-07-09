@@ -1,0 +1,21 @@
+@if (isVisible) {
+  <button
+    class="back-to-top"
+    type="button"
+    [attr.aria-label]="ariaLabel"
+    [attr.title]="ariaLabel"
+    (click)="scrollToTop()"
+  >
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+    >
+      <path
+        d="M11 20h2V7.8l4.3 4.3 1.4-1.4L12 4l-6.7 6.7 1.4 1.4L11 7.8z"
+      />
+    </svg>
+  </button>
+}

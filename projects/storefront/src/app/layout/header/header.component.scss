@@ -1,7 +1,7 @@
 @use "tokens/tokens" as *;
 
 :host {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 4px token(color, shadow-header);
 }
 
 .checkout-header {
@@ -19,7 +19,7 @@
   height: 74px;
   display: grid;
   grid-template-columns: 240px auto minmax(280px, 1fr) auto;
-  gap: 32px;
+  gap: token(spacing, 8);
   align-items: center;
 
   .home-btn {
@@ -32,7 +32,7 @@
 
   .header-actions {
     display: flex;
-    gap: 24px;
+    gap: token(spacing, 6);
     justify-content: end;
   }
 }
@@ -40,7 +40,7 @@
 .primary-nav {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: token(spacing, 12);
 
   a {
     position: relative;
@@ -110,21 +110,21 @@ button {
 
 .header-actions__account-menu {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + token(spacing, 3));
   right: 0;
 
   width: 160px;
-  padding: 12px;
+  padding: token(spacing, 3);
 
   display: flex;
   flex-direction: column;
 
-  background: white;
+  background: token(color, surface-elevated);
   border-radius: 16px;
 
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.12),
-    0 4px 10px rgba(0, 0, 0, 0.08);
+    0 10px 30px token(color, shadow-popover),
+    0 4px 10px token(color, shadow-header);
 
   opacity: 0;
   visibility: hidden;
@@ -139,7 +139,7 @@ button {
 
   button {
     width: 100%;
-    padding: 8px 14px;
+    padding: token(spacing, 2) 14px;
     border-radius: 10px;
 
     text-align: left;
@@ -150,19 +150,19 @@ button {
     cursor: pointer;
 
     &:hover {
-      background: #f5f5f5;
+      background: token(color, surface-hover);
     }
 
     i {
       font-size: 14px;
-      margin-right: 8px;
+      margin-right: token(spacing, 2);
     }
   }
 }
 
 .brand {
   display: flex;
-  gap: 8px;
+  gap: token(spacing, 2);
   line-height: 36px;
 
   h1 {
@@ -177,18 +177,18 @@ button {
   }
 }
 
-@media (max-width: 980px) {
+@include respond-down(lg) {
   .header {
     grid-template-columns: 190px auto minmax(0, 1fr) auto;
-    gap: 20px;
-    padding: 0 16px;
+    gap: token(spacing, 5);
+    padding: 0 token(spacing, 4);
   }
 }
 
-@media (max-width: 760px) {
+@include respond-down(md) {
   .header {
     grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 12px;
+    gap: token(spacing, 3);
   }
 
   .brand h1,

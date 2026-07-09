@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 32" role="img" aria-labelledby="title">
+  <title id="title">American Express</title>
+  <rect width="88" height="32" rx="3" fill="#2E77BC"/>
+  <path fill="#fff" d="M7 9h11.7l2.6 3.1L24 9h13.9v14H24.4l-3-3.3-2.8 3.3H7V9Zm4 3v8h6.1l4.3-4.5 4 4.5h8.5v-2.8h-6.6v-1.4h6.4v-2.6h-6.4V12h6.6v-2h-8.5l-4.1 4.5-3.8-4.5H11v2Zm29-3h11.7l2.6 3.1L57 9h13.9v14H57.4l-3-3.3-2.8 3.3H40V9Zm4 3v8h6.1l4.3-4.5 4 4.5h8.5v-2.8h-6.6v-1.4h6.4v-2.6h-6.4V12h6.6v-2h-8.5l-4.1 4.5-3.8-4.5H44v2Z"/>
+</svg>

@@ -11,7 +11,7 @@
   flex-direction: column;
   width: 100%;
   margin-inline: auto;
-  padding: 40px 36px;
+  padding: token(spacing, 10) token(spacing, 9);
   border-radius: token(radius, md);
   border: 1px solid token(color, border-strong);
   background: token(color, background);
@@ -24,11 +24,11 @@ mat-form-field {
 .forgot-password-link {
   align-self: flex-end;
   margin-top: -8px;
-  margin-bottom: 12px;
+  margin-bottom: token(spacing, 3);
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: token(spacing, 3);
 }

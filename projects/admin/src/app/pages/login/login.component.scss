@@ -11,9 +11,13 @@
   place-items: stretch;
   padding: 0;
   background:
-    linear-gradient(90deg, #161a22 0 35%, #ffffff 35%),
-    #ffffff;
-  color: #17202a;
+    linear-gradient(
+      90deg,
+      token(color, admin-sidebar) 0 35%,
+      token(color, surface-elevated) 35%
+    ),
+    token(color, surface-elevated);
+  color: token(color, admin-text);
 }
 
 .admin-login__content {
@@ -29,15 +33,15 @@
   display: grid;
   align-content: center;
   align-self: stretch;
-  gap: 72px;
+  gap: token(spacing, 18);
   min-width: 0;
-  padding: 32px;
-  color: #ffffff;
+  padding: token(spacing, 8);
+  color: token(color, text-inverse);
 }
 
 .admin-login__brand {
   display: inline-flex;
-  gap: 12px;
+  gap: token(spacing, 3);
   align-items: center;
   width: fit-content;
   font-size: 18px;
@@ -63,7 +67,7 @@
 }
 
 .admin-login__eyebrow {
-  color: #fed7aa;
+  color: token(color, admin-brand-highlight);
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0;
@@ -71,14 +75,14 @@
 }
 
 .admin-login__copy h1 {
-  color: #ffffff;
+  color: token(color, text-inverse);
   font-size: 52px;
   font-weight: 800;
   line-height: 1;
 }
 
 .admin-login__copy p:last-child {
-  color: #cbd5e1;
+  color: token(color, admin-nav-text);
   font-size: 17px;
   line-height: 1.6;
 }
@@ -88,20 +92,20 @@
   flex-direction: column;
   justify-self: center;
   width: min(100%, 460px);
-  margin: 32px;
-  padding: 40px 36px;
+  margin: token(spacing, 8);
+  padding: token(spacing, 10) token(spacing, 9);
   border: 1px solid token(color, border-strong);
   border-radius: token(radius, md);
   background: token(color, background);
-  box-shadow: 0 24px 60px rgba(22, 26, 34, 0.16);
+  box-shadow: 0 24px 60px token(color, shadow-admin-panel);
 }
 
 .login-form__error {
   margin-bottom: 18px;
-  padding: 12px 14px;
-  border: 1px solid rgba(220, 38, 38, 0.28);
+  padding: token(spacing, 3) 14px;
+  border: 1px solid token(color, error-border-translucent);
   border-radius: token(radius, sm);
-  background: #fef2f2;
+  background: token(color, error-surface-subtle);
   color: token(color, error);
   font-size: 14px;
   line-height: 1.45;
@@ -114,35 +118,35 @@ mat-form-field {
 .login-form__submit {
   width: 100%;
   min-height: 48px;
-  margin-top: 8px;
+  margin-top: token(spacing, 2);
 }
 
 .login-form__submit mat-icon {
   margin-right: 6px;
 }
 
-@media (max-width: 860px) {
+@include respond-down(lg) {
   .admin-login {
     align-items: start;
-    padding: 24px 16px;
-    background: #ffffff;
+    padding: token(spacing, 6) token(spacing, 4);
+    background: token(color, surface-elevated);
   }
 
   .admin-login__content {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: token(spacing, 6);
     min-height: auto;
   }
 
   .admin-login__intro {
-    gap: 24px;
+    gap: token(spacing, 6);
     padding: 0;
-    color: #17202a;
+    color: token(color, admin-text);
   }
 
   .admin-login__brand,
   .admin-login__copy h1 {
-    color: #17202a;
+    color: token(color, admin-text);
   }
 
   .admin-login__copy h1 {
@@ -154,14 +158,14 @@ mat-form-field {
   }
 
   .admin-login__copy p:last-child {
-    color: #525252;
+    color: token(color, text-secondary);
   }
 }
 
-@media (max-width: 520px) {
+@include respond-down(sm) {
   .login-form {
     width: 100%;
     margin: 0;
-    padding: 28px 20px;
+    padding: token(spacing, 7) token(spacing, 5);
   }
 }

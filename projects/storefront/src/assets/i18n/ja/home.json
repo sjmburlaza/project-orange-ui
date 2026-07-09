@@ -1,6 +1,56 @@
 {
   "home": {
-    "title": "ようこそ",
-    "description": "ここはホームページです"
+    "hero": {
+      "eyebrow": "こだわって選んだテクノロジー",
+      "title": "毎日を、アップグレード。",
+      "description": "美しくデザインされ、高性能で長く使え、暮らしに自然になじむテクノロジーを見つけよう。",
+      "shop": "新着商品を見る",
+      "explore": "カテゴリーを見る",
+      "delivery": "対象商品は送料無料",
+      "returns": "14日間かんたん返品",
+      "badge": "あなたのための厳選テクノロジー"
+    },
+    "categories": {
+      "eyebrow": "次のお気に入りを見つけよう",
+      "title": "カテゴリーから探す",
+      "viewAll": "すべての商品を見る",
+      "phones": { "name": "スマートフォン", "description": "手のひらにパワーを" },
+      "laptops": { "name": "ノートパソコン", "description": "どこへでも一緒に" },
+      "monitors": { "name": "モニター", "description": "すべてをもっと鮮やかに" },
+      "accessories": { "name": "アクセサリー", "description": "仕上げにぴったりの一品" }
+    },
+    "featured": {
+      "eyebrow": "もっと近くで見てみよう",
+      "title": "今週のおすすめ",
+      "description": "新商品と人気アイテムを厳選。次のデバイス選びを心地よくシンプルに。",
+      "new": "新着",
+      "popular": "人気",
+      "discover": "スマートフォンを見る",
+      "shopNow": "ノートパソコンを見る",
+      "phone": {
+        "title": "モバイルに、新しい視点を。",
+        "description": "鮮やかなカメラ、一日続くバッテリー、軽快なパフォーマンス。"
+      },
+      "laptop": {
+        "title": "軽やかに。アイデアは大きく。",
+        "description": "薄くて高性能。ひらめきが生まれる場所へ、どこまでも。"
+      },
+      "audio": {
+        "title": "細部まで聴き取る",
+        "description": "仕事にも旅にも、日常を包む臨場感あふれるサウンド。"
+      }
+    },
+    "benefits": {
+      "delivery": { "title": "速くて柔軟な配送", "description": "あなたに合った場所と時間にお届け。" },
+      "secure": { "title": "安全なお支払い", "description": "お客様の情報をしっかり守ります。" },
+      "support": { "title": "人によるサポート", "description": "テクノロジーに詳しいスタッフが対応します。" },
+      "returns": { "title": "かんたん返品", "description": "気が変わっても大丈夫です。" }
+    },
+    "help": {
+      "eyebrow": "いつでもお手伝いします",
+      "title": "どれが合うか迷っていますか？",
+      "description": "比較から選択、セットアップまで、スタッフがお手伝いします。",
+      "action": "サポートを見る"
+    }
   }
 }

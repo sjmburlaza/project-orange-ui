@@ -8,7 +8,7 @@
   border: 1px solid token(color, border);
   border-radius: 8px;
   background: token(color, background);
-  box-shadow: 0 8px 24px rgba(17, 17, 17, 0.06);
+  box-shadow: 0 8px 24px token(color, shadow-card);
 }
 
 .order-panel__header {
@@ -31,14 +31,14 @@
 
 :host ::ng-deep .order-panel .mat-content {
   flex-direction: column;
-  gap: 8px;
+  gap: token(spacing, 2);
   align-items: flex-start;
   min-width: 0;
 }
 
 :host ::ng-deep .order-panel .mat-expansion-indicator {
   align-self: flex-start;
-  margin-top: 4px;
+  margin-top: token(spacing, 1);
 }
 
 .order-panel__title {
@@ -53,7 +53,7 @@
 .order-panel__description {
   flex-direction: column;
   justify-content: flex-start;
-  gap: 8px;
+  gap: token(spacing, 2);
   align-items: flex-start;
   min-width: 0;
   margin-left: 0;
@@ -68,11 +68,11 @@
 
 .order-body {
   display: grid;
-  gap: 20px;
+  gap: token(spacing, 5);
   min-width: 0;
   border-top: 1px solid token(color, border);
-  margin-left: 60px;
-  padding-top: 20px;
+  margin-left: token(spacing, 15);
+  padding-top: token(spacing, 5);
 
   @include respond-down(sm) {
     margin-left: 0;
@@ -87,7 +87,7 @@
   max-width: 100%;
   border: 1px solid;
   border-radius: 999px;
-  padding: 8px 16px;
+  padding: token(spacing, 2) token(spacing, 4);
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
@@ -101,26 +101,26 @@
 }
 
 .status-badge--success {
-  border-color: #bbf7d0;
-  background: #dcfce7;
+  border-color: token(color, success-border);
+  background: token(color, success-surface);
   color: token(color, success-hover);
 }
 
 .status-badge--warning {
-  border-color: #fde68a;
-  background: #fef3c7;
-  color: #92400e;
+  border-color: token(color, warning-border);
+  background: token(color, warning-surface);
+  color: token(color, warning-text-strong);
 }
 
 .status-badge--info {
-  border-color: #bfdbfe;
-  background: #dbeafe;
+  border-color: token(color, info-border);
+  background: token(color, info-surface);
   color: token(color, info-hover);
 }
 
 .status-badge--error {
-  border-color: #fecaca;
-  background: #fee2e2;
+  border-color: token(color, error-border);
+  background: token(color, error-surface);
   color: token(color, error-hover);
 }
 
@@ -145,16 +145,16 @@
 
 .product-list {
   display: grid;
-  gap: 16px;
+  gap: token(spacing, 4);
 }
 
 .product-row {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr) auto;
-  gap: 10px 16px;
+  gap: 10px token(spacing, 4);
   align-items: start;
   min-width: 0;
-  padding-top: 16px;
+  padding-top: token(spacing, 4);
   border-top: 1px solid token(color, border);
 
   &:first-child {
@@ -208,7 +208,7 @@
   min-width: 0;
 
   h3 {
-    margin: 0 0 4px;
+    margin: 0 0 token(spacing, 1);
     font-size: 17px;
     line-height: 1.25;
     letter-spacing: 0;
@@ -237,11 +237,11 @@
 .product-row__addon {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr) auto;
-  gap: 8px;
+  gap: token(spacing, 2);
   align-items: center;
   width: 100%;
   border-radius: 8px;
-  padding: 6px 0 6px 8px;
+  padding: 6px 0 6px token(spacing, 2);
   line-height: 1.2;
   white-space: nowrap;
   font-size: 14px;
@@ -274,7 +274,7 @@
   width: 22px;
   height: 22px;
   overflow: hidden;
-  color: gray;
+  color: token(color, text-subtle);
   line-height: 1;
 
   img {
@@ -307,7 +307,7 @@
   > div {
     display: flex;
     justify-content: space-between;
-    gap: 16px;
+    gap: token(spacing, 4);
     align-items: center;
   }
 
@@ -319,7 +319,7 @@
 .payment-total {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: token(spacing, 4);
   align-items: center;
   border-top: 1px solid token(color, border);
   padding-top: 18px;
@@ -331,13 +331,13 @@
 }
 
 .payment-summary .payment-total {
-  margin-top: 4px;
+  margin-top: token(spacing, 1);
 }
 
 .order-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: token(spacing, 3);
   flex-wrap: wrap;
 
   @include respond-down(sm) {

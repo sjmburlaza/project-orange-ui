@@ -150,31 +150,47 @@
   font-size: 12px;
   font-weight: 800;
   line-height: 1;
-  padding: 8px 10px;
+  padding: token(spacing, 2) 10px;
   text-align: center;
 }
 
 .status-pill--success {
-  background: color-mix(in srgb, token(color, success) 12%, white);
+  background: color-mix(
+    in srgb,
+    token(color, success) 12%,
+    token(color, surface-elevated)
+  );
   color: token(color, success-hover);
 }
 
 .status-pill--warning {
-  background: color-mix(in srgb, token(color, warning) 18%, white);
-  color: #8a5a00;
+  background: color-mix(
+    in srgb,
+    token(color, warning) 18%,
+    token(color, surface-elevated)
+  );
+  color: token(color, warning-text);
 }
 
 .status-pill--danger {
-  background: color-mix(in srgb, token(color, error) 12%, white);
+  background: color-mix(
+    in srgb,
+    token(color, error) 12%,
+    token(color, surface-elevated)
+  );
   color: token(color, error-hover);
 }
 
 .status-pill--info {
-  background: color-mix(in srgb, token(color, info) 10%, white);
+  background: color-mix(
+    in srgb,
+    token(color, info) 10%,
+    token(color, surface-elevated)
+  );
   color: token(color, info-hover);
 }
 
-@media (max-width: 900px) {
+@include respond-down(lg) {
   .admin-feature__header,
   .panel__header {
     align-items: flex-start;

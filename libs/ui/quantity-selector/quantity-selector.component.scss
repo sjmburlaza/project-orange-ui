@@ -1,8 +1,10 @@
+@use "tokens/tokens" as *;
+
 .quantity-selector {
   display: inline-grid;
   grid-template-columns: 40px 56px 40px;
   align-items: center;
-  border: 1px solid #ddd;
+  border: 1px solid token(color, border-control);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -11,7 +13,7 @@
 .quantity-input {
   height: 40px;
   border: 0;
-  background: #fff;
+  background: token(color, surface-elevated);
   text-align: center;
 }
 

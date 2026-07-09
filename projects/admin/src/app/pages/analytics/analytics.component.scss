@@ -197,7 +197,11 @@
   position: absolute;
   inset: 0 auto 0 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, token(color, primary), #ffb15f);
+  background: linear-gradient(
+    90deg,
+    token(color, primary),
+    token(color, analytics-gradient-end)
+  );
 }
 
 .rank-row,
@@ -286,7 +290,7 @@
   text-align: center;
 }
 
-@media (max-width: 900px) {
+@include respond-down(lg) {
   .analytics__header,
   .panel__header {
     align-items: flex-start;

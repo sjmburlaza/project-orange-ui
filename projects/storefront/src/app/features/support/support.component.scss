@@ -1,3 +1,5 @@
+@use "tokens/tokens" as *;
+
 .support-page {
   max-width: 1120px;
   margin: 0 auto;
@@ -10,14 +12,14 @@
 
   h2 {
     margin: 0 0 1rem;
-    color: #1f1f1f;
+    color: token(color, text-heading);
     font-size: 3rem;
     line-height: 1.05;
   }
 
   p {
     margin: 0;
-    color: #555;
+    color: token(color, text-body);
     font-size: 1rem;
     line-height: 1.7;
   }
@@ -25,7 +27,7 @@
 
 .support-page__eyebrow {
   margin-bottom: 0.75rem;
-  color: #f26a21;
+  color: token(color, support-accent);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -41,32 +43,32 @@
 .support-card {
   min-height: 220px;
   padding: 1.5rem;
-  border: 1px solid #eee;
+  border: 1px solid token(color, border-subtle);
   border-radius: 8px;
-  background: #fff;
+  background: token(color, surface-elevated);
 
   i {
     display: inline-flex;
     margin-bottom: 1.25rem;
-    color: #f26a21;
+    color: token(color, support-accent);
     font-size: 1.75rem;
   }
 
   h3 {
     margin: 0 0 0.75rem;
-    color: #1f1f1f;
+    color: token(color, text-heading);
     font-size: 1.1rem;
   }
 
   p {
     margin: 0;
-    color: #666;
+    color: token(color, text-body-muted);
     font-size: 0.95rem;
     line-height: 1.6;
   }
 }
 
-@media (max-width: 768px) {
+@include respond-down(md) {
   .support-page {
     padding: 2.5rem 1rem;
   }

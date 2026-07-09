@@ -1,0 +1,17 @@
+<section class="accepted-payments" aria-labelledby="accepted-payments-title">
+  <p id="accepted-payments-title" class="accepted-payments__title">
+    We accept
+  </p>
+
+  <ul class="accepted-payments__list">
+    @for (payment of acceptedPayments; track payment.name) {
+      <li class="accepted-payments__item">
+        <img
+          [src]="payment.logoUrl"
+          [alt]="payment.name"
+          class="accepted-payments__logo"
+        />
+      </li>
+    }
+  </ul>
+</section>

@@ -1,7 +1,9 @@
+@use "tokens/tokens" as *;
+
 .field-error {
   display: flex;
   align-items: flex-start;
-  gap: 4px;
+  gap: token(spacing, 1);
   line-height: 1.3;
   margin-left: -16px;
 }

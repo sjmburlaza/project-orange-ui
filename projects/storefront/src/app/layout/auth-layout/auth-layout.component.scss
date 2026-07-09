@@ -10,7 +10,7 @@
 .header {
   width: min(100% - 32px, 1200px);
   margin: 0 auto;
-  padding: 24px 0;
+  padding: token(spacing, 6) 0;
 
   h1 {
     font-size: 28px;
@@ -23,6 +23,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 32px 16px 48px;
+  padding: token(spacing, 8) token(spacing, 4) token(spacing, 12);
   background: token(color, surface);
 }

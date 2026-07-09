@@ -10,10 +10,16 @@ import {
 import { filter, finalize, map } from 'rxjs';
 import { AuthService } from 'libs/core/auth/auth.service';
 import { AuthStore } from 'libs/core/auth/auth.store';
+import { BackToTopComponent } from 'libs/ui/back-to-top/back-to-top.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [
+    BackToTopComponent,
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

@@ -1,6 +1,56 @@
 {
   "home": {
-    "title": "Bienvenue",
-    "description": "Ceci est la page d'accueil"
+    "hero": {
+      "eyebrow": "La technologie, soigneusement choisie",
+      "title": "Améliorez votre quotidien.",
+      "description": "Découvrez une technologie élégante, plus performante, plus durable et naturellement adaptée à votre vie.",
+      "shop": "Voir les nouveautés",
+      "explore": "Explorer les catégories",
+      "delivery": "Livraison offerte sur une sélection",
+      "returns": "Retours faciles sous 14 jours",
+      "badge": "Une sélection pensée pour vous"
+    },
+    "categories": {
+      "eyebrow": "Trouvez votre prochain favori",
+      "title": "Acheter par catégorie",
+      "viewAll": "Voir tous les produits",
+      "phones": { "name": "Téléphones", "description": "La puissance dans votre poche" },
+      "laptops": { "name": "Ordinateurs", "description": "Conçus pour vous suivre" },
+      "monitors": { "name": "Écrans", "description": "Une meilleure vue sur tout" },
+      "accessories": { "name": "Accessoires", "description": "La touche finale parfaite" }
+    },
+    "featured": {
+      "eyebrow": "À découvrir de plus près",
+      "title": "À la une cette semaine",
+      "description": "Nouveautés et favoris de nos clients, sélectionnés pour simplifier merveilleusement votre choix.",
+      "new": "Nouveau",
+      "popular": "Populaire",
+      "discover": "Découvrir les téléphones",
+      "shopNow": "Voir les ordinateurs",
+      "phone": {
+        "title": "Un nouveau regard sur le mobile.",
+        "description": "Des appareils photo brillants, une autonomie quotidienne et des performances fluides."
+      },
+      "laptop": {
+        "title": "Léger au travail. Grand en idées.",
+        "description": "Des ordinateurs fins et performants, prêts à suivre votre inspiration."
+      },
+      "audio": {
+        "title": "Entendez chaque détail",
+        "description": "Un son immersif pour le travail, les voyages et tout le reste."
+      }
+    },
+    "benefits": {
+      "delivery": { "title": "Livraison rapide et flexible", "description": "Recevez vos achats où et quand vous voulez." },
+      "secure": { "title": "Paiements sécurisés", "description": "Vos informations sont toujours protégées." },
+      "support": { "title": "Une assistance humaine", "description": "Des réponses utiles par des experts en technologie." },
+      "returns": { "title": "Retours simples", "description": "Vous avez changé d’avis ? Aucun souci." }
+    },
+    "help": {
+      "eyebrow": "Toujours là pour vous",
+      "title": "Vous hésitez encore ?",
+      "description": "Notre équipe vous aide à comparer, choisir et tout configurer.",
+      "action": "Accéder à l’assistance"
+    }
   }
 }

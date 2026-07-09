@@ -9,12 +9,12 @@
   min-height: 96px;
   border: 1px solid token(color, border-strong);
   border-radius: 8px;
-  background: #fff;
-  padding: 16px;
+  background: token(color, surface-elevated);
+  padding: token(spacing, 4);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
+  gap: token(spacing, 3);
   text-align: left;
   cursor: pointer;
   transition:
@@ -50,7 +50,7 @@
 
   &__content {
     display: grid;
-    gap: 4px;
+    gap: token(spacing, 1);
     min-width: 0;
   }
 

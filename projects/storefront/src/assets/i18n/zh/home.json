@@ -1,6 +1,56 @@
 {
   "home": {
-    "title": "欢迎",
-    "description": "这是首页"
+    "hero": {
+      "eyebrow": "精心挑选的科技",
+      "title": "升级你的每一天。",
+      "description": "探索设计出众、性能强劲、经久耐用，并自然融入生活的科技产品。",
+      "shop": "选购新品",
+      "explore": "浏览分类",
+      "delivery": "指定订单免运费",
+      "returns": "14 天轻松退货",
+      "badge": "精选科技，为你而备"
+    },
+    "categories": {
+      "eyebrow": "寻找你的下一件心头好",
+      "title": "按分类选购",
+      "viewAll": "查看全部产品",
+      "phones": { "name": "手机", "description": "掌中强大性能" },
+      "laptops": { "name": "笔记本电脑", "description": "随你随行" },
+      "monitors": { "name": "显示器", "description": "更清晰地看见一切" },
+      "accessories": { "name": "配件", "description": "恰到好处的点睛之笔" }
+    },
+    "featured": {
+      "eyebrow": "值得细看",
+      "title": "本周精选",
+      "description": "精选新品与人气之选，让挑选下一台设备变得简单愉悦。",
+      "new": "新品",
+      "popular": "热门",
+      "discover": "探索手机",
+      "shopNow": "选购笔记本电脑",
+      "phone": {
+        "title": "移动体验，全新视角。",
+        "description": "出色影像、全天续航与流畅性能。"
+      },
+      "laptop": {
+        "title": "轻装工作，大胆创想。",
+        "description": "轻薄而强大的笔记本，灵感到哪，它就到哪。"
+      },
+      "audio": {
+        "title": "听见每个细节",
+        "description": "沉浸音效，陪伴工作、旅行与日常。"
+      }
+    },
+    "benefits": {
+      "delivery": { "title": "快速灵活配送", "description": "在适合你的时间和地点收货。" },
+      "secure": { "title": "安全支付", "description": "始终守护你的信息安全。" },
+      "support": { "title": "真人贴心支持", "description": "懂科技的团队为你认真解答。" },
+      "returns": { "title": "轻松退货", "description": "改变主意？没关系。" }
+    },
+    "help": {
+      "eyebrow": "随时为你提供帮助",
+      "title": "还不确定哪款适合？",
+      "description": "我们的团队可帮你比较、选择并完成设置。",
+      "action": "访问支持中心"
+    }
   }
 }

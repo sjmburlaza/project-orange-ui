@@ -3,7 +3,8 @@
     class="product-configurator-page__back"
     [routerLink]="['/', siteService.currentSite(), 'products']"
   >
-    {{ "products.configurator.back" | translate }}
+    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+    <span>{{ "products.configurator.back" | translate }}</span>
   </a>
 
   @if (product$ | async; as product) {
@@ -75,11 +76,17 @@
             @for (group of product.optionGroups; track group.code) {
               <div class="product-option-group">
                 <h2>{{ group.label }}</h2>
-                <div class="product-option-group__options">
+                <div
+                  class="product-option-group__options"
+                  [class.product-option-group__options--rows]="
+                    group.code !== 'color'
+                  "
+                >
                   @for (option of group.options; track option.code) {
                     <button
                       type="button"
                       class="product-option"
+                      [class.product-option--row]="group.code !== 'color'"
                       [class.product-option--selected]="
                         isOptionSelected(group.code, option.code)
                       "
@@ -97,7 +104,18 @@
                           [style.background-color]="option.hex"
                         ></span>
                       }
-                      {{ option.label }}
+                      <span class="product-option__label">
+                        {{ option.label }}
+                      </span>
+                      @if (
+                        group.code !== "color" && option.price !== undefined
+                      ) {
+                        <span class="product-option__price">
+                          {{
+                            option.price | currency: siteService.currency()
+                          }}
+                        </span>
+                      }
                     </button>
                   }
                 </div>
