@@ -15,6 +15,8 @@ export interface Product {
   categoryName?: string;
   subcategoryName?: string;
   availableColors?: ProductOption[];
+  reviewRating?: number;
+  reviewCount?: number;
 }
 
 export interface ProductConfigure extends Product {
@@ -39,6 +41,7 @@ export interface ProductOptionGroup {
 export interface ProductOption {
   code: string;
   label: string;
+  price?: number;
   hex?: string;
   imageUrl?: string;
 }

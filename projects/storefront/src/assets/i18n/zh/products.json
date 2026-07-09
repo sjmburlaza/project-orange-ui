@@ -18,7 +18,9 @@
     },
     "card": {
       "from": "起价",
-      "availableColors": "可选颜色："
+      "availableColors": "可选颜色：",
+      "reviewRating": "评分：{{rating}} / {{maximum}}",
+      "reviews": "{{count}}条评价"
     },
     "wishlistAuth": {
       "title": "登录后收藏商品",

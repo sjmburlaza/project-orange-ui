@@ -10,15 +10,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Product } from 'libs/models/product.model';
 import { IconPipe } from 'libs/shared/pipes/icon-pipe';
+import { RatingStarClassPipe } from 'libs/shared/pipes/rating-star-class.pipe';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CurrencyPipe, MatButtonModule, IconPipe, TranslatePipe],
+  imports: [
+    CurrencyPipe,
+    MatButtonModule,
+    IconPipe,
+    RatingStarClassPipe,
+    TranslatePipe,
+  ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCardComponent {
+  readonly ratingStarPositions = [1, 2, 3, 4, 5];
+
   @Input() product!: Product;
   @Input() currency!: string;
   @Input() wishlisted = false;

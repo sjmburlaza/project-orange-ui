@@ -1,5 +1,5 @@
 @if (steps().length) {
-  <mat-stepper orientation="vertical" [selectedIndex]="currentIndex()">
+  <mat-stepper orientation="horizontal" [selectedIndex]="currentIndex()">
     @for (step of steps(); track step.id; let i = $index) {
       <mat-step [label]="step.label">
         @if (currentIndex() === i) {

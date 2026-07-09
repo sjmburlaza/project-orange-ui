@@ -8,10 +8,17 @@
   min-height: 70vh;
 
   &__back {
+    display: inline-flex;
+    gap: token(spacing, 2);
+    align-items: center;
     width: fit-content;
     color: token(color, text-secondary);
     font-size: token(font-size, sm);
-    text-decoration: underline;
+    text-decoration: none;
+
+    span {
+      text-decoration: underline;
+    }
   }
 
   &__status {
@@ -38,6 +45,8 @@
   margin: 0 auto;
 
   &__media {
+    position: sticky;
+    top: token(spacing, 6);
     display: grid;
     place-items: center;
     min-height: 520px;
@@ -123,7 +132,8 @@
 .product-options {
   display: flex;
   flex-direction: column;
-  gap: token(spacing, 5);
+  gap: token(spacing, 10);
+  margin-block: token(spacing, 5);
 }
 
 .product-option-group {
@@ -141,6 +151,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: token(spacing, 3);
+
+    &--rows {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
   }
 }
 
@@ -156,6 +171,14 @@
   color: token(color, text-primary);
   cursor: pointer;
 
+  &--row {
+    justify-content: space-between;
+    width: 100%;
+    min-height: 64px;
+    padding: token(spacing, 3) token(spacing, 4);
+    text-align: left;
+  }
+
   &--selected {
     border-color: token(color, primary);
     box-shadow: 0 0 0 1px token(color, primary);
@@ -169,10 +192,22 @@
   }
 
   &__swatch {
+    flex: 0 0 auto;
     width: 18px;
     height: 18px;
     border: 1px solid token(color, border-strong);
     border-radius: 50%;
+  }
+
+  &__label {
+    min-width: 0;
+  }
+
+  &__price {
+    flex: 0 0 auto;
+    margin-left: auto;
+    color: token(color, text-secondary);
+    white-space: nowrap;
   }
 }
 
@@ -214,6 +249,7 @@
     gap: token(spacing, 5);
 
     &__media {
+      position: static;
       min-height: 320px;
 
       img {

@@ -20,7 +20,7 @@
     (click)="onToggleWishlist(product)"
   >
     <i
-      [class]="wishlisted ? 'bi bi-bookmark-fill' : 'bi bi-bookmark'"
+      [class]="wishlisted ? 'bi bi-heart-fill' : 'bi bi-heart'"
       aria-hidden="true"
     ></i>
   </button>
@@ -32,26 +32,52 @@
     }
   </div>
   <div class="product__name">{{ product.name }}</div>
-  <div class="product__description">{{ product.description }}</div>
+  @if (product.reviewRating !== undefined) {
+    <div
+      class="product__rating"
+      [attr.aria-label]="
+        'products.card.reviewRating'
+          | translate: { rating: product.reviewRating, maximum: 5 }
+      "
+    >
+      <span class="product__rating-stars" aria-hidden="true">
+        @for (position of ratingStarPositions; track position) {
+          <i
+            class="bi product__rating-star"
+            [class]="position | ratingStarClass: product.reviewRating"
+          ></i>
+        }
+      </span>
+      <span>{{ product.reviewRating }}</span>
+      @if (product.reviewCount !== undefined) {
+        <a
+          class="product__reviews-link"
+          href="#"
+          [attr.aria-label]="
+            'products.card.reviews'
+              | translate: { count: product.reviewCount }
+          "
+          (click)="$event.preventDefault()"
+        >
+          ({{ product.reviewCount }})
+        </a>
+      }
+    </div>
+  }
   @if (product.availableColors?.length) {
     <div class="product__colors">
       <span class="product__colors-label">
         {{ "products.card.availableColors" | translate }}
       </span>
-      <span class="product__colors-list">
-        @for (color of product.availableColors; track color.code) {
-          <span class="product__color" [title]="color.label">
-            @if (color.hex) {
-              <span
-                class="product__color-swatch"
-                [style.background-color]="color.hex"
-                aria-hidden="true"
-              ></span>
-            }
-            <span>{{ color.label }}</span>
-          </span>
-        }
-      </span>
+      @for (color of product.availableColors; track color.code) {
+        <span
+          class="product__color"
+          role="img"
+          [attr.aria-label]="color.label"
+          [title]="color.label"
+          [style.background-color]="color.hex"
+        ></span>
+      }
     </div>
   }
   <div class="product__price">

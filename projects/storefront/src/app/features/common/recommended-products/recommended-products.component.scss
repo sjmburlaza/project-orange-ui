@@ -105,6 +105,17 @@
   display: grid;
   gap: token(spacing, 3);
 
+  &--colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: token(spacing, 2);
+    align-items: center;
+
+    .recommended-option-group__options {
+      gap: token(spacing, 2);
+    }
+  }
+
   &__label {
     color: token(color, text-secondary);
     font-size: token(font-size, sm);
@@ -137,6 +148,20 @@
   &--selected {
     border-color: token(color, primary);
     box-shadow: 0 0 0 1px token(color, primary);
+  }
+
+  &--color {
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    min-height: 24px;
+    border-radius: 50%;
+    padding: 0;
+
+    &:focus-visible {
+      outline: 2px solid token(color, primary);
+      outline-offset: 3px;
+    }
   }
 
   &--unavailable {

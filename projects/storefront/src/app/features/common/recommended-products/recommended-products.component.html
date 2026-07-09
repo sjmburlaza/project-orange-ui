@@ -48,7 +48,12 @@
         @if (card.optionGroups.length > 0) {
           <div class="recommended-product-card__options">
             @for (group of card.optionGroups; track group.code) {
-              <div class="recommended-option-group">
+              <div
+                class="recommended-option-group"
+                [class.recommended-option-group--colors]="
+                  group.code === 'color'
+                "
+              >
                 <div class="recommended-option-group__label">
                   {{ group.label }}
                 </div>
@@ -57,22 +62,35 @@
                     <button
                       type="button"
                       class="recommended-option"
+                      [class.recommended-option--color]="group.code === 'color'"
                       [class.recommended-option--selected]="
                         option.selected
                       "
                       [class.recommended-option--unavailable]="
                         !option.available
                       "
+                      [attr.aria-label]="
+                        group.code === 'color' ? option.label : null
+                      "
+                      [attr.aria-pressed]="
+                        group.code === 'color' ? option.selected : null
+                      "
+                      [title]="group.code === 'color' ? option.label : null"
+                      [style.background-color]="
+                        group.code === 'color' ? option.hex : null
+                      "
                       [disabled]="!option.available"
                       (click)="selectOption(product, group.code, option)"
                     >
-                      @if (option.hex) {
-                        <span
-                          class="recommended-option__swatch"
-                          [style.background-color]="option.hex"
-                        ></span>
+                      @if (group.code !== "color") {
+                        @if (option.hex) {
+                          <span
+                            class="recommended-option__swatch"
+                            [style.background-color]="option.hex"
+                          ></span>
+                        }
+                        <span>{{ option.label }}</span>
                       }
-                      <span>{{ option.label }}</span>
                     </button>
                   }
                 </div>

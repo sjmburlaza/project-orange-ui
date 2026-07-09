@@ -99,6 +99,52 @@ describe('RecommendedProductsComponent', () => {
     });
   });
 
+  it('renders selectable catalog-style color swatches', () => {
+    const product = createProduct({
+      id: 1,
+      optionGroups: [
+        {
+          code: 'color',
+          label: 'Available colors:',
+          options: [
+            { code: 'black', label: 'Black', hex: '#111111' },
+            { code: 'blue', label: 'Blue', hex: '#2563eb' },
+          ],
+        },
+      ],
+      variants: [
+        createVariant({ id: 1001, options: { color: 'black' } }),
+        createVariant({ id: 1002, options: { color: 'blue' } }),
+      ],
+    });
+
+    cartFacade.recommendedProducts$.next([product]);
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+    const blackSwatch = element.querySelector<HTMLButtonElement>(
+      '.recommended-option--color[aria-label="Black"]',
+    );
+    const blueSwatch = element.querySelector<HTMLButtonElement>(
+      '.recommended-option--color[aria-label="Blue"]',
+    );
+
+    expect(blackSwatch?.getAttribute('aria-pressed')).toBe('true');
+    expect(blackSwatch?.textContent?.trim()).toBe('');
+    expect(blueSwatch?.style.backgroundColor).toBe('rgb(37, 99, 235)');
+
+    blueSwatch?.click();
+    fixture.detectChanges();
+
+    expect(
+      element
+        .querySelector<HTMLButtonElement>(
+          '.recommended-option--color[aria-label="Blue"]',
+        )
+        ?.getAttribute('aria-pressed'),
+    ).toBe('true');
+  });
+
   it('refreshes recommended products when cart contents change', () => {
     fixture.detectChanges();
 

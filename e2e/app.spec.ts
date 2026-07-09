@@ -104,7 +104,7 @@ test.describe('routing and catalog', () => {
 
     await page.getByRole('button', { name: /Continue to Philippines/ }).click();
 
-    await expect(page).toHaveURL(/\/ph\/products$/);
+    await expect(page).toHaveURL(/\/ph$/);
     await expect
       .poll(() =>
         page.evaluate((key) => localStorage.getItem(key), sitePreferenceKey),
@@ -113,10 +113,9 @@ test.describe('routing and catalog', () => {
     await expect(
       page.getByRole('heading', { name: 'ORANGE', exact: true }),
     ).toBeVisible();
-    await expect(productCard(page, 'iPhone 15')).toBeVisible();
-    await expect(productCard(page, 'MacBook Air M5')).toBeVisible();
-    await expect(productCard(page, 'Mechanical Keyboard')).toBeVisible();
-    await expect(productCard(page, 'Orange Studio Monitor')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Upgrade your everyday.' }),
+    ).toBeVisible();
   });
 
   test('uses a saved country preference when visiting the root URL', async ({
@@ -131,8 +130,10 @@ test.describe('routing and catalog', () => {
 
     await page.goto('/');
 
-    await expect(page).toHaveURL(/\/jp\/products$/);
-    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+    await expect(page).toHaveURL(/\/jp$/);
+    await expect(
+      page.getByRole('heading', { name: '毎日を、アップグレード。' }),
+    ).toBeVisible();
   });
 
   test('keeps valid country URLs authoritative over a saved preference', async ({
@@ -169,8 +170,10 @@ test.describe('routing and catalog', () => {
 
     await page.getByRole('button', { name: /Japan/ }).click();
 
-    await expect(page).toHaveURL(/\/jp\/products$/);
-    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+    await expect(page).toHaveURL(/\/jp$/);
+    await expect(
+      page.getByRole('heading', { name: '毎日を、アップグレード。' }),
+    ).toBeVisible();
   });
 
   test('shows the selector when country detection fails', async ({ page }) => {
@@ -184,8 +187,10 @@ test.describe('routing and catalog', () => {
 
     await page.getByRole('button', { name: /France/ }).click();
 
-    await expect(page).toHaveURL(/\/fr\/products$/);
-    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+    await expect(page).toHaveURL(/\/fr$/);
+    await expect(
+      page.getByRole('heading', { name: 'Améliorez votre quotidien.' }),
+    ).toBeVisible();
   });
 
   test('routes unsupported site codes through the country selector', async ({
@@ -201,8 +206,10 @@ test.describe('routing and catalog', () => {
 
     await page.getByRole('button', { name: /China/ }).click();
 
-    await expect(page).toHaveURL(/\/cn\/products$/);
-    await expect(productCard(page, 'iPhone 15')).toBeVisible();
+    await expect(page).toHaveURL(/\/cn$/);
+    await expect(
+      page.getByRole('heading', { name: '升级你的每一天。' }),
+    ).toBeVisible();
   });
 
   test('filters products by category', async ({ page }) => {
@@ -285,6 +292,61 @@ test.describe('routing and catalog', () => {
       page.getByText('Item has been added to your cart.'),
     ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Go to Cart' })).toBeVisible();
+  });
+
+  test('keeps the product image sticky until the configurator reaches the footer', async ({
+    page,
+  }) => {
+    await page.goto('/ph/products/1/configure');
+
+    const media = page.locator('.product-configurator__media');
+    await expect(media).toBeVisible();
+
+    const stickyTop = await media.evaluate((element) =>
+      Number.parseFloat(getComputedStyle(element).top),
+    );
+
+    await page.evaluate(() => {
+      const configurator = document.querySelector('.product-configurator');
+      const configuratorTop =
+        window.scrollY + (configurator?.getBoundingClientRect().top ?? 0);
+
+      window.scrollTo(0, configuratorTop + 160);
+    });
+
+    await expect
+      .poll(() =>
+        media.evaluate((element) =>
+          Math.round(element.getBoundingClientRect().top),
+        ),
+      )
+      .toBe(Math.round(stickyTop));
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+    const boundary = await page.evaluate(() => {
+      const mediaRect = document
+        .querySelector('.product-configurator__media')
+        ?.getBoundingClientRect();
+      const configuratorRect = document
+        .querySelector('.product-configurator')
+        ?.getBoundingClientRect();
+      const footerRect = document
+        .querySelector('app-footer')
+        ?.getBoundingClientRect();
+
+      return {
+        mediaBottom: mediaRect?.bottom ?? Number.POSITIVE_INFINITY,
+        configuratorBottom:
+          configuratorRect?.bottom ?? Number.NEGATIVE_INFINITY,
+        footerTop: footerRect?.top ?? Number.NEGATIVE_INFINITY,
+      };
+    });
+
+    expect(boundary.mediaBottom).toBeLessThanOrEqual(
+      boundary.configuratorBottom + 1,
+    );
+    expect(boundary.mediaBottom).toBeLessThan(boundary.footerTop);
   });
 });
 

@@ -18,7 +18,9 @@
     },
     "card": {
       "from": "À partir de",
-      "availableColors": "Couleurs disponibles :"
+      "availableColors": "Couleurs disponibles :",
+      "reviewRating": "Note : {{rating}} sur {{maximum}}",
+      "reviews": "{{count}} avis"
     },
     "wishlistAuth": {
       "title": "Connectez-vous pour enregistrer des produits",
