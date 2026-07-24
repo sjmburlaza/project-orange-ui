@@ -1,6 +1,6 @@
 # Project Orange UI
 
-Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows with localized payment methods, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, and a standalone admin app for analytics, order management, and product management. The project is covered by unit and Playwright end-to-end tests, with CI running lint, unit tests, e2e tests, and production builds.
+Project Orange UI is an Angular storefront and admin workspace for a multi-country commerce experience. It includes site-aware routing, product listing and detail pages, wishlist saves, cart and checkout flows with localized payment methods, guest order lookup, order confirmation and history, add-on experiences, authentication, profile pages, and a standalone admin app for analytics, orders, products, inventory, promotions, and customers. The project is covered by unit and Playwright end-to-end tests, with CI running library builds, lint, unit tests, e2e tests, and production builds.
 
 ## Demos
 
@@ -41,7 +41,7 @@ npm start
 
 The app runs at `http://localhost:4200/`. The dev server uses `proxy.conf.cjs` to forward `/api` requests to `http://localhost:5175`. Analytics requests prefer the json-server mock on `http://localhost:5176` when it is running, and fall back to `http://localhost:5175` otherwise.
 
-For the local analytics dashboard mock, run this in a second terminal:
+For the local analytics dashboard mock, ensure a root `db.json` file exists. An empty `{}` object is enough to use the generated defaults. Then run this in a second terminal:
 
 ```bash
 npm run mock:api
@@ -56,19 +56,21 @@ http://localhost:4200/cn/products
 http://localhost:4200/jp/products
 ```
 
-Run the standalone admin app when working on analytics, order management, or product management:
+Run the standalone admin app when working on administration features:
 
 ```bash
 npm run ng -- serve project-orange-admin
 ```
 
-The admin app runs from `projects/admin/src/app` and currently owns:
+It uses `http://localhost:4200` when run by itself. To run it alongside the storefront, choose another port:
 
-```text
-/analytics
-/orders
-/products
+```bash
+npm run ng -- serve project-orange-admin --port 4201
 ```
+
+The admin app runs from `projects/admin/src/app`. Its root redirects to `/admin/analytics`; `/admin/login` is public, while the other `/admin/*` routes require an authenticated admin session.
+
+Admin login/session requests still use the primary backend at `http://localhost:5175`. The analytics mock on port `5176` supplies dashboard data only.
 
 ## Available Scripts
 
@@ -76,19 +78,19 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 | --------------------------------------------- | ------------------------------------------------------------------------------------ |
 | `npm start`                                   | Runs `ng serve project-orange-storefront` with `proxy.conf.cjs`.                     |
 | `npm run mock:api`                            | Runs the local json-server analytics mock on port `5176`.                            |
-| `npm run start:e2e`                           | Runs the Angular dev server with the e2e build configuration.                        |
+| `npm run start:e2e`                           | Runs the storefront dev server with the static e2e build configuration.              |
 | `npm run build`                               | Builds the default storefront app for production into `dist/`.                       |
 | `npm run build:libs`                          | Builds all shared `@orange/*` libraries.                                              |
 | `npm run build:all`                           | Builds the shared libraries, storefront, and admin app.                               |
 | `npm run ng -- build project-orange-admin`    | Builds the standalone admin app into `dist/project-orange-admin`.                    |
 | `npm run watch`                               | Builds in watch mode with the development configuration.                             |
-| `npm test`                                    | Runs unit tests.                                                                     |
-| `npm run test:watch`                          | Runs unit tests in watch mode.                                                       |
-| `npm run test:ci`                             | Runs unit tests once for CI.                                                         |
+| `npm test`                                    | Runs storefront and shared-library unit tests.                                       |
+| `npm run test:watch`                          | Runs storefront and shared-library unit tests in watch mode.                         |
+| `npm run test:ci`                             | Runs storefront and shared-library unit tests once.                                  |
 | `npm run e2e`                                 | Runs Playwright tests.                                                               |
 | `npm run e2e:ui`                              | Opens the Playwright UI runner.                                                      |
 | `npm run e2e:headed`                          | Runs Playwright tests in headed mode.                                                |
-| `npm run lint`                                | Runs Angular ESLint over TypeScript and templates.                                   |
+| `npm run lint`                                | Runs Angular ESLint for the storefront and shared source.                            |
 | `npm run lint:libs`                           | Runs Angular ESLint for all shared libraries.                                         |
 | `npm run build:ssr`                           | Builds the server-output application.                                                |
 | `npm run serve:ssr:project-orange-storefront` | Serves the built SSR bundle from `dist/project-orange-storefront/server/server.mjs`. |
@@ -103,6 +105,7 @@ Most app routes are scoped by site:
 
 | Route                                  | Purpose                                                                                          |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `/:site`                               | Storefront home page.                                                                            |
 | `/:site/products`                      | Product listing with category, sort, price filters, and save toggles.                            |
 | `/:site/products/:productId`           | Product detail page.                                                                             |
 | `/:site/products/:productId/configure` | Product configurator and add-to-cart flow.                                                       |
@@ -115,18 +118,23 @@ Most app routes are scoped by site:
 | `/:site/orders`                        | Guest order lookup or signed-in order history.                                                   |
 | `/:site/orders/my-orders`              | Orders route alias for lookup and history.                                                       |
 | `/:site/orders/confirmation/:orderId`  | Order confirmation page after checkout.                                                          |
+| `/:site/support`                       | Customer support page.                                                                           |
 | `/:site/profile/account-settings`      | Customer account settings.                                                                       |
 | `/:site/profile/wishlist`              | Authenticated customer wishlist with saved products.                                             |
 
 Unsupported site codes are redirected back to the country selector.
 
-The standalone admin app owns admin pages outside the site-scoped storefront route tree:
+The standalone admin app owns pages outside the site-scoped storefront route tree:
 
-| Route        | Purpose                    |
-| ------------ | -------------------------- |
-| `/analytics` | Admin analytics dashboard. |
-| `/orders`    | Admin order management.    |
-| `/products`  | Admin product management.  |
+| Route               | Access              | Purpose                         |
+| ------------------- | ------------------- | ------------------------------- |
+| `/admin/login`      | Public              | Admin sign-in.                  |
+| `/admin/analytics`  | Authenticated admin | Analytics dashboard.            |
+| `/admin/orders`     | Authenticated admin | Order management.               |
+| `/admin/products`   | Authenticated admin | Product management.             |
+| `/admin/inventory`  | Authenticated admin | Inventory management.           |
+| `/admin/promotions` | Authenticated admin | Promotion management.           |
+| `/admin/customers`  | Authenticated admin | Customer management.            |
 
 ## API Behavior
 
@@ -161,16 +169,16 @@ Primary API areas used by the UI:
 | Sites             | `GET /api/sites`, `GET /api/sites/:site`                                                                                                                                                                                                             |
 | Country detection | `GET /api/geo/country`                                                                                                                                                                                                                               |
 | Auth              | `POST /api/auth/login`, `POST /api/auth/register`, `POST /api/auth/forgot-password`, `POST /api/auth/reset-password`, `GET /api/auth/session`, `POST /api/auth/logout`                                                                               |
-| Catalog           | `GET /api/products`, `GET /api/products/:id`, `GET /api/categories`                                                                                                                                                                                  |
+| Catalog           | `GET /api/products`, `GET /api/products/:id`, `GET /api/products/search/suggestions`, `GET /api/categories`                                                                                                                                          |
 | Product add-ons   | `GET /api/products/:id/insurance-plans`, `GET /api/products/:id/mobile-plans`                                                                                                                                                                        |
 | Wishlist          | `GET /api/wishlist`, `POST /api/wishlist/items`, `GET /api/wishlist/items/:productId`, `DELETE /api/wishlist/items/:productId`                                                                                                                       |
 | Cart              | `GET /api/carts/:cartCode`, `GET /api/carts/:cartCode/recommended-products`, `POST /api/carts/items`, `POST /api/carts/:cartCode/items`, `PUT /api/carts/:cartCode/items/:variantId`, `DELETE /api/carts/:cartCode/items/:variantId`                 |
 | Cart add-ons      | `PUT /api/carts/:cartCode/items/:variantId/addons/:addonId`, `DELETE /api/carts/:cartCode/items/:variantId/addons/:addonId`                                                                                                                          |
 | Vouchers          | `POST /api/carts/:cartCode/vouchers`, `DELETE /api/carts/:cartCode/vouchers/:code`                                                                                                                                                                   |
-| Checkout          | `GET /api/checkout/form`                                                                                                                                                                                                                             |
+| Checkout          | `GET /api/checkout/form`, `GET /api/options/:kind`                                                                                                                                                                                                   |
 | Payments          | `POST /api/payments/intents`, `POST /api/payments/confirm`                                                                                                                                                                                           |
 | Orders            | `POST /api/orders`, `GET /api/orders`, `GET /api/orders/:orderNumber`, `GET /api/orders/lookup?orderNumber=...&email=...`                                                                                                                            |
-| Fulfillment       | `GET /api/fulfillment/options?postalCode=...`, `PUT /api/carts/:cartCode/shipping`                                                                                                                                                                   |
+| Fulfillment       | `GET /api/fulfillment/options?postalCode=...`, `GET /api/postal-codes/validate?postalCode=...`, `PUT /api/carts/:cartCode/shipping`                                                                                                                   |
 | Trade-in          | `GET /api/trade-ins/config`, `GET /api/trade-ins/categories`, `GET /api/trade-ins/brands`, `GET /api/trade-ins/devices`, `GET /api/trade-ins/storages`                                                                                               |
 | Trade-in sessions | `POST /api/trade-in-sessions`, `GET /api/trade-in-sessions/:id`, `PATCH /api/trade-in-sessions/:id/step-one`, `PATCH /api/trade-in-sessions/:id/step-two`, `PATCH /api/trade-in-sessions/:id/step-three`, `PATCH /api/trade-in-sessions/:id/confirm` |
 
@@ -190,6 +198,7 @@ Mock auth is available through `MockAuthInterceptor`, but it is disabled by defa
 export const environment = {
   production: false,
   useMockAuth: true,
+  useMockPayments: true,
 };
 ```
 
@@ -260,14 +269,14 @@ Feature flags currently affect add-ons such as insurance, trade-in, and vouchers
 
 ```text
 libs/core
-  auth/             Session models, auth service, auth store, roles, permissions
+  auth/             Authentication API client and session store
   guards/           Auth, role, and site route guards
   i18n/             Site types and multi-file translation loader
   interceptors/     API site prefixing, auth, and mock auth
   services/         Analytics, site, storage, country detection, and postal code services
 
 libs/models
-  Shared API and domain model contracts exposed through `@orange/models`
+  Shared API and domain contracts, including auth roles and permissions
 
 libs/shared
   constants/        Shared regex and validation constants
@@ -277,6 +286,9 @@ libs/shared
 
 libs/ui
   Shared controls such as buttons, dropdowns, sliders, spinners, and dialogs
+
+libs/styles
+  Shared SCSS tokens, utilities, global styles, and font assets
 
 projects/storefront/src/app/features
   auth/             Login, register, forgot password, reset password
@@ -298,15 +310,34 @@ projects/storefront/src/app/layout
 
 projects/admin/src/app
   app.routes.ts     Standalone admin app routes
-  pages/            Admin order and product management pages
+  pages/            Login, analytics, orders, products, inventory, promotions, customers
 ```
+
+## Workspace Libraries
+
+Application and library consumers import shared code only through these public entry points:
+
+| Entry point       | Ownership                                                               |
+| ----------------- | ----------------------------------------------------------------------- |
+| `@orange/models`  | Framework-free API/domain contracts, auth contracts, roles, permissions |
+| `@orange/shared`  | Directives, pipes, validators, and constants                             |
+| `@orange/ui`      | Reusable standalone UI components                                       |
+| `@orange/core`    | Angular services, auth state, guards, interceptors, and i18n             |
+
+Do not import implementation files through `libs/...`. Build and lint the package boundaries with `npm run build:libs` and `npm run lint:libs`.
 
 ## Testing
 
-Run unit tests:
+Run storefront and shared-library unit tests:
 
 ```bash
 npm run test:ci
+```
+
+Run admin unit tests:
+
+```bash
+npm run ng -- test project-orange-admin --watch=false
 ```
 
 Run Playwright e2e tests:
@@ -315,10 +346,11 @@ Run Playwright e2e tests:
 npm run e2e
 ```
 
-The Playwright configuration starts the app automatically with:
+The Playwright configuration starts both apps automatically:
 
-```bash
-npm run start:e2e -- --host 127.0.0.1 --port 4200
+```text
+Storefront: http://localhost:4300
+Admin:      http://localhost:4301/admin/analytics
 ```
 
 The e2e suite mocks the Orange API in `e2e/app.spec.ts` and uses fixture data from `e2e/fixtures/catalog.ts`, so a backend is not required for e2e tests.
