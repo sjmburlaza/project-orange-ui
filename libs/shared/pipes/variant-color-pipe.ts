@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ProductOptionGroup } from 'libs/models/product.model';
+import { ProductOptionGroup } from '@orange/models';
 
 @Pipe({
   name: 'variantColor',

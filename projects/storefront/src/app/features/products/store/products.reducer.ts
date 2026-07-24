@@ -1,12 +1,12 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Category } from 'libs/models/category.model';
+import { Category } from '@orange/models';
 import {
   InsurancePlan,
   MobilePlan,
   Product,
   ProductConfigure,
   ProductSort,
-} from 'libs/models/product.model';
+} from '@orange/models';
 import { ProductActions } from 'src/app/features/products/store/products.actions';
 
 export const productFeatureKey = 'products';

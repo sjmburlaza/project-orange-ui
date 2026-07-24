@@ -8,9 +8,9 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Product } from 'libs/models/product.model';
-import { IconPipe } from 'libs/shared/pipes/icon-pipe';
-import { RatingStarClassPipe } from 'libs/shared/pipes/rating-star-class.pipe';
+import { Product } from '@orange/models';
+import { IconPipe } from '@orange/shared';
+import { RatingStarClassPipe } from '@orange/shared';
 
 @Component({
   selector: 'app-product-card',

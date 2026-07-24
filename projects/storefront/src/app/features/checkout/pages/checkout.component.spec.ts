@@ -4,16 +4,16 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { AuthSession } from 'libs/core/auth/auth.models';
-import { AuthStore } from 'libs/core/auth/auth.store';
-import { Cart } from 'libs/models/cart.model';
-import { CheckoutFormConfig } from 'libs/models/checkout.model';
+import { AuthSession } from '@orange/models';
+import { AuthStore } from '@orange/core';
+import { Cart } from '@orange/models';
+import { CheckoutFormConfig } from '@orange/models';
 import {
   PaymentConfirmation,
   PaymentIntent,
-} from 'libs/models/payment.model';
-import { AnalyticsService } from 'libs/core/services/analytics.service';
-import { SiteService } from 'libs/core/services/site.services';
+} from '@orange/models';
+import { AnalyticsService } from '@orange/core';
+import { SiteService } from '@orange/core';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { CardPaymentMethodComponent } from '../components/payment-step/card-payment-method/card-payment-method.component';

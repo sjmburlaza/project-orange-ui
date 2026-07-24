@@ -1,4 +1,4 @@
-import { Addon } from 'libs/models/cart.model';
+import { Addon } from '@orange/models';
 
 export interface AddonDialogData {
   productId: number;

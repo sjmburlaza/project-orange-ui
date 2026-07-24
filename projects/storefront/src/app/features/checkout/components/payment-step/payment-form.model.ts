@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaymentStepValue } from 'libs/models/payment.model';
+import { PaymentStepValue } from '@orange/models';
 
 export interface PaymentShellFormControls {
   paymentMethod: FormControl<string>;

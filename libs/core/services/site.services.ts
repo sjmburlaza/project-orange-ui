@@ -4,8 +4,8 @@ import {
   normalizeSiteCode,
   SiteCode,
   SiteConfig,
-} from 'libs/core/i18n/sites';
-import { BrowserStorageService } from 'libs/core/services/browser-storage.service';
+} from '../i18n/sites';
+import { BrowserStorageService } from './browser-storage.service';
 import { map, Observable, tap } from 'rxjs';
 
 type SitesResponse = SiteConfig[] | { sites?: SiteConfig[] | null };

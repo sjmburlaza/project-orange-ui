@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { ROLES, Role } from 'libs/core/auth/auth.constants';
-import { AuthSession } from 'libs/core/auth/auth.models';
-import { AuthService } from 'libs/core/auth/auth.service';
-import { AuthStore } from 'libs/core/auth/auth.store';
+import { ROLES, Role } from '@orange/models';
+import { AuthSession } from '@orange/models';
+import { AuthService } from '@orange/core';
+import { AuthStore } from '@orange/core';
 
 import { LoginComponent } from './login.component';
 

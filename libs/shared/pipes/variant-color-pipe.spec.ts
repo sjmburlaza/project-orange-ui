@@ -1,4 +1,4 @@
-import { ProductOptionGroup } from 'libs/models/product.model';
+import { ProductOptionGroup } from '@orange/models';
 
 import { VariantColorPipe } from './variant-color-pipe';
 

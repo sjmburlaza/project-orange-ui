@@ -19,6 +19,7 @@ Admin app
 - Angular 20 with standalone components and lazy routes
 - Angular SSR/server output with client hydration
 - Angular Material, Angular CDK, SCSS, and Bootstrap Icons
+- npm workspaces with buildable `@orange/*` Angular libraries
 - NgRx Store, Effects, and Store DevTools for products, cart, and trade-in state
 - ngx-translate with split translation resources
 - Vitest through Angular's unit test builder
@@ -77,6 +78,8 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 | `npm run mock:api`                            | Runs the local json-server analytics mock on port `5176`.                            |
 | `npm run start:e2e`                           | Runs the Angular dev server with the e2e build configuration.                        |
 | `npm run build`                               | Builds the default storefront app for production into `dist/`.                       |
+| `npm run build:libs`                          | Builds all shared `@orange/*` libraries.                                              |
+| `npm run build:all`                           | Builds the shared libraries, storefront, and admin app.                               |
 | `npm run ng -- build project-orange-admin`    | Builds the standalone admin app into `dist/project-orange-admin`.                    |
 | `npm run watch`                               | Builds in watch mode with the development configuration.                             |
 | `npm test`                                    | Runs unit tests.                                                                     |
@@ -86,6 +89,7 @@ The admin app runs from `projects/admin/src/app` and currently owns:
 | `npm run e2e:ui`                              | Opens the Playwright UI runner.                                                      |
 | `npm run e2e:headed`                          | Runs Playwright tests in headed mode.                                                |
 | `npm run lint`                                | Runs Angular ESLint over TypeScript and templates.                                   |
+| `npm run lint:libs`                           | Runs Angular ESLint for all shared libraries.                                         |
 | `npm run build:ssr`                           | Builds the server-output application.                                                |
 | `npm run serve:ssr:project-orange-storefront` | Serves the built SSR bundle from `dist/project-orange-storefront/server/server.mjs`. |
 
@@ -260,15 +264,19 @@ libs/core
   guards/           Auth, role, and site route guards
   i18n/             Site types and multi-file translation loader
   interceptors/     API site prefixing, auth, and mock auth
-  models/           Shared API/domain models
-  services/         Site, wishlist, storage, country detection, and postal code services
+  services/         Analytics, site, storage, country detection, and postal code services
+
+libs/models
+  Shared API and domain model contracts exposed through `@orange/models`
 
 libs/shared
-  components/       Shared controls such as buttons, dropdowns, sliders, spinners
   constants/        Shared regex and validation constants
   directives/       Shared input-formatting directives
   pipes/            Shared pipes
   validators/       Shared validators
+
+libs/ui
+  Shared controls such as buttons, dropdowns, sliders, spinners, and dialogs
 
 projects/storefront/src/app/features
   auth/             Login, register, forgot password, reset password

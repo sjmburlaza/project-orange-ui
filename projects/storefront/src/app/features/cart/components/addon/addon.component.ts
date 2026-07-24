@@ -10,15 +10,15 @@ import { MatDialog } from '@angular/material/dialog';
 import {
   Addon,
   UpdateCartItemAddonRequest,
-} from 'libs/models/cart.model';
-import { IconPipe } from 'libs/shared/pipes/icon-pipe';
+} from '@orange/models';
+import { IconPipe } from '@orange/shared';
 import { AddonInsuranceComponent } from '../addon-insurance/addon-insurance.component';
 import { AddonTradeinComponent } from '../addon-tradein/addon-tradein.component';
 import { AddonMobilePlanComponent } from '../addon-mobile-plan/addon-mobile-plan.component';
 import { AddonDialogData } from './addon-dialog-data.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CurrencyPipe } from '@angular/common';
-import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '@orange/ui';
 
 interface UpsertAddonEvent {
   variantId: number;

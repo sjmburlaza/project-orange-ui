@@ -164,14 +164,17 @@ server.use(jsonServer.defaults());
 server.use(jsonServer.bodyParser);
 
 server.get('/api/geo/country', (_req, res) => {
+  // Return a deterministic country lookup for local storefront tests.
   res.jsonp({ countryCode: 'PH' });
 });
 
 server.get('/api/sites', (_req, res) => {
+  // Expose the configured site list from the mock database.
   res.jsonp({ sites: router.db.get('sites').value() });
 });
 
 server.get('/api/sites/:site', (req, res) => {
+  // Find a single site by code and report a 404 for unknown locales.
   const site = router.db
     .get('sites')
     .find({ code: req.params.site.toLowerCase() })
@@ -206,10 +209,12 @@ server.get(
 );
 
 server.get('/api/admin/analytics/dashboard', (req, res) => {
+  // Build an analytics dashboard from all events or a query-scoped site.
   res.jsonp(buildDashboard(getAnalyticsEvents(req), getAnalyticsPeriod(req)));
 });
 
 server.get('/api/:site/admin/analytics/dashboard', (req, res) => {
+  // Build an analytics dashboard for the site captured in the route.
   res.jsonp(
     buildDashboard(
       getAnalyticsEvents(req, req.params.site),
@@ -219,10 +224,12 @@ server.get('/api/:site/admin/analytics/dashboard', (req, res) => {
 });
 
 server.post('/api/analytics/events', (req, res) => {
+  // Persist unscoped analytics events and return the refreshed dashboard.
   saveAnalyticsEvents(req, res);
 });
 
 server.post('/api/:site/analytics/events', (req, res) => {
+  // Persist site-scoped analytics events and return the refreshed dashboard.
   saveAnalyticsEvents(req, res, req.params.site);
 });
 
@@ -230,12 +237,14 @@ server.use(rewriteSiteScopedApi);
 server.use('/api', router);
 
 server.listen(PORT, () => {
+  // Print the mock server URL and important analytics routes at startup.
   console.log(`Mock API listening on http://localhost:${PORT}`);
   console.log('Analytics endpoints:');
   console.log('  GET  /api/admin/analytics/dashboard');
   console.log('  POST /api/analytics/events');
 });
 
+// Load the base fixture database and omit schema metadata before routing.
 function readBaseDb() {
   const dbPath = path.join(__dirname, '..', 'db.json');
   const source = fs.readFileSync(dbPath, 'utf8');
@@ -244,6 +253,7 @@ function readBaseDb() {
   return db;
 }
 
+// Send the checkout form for a site, falling back to the default fixture.
 function sendCheckoutForm(req, res) {
   const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
   const checkoutForm =
@@ -258,6 +268,7 @@ function sendCheckoutForm(req, res) {
   res.jsonp(applyCheckoutPaymentOptions(checkoutForm, site));
 }
 
+// Read a checkout form JSON fixture when the requested site name is safe.
 function readCheckoutFormFixture(site) {
   const normalizedSite = normalizeSite(site);
 
@@ -277,6 +288,7 @@ function readCheckoutFormFixture(site) {
   return JSON.parse(fs.readFileSync(checkoutFormPath, 'utf8'));
 }
 
+// Clone the checkout form and replace payment options with site-local values.
 function applyCheckoutPaymentOptions(checkoutForm, site) {
   const paymentOptions =
     CHECKOUT_PAYMENT_OPTIONS_BY_SITE[site] ??
@@ -300,26 +312,31 @@ function applyCheckoutPaymentOptions(checkoutForm, site) {
   return localizedForm;
 }
 
+// Ensure checkout form versions are namespaced by the active site code.
 function resolveCheckoutFormVersion(version, site) {
   return typeof version === 'string' && version.startsWith(`${site}-`)
     ? version
     : `${site}-1.0`;
 }
 
+// Return the fulfillment methods available to the mock checkout flow.
 function sendFulfillmentOptions(_req, res) {
   res.jsonp(router.db.get('fulfillmentOptions').value());
 }
 
+// Return an arbitrary option collection by route parameter, or an empty list.
 function sendOptions(req, res) {
   const collection = router.db.get(req.params.kind).value();
 
   res.jsonp(Array.isArray(collection) ? collection : []);
 }
 
+// Return the wishlist summary for the current or default site.
 function sendWishlist(req, res) {
   res.jsonp(buildWishlistResponse(req.params.site));
 }
 
+// Add a product to the site wishlist when it exists and is not already saved.
 function addWishlistItem(req, res) {
   const productId = Number(req.body?.productId);
   const product = findProductById(productId);
@@ -352,6 +369,7 @@ function addWishlistItem(req, res) {
   res.status(201).jsonp(buildWishlistResponse(site));
 }
 
+// Report whether a product is currently saved in the site wishlist.
 function sendWishlistStatus(req, res) {
   const productId = Number(req.params.productId);
   const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
@@ -364,6 +382,7 @@ function sendWishlistStatus(req, res) {
   res.jsonp({ productId, isWishlisted });
 }
 
+// Remove a product from the site wishlist and return the updated summary.
 function removeWishlistItem(req, res) {
   const productId = Number(req.params.productId);
   const site = normalizeSite(req.params.site) ?? DEFAULT_SITE;
@@ -381,6 +400,7 @@ function removeWishlistItem(req, res) {
   res.jsonp(buildWishlistResponse(site));
 }
 
+// Build a wishlist response with product summaries attached to each item.
 function buildWishlistResponse(site) {
   const normalizedSite = normalizeSite(site) ?? DEFAULT_SITE;
   const items = getWishlistItemsCollection()
@@ -407,12 +427,14 @@ function buildWishlistResponse(site) {
   };
 }
 
+// Safely read wishlist items from the json-server database.
 function getWishlistItemsCollection() {
   const wishlistItems = router.db.get('wishlistItems').value();
 
   return Array.isArray(wishlistItems) ? wishlistItems : [];
 }
 
+// Pick the next wishlist item id by incrementing the current maximum id.
 function getNextWishlistItemId() {
   return (
     getWishlistItemsCollection().reduce(
@@ -422,6 +444,7 @@ function getNextWishlistItemId() {
   );
 }
 
+// Find a product by numeric id in the mock product collection.
 function findProductById(productId) {
   const products = router.db.get('products').value();
 
@@ -430,6 +453,7 @@ function findProductById(productId) {
     : null;
 }
 
+// Convert a product record into the smaller shape returned by wishlist APIs.
 function toWishlistProductSummary(product) {
   const stockQuantity = Number(product.stockQuantity ?? 0);
 
@@ -449,6 +473,7 @@ function toWishlistProductSummary(product) {
   };
 }
 
+// Return up to four products that are not already present in the cart.
 function sendRecommendedProducts(req, res) {
   const products = router.db.get('products').value();
   const cartProductIds = getCartProductIds(req.params.cartCode);
@@ -460,6 +485,7 @@ function sendRecommendedProducts(req, res) {
   res.jsonp(recommendedProducts);
 }
 
+// Add default variant-related fields to legacy products when needed.
 function toRecommendedProduct(product) {
   if (Array.isArray(product?.variants)) {
     return product;
@@ -486,6 +512,7 @@ function toRecommendedProduct(product) {
   };
 }
 
+// Translate stock quantity into the storefront stock status vocabulary.
 function getStockStatus(stockQuantity) {
   if (stockQuantity <= 0) {
     return 'outOfStock';
@@ -494,6 +521,7 @@ function getStockStatus(stockQuantity) {
   return stockQuantity <= 5 ? 'lowStock' : 'inStock';
 }
 
+// Read product ids from either the modern carts collection or legacy cart data.
 function getCartProductIds(cartCode) {
   const carts = router.db.get('carts').value();
 
@@ -514,6 +542,7 @@ function getCartProductIds(cartCode) {
   return new Set();
 }
 
+// Normalize cart line item arrays across modern entries and legacy items fields.
 function getCartLineItems(cart) {
   if (!cart || typeof cart !== 'object') {
     return [];
@@ -526,6 +555,7 @@ function getCartLineItems(cart) {
   return Array.isArray(cart.items) ? cart.items : [];
 }
 
+// Rewrite site-scoped collection URLs so json-server can serve shared data.
 function rewriteSiteScopedApi(req, _res, next) {
   const match = req.url.match(/^\/api\/([^/?]+)\/(.+)$/);
 
@@ -550,6 +580,7 @@ function rewriteSiteScopedApi(req, _res, next) {
   next();
 }
 
+// Persist accepted analytics events and return the updated dashboard payload.
 function saveAnalyticsEvents(req, res, site) {
   const incomingEvents = normalizeAnalyticsPayload(req.body, site);
   const events = router.db.get('analyticsEvents');
@@ -569,6 +600,7 @@ function saveAnalyticsEvents(req, res, site) {
     );
 }
 
+// Convert single-event, array, or batched payloads into normalized events.
 function normalizeAnalyticsPayload(body, site) {
   const values = Array.isArray(body?.events)
     ? body.events
@@ -583,6 +615,7 @@ function normalizeAnalyticsPayload(body, site) {
     .filter(Boolean);
 }
 
+// Validate event type and fill in missing analytics fields with defaults.
 function normalizeAnalyticsEvent(event, site) {
   if (!event || !ANALYTICS_TYPES.has(event.type)) {
     return null;
@@ -606,6 +639,7 @@ function normalizeAnalyticsEvent(event, site) {
   };
 }
 
+// Detect duplicate purchases so retries do not inflate revenue and orders.
 function isDuplicatePurchase(events, event) {
   if (event.type !== 'purchase' || !event.orderNumber) {
     return false;
@@ -619,6 +653,7 @@ function isDuplicatePurchase(events, event) {
   );
 }
 
+// Read analytics events, optionally filtering by route or query site code.
 function getAnalyticsEvents(req, site) {
   const querySite = typeof req.query.site === 'string' ? req.query.site : null;
   const normalizedSite = normalizeSite(site ?? querySite);
@@ -635,6 +670,7 @@ function getAnalyticsEvents(req, site) {
   });
 }
 
+// Resolve a supported dashboard period from the query string.
 function getAnalyticsPeriod(req) {
   const period =
     typeof req.query.period === 'string'
@@ -644,6 +680,7 @@ function getAnalyticsPeriod(req) {
   return ANALYTICS_PERIODS.has(period) ? period : DEFAULT_ANALYTICS_PERIOD;
 }
 
+// Aggregate analytics events into the dashboard metrics used by the admin UI.
 function buildDashboard(events, period = DEFAULT_ANALYTICS_PERIOD) {
   const scopedEvents = filterEventsByPeriod(events, period);
   const visitors = uniqueCount(
@@ -702,6 +739,7 @@ function buildDashboard(events, period = DEFAULT_ANALYTICS_PERIOD) {
   };
 }
 
+// Keep only events that fall within the selected analytics period.
 function filterEventsByPeriod(events, period) {
   const cutoff = getAnalyticsPeriodStart(period);
 
@@ -714,6 +752,7 @@ function filterEventsByPeriod(events, period) {
   });
 }
 
+// Calculate the start date for each supported analytics dashboard period.
 function getAnalyticsPeriodStart(period) {
   const today = startOfDay(new Date());
 
@@ -730,6 +769,7 @@ function getAnalyticsPeriodStart(period) {
   }
 }
 
+// Choose daily or monthly chart buckets based on the selected period length.
 function buildDailyPoints(events, period) {
   if (period === 'past-year') {
     return buildMonthlyPoints(events, addMonths(startOfMonth(new Date()), -11));
@@ -757,6 +797,7 @@ function buildDailyPoints(events, period) {
   return buildDayPoints(events, addDays(today, -(dayCount - 1)), today);
 }
 
+// Build one analytics point per day and add each event to its matching point.
 function buildDayPoints(events, startDate, endDate) {
   const points = new Map();
 
@@ -778,6 +819,7 @@ function buildDayPoints(events, startDate, endDate) {
   return [...points.values()];
 }
 
+// Build one analytics point per month and add each event to its matching point.
 function buildMonthlyPoints(events, startDate) {
   const points = new Map();
   const endDate = startOfMonth(new Date());
@@ -803,6 +845,7 @@ function buildMonthlyPoints(events, startDate) {
   return [...points.values()];
 }
 
+// Create a zero-filled chart point for one day or month bucket.
 function createAnalyticsPoint(dateKey, label) {
   return {
     dateKey,
@@ -817,6 +860,7 @@ function createAnalyticsPoint(dateKey, label) {
   };
 }
 
+// Mutate a chart point by incrementing the metric represented by an event.
 function addEventToPoint(point, event) {
   switch (event.type) {
     case 'visitor':
@@ -841,6 +885,7 @@ function addEventToPoint(point, event) {
   }
 }
 
+// Convert aggregate counts into funnel steps with conversion rates.
 function buildFunnel(values) {
   const steps = [
     { label: 'Visitors', value: values.visitors },
@@ -857,6 +902,7 @@ function buildFunnel(values) {
   }));
 }
 
+// Summarize views, carts, units, and revenue for the highest-impact products.
 function buildTopProducts(events) {
   const products = new Map();
 
@@ -894,6 +940,7 @@ function buildTopProducts(events) {
     .slice(0, 8);
 }
 
+// Roll top product metrics up into category-level analytics rows.
 function buildTopCategories(products) {
   const categories = new Map();
 
@@ -920,6 +967,7 @@ function buildTopCategories(products) {
   );
 }
 
+// Convert purchase events into the recent orders table for the dashboard.
 function buildOrders(events) {
   return events
     .map((event) => ({
@@ -936,6 +984,7 @@ function buildOrders(events) {
     .slice(0, 10);
 }
 
+// Convert failed payment events into the dashboard failure history table.
 function buildPaymentFailures(events) {
   return events
     .map((event) => ({
@@ -952,6 +1001,7 @@ function buildPaymentFailures(events) {
     .slice(0, 12);
 }
 
+// Reuse or initialize a mutable product metrics summary in the provided map.
 function getProductSummary(products, product) {
   const productId = Number(product.productId);
   const existing = products.get(productId);
@@ -973,6 +1023,7 @@ function getProductSummary(products, product) {
   return next;
 }
 
+// Extract the product fields needed for product-level analytics summaries.
 function productSummaryFromEvent(event) {
   if (!event.productId || !event.productName) {
     return null;
@@ -985,18 +1036,22 @@ function productSummaryFromEvent(event) {
   };
 }
 
+// Count events of a specific analytics type.
 function countEvents(events, type) {
   return events.filter((event) => event.type === type).length;
 }
 
+// Count unique values produced by the provided selector callback.
 function uniqueCount(events, getValue) {
   return new Set(events.map(getValue)).size;
 }
 
+// Sum item quantities while tolerating missing item arrays.
 function sumItems(items) {
   return items?.reduce((total, item) => total + (Number(item.quantity) || 0), 0) ?? 0;
 }
 
+// Read a monetary value from the event or derive it from item revenue.
 function readEventValue(event) {
   return (
     finiteNumber(event?.value) ??
@@ -1006,6 +1061,7 @@ function readEventValue(event) {
   );
 }
 
+// Sum line item revenue while ignoring invalid prices or quantities.
 function sumItemRevenue(items) {
   return (
     items?.reduce(
@@ -1017,6 +1073,7 @@ function sumItemRevenue(items) {
   );
 }
 
+// Convert a value to a finite number, returning null when conversion fails.
 function finiteNumber(value) {
   if (value === null || value === undefined || value === '') {
     return null;
@@ -1027,10 +1084,12 @@ function finiteNumber(value) {
   return Number.isFinite(number) ? number : null;
 }
 
+// Divide two numbers and return zero when the denominator is empty.
 function safeDivide(numerator, denominator) {
   return denominator > 0 ? numerator / denominator : 0;
 }
 
+// Generate deterministic-looking seed analytics across several time windows.
 function createSeedEvents() {
   const products = [
     {
@@ -1268,6 +1327,7 @@ function createSeedEvents() {
   return events;
 }
 
+// Append visitor events for one seeded analytics day.
 function pushVisitorSeedEvents(events, day, baseDate) {
   for (let index = 0; index < day.visitors; index += 1) {
     events.push(
@@ -1278,6 +1338,7 @@ function pushVisitorSeedEvents(events, day, baseDate) {
   }
 }
 
+// Append seeded product view or add-to-cart events using product weights.
 function pushProductSeedEvents(events, day, baseDate, products, type) {
   const total = type === 'product_view' ? day.productViews : day.addToCarts;
   const weightKey = type === 'product_view' ? 'viewWeight' : 'cartWeight';
@@ -1297,6 +1358,7 @@ function pushProductSeedEvents(events, day, baseDate, products, type) {
   }
 }
 
+// Append checkout-start seed events with realistic cart item payloads.
 function pushCheckoutSeedEvents(events, day, baseDate, products) {
   for (let index = 0; index < day.checkoutStarts; index += 1) {
     const product = selectWeightedProduct(products, index, 'cartWeight');
@@ -1312,6 +1374,7 @@ function pushCheckoutSeedEvents(events, day, baseDate, products) {
   }
 }
 
+// Append purchase seed events, occasionally bundling an accessory item.
 function pushPurchaseSeedEvents(events, day, baseDate, products) {
   for (let index = 0; index < day.purchases; index += 1) {
     const product = selectWeightedProduct(products, index, 'purchaseWeight');
@@ -1337,6 +1400,7 @@ function pushPurchaseSeedEvents(events, day, baseDate, products) {
   }
 }
 
+// Append payment failure seed events with rotating failure reasons.
 function pushFailureSeedEvents(events, day, baseDate, products) {
   const reasons = [
     'Issuer declined the card',
@@ -1359,6 +1423,7 @@ function pushFailureSeedEvents(events, day, baseDate, products) {
   }
 }
 
+// Create one seed event with stable ids and staggered timestamps.
 function createSeedEvent(type, baseDate, daysAgo, index, event = {}) {
   const occurredAt = new Date(baseDate);
 
@@ -1381,6 +1446,7 @@ function createSeedEvent(type, baseDate, daysAgo, index, event = {}) {
   };
 }
 
+// Convert seed product metadata into an analytics line item.
 function seedProductToItem(product, quantity) {
   return {
     productId: product.productId,
@@ -1391,6 +1457,7 @@ function seedProductToItem(product, quantity) {
   };
 }
 
+// Select a product by deterministic weighted rotation for seed data variety.
 function selectWeightedProduct(products, index, weightKey) {
   const totalWeight = products.reduce(
     (total, product) => total + product[weightKey],
@@ -1409,6 +1476,7 @@ function selectWeightedProduct(products, index, weightKey) {
   return products[0];
 }
 
+// Derive category records from products when the fixture omits categories.
 function deriveCategories(products) {
   const categories = new Map();
 
@@ -1426,16 +1494,19 @@ function deriveCategories(products) {
   return [...categories.values()].sort((a, b) => a.id - b.id);
 }
 
+// Normalize site codes to lowercase strings, or null for empty input.
 function normalizeSite(site) {
   return typeof site === 'string' && site.trim()
     ? site.trim().toLowerCase()
     : null;
 }
 
+// Build a lightweight unique id with a type-specific prefix.
 function createId(prefix) {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+// Return a copy of the date pinned to local midnight.
 function startOfDay(date) {
   const nextDate = new Date(date);
 
@@ -1444,10 +1515,12 @@ function startOfDay(date) {
   return nextDate;
 }
 
+// Return the first day of the month for a given date.
 function startOfMonth(date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
+// Return a copy of the date shifted by the requested number of days.
 function addDays(date, days) {
   const nextDate = new Date(date);
 
@@ -1456,10 +1529,12 @@ function addDays(date, days) {
   return nextDate;
 }
 
+// Return a month-start date shifted by the requested number of months.
 function addMonths(date, months) {
   return new Date(date.getFullYear(), date.getMonth() + months, 1);
 }
 
+// Calculate whole-day distance between two dates.
 function daysBetween(startDate, endDate) {
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
@@ -1468,6 +1543,7 @@ function daysBetween(startDate, endDate) {
   );
 }
 
+// Format a date as a stable YYYY-MM-DD key.
 function dateKey(date) {
   return [
     date.getFullYear(),
@@ -1476,6 +1552,7 @@ function dateKey(date) {
   ].join('-');
 }
 
+// Format a date as a stable YYYY-MM key.
 function monthKey(date) {
   return [
     date.getFullYear(),
@@ -1483,6 +1560,7 @@ function monthKey(date) {
   ].join('-');
 }
 
+// Format a short day label for chart axes.
 function formatDayLabel(date) {
   return date.toLocaleDateString('en', {
     month: 'short',
@@ -1490,6 +1568,7 @@ function formatDayLabel(date) {
   });
 }
 
+// Format a short month label for chart axes.
 function formatMonthLabel(date) {
   return date.toLocaleDateString('en', {
     month: 'short',
@@ -1497,6 +1576,7 @@ function formatMonthLabel(date) {
   });
 }
 
+// Find the earliest valid event timestamp in a list of analytics events.
 function findEarliestEventDate(events) {
   return events.reduce((earliest, event) => {
     const occurredAt = new Date(event.occurredAt);

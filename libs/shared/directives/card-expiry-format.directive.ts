@@ -6,7 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NON_DIGIT_PATTERN } from 'libs/shared/constants/regex.constants';
+import { NON_DIGIT_PATTERN } from '../constants/regex.constants';
 
 @Directive({
   selector: 'input[appCardExpiryFormat]',

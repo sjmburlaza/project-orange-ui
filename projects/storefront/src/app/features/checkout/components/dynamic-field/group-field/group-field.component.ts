@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFieldComponent } from '../dynamic-field.component';
-import { DynamicField } from 'libs/models/checkout.model';
+import { DynamicField } from '@orange/models';
 
 @Component({
   selector: 'app-group-field',

@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { ROLES, Role } from 'libs/core/auth/auth.constants';
-import { AuthSession } from 'libs/core/auth/auth.models';
-import { AuthService } from 'libs/core/auth/auth.service';
-import { AuthStore } from 'libs/core/auth/auth.store';
-import { SiteService } from 'libs/core/services/site.services';
+import { ROLES, Role } from '@orange/models';
+import { AuthSession } from '@orange/models';
+import { AuthService } from '@orange/core';
+import { AuthStore } from '@orange/core';
+import { SiteService } from '@orange/core';
 
 import { LoginComponent } from './login.component';
 

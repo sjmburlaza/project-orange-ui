@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideTranslateService } from '@ngx-translate/core';
-import { OrderItem } from 'libs/models/order.model';
-import { SiteService } from 'libs/core/services/site.services';
+import { OrderItem } from '@orange/models';
+import { SiteService } from '@orange/core';
 
 import { OrderItemComponent } from './order-item.component';
 

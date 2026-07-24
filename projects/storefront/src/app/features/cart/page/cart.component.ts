@@ -3,11 +3,11 @@ import { CartItemComponent } from '../components/cart-item/cart-item.component';
 import { CartFacade } from '../store/cart.facade';
 import { AsyncPipe } from '@angular/common';
 import { AddonComponent } from '../components/addon/addon.component';
-import { SiteService } from 'libs/core/services/site.services';
+import { SiteService } from '@orange/core';
 import {
   Addon,
   UpdateCartItemAddonRequest,
-} from 'libs/models/cart.model';
+} from '@orange/models';
 
 @Component({
   selector: 'app-cart',

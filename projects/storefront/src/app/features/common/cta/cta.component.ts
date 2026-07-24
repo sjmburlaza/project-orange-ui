@@ -3,8 +3,8 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AuthStore } from 'libs/core/auth/auth.store';
-import { SiteService } from 'libs/core/services/site.services';
+import { AuthStore } from '@orange/core';
+import { SiteService } from '@orange/core';
 
 @Component({
   selector: 'app-cta',
