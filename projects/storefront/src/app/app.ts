@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AnalyticsService } from 'libs/core/services/analytics.service';
-import { BackToTopComponent } from 'libs/ui/back-to-top/back-to-top.component';
+import { AnalyticsService } from '@orange/core';
+import { BackToTopComponent } from '@orange/ui';
 
 @Component({
   selector: 'app-root',

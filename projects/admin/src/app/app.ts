@@ -8,9 +8,9 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { filter, finalize, map } from 'rxjs';
-import { AuthService } from 'libs/core/auth/auth.service';
-import { AuthStore } from 'libs/core/auth/auth.store';
-import { BackToTopComponent } from 'libs/ui/back-to-top/back-to-top.component';
+import { AuthService } from '@orange/core';
+import { AuthStore } from '@orange/core';
+import { BackToTopComponent } from '@orange/ui';
 
 @Component({
   selector: 'app-root',

@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { SiteService } from 'libs/core/services/site.services';
+import { SiteService } from '../services/site.services';
 import { ApiSitePrefixInterceptor } from './api-site-prefix.interceptor';
 
 describe('ApiSitePrefixInterceptor', () => {

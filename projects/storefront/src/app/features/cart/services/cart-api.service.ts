@@ -8,9 +8,9 @@ import {
   UpdateCartShippingRequest,
   UpdateCartItemAddonRequest,
   UpdateQuantityRequest,
-} from 'libs/models/cart.model';
-import { ProductConfigure } from 'libs/models/product.model';
-import { BrowserStorageService } from 'libs/core/services/browser-storage.service';
+} from '@orange/models';
+import { ProductConfigure } from '@orange/models';
+import { BrowserStorageService } from '@orange/core';
 
 @Injectable({ providedIn: 'root' })
 export class CartApiService {

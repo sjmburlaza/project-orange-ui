@@ -1,22 +1,22 @@
 import { AsyncPipe, getCurrencySymbol } from '@angular/common';
 import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthStore } from 'libs/core/auth/auth.store';
-import { Category } from 'libs/models/category.model';
-import { Product, ProductSort } from 'libs/models/product.model';
-import { SiteService } from 'libs/core/services/site.services';
-import { AnalyticsService } from 'libs/core/services/analytics.service';
+import { AuthStore } from '@orange/core';
+import { Category } from '@orange/models';
+import { Product, ProductSort } from '@orange/models';
+import { SiteService } from '@orange/core';
+import { AnalyticsService } from '@orange/core';
 import { WishlistService } from 'src/app/features/profile/services/wishlist.service';
 import { ProductCardComponent } from 'src/app/features/products/components/product-card/product-card.component';
 import { ProductFacade } from 'src/app/features/products/store/products.facade';
 import { ProductListToolbarComponent } from 'src/app/features/products/components/product-list-toolbar/product-list-toolbar.component';
-import { RangeValue } from 'libs/ui/range-slider/range-slider.component';
-import { FilterDropdownOption } from 'libs/ui/filter-dropdown/filter-dropdown.component';
+import { RangeValue } from '@orange/ui';
+import { FilterDropdownOption } from '@orange/ui';
 import {
   DIACRITICS_PATTERN,
   LEADING_OR_TRAILING_HYPHENS_PATTERN,
   NON_ALPHANUMERIC_PATTERN,
-} from 'libs/shared/constants/regex.constants';
+} from '@orange/shared';
 import {
   combineLatest,
   debounceTime,
@@ -30,7 +30,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ConfirmDialogComponent } from 'libs/ui/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '@orange/ui';
 
 @Component({
   selector: 'app-product-list',

@@ -3,13 +3,13 @@ import { BehaviorSubject, of, throwError } from 'rxjs';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideTranslateService } from '@ngx-translate/core';
 
-import { AuthSession } from 'libs/core/auth/auth.models';
+import { AuthSession } from '@orange/models';
 import {
   AuthSessionState,
   AuthStore,
-} from 'libs/core/auth/auth.store';
-import { OrderItem } from 'libs/models/order.model';
-import { SiteService } from 'libs/core/services/site.services';
+} from '@orange/core';
+import { OrderItem } from '@orange/models';
+import { SiteService } from '@orange/core';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { OrdersComponent } from './orders.component';
 

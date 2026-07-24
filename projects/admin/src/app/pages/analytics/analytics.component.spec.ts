@@ -8,8 +8,8 @@ import { By } from '@angular/platform-browser';
 import {
   AnalyticsDashboard,
   AnalyticsDashboardPeriod,
-} from 'libs/models/analytics.model';
-import { SelectDropdownComponent } from 'libs/ui/select-dropdown/select-dropdown.component';
+} from '@orange/models';
+import { SelectDropdownComponent } from '@orange/ui';
 
 import { AnalyticsComponent } from './analytics.component';
 

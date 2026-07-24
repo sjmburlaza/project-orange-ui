@@ -1,4 +1,4 @@
-import type { Permission, Role } from 'libs/core/auth/auth.constants';
+import type { Permission, Role } from './auth.constants';
 
 export interface User {
   id: string;

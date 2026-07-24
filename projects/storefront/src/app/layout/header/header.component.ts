@@ -5,9 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, map } from 'rxjs';
-import { AuthService } from 'libs/core/auth/auth.service';
-import { AuthStore } from 'libs/core/auth/auth.store';
-import { SiteService } from 'libs/core/services/site.services';
+import { AuthService } from '@orange/core';
+import { AuthStore } from '@orange/core';
+import { SiteService } from '@orange/core';
 import { CartFacade } from 'src/app/features/cart/store/cart.facade';
 import { SearchComponent } from 'src/app/features/common/search/search.component';
 

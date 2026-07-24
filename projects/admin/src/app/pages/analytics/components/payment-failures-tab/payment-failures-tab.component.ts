@@ -10,9 +10,9 @@ import {
   AnalyticsDashboard,
   AnalyticsDailyPoint,
   AnalyticsMetricCard,
-} from 'libs/models/analytics.model';
+} from '@orange/models';
 import { BarChartComponent } from '../../charts/bar-chart/bar-chart.component';
-import { InfoTooltipComponent } from 'libs/ui/info-tooltip/info-tooltip.component';
+import { InfoTooltipComponent } from '@orange/ui';
 import {
   chartColors,
   dashboardBarChartOptions,

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Category } from 'libs/models/category.model';
+import { Category } from '@orange/models';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryApiService {

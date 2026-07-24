@@ -1,16 +1,16 @@
-import type { Category } from '../../libs/models/category.model';
+import type { Category } from '@orange/models';
 import type {
   Cart,
   CartItem,
   Voucher,
-} from '../../libs/models/cart.model';
-import type { CheckoutFormConfig } from '../../libs/models/checkout.model';
+} from '@orange/models';
+import type { CheckoutFormConfig } from '@orange/models';
 import type {
   Product,
   ProductConfigure,
   ProductVariant,
   StockStatus,
-} from '../../libs/models/product.model';
+} from '@orange/models';
 import type { FulfillmentOption } from '../../projects/storefront/src/app/features/checkout/services/fulfillment.service';
 
 export const categories: Category[] = [

@@ -7,16 +7,16 @@ This document describes the Project Orange admin analytics dashboard: what it me
 The analytics dashboard is the admin view at:
 
 ```text
-/analytics
+/admin/analytics
 ```
 
 Local example:
 
 ```text
-http://localhost:4200/analytics
+http://localhost:4200/admin/analytics
 ```
 
-The dashboard is owned by the standalone admin app under `projects/admin`. Storefront pages continue to record analytics events through the shared analytics service.
+The dashboard is owned by the standalone admin app under `projects/admin`. It is protected by the admin auth and role guards. Storefront pages continue to record analytics events through the shared analytics service.
 
 The dashboard summarizes storefront behavior using event-style analytics. It is designed to answer:
 
@@ -41,8 +41,8 @@ Primary implementation files:
 | Shared tab math | `projects/admin/src/app/pages/analytics/components/dashboard-tab.utils.ts` |
 | Shared chart options | `projects/admin/src/app/pages/analytics/components/dashboard-chart.utils.ts` |
 | Reusable chart wrappers | `projects/admin/src/app/pages/analytics/charts/` |
-| Analytics models | `libs/models/analytics.model.ts` |
-| Analytics client service | `libs/core/services/analytics.service.ts` |
+| Analytics models | `@orange/models` (`libs/models/analytics.model.ts`) |
+| Analytics client service | `@orange/core` (`libs/core/services/analytics.service.ts`) |
 | Empty dashboard helpers | `libs/core/services/analytics.helpers.ts` |
 | Local mock API | `mock-api/server.cjs` |
 | Tab unit test fixtures | `projects/admin/src/app/pages/analytics/components/dashboard-tab.spec-fixtures.ts` |
@@ -415,6 +415,8 @@ Run the analytics mock API with:
 npm run mock:api
 ```
 
+The mock server reads the root `db.json`; an empty `{}` object is sufficient to use generated analytics seed data.
+
 It starts `mock-api/server.cjs` on:
 
 ```text
@@ -458,6 +460,8 @@ Start the standalone admin app:
 npm run ng -- serve project-orange-admin
 ```
 
+The admin app uses port `4200` by default. If the storefront already occupies that port, run the admin app with `--port 4201`.
+
 For dashboard data, start the mock API in another terminal:
 
 ```bash
@@ -467,8 +471,10 @@ npm run mock:api
 Then open the admin route:
 
 ```text
-http://localhost:4200/analytics
+http://localhost:4200/admin/analytics
 ```
+
+The analytics mock supplies dashboard data but does not implement admin authentication. A local browser session therefore also needs the primary backend at `http://localhost:5175` for login/session endpoints. The Playwright test avoids that dependency by mocking the admin auth session.
 
 ## Testing
 
@@ -488,14 +494,14 @@ projects/admin/src/app/pages/analytics/components/dashboard-tab.spec-fixtures.ts
 Run unit tests with:
 
 ```bash
-npm run test:ci
+npm run ng -- test project-orange-admin --watch=false
 ```
 
 Useful compiler-only checks:
 
 ```bash
-npx tsc -p projects/storefront/tsconfig.spec.json --noEmit
-npx ngc -p projects/storefront/tsconfig.spec.json --noEmit
+npx tsc -p projects/admin/tsconfig.spec.json --noEmit
+npx ngc -p projects/admin/tsconfig.spec.json --noEmit
 ```
 
 ### End-to-end tests
@@ -517,6 +523,8 @@ Run e2e tests with:
 ```bash
 npm run e2e
 ```
+
+Playwright starts the storefront on `http://localhost:4300` and the admin app on `http://localhost:4301`; the dashboard test visits `http://localhost:4301/admin/analytics`.
 
 CI installs Chromium and runs e2e tests as part of the main validation workflow.
 

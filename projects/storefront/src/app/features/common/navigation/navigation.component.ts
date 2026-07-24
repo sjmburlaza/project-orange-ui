@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { SiteService } from 'libs/core/services/site.services';
+import { SiteService } from '@orange/core';
 import headerCnMockData from 'src/assets/mock/header/header.cn.json';
 import headerFrMockData from 'src/assets/mock/header/header.fr.json';
 import headerJpMockData from 'src/assets/mock/header/header.jp.json';

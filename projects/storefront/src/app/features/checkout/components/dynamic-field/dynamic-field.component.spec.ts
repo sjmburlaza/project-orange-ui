@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { DynamicFieldComponent } from './dynamic-field.component';
-import { DynamicField } from 'libs/models/checkout.model';
+import { DynamicField } from '@orange/models';
 
 describe('DynamicFieldComponent', () => {
   let component: DynamicFieldComponent;

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, UrlTree } from '@angular/router';
 import { firstValueFrom, Observable, of, throwError } from 'rxjs';
-import { AuthSession } from 'libs/core/auth/auth.models';
-import { AuthService } from 'libs/core/auth/auth.service';
-import { AuthStore } from 'libs/core/auth/auth.store';
+import { AuthSession } from '@orange/models';
+import { AuthService } from '../auth/auth.service';
+import { AuthStore } from '../auth/auth.store';
 
 import { AUTH_GUARD_REDIRECTS, AuthGuardRedirects } from './auth-guard-redirects';
 import { AuthGuard } from './auth.guard';

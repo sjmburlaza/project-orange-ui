@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { SiteService } from 'libs/core/services/site.services';
+import { SiteService } from '@orange/core';
 
 import { NavigationComponent } from './navigation.component';
 

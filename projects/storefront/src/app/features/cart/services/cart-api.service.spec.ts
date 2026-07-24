@@ -4,10 +4,10 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BrowserStorageService } from 'libs/core/services/browser-storage.service';
+import { BrowserStorageService } from '@orange/core';
 import { CartApiService } from './cart-api.service';
-import { Cart } from 'libs/models/cart.model';
-import { ProductConfigure } from 'libs/models/product.model';
+import { Cart } from '@orange/models';
+import { ProductConfigure } from '@orange/models';
 
 describe('CartApiService', () => {
   let service: CartApiService;

@@ -1,4 +1,4 @@
-import { CartItem, CartSummaryAttribute } from 'libs/models/cart.model';
+import { CartItem, CartSummaryAttribute } from '@orange/models';
 import {
   selectCartItemCount,
   selectCartItems,

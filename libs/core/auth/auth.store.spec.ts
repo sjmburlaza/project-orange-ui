@@ -1,5 +1,5 @@
-import { PERMISSIONS, ROLES } from './auth.constants';
-import { AuthSession } from './auth.models';
+import { PERMISSIONS, ROLES } from '@orange/models';
+import { AuthSession } from '@orange/models';
 import { AuthStore } from './auth.store';
 
 describe('AuthStore', () => {

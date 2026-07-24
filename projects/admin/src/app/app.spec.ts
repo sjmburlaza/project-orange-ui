@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { AuthService } from 'libs/core/auth/auth.service';
-import { AuthStore } from 'libs/core/auth/auth.store';
+import { AuthService } from '@orange/core';
+import { AuthStore } from '@orange/core';
 import { App } from './app';
 
 describe('App', () => {

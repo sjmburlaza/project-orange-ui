@@ -9,9 +9,9 @@ import type { ChartData, ChartOptions } from 'chart.js';
 import {
   AnalyticsDashboard,
   AnalyticsMetricCard,
-} from 'libs/models/analytics.model';
+} from '@orange/models';
 import { LineChartComponent } from '../../charts/line-chart/line-chart.component';
-import { InfoTooltipComponent } from 'libs/ui/info-tooltip/info-tooltip.component';
+import { InfoTooltipComponent } from '@orange/ui';
 import {
   chartColors,
   dashboardLineChartOptions,

@@ -8,12 +8,12 @@ import {
   OrderShippingAddress,
   OrderStatus,
   PaymentStatus,
-} from 'libs/models/order.model';
+} from '@orange/models';
 import { OrderService } from 'src/app/features/orders/services/order.service';
-import { SiteService } from 'libs/core/services/site.services';
+import { SiteService } from '@orange/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { IconPipe } from 'libs/shared/pipes/icon-pipe';
-import { IconColorPipe } from 'libs/shared/pipes/icon-color-pipe';
+import { IconPipe } from '@orange/shared';
+import { IconColorPipe } from '@orange/shared';
 
 type DisplayStatus = OrderStatus | PaymentStatus;
 

@@ -1,5 +1,5 @@
-import { Category } from 'libs/models/category.model';
-import { Addon } from 'libs/models/cart.model';
+import { Category } from './category.model';
+import { Addon } from './cart.model';
 
 export type StockStatus = 'inStock' | 'lowStock' | 'outOfStock';
 

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 
-import { DynamicField } from 'libs/models/checkout.model';
+import { DynamicField } from '@orange/models';
 import { AsyncValidatorMapperService } from '../../services/async-validator-mapper.service';
 import { DynamicFormComponent } from './dynamic-form.component';
 

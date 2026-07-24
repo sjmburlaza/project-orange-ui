@@ -5,7 +5,7 @@ import {
   OrderConfirmation,
   OrderItem,
   PlaceOrderRequest,
-} from 'libs/models/order.model';
+} from '@orange/models';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
